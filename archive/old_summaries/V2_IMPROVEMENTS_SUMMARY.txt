@@ -1,0 +1,237 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VERSION 2 IMPROVEMENTS SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Generated: 2026-02-08
+Status: ✅ COMPLETE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT CHANGED FROM V1 TO V2
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FACTION NAMES ADDED
+
+   OLD (V1):
+   • Major Power: Regional hegemon...
+   • Smaller Power: Defending state...
+
+   NEW (V2):
+   • The People's Federation of Novaris (referred to as "Novaris"):
+     Regional hegemon with substantial military capabilities...
+
+   • The Democratic Commonwealth of Tethys (referred to as "Tethys"):
+     Smaller democratic state defending independence...
+
+2. RICHER INITIAL SCENARIO
+
+   OLD (V1): Generic 3-sentence crisis description
+
+   NEW (V2): Detailed backstory including:
+   • 40% force mobilization by Novaris
+   • Historical territorial claims context
+   • Tethys asymmetric capabilities (cyber, precision strikes)
+   • Economic interdependence (30% energy revenue through Tethys pipelines)
+   • Recent timeline (3 months of escalation)
+   • Detailed actor motivations and constraints
+
+3. NATURAL LANGUAGE INDICATORS (NOT RAW NUMBERS)
+
+   OLD (V1):
+   • Military Balance: 0.50 (0 = total dominance by aggressor, 1 = defender advantage)
+   • Territory Under Aggressor Control: 0%
+   • Crisis Level: 10/10 (critical)
+   • International Sanctions Level: 45% (initial sanctions package)
+   • International Support: 75%
+
+   NEW (V2):
+   **MILITARY SITUATION**
+   Forces are roughly matched despite Novaris's numerical advantage. No territory
+   has been seized by Novaris. The crisis is at maximum intensity - situation
+   critical and highly volatile.
+
+   **ECONOMIC PRESSURE**
+   Novaris faces substantial international sanctions (approximately 45% implementation).
+   Economic warfare continues to intensify.
+
+   **DIPLOMATIC SITUATION**
+   Tethys maintains substantial and growing international support (75%). Diplomatic
+   efforts continue across multiple channels.
+
+4. MORE INTUITIVE DESCRIPTIONS
+
+   Instead of: "Military Balance: -0.09 (aggressor advantage)"
+   Now says: "Aggressor demonstrates overwhelming military superiority"
+
+   Instead of: "Crisis Level: 5/10 (elevated)"
+   Now says: "The crisis is elevated above baseline but showing some stability"
+
+   Instead of: "International Support: 92%"
+   Now says: "Tethys maintains overwhelming international backing (92%)"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPARISON: OLD VS NEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PERIOD 1 OPENING (V1):
+─────────────────────
+"A major regional power has initiated territorial operations against a smaller
+neighboring state, citing historical territorial claims and security concerns.
+The smaller power has mobilized defensive forces and called for international
+support."
+
+PERIOD 1 OPENING (V2):
+─────────────────────
+"The People's Federation of Novaris has mobilized approximately 40% of its
+military forces along the border with The Democratic Commonwealth of Tethys,
+citing "historical reunification rights" and claiming Tethys is an inseparable
+part of Novarian territory. Novaris has launched what it calls a "decisive
+pressure campaign," combining military demonstrations, economic coercion, and
+cyber operations.
+
+Tethys has responded by mobilizing its defensive forces and appealing to the
+international community. While militarily smaller, Tethys possesses significant
+asymmetric capabilities including advanced cyber units, precision strike capacity
+against Novarian mobilization centers, and economic leverage through control of
+critical energy transit pipelines."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NATURAL LANGUAGE CONVERSION TABLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MILITARY BALANCE:
+  ≥ 0.70  → "Defender holds a significant tactical advantage"
+  ≥ 0.55  → "Defender maintains a modest advantage on home terrain"
+  ≥ 0.45  → "Forces are roughly evenly matched"
+  ≥ 0.30  → "Aggressor holds a notable military advantage"
+  < 0.30  → "Aggressor demonstrates overwhelming military superiority"
+
+TERRITORY CONTROLLED:
+  0%      → "No territory has been seized by Novaris"
+  < 10%   → "Novaris controls approximately X% of Tethys territory (limited gains)"
+  < 30%   → "Novaris has captured approximately X% of Tethys territory"
+  ≥ 30%   → "Novaris has achieved significant territorial gains (approximately X% control)"
+
+CRISIS LEVEL:
+  ≥ 9     → "at maximum intensity - situation critical and highly volatile"
+  ≥ 7     → "severely elevated with imminent risk of escalation"
+  ≥ 5     → "elevated above baseline but showing some stability"
+  ≥ 3     → "moderate with ongoing tensions"
+  < 3     → "relatively contained with diplomatic engagement ongoing"
+
+SANCTIONS LEVEL:
+  ≥ 70%   → "comprehensive sanctions regime (approximately X% of potential measures)"
+  ≥ 45%   → "substantial international sanctions (approximately X% implementation)"
+  ≥ 25%   → "moderate sanctions package (approximately X% of measures)"
+  < 25%   → "limited targeted sanctions (approximately X% implementation)"
+
+INTERNATIONAL SUPPORT:
+  ≥ 80%   → "overwhelming international backing (X%)"
+  ≥ 60%   → "strong and growing international support (X%)"
+  ≥ 40%   → "moderate international support (X%)"
+  < 40%   → "limited international support (X%)"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXAMPLE: PERIOD 2 COMPARISON
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VERSION 1 (Numbers):
+───────────────────
+Military Situation
+  • Military Balance: -0.09 (aggressor advantage)
+  • Territory Under Aggressor Control: 0%
+  • Crisis Level: 5/10 (elevated)
+
+Economic Pressure
+  • International Sanctions Level: 20%
+
+Diplomatic Context
+  • International Support for Smaller Power: 60%
+
+VERSION 2 (Natural Language):
+────────────────────────────
+**MILITARY SITUATION**
+
+Aggressor demonstrates overwhelming military superiority. No territory has been
+seized by Novaris. The crisis is elevated above baseline but showing some stability.
+
+**ECONOMIC PRESSURE**
+
+Novaris faces limited targeted sanctions (approximately 20% implementation).
+Economic warfare continues to intensify.
+
+**DIPLOMATIC SITUATION**
+
+Tethys maintains strong and growing international support (60%). Diplomatic
+efforts continue across multiple channels.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILES GENERATED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VERSION 1 (Original - Numbers):
+  • forecasting_prompts_TRUE.txt (96 KB)
+  • forecasting_prompts_CONTROL.txt (96 KB)
+  • forecasting_briefings_PUBLIC.txt (96 KB) [duplicate of TRUE]
+
+VERSION 2 (Improved - Natural Language):
+  • forecasting_prompts_TRUE_v2.txt (105 KB) ✅ USE THIS
+  • forecasting_prompts_CONTROL_v2.txt (105 KB) ✅ USE THIS
+
+SOURCE CODE:
+  • src/forecast_prompts_public.R (original version)
+  • src/forecast_prompts_public_v2.R (improved version) ✅ USE THIS
+
+GENERATION SCRIPTS:
+  • generate_all_prompts.R (generates V1)
+  • generate_prompts_v2.R (generates V2) ✅ USE THIS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RECOMMENDATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ USE VERSION 2 FOR YOUR STUDY
+
+Why:
+  • More engaging and realistic for participants
+  • Faction names (Novaris, Tethys) add narrative coherence
+  • Natural language is more intuitive than raw metrics
+  • Richer context helps forecasters understand stakes
+  • Professional intelligence briefing feel
+
+The V2 prompts are approximately 10% longer but significantly more informative
+and easier to work with for human forecasters.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE NAMING EXPLANATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: What's the difference between forecasting_prompts_TRUE and
+   forecasting_briefings_PUBLIC?
+
+A: THEY ARE THE SAME CONTENT - just generated at different times during development.
+
+   • "PUBLIC" = Emphasizes that info is publicly observable only
+   • "TRUE" = Emphasizes real simulation dynamics (vs CONTROL condition)
+
+   Going forward, use this naming:
+   • forecasting_prompts_TRUE_v2.txt - Real dynamics, public info, V2 format
+   • forecasting_prompts_CONTROL_v2.txt - Randomized, public info, V2 format
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] Review forecasting_prompts_TRUE_v2.txt (Period 1-3)
+[ ] Verify natural language descriptions are clear and intuitive
+[ ] Update PREDICTION_CHALLENGE_INSTRUCTIONS.txt to use "Novaris" and "Tethys" names
+[ ] Pilot test with 2-3 participants
+[ ] Collect feedback on clarity and engagement
+[ ] Proceed with full study
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ VERSION 2 IMPROVEMENTS COMPLETE
+
+Ready for human-AI forecasting study with improved, natural language prompts!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

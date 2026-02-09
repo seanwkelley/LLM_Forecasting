@@ -1,0 +1,139 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FORECASTING PROMPTS - CLEANUP & ORGANIZATION (February 8, 2026)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Summary
+
+Cleaned up old code and outputs after completing v2 forecasting prompt
+improvements. All deprecated files archived for reference.
+
+## Files Archived
+
+### Old Prompt Generation Code
+Moved to: archive/old_prompts/
+
+- src/forecast_prompts_public.R (v1 generator)
+- generate_all_prompts.R (v1 runner script)
+- outputs/human_forecasting/PARTICIPANT_INSTRUCTIONS.txt (deprecated)
+
+### Development Summaries
+Moved to: archive/old_summaries/
+
+- GENERATION_SUMMARY.txt
+- V2_IMPROVEMENTS_SUMMARY.txt
+- FINAL_PACKAGE_SUMMARY.txt
+- UPDATE_SUMMARY.txt
+
+## Current Active Files
+
+### Generation Scripts
+- src/forecast_prompts_public_v2.R (main generation logic)
+- generate_prompts_v2.R (runner script)
+
+### Outputs
+outputs/human_forecasting/
+  ├── README.md (updated documentation)
+  ├── PREDICTION_CHALLENGE_INSTRUCTIONS.txt (participant instructions)
+  ├── human_forecasts_template.csv (data collection)
+  ├── ANSWER_KEY_llm_forecasts.txt (benchmark)
+  ├── forecasting_prompts_TRUE.txt (combined, 10 periods)
+  ├── forecasting_prompts_CONTROL.txt (combined, 10 periods)
+  ├── TRUE/
+  │   ├── instructions.txt
+  │   ├── period_01.txt through period_10.txt
+  └── CONTROL/
+      ├── instructions.txt
+      ├── period_01.txt through period_10.txt
+
+## Key Improvements in V2
+
+1. **Faction Names Throughout**
+   - "Novaris" and "Tethys" replace generic "Major power" / "Smaller power"
+   - Applied to events, descriptions, and all text
+
+2. **Incremental Updates (Not Cumulative)**
+   - Periods 2+ show only changes since last period
+   - Prevents exponential bloat (Period 10 is ~100 lines, not 500+)
+
+3. **Natural Language Descriptions**
+   - "Strong and growing international support" not "76%"
+   - "Limited targeted sanctions" not "25% implementation"
+
+4. **Professional Prose Style (Economist/FT)**
+   - Connected paragraphs, not disconnected sections
+   - No boilerplate filler phrases
+   - Narrative event bullets (no "Category: description" format)
+
+5. **Individual Period Files**
+   - Each period is standalone .txt file
+   - Easy distribution to participants
+   - instructions.txt provides study overview
+
+## V1 → V2 Changes
+
+### Removed
+- Cumulative history (all past events/actions)
+- "Consider factors such as:" prescriptive section
+- Raw percentages in text
+- "Simulated" prefix on events
+- Generic faction references in event descriptions
+- Boilerplate like "Economic warfare continues to intensify" (every period)
+- Verbose actions preamble
+- Dashboard-style changes ("Moved from X to Y")
+
+### Added
+- Brief constant scenario context (2-3 sentences)
+- "Developments Since Last Period" section
+- Prose-style changes descriptions
+- Connected current situation paragraphs
+- Clean narrative event bullets
+- Individual period files with instructions
+
+### Improved
+- Event processing (faction name substitution)
+- Military balance descriptions (Novaris/Tethys not Defender/Aggressor)
+- Changes section (natural prose not metrics)
+- Current situation (flowing paragraphs not templates)
+
+## Why These Changes Matter
+
+### For Participants
+- Easier to read (professional style, no jargon)
+- Manageable length (no bloat in later periods)
+- Clear trajectory (changes section shows direction)
+- Reduced cognitive load (focus on "what's new")
+
+### For Researchers
+- More realistic (mimics real intelligence briefings)
+- Better engagement (participants stay motivated)
+- Cleaner data (less confusion about metrics)
+- Easier distribution (individual files)
+
+## Generation Process
+
+```bash
+# Run from project root:
+Rscript generate_prompts_v2.R
+
+# Generates:
+# - Combined files (forecasting_prompts_TRUE.txt, forecasting_prompts_CONTROL.txt)
+# - Individual period files (TRUE/period_XX.txt, CONTROL/period_XX.txt)
+# - Instructions files (TRUE/instructions.txt, CONTROL/instructions.txt)
+```
+
+## Next Steps
+
+1. ✅ Archive old code and summaries
+2. ✅ Update README with v2 structure
+3. ⬜ Pilot test with 2-3 participants
+4. ⬜ Refine based on feedback
+5. ⬜ Full study deployment
+
+## Notes
+
+- All archived files preserved in archive/ for reference
+- No functionality removed, just reorganized
+- V2 maintains backward compatibility (still generates combined files)
+- Individual file output is additive feature
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

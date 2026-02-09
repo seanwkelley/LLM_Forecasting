@@ -1,0 +1,172 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FORECASTING PROMPTS UPDATE - NEW STRUCTURE IMPLEMENTED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Date: February 8, 2026
+Status: ✅ COMPLETE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT CHANGED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OLD STRUCTURE (Cumulative):
+- Period 1: Full scenario
+- Period 2: Full scenario + all events/actions from Period 1
+- Period 3: Full scenario + all events/actions from Periods 1-2
+- Period 10: Full scenario + all events/actions from Periods 1-9 (VERY LONG)
+
+NEW STRUCTURE (Incremental with Context):
+- Period 1: Full detailed scenario with rich backstory
+- Periods 2-10: Brief scenario context + changes since last period + current
+  situation + recent events/actions (ONLY from previous period)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEW PERIOD STRUCTURE (PERIODS 2-10)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. SCENARIO CONTEXT (Constant 2-3 Sentence Reminder)
+   ───────────────────────────────────────────────
+   "The People's Federation of Novaris launched a pressure campaign against
+   The Democratic Commonwealth of Tethys, citing historical territorial claims.
+   Tethys has mounted a determined defense with international support."
+
+   → Same text for all periods 2-10
+   → Just enough to ground someone who returns after a break
+
+2. DEVELOPMENTS SINCE LAST PERIOD (Days X-Y)
+   ──────────────────────────────────────────
+   **Key Changes:**
+     • Military balance: Shifted from "..." to "..."
+     • Crisis intensity: Moved from X/10 to Y/10
+     • International sanctions: Adjusted from X% to Y% implementation
+     • International support: Moved from X% to Y%
+
+   → Shows ONLY changes from previous period to current period
+   → Allows participants to track trajectory
+   → Only lists metrics that actually changed (omits stable indicators)
+
+3. CURRENT SITUATION — DAY X
+   ─────────────────────────
+   **MILITARY SITUATION**
+   [Natural language description of current state]
+
+   **ECONOMIC PRESSURE**
+   [Natural language description of sanctions]
+
+   **DIPLOMATIC SITUATION**
+   [Natural language description of support]
+
+   → Current state as of this period
+   → Natural language instead of raw numbers
+
+4. RECENT EVENTS AND ACTIONS
+   ─────────────────────────
+   **MAJOR EVENTS**
+   [Events from previous period only]
+
+   **REPORTED ACTIONS**
+   [Actions from previous period only]
+
+   → Shows ONLY what happened in the period just completed
+   → No cumulative history
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BENEFITS OF NEW STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ MANAGEABLE LENGTH
+   • Period 1: ~160 lines (full rich scenario)
+   • Period 2: ~100 lines (context + update)
+   • Period 10: ~100 lines (stays consistent, not cumulative)
+
+   OLD: Period 10 would have been 500+ lines
+   NEW: Period 10 stays around 100 lines
+
+✅ CLEAR TRAJECTORY
+   • "Developments Since Last Period" shows direction of change
+   • Participants can see trends without being overwhelmed
+   • Easy to compare t-1 to t
+
+✅ REDUCED COGNITIVE LOAD
+   • Brief context provides grounding
+   • Focus on "what's new" rather than re-reading everything
+   • Mimics how real intelligence briefings work
+
+✅ NO DETAILED NOTE-TAKING REQUIRED
+   • Participants don't need to track everything manually
+   • Changes section provides enough context
+   • Can complete periods across multiple sessions
+
+✅ REALISTIC INFORMATION FLOW
+   • Professional analysts work with "what changed" briefings
+   • News reports focus on recent developments
+   • More authentic forecasting experience
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXAMPLE: PERIOD 4
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SCENARIO CONTEXT
+The People's Federation of Novaris launched a pressure campaign against The
+Democratic Commonwealth of Tethys, citing historical territorial claims.
+Tethys has mounted a determined defense with international support.
+
+DEVELOPMENTS SINCE LAST PERIOD (Days 15-21)
+**Key Changes:**
+  • Crisis intensity: Moved from 8/10 to 6/10
+  • International support for Tethys: Moved from 68% to 76%
+
+CURRENT SITUATION — DAY 21
+[Current indicators in natural language]
+
+RECENT EVENTS AND ACTIONS
+[Only events/actions from Period 3]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OTHER IMPROVEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ REMOVED "CONSIDER FACTORS SUCH AS:" SECTION
+   • Previously listed factors to consider (military balance, economic
+     resilience, etc.)
+   • Now removed to give participants more freedom in their analysis approach
+   • Less prescriptive, more authentic forecasting task
+
+✅ MAINTAINED ALL OTHER IMPROVEMENTS
+   • Faction names (Novaris/Tethys) throughout
+   • Natural language descriptions instead of raw numbers
+   • Rich initial scenario with detailed backstory
+   • Professional Economist/FT style writing
+   • Public information only (no internal deliberations)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILES UPDATED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. src/forecast_prompts_public_v2.R
+   • Updated generation logic for new structure
+   • Added "changes since last period" section
+   • Brief constant scenario context for periods 2+
+   • Shows only current period events/actions (not cumulative)
+
+2. outputs/human_forecasting/forecasting_prompts_TRUE.txt
+   • Regenerated with new structure
+   • 10 periods, all using new format
+
+3. outputs/human_forecasting/forecasting_prompts_CONTROL.txt
+   • Regenerated with new structure
+   • 10 periods, all using new format
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+READY FOR DEPLOYMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ All 10 periods generated successfully
+✅ TRUE and CONTROL conditions both updated
+✅ Structure tested and verified
+✅ Manageable length throughout (no bloat in later periods)
+✅ Clear trajectory visible with "changes" sections
+✅ Professional writing maintained
+✅ Ready for pilot testing
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

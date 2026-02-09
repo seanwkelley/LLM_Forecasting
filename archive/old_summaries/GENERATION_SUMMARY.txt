@@ -1,0 +1,376 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FORECASTING PROMPT GENERATION SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Generated: 2026-02-08
+Simulation: 10 periods (Days 0-70)
+Status: ✅ COMPLETE - Ready for human participants
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILES GENERATED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FOR PARTICIPANTS:
+
+1. PREDICTION_CHALLENGE_INSTRUCTIONS.txt (20 KB)
+   • Complete participant guide for the forecasting challenge
+   • Scenario overview and task description
+   • How to work with AI assistants
+   • Forecasting best practices (superforecasting principles)
+   • Step-by-step workflow
+   • Example forecast with reasoning
+   • Ethics and informed consent
+
+2. forecasting_prompts_TRUE.txt (96 KB)
+   • 10 intelligence briefings with REAL simulation dynamics
+   • Economist/Financial Times style formatting
+   • Public information only (no internal deliberations)
+   • Each period: indicators, events, actions, forecast question
+
+3. forecasting_prompts_CONTROL.txt (96 KB)
+   • 10 intelligence briefings with RANDOMIZED information
+   • Same format as TRUE condition
+   • Used to detect overfitting and spurious pattern recognition
+   • Metrics permuted, events shuffled, beneficiaries flipped
+   • Final outcome preserved (government survived/collapsed)
+
+FOR RESEARCHERS:
+
+4. PARTICIPANT_INSTRUCTIONS.txt (4.2 KB)
+   • Shorter version of instructions
+   • Information constraints explained
+   • Basic forecasting tips
+
+5. ANSWER_KEY_llm_forecasts.txt (6.3 KB)
+   • LLM aggregator forecasts for all 10 periods
+   • These forecasts had access to FULL simulation state
+   • Includes: probability, confidence, trend, reasoning
+   • Use as benchmark for comparison
+
+6. human_forecasts_template.csv (348 bytes)
+   • Data collection spreadsheet template
+   • Pre-filled with period/day structure and LLM forecasts
+   • Ready for participant data entry
+
+7. README.md
+   • Technical documentation
+   • Study design and research questions
+   • Information filtering details
+   • Code usage examples
+
+8. GENERATION_SUMMARY.txt (this file)
+   • Overview of what was generated
+   • Quick start guide for researchers
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KEY FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+INFORMATION FILTERING (Public Only):
+  ✅ Observable military movements
+  ✅ Public diplomatic actions
+  ✅ Economic measures (sanctions, trade)
+  ✅ External events (battlefield developments, protests)
+  ✅ Public metrics (military balance, territory, crisis level)
+  ✅ Exposed covert operations (failed/detected)
+
+  ❌ Internal deliberations
+  ❌ Private negotiations
+  ❌ Classified intelligence
+  ❌ Strategic planning
+  ❌ Successful covert operations
+  ❌ Faction coordination meetings
+
+PROFESSIONAL FORMATTING:
+  • News-style intelligence briefings
+  • Clear section headers and structure
+  • Actions described as media would report them
+  • Engaging and realistic for participants
+
+CONTROL CONDITION:
+  • Constrained randomization preserves local plausibility
+  • State metrics permuted across periods
+  • Event narratives shuffled and beneficiaries flipped
+  • Final outcome preserved (same as TRUE condition)
+  • Tests whether forecasters can distinguish signal from noise
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STUDY DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RESEARCH QUESTIONS:
+
+1. Can humans + AI assistants forecast geopolitical outcomes accurately
+   using only publicly available information?
+
+2. How does Human+AI (public info) compare to LLM aggregator (full info)?
+
+3. Do AI assistants improve human forecasting accuracy and calibration?
+
+4. Can forecasters distinguish genuine patterns (TRUE) from noise (CONTROL)?
+
+EXPERIMENTAL CONDITIONS:
+
+TRUE CONDITION:
+  • Real simulation dynamics
+  • Information causally connected to outcomes
+  • Tests forecasting accuracy on genuine signal
+
+CONTROL CONDITION:
+  • Randomized information
+  • Information-outcome connection broken
+  • Tests robustness to overfitting
+  • Good forecasters should cluster around base rate (~35%) on CONTROL
+
+PROCEDURE:
+
+1. Recruit participants (N = 20-30 recommended)
+   • Professional forecasters (ideal)
+   • Graduate students in IR/political science
+   • Intelligence analysts
+   • Interested volunteers with analytical background
+
+2. Assign to condition (within-subject or between-subject)
+   • WITHIN: Each participant does BOTH TRUE and CONTROL
+   • BETWEEN: Half get TRUE, half get CONTROL
+
+3. Pair with AI assistant
+   • Recommended: Claude (Sonnet/Opus), GPT-4, Gemini Pro
+   • Participants share briefings with AI and discuss
+   • AI helps analyze but does NOT make final forecast
+
+4. Collect forecasts
+   • 10 periods per condition
+   • Probability (0-100%), confidence, rationale
+   • Record in human_forecasts_template.csv
+
+5. Analyze performance
+   • Accuracy: Brier score, log score
+   • Calibration: Are 70% forecasts correct ~70% of time?
+   • Discrimination: Can they distinguish high/low probability events?
+   • Control performance: Do forecasts cluster around base rate?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SIMULATION GROUND TRUTH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FINAL OUTCOME (Period 10, Day 70):
+  • Government STATUS: SURVIVED (did NOT collapse)
+  • LLM Aggregator Final Forecast: 12%
+  • Military Balance (final): 0.29 (defender recovering)
+  • Territory Lost: 0% (throughout entire simulation)
+  • Crisis Level: 10/10 (critical but stable)
+  • International Support: 92%
+
+TRAJECTORY SUMMARY:
+  • Periods 1-2: Initial shock, military balance deteriorated
+  • Periods 3-5: Stabilization, government resilience
+  • Periods 6-8: Continued pressure but defensive success
+  • Periods 9-10: Government consolidated, collapse probability LOW
+
+LLM FORECASTS BY PERIOD:
+  Period 1: 28% (MEDIUM confidence, INCREASING trend)
+  Period 2: 42% (MEDIUM, INCREASING)
+  Period 3: 32% (MEDIUM, DECREASING)
+  Period 4: 45% (MEDIUM, INCREASING)
+  Period 5: 28% (HIGH, DECREASING)
+  Period 6: 18% (MEDIUM, DECREASING)
+  Period 7: 15% (HIGH, DECREASING)
+  Period 8: 18% (MEDIUM, INCREASING)
+  Period 9: 22% (MEDIUM, INCREASING)
+  Period 10: 12% (HIGH, DECREASING)
+
+KEY INSIGHT:
+  Despite significant military pressure (balance at 0.29), government never
+  lost territory and maintained high international support. The LLM aggregator
+  correctly assessed this as resilient defense leading to survival.
+
+  The question: Can humans with only public info (plus AI assistant) reach
+  similar conclusions?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUICK START FOR RESEARCHERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: REVIEW MATERIALS
+  [ ] Read PREDICTION_CHALLENGE_INSTRUCTIONS.txt
+  [ ] Review forecasting_prompts_TRUE.txt (scan 2-3 periods)
+  [ ] Check forecasting_prompts_CONTROL.txt (verify randomization)
+  [ ] Review ANSWER_KEY_llm_forecasts.txt (benchmark)
+
+STEP 2: PILOT TEST
+  [ ] Recruit 2-3 pilot participants
+  [ ] Have them complete Period 1-2 with AI assistant
+  [ ] Collect feedback on clarity, difficulty, time required
+  [ ] Refine instructions if needed
+
+STEP 3: RECRUIT PARTICIPANTS
+  [ ] Target: 20-30 participants for statistical power
+  [ ] Recruitment sources:
+      • Forecasting communities (Good Judgment Open, Metaculus)
+      • Graduate programs (IR, political science, public policy)
+      • Professional networks (think tanks, intelligence community)
+      • Online platforms (Prolific, CloudResearch)
+
+STEP 4: RUN STUDY
+  [ ] Send instructions + briefings to participants
+  [ ] Monitor completion rate and questions
+  [ ] Collect forecasts in CSV format
+  [ ] Track completion time per period
+
+STEP 5: ANALYZE RESULTS
+  [ ] Calculate Brier scores (accuracy)
+  [ ] Assess calibration (reliability diagrams)
+  [ ] Compare Human+AI vs LLM aggregator
+  [ ] Test CONTROL condition performance (should cluster around base rate)
+  [ ] Qualitative analysis of rationales
+
+STEP 6: WRITE UP
+  [ ] Report forecasting accuracy metrics
+  [ ] Compare performance across conditions
+  [ ] Discuss implications for human-AI collaboration
+  [ ] Consider publication venues (judgment and decision making journals)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXPECTED RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPTIMISTIC SCENARIO:
+  • Human+AI Brier score: 0.15-0.20 (good accuracy)
+  • LLM aggregator Brier score: 0.10-0.15 (excellent accuracy)
+  • Human+AI shows good calibration (reliability close to diagonal)
+  • CONTROL condition: Forecasts cluster around base rate (30-40%)
+    → Indicates genuine forecasting skill, not overfitting
+  • AI assistants provide measurable benefit vs hypothetical humans alone
+
+INTERPRETATION: Human+AI collaboration can achieve near-expert performance
+even with information constraints.
+
+PESSIMISTIC SCENARIO:
+  • Human+AI Brier score: 0.25-0.30 (poor accuracy)
+  • LLM aggregator significantly outperforms humans
+  • Human+AI shows poor calibration (overconfident or underconfident)
+  • CONTROL condition: Forecasts track randomized info
+    → Indicates overfitting to noise, lack of genuine skill
+  • AI assistants provide little benefit (humans ignore advice)
+
+INTERPRETATION: Public information constraint severely limits forecasting
+performance; AI collaboration insufficient to overcome limitation.
+
+REALISTIC SCENARIO:
+  • Human+AI Brier score: 0.18-0.22 (moderate accuracy)
+  • LLM aggregator moderately better (0.12-0.16)
+  • Human+AI shows reasonable calibration with some overconfidence
+  • CONTROL condition: Forecasts show SOME clustering around base rate
+    but also some noise-following
+  • AI assistants provide moderate benefit
+
+INTERPRETATION: Human+AI can forecast reasonably well, but full information
+access provides significant advantage. Information constraint matters, but
+skilled humans can extract considerable signal from public sources.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE: Participants confused about what counts as "collapse"
+  → Point them to definition in PREDICTION_CHALLENGE_INSTRUCTIONS.txt
+  → Emphasize: government REMOVED from power, not just weakened
+
+ISSUE: Participants taking too long per period (>30 minutes)
+  → Encourage them to use AI assistant more efficiently
+  → Remind them 15-20 minutes is target, not requirement
+  → Consider if instructions need simplification
+
+ISSUE: AI assistants giving direct probability estimates
+  → Instruct participants to ask AI for analysis, not predictions
+  → Prompt the AI: "Help me analyze but don't give me a number"
+
+ISSUE: Participants requesting more information
+  → Explain realistic information constraint is intentional
+  → Professional forecasters face same limitations
+  → Cannot provide internal deliberations (would contaminate study)
+
+ISSUE: Forecasts all cluster around 50% (uninformative)
+  → Encourage stronger evidence weighting
+  → Review forecasting principles in instructions
+  → May indicate participant disengagement (consider exclusion)
+
+ISSUE: Wild swings period-to-period (e.g., 20% → 80% → 30%)
+  → Encourage incremental updating principle
+  → Review "Update Incrementally" in instructions
+  → May indicate lack of forecasting experience
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TECHNICAL NOTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SOURCE CODE:
+  • Prompt generation: src/forecast_prompts_public.R
+  • Control condition: src/control_condition.R
+  • Generation script: generate_all_prompts.R
+
+REGENERATING PROMPTS:
+  If you need to regenerate with different simulation:
+
+  ```R
+  source("src/forecast_prompts_public.R")
+  state <- readRDS("outputs/simulation_state.rds")
+
+  # Generate TRUE condition
+  generate_all_public_forecast_prompts(
+    state,
+    "outputs/human_forecasting/forecasting_prompts_TRUE.txt",
+    control_condition = FALSE
+  )
+
+  # Generate CONTROL condition
+  generate_all_public_forecast_prompts(
+    state,
+    "outputs/human_forecasting/forecasting_prompts_CONTROL.txt",
+    control_condition = TRUE
+  )
+  ```
+
+DATA STRUCTURE:
+  • state$state_history[[period]]$scenario_state - Public metrics per period
+  • state$events_history[[period]] - External events per period
+  • state$action_results[[period]] - Actions taken per period
+  • state$assessments_history[[period]] - LLM forecasts per period
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMMEDIATE:
+  [ ] Review all generated files for quality
+  [ ] Run pilot test with 2-3 people
+  [ ] Collect feedback and refine if needed
+
+SHORT-TERM:
+  [ ] Finalize IRB approval (if required)
+  [ ] Recruit 20-30 participants
+  [ ] Run full study (allow 2-4 weeks for completion)
+
+MEDIUM-TERM:
+  [ ] Analyze results
+  [ ] Write up findings
+  [ ] Submit to journal (e.g., Judgment and Decision Making)
+  [ ] Share data and code on OSF or GitHub
+
+LONG-TERM:
+  [ ] Run follow-up studies:
+      • Vary information richness (more vs less detail)
+      • Test different AI assistants (Claude vs GPT-4 vs Gemini)
+      • Expert forecasters vs novices
+      • Different scenario types (economic crisis, pandemic, etc.)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ ALL FORECASTING PROMPTS READY FOR DEPLOYMENT
+
+Files are in: D:/Northeastern/LLM_Forecasting/outputs/human_forecasting/
+
+Good luck with your human-AI forecasting study!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

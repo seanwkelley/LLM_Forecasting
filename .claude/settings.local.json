@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Rscript:*)",
+      "Bash(grep:*)",
+      "Bash(find \"D:\\\\Northeastern\\\\LLM_Forecasting\" -maxdepth 1 -type d -name \"D:*\" -exec sh -c 'echo \"\"Directory: {}\"\"; find \"\"{}\"\" -type f 2>/dev/null | head -5' ;)",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(ls:*)",
+      "Bash(while read f)",
+      "Bash(do wc -l \"$f\")",
+      "Bash(dir /b /s \"D:\\\\Northeastern\\\\LLM_Forecasting\\\\output\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.2.2\\\\bin\\\\Rscript.exe\" \"D:\\\\Northeastern\\\\LLM_Forecasting\\\\analyze_diversity2.R\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.2.2\\\\bin\\\\Rscript.exe\" -e \"\nsetwd\\(''D:/Northeastern/LLM_Forecasting''\\)\nstate <- readRDS\\(''outputs/simulation_state.rds''\\)\na <- state$agents[[1]]\n\ncat\\(''Checking nested structures:\\\\n\\\\n''\\)\n\ncat\\(''rationality field:\\\\n''\\)\nprint\\(a$rationality\\)\n\ncat\\(''\\\\ncognitive field:\\\\n''\\)\nprint\\(a$cognitive\\)\n\ncat\\(''\\\\ndeception field:\\\\n''\\)\nprint\\(a$deception\\)\n\ncat\\(''\\\\ninformation field:\\\\n''\\)\nprint\\(a$information\\)\n\")",
+      "Bash(\"C:\\\\Program Files\\\\R\\\\R-4.2.2\\\\bin\\\\Rscript.exe\" \"D:\\\\Northeastern\\\\LLM_Forecasting\\\\check_nested.R\")"
+    ]
+  }
+}

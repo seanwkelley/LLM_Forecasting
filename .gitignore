@@ -1,0 +1,43 @@
+# R/RStudio files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# API Keys and Secrets
+*.key
+*_key.txt
+.env
+config_local.R
+
+# Large data files
+*.rds
+*.RDS
+
+# Output directories (exclude large simulation outputs)
+outputs/
+archive/old_simulation_runs/
+
+# Temporary files
+*.tmp
+*.log
+~$*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+
+# Python cache (if any)
+__pycache__/
+*.pyc
+
+# Backup files
+*~
+*.bak
+*.swp

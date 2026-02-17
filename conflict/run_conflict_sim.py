@@ -372,8 +372,8 @@ def main():
         elif args.no_persona:
             mode = f"{args.model}_no_persona"
         else:
-            mode = args.model
-        output_dir = project_root / "outputs" / f"conflict_sim_{mode}"
+            mode = f"{args.model}_persona"
+        output_dir = project_root / "outputs" / f"conflict_{mode}"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     configs = generate_scenario_configs(

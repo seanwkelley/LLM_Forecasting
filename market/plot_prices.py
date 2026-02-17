@@ -360,9 +360,9 @@ if __name__ == "__main__":
     out = root / "outputs" / "market_plots"
     out.mkdir(exist_ok=True)
 
-    baseline_dir = root / "outputs" / "market_sim_baseline_10s30p"
-    nopersona_dir = root / "outputs" / "market_sim_llama_10s30p"
-    persona_dir = root / "outputs" / "market_sim_llama_10s30p_persona"
+    baseline_dir = root / "outputs" / "market_baseline"
+    nopersona_dir = root / "outputs" / "market_llama_no_persona"
+    persona_dir = root / "outputs" / "market_llama_persona"
 
     # 1. Price comparison (scenario 001)
     plot_price_comparison(

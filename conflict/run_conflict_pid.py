@@ -7,17 +7,17 @@ between LLM geopolitical agents.
 
 Usage:
     # Analyze LLM results
-    python conflict/run_conflict_pid.py --results-dir outputs/conflict_sim_llama
+    python conflict/run_conflict_pid.py --results-dir outputs/conflict_llama_persona
 
     # Compare LLM vs baseline
     python conflict/run_conflict_pid.py \
-        --results-dir outputs/conflict_sim_llama \
-        --baseline-dir outputs/conflict_sim_baseline
+        --results-dir outputs/conflict_llama_persona \
+        --baseline-dir outputs/conflict_baseline
 
     # Full analysis with permutation tests
     python conflict/run_conflict_pid.py \
-        --results-dir outputs/conflict_sim_llama \
-        --baseline-dir outputs/conflict_sim_baseline \
+        --results-dir outputs/conflict_llama_persona \
+        --baseline-dir outputs/conflict_baseline \
         --n-permutations 500 \
         --encoding direction_aggr
 """

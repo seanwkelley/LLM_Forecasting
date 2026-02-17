@@ -331,8 +331,8 @@ def main():
     if args.output_dir:
         output_dir = Path(args.output_dir)
     else:
-        mode = "baseline" if args.baseline else args.model
-        output_dir = project_root / "outputs" / f"market_sim_{mode}"
+        mode = "baseline" if args.baseline else f"{args.model}_persona"
+        output_dir = project_root / "outputs" / f"market_{mode}"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Generate scenarios

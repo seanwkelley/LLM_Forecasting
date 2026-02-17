@@ -7,20 +7,20 @@ between LLM trading agents.
 
 Usage:
     # Analyze baseline results
-    python market/run_market_pid.py --results-dir outputs/market_sim_baseline
+    python market/run_market_pid.py --results-dir outputs/market_baseline
 
     # Analyze LLM results
-    python market/run_market_pid.py --results-dir outputs/market_sim_llama
+    python market/run_market_pid.py --results-dir outputs/market_llama_persona
 
     # Compare LLM vs baseline
     python market/run_market_pid.py \
-        --results-dir outputs/market_sim_llama \
-        --baseline-dir outputs/market_sim_baseline
+        --results-dir outputs/market_llama_persona \
+        --baseline-dir outputs/market_baseline
 
     # Full analysis with permutation tests
     python market/run_market_pid.py \
-        --results-dir outputs/market_sim_llama \
-        --baseline-dir outputs/market_sim_baseline \
+        --results-dir outputs/market_llama_persona \
+        --baseline-dir outputs/market_baseline \
         --n-permutations 500 \
         --encoding direction_aggr
 """

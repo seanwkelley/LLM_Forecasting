@@ -27,7 +27,7 @@ cat(strrep("=", 70), "\n")
 # Load demographic conditions only
 # ---------------------------------------------------------------------------
 
-base_dir <- file.path("outputs", "conflict_sim_llama")
+base_dir <- file.path("outputs", "conflict_llama_persona")
 
 conditions <- list(
   list(path = file.path(base_dir, "forecasting_demographic", "forecast_results.csv"),

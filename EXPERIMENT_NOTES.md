@@ -18,14 +18,14 @@
 ### Completed Runs
 
 **Baseline (rule-based, 10 scenarios x 30 periods):**
-- Output: `outputs/market_sim_baseline_10s30p/`
+- Output: `outputs/market_baseline/`
 - Mean return vol: 0.0946, mean price range: 38.3%
 - PID: **EC = 0.041 bits, p = 0.000 (SIGNIFICANT)**
 - 9 agent pairs significant at p < 0.05 (row-shuffle, 500 permutations)
 - Strongest pairs: producer_A x speculator_A (syn=0.061, p=0.006), consumer_C x speculator_B (syn=0.061, p=0.018)
 
 **LLM no-persona (Llama 8B, 10 scenarios x 30 periods):**
-- Output: `outputs/market_sim_llama_10s30p/`
+- Output: `outputs/market_llama_no_persona/`
 - 2,100 LLM calls, 100% success rate, 1.7M tokens, ~86 min
 - Mean return vol: 0.0313, mean price range: 22.2%
 - PID: **EC = 0.005 bits, p = 0.744 (NOT significant)**
@@ -33,7 +33,7 @@
 - Problem: price stickiness (50% flat periods), consumers have only 2-level actions
 
 **LLM with personas (Llama 8B, 10 scenarios x 30 periods):**
-- Output: `outputs/market_sim_llama_10s30p_persona/`
+- Output: `outputs/market_llama_persona/`
 - 2,100 LLM calls, 100% success rate, 2.08M tokens, ~112 min
 - Mean return vol: 0.0656, mean price range: 56.5%, mean price std: $23.6
 - PID: **EC = 0.032 bits, p = 0.002 (SIGNIFICANT)**
@@ -202,9 +202,9 @@ Cross-faction EC increases most without personas (+0.018) -- without persona-spe
 - `conflict/pid_extraction.py` -- Action matrix extraction (3 encodings)
 - `conflict/run_conflict_pid.py` -- PID analysis runner
 - `market/pid_analysis.py` -- Shared PID computation (reused from market)
-- PID results (persona): `outputs/conflict_sim_llama/pid_analysis/`
-- PID results (no-persona): `outputs/conflict_sim_llama_no_persona/pid_analysis/`
-- No-persona sim: `outputs/conflict_sim_llama_no_persona/`
+- PID results (persona): `outputs/conflict_llama_persona/pid_analysis/`
+- PID results (no-persona): `outputs/conflict_llama_no_persona/pid_analysis/`
+- No-persona sim: `outputs/conflict_llama_no_persona/`
 - Full details: `docs/RESULTS_FORECASTING_AND_PID.md`
 
 ---

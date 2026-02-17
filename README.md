@@ -196,12 +196,12 @@ LLM_Forecasting/
 │   └── archive/                         # Legacy R wargame documentation
 ├── src/                               # Legacy R wargame simulation
 ├── outputs/                           # Experiment results
-│   ├── market_sim_llama_10s30p_persona/   # Market: LLM with personas
-│   ├── market_sim_llama_10s30p/           # Market: LLM no-persona
-│   ├── market_sim_baseline_10s30p/        # Market: rule-based baseline
-│   ├── conflict_sim_llama/                # Conflict: LLM with personas
-│   ├── conflict_sim_llama_no_persona/     # Conflict: LLM no-persona
-│   ├── conflict_sim_baseline/             # Conflict: rule-based baseline
+│   ├── market_llama_persona/   # Market: LLM with personas
+│   ├── market_llama_no_persona/           # Market: LLM no-persona
+│   ├── market_baseline/        # Market: rule-based baseline
+│   ├── conflict_llama_persona/                # Conflict: LLM with personas
+│   ├── conflict_llama_no_persona/     # Conflict: LLM no-persona
+│   ├── conflict_baseline/             # Conflict: rule-based baseline
 │   └── ...
 └── archive/                           # Archived code & old outputs
 ```

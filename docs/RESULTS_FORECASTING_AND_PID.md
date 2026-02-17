@@ -639,21 +639,21 @@ python conflict/run_conflict_sim.py --n_scenarios 10 --n_periods 30 --model llam
 
 # Conflict PID -- persona (with baseline comparison)
 python conflict/run_conflict_pid.py \
-    --results-dir outputs/conflict_sim_llama \
-    --baseline-dir outputs/conflict_sim_baseline \
+    --results-dir outputs/conflict_llama_persona \
+    --baseline-dir outputs/conflict_baseline \
     --n-permutations 500 --encoding direction_aggr
 
 # Conflict PID -- no-persona (with baseline comparison)
 python conflict/run_conflict_pid.py \
-    --results-dir outputs/conflict_sim_llama_no_persona \
-    --baseline-dir outputs/conflict_sim_baseline \
+    --results-dir outputs/conflict_llama_no_persona \
+    --baseline-dir outputs/conflict_baseline \
     --n-permutations 500 --encoding direction_aggr
 ```
 
 ### Dependencies
 
 - R 4.2+ with `lme4`, `lmerTest`, `dplyr`
-- Data in `outputs/market_sim_llama_10s30p_persona/` and `outputs/conflict_sim_llama/`
+- Data in `outputs/market_llama_persona/` and `outputs/conflict_llama_persona/`
 
 ### Data Locations
 
@@ -661,29 +661,29 @@ python conflict/run_conflict_pid.py \
 
 | Condition | Path |
 |-----------|------|
-| Llama demographic, no ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_demographic/forecast_results.csv` |
-| Llama demographic, ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_demographic_tom/forecast_results.csv` |
-| Qwen demographic, no ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_qwen_demographic/forecast_results.csv` |
-| Qwen demographic, ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_qwen_demographic_tom/forecast_results.csv` |
+| Llama demographic, no ToM | `outputs/market_llama_persona/forecasting_demographic/forecast_results.csv` |
+| Llama demographic, ToM | `outputs/market_llama_persona/forecasting_demographic_tom/forecast_results.csv` |
+| Qwen demographic, no ToM | `outputs/market_llama_persona/forecasting_qwen_demographic/forecast_results.csv` |
+| Qwen demographic, ToM | `outputs/market_llama_persona/forecasting_qwen_demographic_tom/forecast_results.csv` |
 
 **Conflict forecasting data:**
 
 | Condition | Path |
 |-----------|------|
-| Llama demographic, no ToM | `outputs/conflict_sim_llama/forecasting_demographic/forecast_results.csv` |
-| Llama demographic, ToM | `outputs/conflict_sim_llama/forecasting_demographic_tom/forecast_results.csv` |
+| Llama demographic, no ToM | `outputs/conflict_llama_persona/forecasting_demographic/forecast_results.csv` |
+| Llama demographic, ToM | `outputs/conflict_llama_persona/forecasting_demographic_tom/forecast_results.csv` |
 
 **PID analysis data:**
 
 | Condition | Path |
 |-----------|------|
-| Conflict LLM persona (simulation) | `outputs/conflict_sim_llama/scenario_*.json` |
-| Conflict LLM no-persona (simulation) | `outputs/conflict_sim_llama_no_persona/scenario_*.json` |
-| Conflict baseline (simulation) | `outputs/conflict_sim_baseline/scenario_*.json` |
-| Conflict PID results (persona) | `outputs/conflict_sim_llama/pid_analysis/` |
-| Conflict PID results (no-persona) | `outputs/conflict_sim_llama_no_persona/pid_analysis/` |
-| Market LLM persona (simulation) | `outputs/market_sim_llama_10s30p_persona/scenario_*.json` |
-| Market PID results | `outputs/market_sim_llama_10s30p_persona/pid_analysis_v2/` |
+| Conflict LLM persona (simulation) | `outputs/conflict_llama_persona/scenario_*.json` |
+| Conflict LLM no-persona (simulation) | `outputs/conflict_llama_no_persona/scenario_*.json` |
+| Conflict baseline (simulation) | `outputs/conflict_baseline/scenario_*.json` |
+| Conflict PID results (persona) | `outputs/conflict_llama_persona/pid_analysis/` |
+| Conflict PID results (no-persona) | `outputs/conflict_llama_no_persona/pid_analysis/` |
+| Market LLM persona (simulation) | `outputs/market_llama_persona/scenario_*.json` |
+| Market PID results | `outputs/market_llama_persona/pid_analysis_v2/` |
 
 **Analysis scripts:**
 

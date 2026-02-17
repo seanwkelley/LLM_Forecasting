@@ -27,7 +27,7 @@ cat(strrep("=", 70), "\n")
 # Load demographic conditions (llama + qwen)
 # ---------------------------------------------------------------------------
 
-base_dir <- file.path("outputs", "market_sim_llama_10s30p_persona")
+base_dir <- file.path("outputs", "market_llama_persona")
 
 conditions <- list(
   list(path = file.path(base_dir, "forecasting_demographic", "forecast_results.csv"),

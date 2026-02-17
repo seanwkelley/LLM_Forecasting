@@ -16,12 +16,12 @@ Design:
 Usage:
     # Quick test (1 scenario, 5 forecasters)
     python market/run_market_forecast.py \\
-        --results-dir outputs/market_sim_llama_10s30p_persona \\
+        --results-dir outputs/market_llama_persona \\
         --n-forecasters 5 --model llama
 
     # Full run (all scenarios, 10 forecasters)
     python market/run_market_forecast.py \\
-        --results-dir outputs/market_sim_llama_10s30p_persona \\
+        --results-dir outputs/market_llama_persona \\
         --n-forecasters 10 --model llama
 """
 

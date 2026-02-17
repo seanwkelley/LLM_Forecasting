@@ -566,7 +566,7 @@ External LLM forecasters observe market price history and predict the next-perio
 - Primary model: Llama 3.1 8B (`meta-llama/llama-3.1-8b-instruct`)
 - Secondary model: Qwen3 235B (`qwen/qwen3-235b-a22b-2507`) — demographic conditions only
 - 10 scenarios x 24 periods each (periods 6-29) x 5 forecasters = 1,200 forecasts per condition
-- Market data: `outputs/market_sim_llama_10s30p_persona/` (persona trading simulation)
+- Market data: `outputs/market_llama_persona/` (persona trading simulation)
 
 **Target distribution (ground truth):**
 
@@ -771,13 +771,13 @@ ToM adds ~50% more tokens per call due to the included persona descriptions.
 |------|------|
 | Forecasting script | `market/run_market_forecast.py` |
 | **Llama 8B conditions** | |
-| Strategy no-ToM | `outputs/market_sim_llama_10s30p_persona/forecasting/` |
-| Strategy + ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_tom/` |
-| Demographic no-ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_demographic/` |
-| Demographic + ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_demographic_tom/` |
+| Strategy no-ToM | `outputs/market_llama_persona/forecasting/` |
+| Strategy + ToM | `outputs/market_llama_persona/forecasting_tom/` |
+| Demographic no-ToM | `outputs/market_llama_persona/forecasting_demographic/` |
+| Demographic + ToM | `outputs/market_llama_persona/forecasting_demographic_tom/` |
 | **Qwen 235B conditions** | |
-| Demographic no-ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_qwen_demographic/` |
-| Demographic + ToM | `outputs/market_sim_llama_10s30p_persona/forecasting_qwen_demographic_tom/` |
+| Demographic no-ToM | `outputs/market_llama_persona/forecasting_qwen_demographic/` |
+| Demographic + ToM | `outputs/market_llama_persona/forecasting_qwen_demographic_tom/` |
 | **Per-condition files** | |
 | Per-forecast details | `{condition_dir}/forecast_details.json` |
 | Per-forecast CSV | `{condition_dir}/forecast_results.csv` |

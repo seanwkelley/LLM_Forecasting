@@ -239,8 +239,6 @@ This is an active research project. For questions or collaboration:
 
 ## Acknowledgments
 
-Built with assistance from **Claude** (Anthropic)
-
 **Models used:** Llama 3.1 8B (simulation agents + forecasters), Qwen3 235B (forecaster comparison), via [OpenRouter](https://openrouter.ai)
 
 **Related Work:**

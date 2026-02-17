@@ -232,7 +232,7 @@ MIT License - see LICENSE file for details
 ## Contributing
 
 This is an active research project. For questions or collaboration:
-- **Email:** seanwkelley@gmail.com
+- **Email:** se.kelley@northeastern.edu
 - **Issues:** [GitHub Issues](https://github.com/seanwkelley/LLM_Forecasting/issues)
 
 ---

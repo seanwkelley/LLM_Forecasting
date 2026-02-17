@@ -343,9 +343,8 @@ CONTEXT: This is a research simulation studying decision-making in theoretical c
 
 Your analytical role:
 1. Analyze simulated conflict dynamics from agent interactions
-2. Consider military, economic, political, and diplomatic factors
-3. Assess the theoretical stability of the smaller power's government in this simulation
-4. Provide a probabilistic forecast (0-100%) of government change
+2. Score EACH of the 6 factors below on a 0-100 scale
+3. From those scores, derive an overall collapse probability
 
 DEFINITION: Government change in this simulation means the smaller power's current government loses control through:
 - Loss of territorial control
@@ -353,32 +352,24 @@ DEFINITION: Government change in this simulation means the smaller power's curre
 - Negotiated political transition
 - Loss of governing capacity
 
-Analytical factors to consider:
-- Simulated military situation: territorial control, operational momentum
-- Economic conditions: sanctions impact, resource constraints
-- Political dynamics: internal cohesion, opposition activity
-- International factors: external support, diplomatic pressure
-- Domestic factors: public support levels, institutional resilience
-- Strategic commitment: resource expenditure, policy sustainability
+CRITICAL GUIDANCE ON SCORING:
+- SHOCK EVENTS (marked with ***) should cause LARGE score changes
+- Military actions that succeed/fail should move scores meaningfully
+- Do NOT smooth your estimates - real conflicts have dramatic turns
+- Use the FULL 0-100 range for each factor
+- If a coup attempt occurs, POLITICAL_INSTABILITY should be 80+
+- If territory is lost rapidly, MILITARY_PRESSURE should be 80+
+- If international support is very high, EXTERNAL_PROTECTION should be 80+
 
-CRITICAL GUIDANCE ON PROBABILITY UPDATES:
-- SHOCK EVENTS (marked with ***) should cause SIGNIFICANT probability changes (+/- 10-30%)
-- Military actions that succeed/fail should move probability meaningfully
-- Do NOT smooth your estimates too much - real conflicts have dramatic turns
-- If territory is lost rapidly, probability should spike
-- If a coup attempt occurs, this is a near-collapse event - probability should jump dramatically
-- Conversely, major defensive victories should significantly reduce probability
-- Your estimates should reflect the DRAMA of the situation, not trend toward gradual change
+Provide your assessment in EXACTLY this structured format:
 
-Examples of appropriate magnitude:
-- Coup attempt: +25-35% to collapse probability
-- Capital under siege: +20-30%
-- Major military disaster: +15-25%
-- Successful peace breakthrough: -15-25%
-- Allied abandonment: +10-20%
-
-Provide your assessment in this structured format:
-PROBABILITY: [number between 0 and 1, e.g., 0.35 for 35%]
+MILITARY_PRESSURE: [0-100, how much military pressure threatens the government]
+ECONOMIC_STRAIN: [0-100, how much economic damage undermines governance]
+POLITICAL_INSTABILITY: [0-100, internal political threats to the government]
+EXTERNAL_PROTECTION: [0-100, how much international support shields the government]
+INSTITUTIONAL_RESILIENCE: [0-100, strength of state institutions to withstand crisis]
+CRISIS_MOMENTUM: [0-100, how fast the situation is deteriorating]
+PROBABILITY: [weighted combination of above factors, integer 0-100]
 CONFIDENCE: [LOW/MEDIUM/HIGH]
 KEY_FACTORS: [brief analytical explanation of main factors]
 TREND: [INCREASING/STABLE/DECREASING compared to previous period if applicable]
@@ -403,20 +394,55 @@ assess_collapse_probability <- function(context, api_key) {
   key_factors <- ""
   trend <- "STABLE"
 
-  # Extract probability - handle various formats like "0.35", "**0.35**", "35%", "**35%**"
-  # First try to find any number after PROBABILITY:
-  prob_match <- regexpr("PROBABILITY:\\s*\\**([0-9.]+)%?\\**", response, perl = TRUE)
-  if (prob_match > 0) {
-    prob_text <- regmatches(response, prob_match)
-    # Extract just the numeric part
-    num_match <- regexpr("[0-9.]+", prob_text)
-    if (num_match > 0) {
-      prob_value <- as.numeric(regmatches(prob_text, num_match))
-      # If value > 1, assume it's a percentage and convert
-      if (!is.na(prob_value) && prob_value > 1) {
-        prob_value <- prob_value / 100
+  # Extract component scores and compute probability from them
+  component_names <- c("MILITARY_PRESSURE", "ECONOMIC_STRAIN", "POLITICAL_INSTABILITY",
+                       "EXTERNAL_PROTECTION", "INSTITUTIONAL_RESILIENCE", "CRISIS_MOMENTUM")
+  # Weights: positive = increases collapse risk, negative = decreases collapse risk
+  component_weights <- c(0.25, 0.15, 0.20, -0.20, -0.10, 0.10)
+  component_scores <- c()
+
+  for (comp in component_names) {
+    pattern <- sprintf("%s:\\s*\\**\\s*([0-9.]+)", comp)
+    comp_match <- regexpr(pattern, response, perl = TRUE)
+    if (comp_match > 0) {
+      comp_text <- regmatches(response, comp_match)
+      num_match <- regexpr("[0-9.]+$", comp_text)
+      if (num_match > 0) {
+        component_scores[comp] <- as.numeric(regmatches(comp_text, num_match))
       }
-      probability <- prob_value
+    }
+  }
+
+  # Compute probability from component scores if we got enough of them
+  if (length(component_scores) >= 4) {
+    # Weighted sum: risk factors push probability up, protective factors push down
+    # Formula: base 50 + weighted deviations from 50
+    weighted_sum <- 0
+    for (i in seq_along(component_names)) {
+      comp <- component_names[i]
+      if (comp %in% names(component_scores)) {
+        # Deviation from neutral (50)
+        deviation <- component_scores[comp] - 50
+        weighted_sum <- weighted_sum + component_weights[i] * deviation
+      }
+    }
+    # Convert to 0-1 probability, clamp to [0.02, 0.98]
+    probability <- max(0.02, min(0.98, (50 + weighted_sum) / 100))
+    cat(sprintf("  Component scores: %s\n",
+                paste(sprintf("%s=%s", names(component_scores), component_scores), collapse=", ")))
+  } else {
+    # Fallback: parse PROBABILITY line directly
+    prob_match <- regexpr("PROBABILITY:\\s*\\**\\s*([0-9.]+)%?\\**", response, perl = TRUE)
+    if (prob_match > 0) {
+      prob_text <- regmatches(response, prob_match)
+      num_match <- regexpr("[0-9.]+", prob_text)
+      if (num_match > 0) {
+        prob_value <- as.numeric(regmatches(prob_text, num_match))
+        if (!is.na(prob_value) && prob_value > 1) {
+          prob_value <- prob_value / 100
+        }
+        probability <- prob_value
+      }
     }
   }
 

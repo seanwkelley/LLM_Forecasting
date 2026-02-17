@@ -1,0 +1,736 @@
+{
+  "periods": [
+    1,
+    2,
+    3
+  ],
+  "n_agents": 100,
+  "temperature": 1.0,
+  "instructions_protected": true,
+  "conditions": [
+    "baseline",
+    "shard_everything",
+    "shard_initial_only"
+  ],
+  "factions": [
+    "novaris",
+    "tethys"
+  ],
+  "novaris_target_actions": [
+    "naval_deployment",
+    "cyber_attack",
+    "sabotage",
+    "show_of_force",
+    "trade_negotiation"
+  ],
+  "tethys_target_actions": [
+    "coalition_building",
+    "backchannel_negotiations",
+    "military_buildup",
+    "show_of_force",
+    "military_exercises"
+  ],
+  "action_ground_truth": {
+    "1": {
+      "novaris": {
+        "naval_deployment": 1,
+        "cyber_attack": 0,
+        "sabotage": 0,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "tethys": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 1,
+        "military_exercises": 1
+      }
+    },
+    "2": {
+      "novaris": {
+        "naval_deployment": 0,
+        "cyber_attack": 0,
+        "sabotage": 1,
+        "show_of_force": 1,
+        "trade_negotiation": 0
+      },
+      "tethys": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 1,
+        "show_of_force": 0,
+        "military_exercises": 0
+      }
+    },
+    "3": {
+      "novaris": {
+        "naval_deployment": 1,
+        "cyber_attack": 1,
+        "sabotage": 1,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "tethys": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 0,
+        "military_exercises": 1
+      }
+    }
+  },
+  "results": [
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 1,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 137.28340673446655,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.885,
+        "cyber_attack": 0.8485,
+        "sabotage": 0.6410000000000001,
+        "show_of_force": 0.8457999999999999,
+        "trade_negotiation": 0.48949999999999994
+      },
+      "ground_truth": {
+        "naval_deployment": 1,
+        "cyber_attack": 0,
+        "sabotage": 0,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "ensemble_brier": 0.42400922800000007,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.013224999999999997,
+        "cyber_attack": 0.7199522500000001,
+        "sabotage": 0.41088100000000016,
+        "show_of_force": 0.7153776399999998,
+        "trade_negotiation": 0.26061025000000004
+      },
+      "ensemble_binary_accuracy": 0.2,
+      "individual_mean_brier": 0.4359308,
+      "individual_std_brier": 0.0610870352477512,
+      "individual_mean_accuracy": 0.312,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 1,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 165.01681065559387,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8935000000000001,
+        "backchannel_negotiations": 0.596,
+        "military_buildup": 0.8678,
+        "show_of_force": 0.5630000000000002,
+        "military_exercises": 0.7386999999999999
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 1,
+        "military_exercises": 1
+      },
+      "ensemble_brier": 0.237376356,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.011342249999999984,
+        "backchannel_negotiations": 0.16321600000000003,
+        "military_buildup": 0.7530768400000001,
+        "show_of_force": 0.19096899999999986,
+        "military_exercises": 0.06827769000000004
+      },
+      "ensemble_binary_accuracy": 0.8,
+      "individual_mean_brier": 0.2592736,
+      "individual_std_brier": 0.049565887856871896,
+      "individual_mean_accuracy": 0.6439999999999999,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 1,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 220.710294008255,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.841,
+        "cyber_attack": 0.8140000000000002,
+        "sabotage": 0.5605000000000001,
+        "show_of_force": 0.8223999999999999,
+        "trade_negotiation": 0.511
+      },
+      "ground_truth": {
+        "naval_deployment": 1,
+        "cyber_attack": 0,
+        "sabotage": 0,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "ensemble_brier": 0.383500002,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.02528100000000001,
+        "cyber_attack": 0.6625960000000003,
+        "sabotage": 0.31416025000000014,
+        "show_of_force": 0.6763417599999999,
+        "trade_negotiation": 0.239121
+      },
+      "ensemble_binary_accuracy": 0.4,
+      "individual_mean_brier": 0.4069802,
+      "individual_std_brier": 0.08255421256338163,
+      "individual_mean_accuracy": 0.37400000000000005,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 1,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 234.14766931533813,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8789999999999999,
+        "backchannel_negotiations": 0.618,
+        "military_buildup": 0.8198000000000003,
+        "show_of_force": 0.5824999999999999,
+        "military_exercises": 0.7645000000000001
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 1,
+        "military_exercises": 1
+      },
+      "ensemble_brier": 0.2124807080000001,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.014641000000000026,
+        "backchannel_negotiations": 0.145924,
+        "military_buildup": 0.6720720400000005,
+        "show_of_force": 0.17430625000000008,
+        "military_exercises": 0.05546024999999997
+      },
+      "ensemble_binary_accuracy": 0.8,
+      "individual_mean_brier": 0.23574079999999997,
+      "individual_std_brier": 0.05875784440702365,
+      "individual_mean_accuracy": 0.6859999999999996,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 1,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 212.3694577217102,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.8059999999999998,
+        "cyber_attack": 0.8585,
+        "sabotage": 0.6140000000000001,
+        "show_of_force": 0.8072,
+        "trade_negotiation": 0.5185
+      },
+      "ground_truth": {
+        "naval_deployment": 1,
+        "cyber_attack": 0,
+        "sabotage": 0,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "ensemble_brier": 0.4070136680000001,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.037636000000000065,
+        "cyber_attack": 0.7370222500000001,
+        "sabotage": 0.3769960000000001,
+        "show_of_force": 0.65157184,
+        "trade_negotiation": 0.23184225000000003
+      },
+      "ensemble_binary_accuracy": 0.4,
+      "individual_mean_brier": 0.431916,
+      "individual_std_brier": 0.08288892032111408,
+      "individual_mean_accuracy": 0.3400000000000001,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 1,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 189.18306255340576,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8765000000000001,
+        "backchannel_negotiations": 0.585,
+        "military_buildup": 0.8760000000000001,
+        "show_of_force": 0.5695,
+        "military_exercises": 0.7594999999999997
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 1,
+        "military_exercises": 1
+      },
+      "ensemble_brier": 0.2396047500000001,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.015252249999999986,
+        "backchannel_negotiations": 0.17222500000000002,
+        "military_buildup": 0.7673760000000002,
+        "show_of_force": 0.18533025,
+        "military_exercises": 0.05784025000000013
+      },
+      "ensemble_binary_accuracy": 0.8,
+      "individual_mean_brier": 0.257185,
+      "individual_std_brier": 0.050646355002112446,
+      "individual_mean_accuracy": 0.6639999999999996,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 2,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 126.16056442260742,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.8854999999999998,
+        "cyber_attack": 0.8540000000000001,
+        "sabotage": 0.6979999999999998,
+        "show_of_force": 0.7410000000000001,
+        "trade_negotiation": 0.4175
+      },
+      "ground_truth": {
+        "naval_deployment": 0,
+        "cyber_attack": 0,
+        "sabotage": 1,
+        "show_of_force": 1,
+        "trade_negotiation": 0
+      },
+      "ensemble_brier": 0.36920349999999996,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.7841102499999997,
+        "cyber_attack": 0.7293160000000002,
+        "sabotage": 0.09120400000000009,
+        "show_of_force": 0.06708099999999995,
+        "trade_negotiation": 0.17430625
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.38471000000000005,
+      "individual_std_brier": 0.04909491725219627,
+      "individual_mean_accuracy": 0.506,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 2,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 118.57541871070862,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8860000000000001,
+        "backchannel_negotiations": 0.596,
+        "military_buildup": 0.883,
+        "show_of_force": 0.647,
+        "military_exercises": 0.7454999999999999
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 1,
+        "show_of_force": 0,
+        "military_exercises": 0
+      },
+      "ensemble_brier": 0.23285605,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.012995999999999973,
+        "backchannel_negotiations": 0.16321600000000003,
+        "military_buildup": 0.013688999999999998,
+        "show_of_force": 0.418609,
+        "military_exercises": 0.5557702499999999
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.2515649999999999,
+      "individual_std_brier": 0.06709432371669008,
+      "individual_mean_accuracy": 0.5859999999999999,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 2,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 239.21225333213806,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.835,
+        "cyber_attack": 0.7935000000000001,
+        "sabotage": 0.6255000000000001,
+        "show_of_force": 0.7578,
+        "trade_negotiation": 0.47550000000000003
+      },
+      "ground_truth": {
+        "naval_deployment": 0,
+        "cyber_attack": 0,
+        "sabotage": 1,
+        "show_of_force": 1,
+        "trade_negotiation": 0
+      },
+      "ensemble_brier": 0.35037571800000006,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.697225,
+        "cyber_attack": 0.6296422500000002,
+        "sabotage": 0.14025024999999997,
+        "show_of_force": 0.058660839999999985,
+        "trade_negotiation": 0.22610025000000003
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.3807058,
+      "individual_std_brier": 0.06808248240450696,
+      "individual_mean_accuracy": 0.48399999999999993,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 2,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 191.48059916496277,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8744999999999998,
+        "backchannel_negotiations": 0.6415000000000001,
+        "military_buildup": 0.8672999999999998,
+        "show_of_force": 0.629,
+        "military_exercises": 0.7665000000000001
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 1,
+        "show_of_force": 0,
+        "military_exercises": 0
+      },
+      "ensemble_brier": 0.22900900800000007,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.015750250000000042,
+        "backchannel_negotiations": 0.12852224999999995,
+        "military_buildup": 0.01760929000000004,
+        "show_of_force": 0.395641,
+        "military_exercises": 0.5875222500000001
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.24589080000000002,
+      "individual_std_brier": 0.06247508895039686,
+      "individual_mean_accuracy": 0.6099999999999999,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 2,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 169.77829313278198,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.8321999999999999,
+        "cyber_attack": 0.8245000000000001,
+        "sabotage": 0.6728000000000002,
+        "show_of_force": 0.6385,
+        "trade_negotiation": 0.4355
+      },
+      "ground_truth": {
+        "naval_deployment": 0,
+        "cyber_attack": 0,
+        "sabotage": 1,
+        "show_of_force": 1,
+        "trade_negotiation": 0
+      },
+      "ensemble_brier": 0.359951886,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.69255684,
+        "cyber_attack": 0.6798002500000002,
+        "sabotage": 0.10705983999999988,
+        "show_of_force": 0.13068225000000003,
+        "trade_negotiation": 0.18966025
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.3882945999999999,
+      "individual_std_brier": 0.073599181563656,
+      "individual_mean_accuracy": 0.4720000000000001,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 2,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 183.28415513038635,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8717,
+        "backchannel_negotiations": 0.6605000000000001,
+        "military_buildup": 0.8893000000000001,
+        "show_of_force": 0.6513000000000001,
+        "military_exercises": 0.7429999999999999
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 1,
+        "show_of_force": 0,
+        "military_exercises": 0
+      },
+      "ensemble_brier": 0.224043264,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.016460889999999992,
+        "backchannel_negotiations": 0.11526024999999994,
+        "military_buildup": 0.01225448999999998,
+        "show_of_force": 0.4241916900000001,
+        "military_exercises": 0.5520489999999998
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.24031639999999999,
+      "individual_std_brier": 0.061788799851105705,
+      "individual_mean_accuracy": 0.6159999999999999,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 3,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 127.03946661949158,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.8019999999999999,
+        "cyber_attack": 0.8454999999999999,
+        "sabotage": 0.7140000000000002,
+        "show_of_force": 0.6385000000000001,
+        "trade_negotiation": 0.429
+      },
+      "ground_truth": {
+        "naval_deployment": 1,
+        "cyber_attack": 1,
+        "sabotage": 1,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "ensemble_brier": 0.1757187,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.039204000000000024,
+        "cyber_attack": 0.023870250000000027,
+        "sabotage": 0.0817959999999999,
+        "show_of_force": 0.4076822500000001,
+        "trade_negotiation": 0.32604099999999997
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.20558999999999997,
+      "individual_std_brier": 0.06531888624280117,
+      "individual_mean_accuracy": 0.7019999999999997,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 3,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 134.72798466682434,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8855,
+        "backchannel_negotiations": 0.5940000000000001,
+        "military_buildup": 0.8755000000000002,
+        "show_of_force": 0.5950000000000001,
+        "military_exercises": 0.6285
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 0,
+        "military_exercises": 1
+      },
+      "ensemble_brier": 0.2872967500000001,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.01311025000000001,
+        "backchannel_negotiations": 0.16483599999999993,
+        "military_buildup": 0.7665002500000003,
+        "show_of_force": 0.3540250000000001,
+        "military_exercises": 0.13801225000000003
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.305085,
+      "individual_std_brier": 0.05735970079245532,
+      "individual_mean_accuracy": 0.55,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 3,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 215.30314707756042,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.7904999999999996,
+        "cyber_attack": 0.8200000000000002,
+        "sabotage": 0.6689999999999999,
+        "show_of_force": 0.7618000000000003,
+        "trade_negotiation": 0.525
+      },
+      "ground_truth": {
+        "naval_deployment": 1,
+        "cyber_attack": 1,
+        "sabotage": 1,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "ensemble_brier": 0.1983630980000001,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.043890250000000144,
+        "cyber_attack": 0.032399999999999936,
+        "sabotage": 0.10956100000000005,
+        "show_of_force": 0.5803392400000004,
+        "trade_negotiation": 0.225625
+      },
+      "ensemble_binary_accuracy": 0.8,
+      "individual_mean_brier": 0.22949579999999997,
+      "individual_std_brier": 0.07161158248747194,
+      "individual_mean_accuracy": 0.6819999999999997,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 3,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 226.2611837387085,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8645,
+        "backchannel_negotiations": 0.6335000000000002,
+        "military_buildup": 0.8485000000000003,
+        "show_of_force": 0.6095,
+        "military_exercises": 0.7749999999999999
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 0,
+        "military_exercises": 1
+      },
+      "ensemble_brier": 0.2589500000000001,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.018360249999999988,
+        "backchannel_negotiations": 0.13432224999999987,
+        "military_buildup": 0.7199522500000004,
+        "show_of_force": 0.3714902500000001,
+        "military_exercises": 0.05062500000000004
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.28146,
+      "individual_std_brier": 0.07277872903534384,
+      "individual_mean_accuracy": 0.61,
+      "fallback_count": 0,
+      "fallback_types": {}
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 3,
+      "faction": "novaris",
+      "n_agents": 100,
+      "duration_seconds": 208.05858039855957,
+      "ensemble_probabilities": {
+        "naval_deployment": 0.7442000000000002,
+        "cyber_attack": 0.8310000000000001,
+        "sabotage": 0.718,
+        "show_of_force": 0.6700000000000002,
+        "trade_negotiation": 0.5175
+      },
+      "ground_truth": {
+        "naval_deployment": 1,
+        "cyber_attack": 1,
+        "sabotage": 1,
+        "show_of_force": 0,
+        "trade_negotiation": 1
+      },
+      "ensemble_brier": 0.17104497800000001,
+      "ensemble_per_action_brier": {
+        "naval_deployment": 0.0654336399999999,
+        "cyber_attack": 0.028560999999999975,
+        "sabotage": 0.07952400000000001,
+        "show_of_force": 0.4489000000000002,
+        "trade_negotiation": 0.23280625000000005
+      },
+      "ensemble_binary_accuracy": 0.8,
+      "individual_mean_brier": 0.2050978,
+      "individual_std_brier": 0.07597399765156497,
+      "individual_mean_accuracy": 0.6699999999999997,
+      "fallback_count": 2,
+      "fallback_types": {
+        "missing_action_key": 2
+      }
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 3,
+      "faction": "tethys",
+      "n_agents": 100,
+      "duration_seconds": 206.76096177101135,
+      "ensemble_probabilities": {
+        "coalition_building": 0.8779999999999998,
+        "backchannel_negotiations": 0.6355000000000001,
+        "military_buildup": 0.8678,
+        "show_of_force": 0.6065,
+        "military_exercises": 0.6927
+      },
+      "ground_truth": {
+        "coalition_building": 1,
+        "backchannel_negotiations": 1,
+        "military_buildup": 0,
+        "show_of_force": 0,
+        "military_exercises": 1
+      },
+      "ensemble_brier": 0.27261932600000005,
+      "ensemble_per_action_brier": {
+        "coalition_building": 0.014884000000000053,
+        "backchannel_negotiations": 0.13286024999999996,
+        "military_buildup": 0.7530768400000001,
+        "show_of_force": 0.36784225000000004,
+        "military_exercises": 0.09443329000000002
+      },
+      "ensemble_binary_accuracy": 0.6,
+      "individual_mean_brier": 0.29021860000000005,
+      "individual_std_brier": 0.05160021327514063,
+      "individual_mean_accuracy": 0.596,
+      "fallback_count": 0,
+      "fallback_types": {}
+    }
+  ],
+  "timestamp": "2026-02-11T14:18:40.027786"
+}

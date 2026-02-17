@@ -1,0 +1,385 @@
+"""
+Persona-based context rewriting for collapse probability forecasting.
+
+Rewrites scenario/history/data sections through each persona's professional lens.
+Instructions are NEVER rewritten - only the factual context gets reframed.
+
+Uses CognitiveProfile.to_natural_language() for persona descriptions.
+Rewrites cached to disk (JSON) for reuse across experiments.
+"""
+
+import sys
+sys.path.insert(0, 'D:/Northeastern/LLM_Forecasting')
+
+import json
+import time
+import concurrent.futures
+from pathlib import Path
+from typing import Dict, List, Tuple, Optional
+from datetime import datetime
+
+from forecasting.forecaster_base import BaseLLMForecaster
+from forecasting.persona_generator import CognitiveProfile, load_personas
+from forecasting.collapse_prompts_with_scenario import INITIAL_SCENARIO, get_prompt_sections
+from forecasting.simulation_data import get_state_before, get_events
+from forecasting.action_ground_truth import load_ground_truth
+
+# Rewrite model - strong instruction follower for text rewriting
+REWRITE_MODEL = "qwen/qwen3-235b-a22b-2507"
+
+# Default cache path
+DEFAULT_CACHE_PATH = Path("D:/Northeastern/LLM_Forecasting/outputs/persona_rewrite_cache/rewrites.json")
+
+# Rewrite prompt template
+REWRITE_PROMPT_TEMPLATE = """{persona_description}
+
+Below is a factual intelligence report about an international crisis.
+Rewrite this report from YOUR professional perspective.
+
+RULES:
+1. Preserve ALL factual claims - do not add or remove any facts
+2. Preserve ALL numbers, dates, percentages, and proper nouns exactly
+3. Change the FRAMING: emphasize what matters most to your expertise
+4. Change the ORGANIZATION: lead with what you consider most important
+5. Use language natural to your professional background
+6. Keep approximately the same length as the original
+
+ORIGINAL REPORT:
+{section_text}
+
+REWRITTEN REPORT:"""
+
+
+def rewrite_section(
+    persona: CognitiveProfile,
+    section_text: str,
+    section_name: str,
+    model: str = REWRITE_MODEL,
+    max_tokens: int = 2000
+) -> str:
+    """
+    Rewrite a single section through a persona's lens.
+
+    Args:
+        persona: CognitiveProfile with to_natural_language()
+        section_text: Original text to rewrite
+        section_name: For logging ("initial_scenario", "historical_summary", etc.)
+        model: LLM model for rewriting
+        max_tokens: Max tokens for rewrite response
+
+    Returns:
+        Rewritten text string
+    """
+    if not section_text or not section_text.strip():
+        return section_text
+
+    persona_desc = persona.to_natural_language()
+
+    prompt = REWRITE_PROMPT_TEMPLATE.format(
+        persona_description=persona_desc,
+        section_text=section_text
+    )
+
+    forecaster = BaseLLMForecaster(model=model, temperature=0.7, max_tokens=max_tokens)
+
+    response_text, success = forecaster.call_llm(
+        user_prompt=prompt,
+        system_prompt="You are an expert analyst rewriting intelligence reports. Output ONLY the rewritten report, nothing else.",
+        response_format="text"
+    )
+
+    if not success or not response_text or not response_text.strip():
+        print(f"  [WARNING] Rewrite failed for {persona.persona_id}/{section_name}, using original")
+        return section_text
+
+    return response_text.strip()
+
+
+def load_rewrite_cache(cache_path: Path = DEFAULT_CACHE_PATH) -> Dict:
+    """Load rewrite cache from disk."""
+    if cache_path.exists():
+        with open(cache_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {"metadata": {}, "rewrites": {}}
+
+
+def save_rewrite_cache(cache: Dict, cache_path: Path = DEFAULT_CACHE_PATH) -> None:
+    """Save rewrite cache to disk."""
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(cache_path, 'w', encoding='utf-8') as f:
+        json.dump(cache, f, indent=2, ensure_ascii=False)
+
+
+def _get_raw_sections(period: int, ground_truth_actions: dict) -> Dict[str, str]:
+    """Get raw (original) sections for a given period."""
+    from forecasting.run_collapse_sharding_comparison import create_historical_summary
+
+    state_before = get_state_before(period)
+    external_events = get_events(period)
+    novaris_actions = ground_truth_actions[period]['major_power']['actions']
+    tethys_actions = ground_truth_actions[period]['small_power']['actions']
+    historical_summary = create_historical_summary(period, ground_truth_actions)
+
+    initial_scenario, _, current_period_data, _ = get_prompt_sections(
+        period=period,
+        state_before=state_before,
+        external_events=external_events,
+        novaris_actions=novaris_actions,
+        tethys_actions=tethys_actions,
+        historical_summary=historical_summary
+    )
+
+    sections = {"current_period_data": current_period_data}
+    if period > 1:
+        sections["historical_summary"] = historical_summary
+
+    return sections
+
+
+def generate_all_rewrites(
+    personas: List[CognitiveProfile],
+    periods: List[int] = None,
+    model: str = REWRITE_MODEL,
+    cache_path: Path = DEFAULT_CACHE_PATH,
+    max_workers: int = 5
+) -> Dict:
+    """
+    Generate all rewrites for all personas across all periods.
+
+    Checks cache first, only generates missing rewrites. Saves incrementally.
+
+    Args:
+        personas: List of CognitiveProfile objects
+        periods: Periods to generate for (default [1, 2, 3])
+        model: Model for rewriting
+        cache_path: Path to cache file
+        max_workers: Parallel workers
+
+    Returns:
+        Complete cache dict
+    """
+    if periods is None:
+        periods = [1, 2, 3]
+
+    # Load existing cache
+    cache = load_rewrite_cache(cache_path)
+    cache["metadata"] = {
+        "model": model,
+        "n_personas": len(personas),
+        "periods": periods,
+        "timestamp": datetime.now().isoformat()
+    }
+
+    # Load ground truth for building raw sections
+    ground_truth_actions = load_ground_truth()
+
+    # Pre-compute raw sections per period
+    raw_sections_by_period = {}
+    for period in periods:
+        raw_sections_by_period[period] = _get_raw_sections(period, ground_truth_actions)
+
+    # Count total work
+    total_rewrites = 0
+    needed_rewrites = 0
+    for persona in personas:
+        pid = persona.persona_id
+        if pid not in cache["rewrites"]:
+            cache["rewrites"][pid] = {}
+
+        # Initial scenario: same for all periods, rewrite once
+        if "initial_scenario" not in cache["rewrites"][pid]:
+            needed_rewrites += 1
+        total_rewrites += 1
+
+        # Period-specific sections
+        for period in periods:
+            period_key = f"period_{period}"
+            if period_key not in cache["rewrites"][pid]:
+                cache["rewrites"][pid][period_key] = {}
+
+            sections = raw_sections_by_period[period]
+            for section_name in sections:
+                if section_name not in cache["rewrites"][pid][period_key]:
+                    needed_rewrites += 1
+                total_rewrites += 1
+
+    print(f"Total rewrites needed: {needed_rewrites}/{total_rewrites} (cached: {total_rewrites - needed_rewrites})")
+
+    if needed_rewrites == 0:
+        print("[OK] All rewrites already cached!")
+        return cache
+
+    # Generate missing rewrites persona by persona
+    completed = 0
+    for p_idx, persona in enumerate(personas):
+        pid = persona.persona_id
+        persona_needed = []
+
+        # Check initial scenario
+        if "initial_scenario" not in cache["rewrites"][pid]:
+            persona_needed.append(("initial_scenario", INITIAL_SCENARIO, None))
+
+        # Check period-specific sections
+        for period in periods:
+            period_key = f"period_{period}"
+            sections = raw_sections_by_period[period]
+            for section_name, section_text in sections.items():
+                if section_name not in cache["rewrites"][pid][period_key]:
+                    persona_needed.append((section_name, section_text, period_key))
+
+        if not persona_needed:
+            continue
+
+        print(f"\n[{p_idx+1}/{len(personas)}] {pid} ({persona.name}): {len(persona_needed)} rewrites needed")
+
+        # Parallelize rewrites for this persona
+        def _do_rewrite(args):
+            section_name, section_text, period_key = args
+            rewritten = rewrite_section(persona, section_text, section_name, model=model)
+            return section_name, period_key, rewritten
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = []
+            for i, args in enumerate(persona_needed):
+                if i > 0 and i % 5 == 0:
+                    time.sleep(0.5)
+                futures.append(executor.submit(_do_rewrite, args))
+
+            for future in concurrent.futures.as_completed(futures):
+                try:
+                    section_name, period_key, rewritten = future.result()
+                    if period_key is None:
+                        # Initial scenario
+                        cache["rewrites"][pid]["initial_scenario"] = rewritten
+                    else:
+                        cache["rewrites"][pid][period_key][section_name] = rewritten
+                    completed += 1
+                except Exception as e:
+                    print(f"  [ERROR] Rewrite failed: {e}")
+                    completed += 1
+
+        # Save incrementally after each persona
+        save_rewrite_cache(cache, cache_path)
+        print(f"  Saved. Progress: {completed}/{needed_rewrites}")
+
+    print(f"\n[OK] All rewrites complete! Total: {completed}")
+    return cache
+
+
+def get_rewritten_sections(
+    persona_id: str,
+    period: int,
+    cache: Dict
+) -> Tuple[str, str, str]:
+    """
+    Retrieve cached rewrites for a specific persona/period.
+
+    Args:
+        persona_id: e.g. "persona_0001"
+        period: Period number (1-3)
+        cache: Loaded cache dict
+
+    Returns:
+        (initial_scenario, historical_summary, current_period_data)
+        Falls back to empty string for missing sections.
+    """
+    persona_data = cache.get("rewrites", {}).get(persona_id, {})
+
+    initial_scenario = persona_data.get("initial_scenario", INITIAL_SCENARIO)
+
+    period_key = f"period_{period}"
+    period_data = persona_data.get(period_key, {})
+
+    historical_summary = period_data.get("historical_summary", "")
+    current_period_data = period_data.get("current_period_data", "")
+
+    return initial_scenario, historical_summary, current_period_data
+
+
+if __name__ == "__main__":
+    """Self-test: generate 2 sample rewrites and compare."""
+
+    print("=" * 70)
+    print("PERSONA REWRITE - Self Test")
+    print("=" * 70)
+
+    # Load personas
+    personas = load_personas()
+
+    # Find a military-oriented persona and a diplomatic-oriented one
+    military_persona = None
+    diplomatic_persona = None
+    for p in personas:
+        if p.military_expertise >= 80 and military_persona is None:
+            military_persona = p
+        if p.geopolitical_expertise >= 80 and p.agreeableness >= 60 and diplomatic_persona is None:
+            diplomatic_persona = p
+        if military_persona and diplomatic_persona:
+            break
+
+    # Fallback to first two if specific types not found
+    if military_persona is None:
+        military_persona = personas[0]
+    if diplomatic_persona is None:
+        diplomatic_persona = personas[1]
+
+    print(f"\nMilitary persona: {military_persona.name} (military={military_persona.military_expertise})")
+    print(f"Diplomatic persona: {diplomatic_persona.name} (geo={diplomatic_persona.geopolitical_expertise})")
+
+    # Take a snippet of the initial scenario for testing
+    test_text = INITIAL_SCENARIO[:800]
+
+    print(f"\n{'='*70}")
+    print("ORIGINAL (first 800 chars):")
+    print("=" * 70)
+    print(test_text)
+
+    # Rewrite through military lens
+    print(f"\n{'='*70}")
+    print(f"MILITARY REWRITE ({military_persona.name}):")
+    print("=" * 70)
+    military_rewrite = rewrite_section(military_persona, test_text, "test_scenario")
+    print(military_rewrite)
+
+    # Rewrite through diplomatic lens
+    print(f"\n{'='*70}")
+    print(f"DIPLOMATIC REWRITE ({diplomatic_persona.name}):")
+    print("=" * 70)
+    diplomatic_rewrite = rewrite_section(diplomatic_persona, test_text, "test_scenario")
+    print(diplomatic_rewrite)
+
+    # Basic quality checks
+    print(f"\n{'='*70}")
+    print("QUALITY CHECKS:")
+    print("=" * 70)
+
+    orig_len = len(test_text)
+    mil_len = len(military_rewrite)
+    dip_len = len(diplomatic_rewrite)
+
+    print(f"  Original length: {orig_len} chars")
+    print(f"  Military rewrite: {mil_len} chars ({mil_len/orig_len*100:.0f}% of original)")
+    print(f"  Diplomatic rewrite: {dip_len} chars ({dip_len/orig_len*100:.0f}% of original)")
+
+    # Check key facts preserved
+    key_terms = ["Novaris", "Tethys", "40%", "Meridian"]
+    for term in key_terms:
+        mil_has = term in military_rewrite
+        dip_has = term in diplomatic_rewrite
+        status = "[OK]" if (mil_has and dip_has) else "[WARN]"
+        print(f"  {status} '{term}': military={'yes' if mil_has else 'NO'}, diplomatic={'yes' if dip_has else 'NO'}")
+
+    # Check rewrites differ from each other
+    if military_rewrite != diplomatic_rewrite:
+        print("  [OK] Rewrites are different from each other")
+    else:
+        print("  [WARN] Rewrites are identical!")
+
+    if military_rewrite != test_text:
+        print("  [OK] Military rewrite differs from original")
+    else:
+        print("  [WARN] Military rewrite is identical to original!")
+
+    print(f"\n{'='*70}")
+    print("[OK] Self-test complete!")
+    print("=" * 70)

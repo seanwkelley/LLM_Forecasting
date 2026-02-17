@@ -151,27 +151,35 @@ run_simulation_period_with_actions <- function(state, period, api_key, data_dir,
 
   # Step 4: Post-Action Discussion
   # Agents react to results and coordinate responses
-  cat("\n4. Post-action discussion (agent interactions)...\n")
-  context <- list(
-    period = period,
-    scenario_state = state$scenario_state,
-    recent_events = events,
-    action_results = state$action_results[[period]]  # Include what just happened
-  )
+  # Skip for single-period runs (no subsequent period to use the discussions)
+  skip_post_action <- identical(Sys.getenv("SKIP_POST_ACTION_DISCUSSIONS"), "1")
+  if (!skip_post_action) {
+    cat("\n4. Post-action discussion (agent interactions)...\n")
+    context <- list(
+      period = period,
+      scenario_state = state$scenario_state,
+      recent_events = events,
+      action_results = state$action_results[[period]]  # Include what just happened
+    )
 
-  interaction_session <- create_interaction_session(
-    period,
-    state$agents,
-    context
-  )
+    interaction_session <- create_interaction_session(
+      period,
+      state$agents,
+      context
+    )
 
-  interaction_session <- run_interaction_session(interaction_session, api_key)
+    interaction_session <- run_interaction_session(interaction_session, api_key)
 
-  cat(sprintf("  Completed %d interactions\n", interaction_session$interaction_count))
+    cat(sprintf("  Completed %d interactions\n", interaction_session$interaction_count))
 
-  # Save interactions to memory and CSV
-  state$interactions_history[[period]] <- interaction_session
-  save_interactions_to_csv(interaction_session)  # Save post-action discussions to CSV
+    # Save interactions to memory and CSV
+    state$interactions_history[[period]] <- interaction_session
+    save_interactions_to_csv(interaction_session)  # Save post-action discussions to CSV
+  } else {
+    cat("\n4. Post-action discussion SKIPPED (single-period mode)\n")
+    interaction_session <- list(interactions = list(), interaction_count = 0)
+    state$interactions_history[[period]] <- interaction_session
+  }
 
   # Step 5: Update scenario state based on events AND actions
   cat("\n5. Updating scenario state...\n")

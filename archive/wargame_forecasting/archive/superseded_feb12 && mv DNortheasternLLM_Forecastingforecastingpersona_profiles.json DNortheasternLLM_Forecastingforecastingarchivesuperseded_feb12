@@ -1,0 +1,240 @@
+"""
+Action probability forecasting prompts.
+
+Returns same 4-part tuple (scenario, history, data, instructions) that plugs
+into existing apply_sharding_strategy().
+
+Predicts binary probability for top 5 most frequent actions per faction,
+selected for base rates between 30-70% to maximize Brier score sensitivity.
+"""
+
+import sys
+sys.path.insert(0, 'D:/Northeastern/LLM_Forecasting')
+
+from typing import Dict, List, Tuple
+
+from forecasting.collapse_prompts_with_scenario import INITIAL_SCENARIO
+from forecasting.action_library import create_action_descriptions
+
+
+# Top 5 actions per faction with base rates between 30-70% (out of 10 periods)
+NOVARIS_TARGET_ACTIONS = [
+    'naval_deployment',     # 6/10 — Deploy naval forces to project power
+    'cyber_attack',         # 5/10 — Target digital infrastructure
+    'sabotage',             # 5/10 — Covertly damage adversary assets
+    'show_of_force',        # 3/10 — Military demonstrations
+    'trade_negotiation',    # 3/10 — Seek economic partnerships
+]
+
+TETHYS_TARGET_ACTIONS = [
+    'coalition_building',         # 7/10 — Build alliances with other states
+    'backchannel_negotiations',   # 7/10 — Secret diplomatic dialogue
+    'military_buildup',           # 7/10 — Concentrate forces, increase readiness
+    'show_of_force',              # 6/10 — Military demonstrations
+    'military_exercises',         # 5/10 — Training exercises for readiness
+]
+
+
+def get_target_actions(faction: str) -> List[str]:
+    """Return the 5 target actions for a faction."""
+    if faction == 'novaris':
+        return NOVARIS_TARGET_ACTIONS
+    elif faction == 'tethys':
+        return TETHYS_TARGET_ACTIONS
+    else:
+        raise ValueError(f"Unknown faction: {faction}")
+
+
+def get_faction_code(faction: str) -> str:
+    """Convert faction display name to ground truth key."""
+    return 'major_power' if faction == 'novaris' else 'small_power'
+
+
+def build_current_period_data(
+    faction: str,
+    period: int,
+    state_before: Dict,
+    events: List[str],
+    novaris_actions: List[str] = None
+) -> str:
+    """
+    Build current period data section for action probability prediction.
+
+    Novaris sees state + events only (no current actions).
+    Tethys sees state + events + Novaris's current actions.
+    """
+    # Format events
+    if events:
+        events_text = "\n".join([f"  {i}. {e}" for i, e in enumerate(events, 1)])
+    else:
+        events_text = "  (No major external events this period)"
+
+    data = f"""
+{'='*80}
+PERIOD {period} SITUATION UPDATE
+{'='*80}
+
+CURRENT STATE (End of Period {period-1}):
+- Tethys Territory Remaining: {(1-state_before.get('territory_controlled', 0))*100:.1f}%
+- Tethys GDP: ${state_before.get('tethys_gdp', 30):.1f}B (started at $30B)
+- Novaris GDP: ${state_before.get('novaris_gdp', 100):.1f}B (started at $100B)
+- Military Balance: {state_before.get('military_balance', 0):.2f} (-1=Novaris advantage, +1=Tethys advantage)
+- International Support for Tethys: {state_before.get('international_support', 0.5)*100:.0f}%
+- Sanctions on Novaris: {state_before.get('sanctions_level', 0)*100:.0f}%
+
+EXTERNAL EVENTS THIS PERIOD:
+{events_text}
+"""
+
+    # Tethys also sees Novaris's current actions
+    if faction == 'tethys' and novaris_actions:
+        novaris_text = ", ".join(novaris_actions)
+        data += f"""
+NOVARIS ACTIONS THIS PERIOD:
+{novaris_text}
+"""
+
+    return data
+
+
+def build_action_probability_instructions(faction: str, period: int) -> str:
+    """
+    Build instructions section for action probability prediction.
+
+    Instructions are NEVER sharded.
+    """
+    actions = get_target_actions(faction)
+    descriptions = create_action_descriptions()
+
+    faction_display = "Novaris" if faction == "novaris" else "Tethys"
+
+    # Build action list with descriptions
+    action_lines = []
+    for action in actions:
+        desc = descriptions.get(action, "No description")
+        action_lines.append(f"  - {action}: {desc}")
+    action_list = "\n".join(action_lines)
+
+    # Build JSON example keys
+    json_keys = ",\n".join([f'  "{a}": 0.XX' for a in actions])
+
+    instructions = f"""
+{'='*80}
+YOUR FORECASTING TASK
+{'='*80}
+
+For Period {period}, predict the probability that {faction_display} will take EACH of the
+following actions. Each action is independent -- predict the probability for each one separately.
+
+ACTIONS TO PREDICT:
+{action_list}
+
+CRITICAL INSTRUCTIONS:
+- Output a probability between 0.0 and 1.0 for EACH action
+- USE THE FULL PROBABILITY RANGE - don't cluster around 0.5
+- Be calibrated: 0.3 means 30% chance, 0.7 means 70% chance
+- Consider the strategic context, current state, and events
+- Each action is independent -- one action being likely does NOT affect the others
+
+Think step-by-step:
+1. Assess {faction_display}'s strategic situation and goals
+2. Consider what actions are most useful given current events
+3. Evaluate each action's likelihood independently
+4. Output calibrated probabilities
+
+OUTPUT FORMAT (JSON):
+{{
+{json_keys},
+  "rationale": "2-3 sentence explanation of key factors driving your estimates"
+}}
+
+IMPORTANT: Output ONLY valid JSON, no additional text before or after.
+Use the FULL range 0.0 to 1.0 based on the actual situation.
+"""
+
+    return instructions
+
+
+def get_action_prompt_sections(
+    faction: str,
+    period: int,
+    state_before: Dict,
+    events: List[str],
+    novaris_actions: List[str],
+    history: str = ""
+) -> Tuple[str, str, str, str]:
+    """
+    Return prompt split into 4 sections for selective sharding.
+
+    Returns:
+        (initial_scenario, historical_summary, current_period_data, instructions)
+    """
+    current_period_data = build_current_period_data(
+        faction, period, state_before, events, novaris_actions
+    )
+
+    instructions = build_action_probability_instructions(faction, period)
+
+    return (INITIAL_SCENARIO, history, current_period_data, instructions)
+
+
+if __name__ == "__main__":
+    print("Testing action probability prompts...")
+
+    from forecasting.simulation_data import get_state_before, get_events
+
+    test_state = get_state_before(1)
+
+    for faction in ['novaris', 'tethys']:
+        print(f"\n{'='*60}")
+        print(f"FACTION: {faction.upper()}")
+        print(f"{'='*60}")
+
+        scenario, history, data, instructions = get_action_prompt_sections(
+            faction=faction,
+            period=1,
+            state_before=test_state,
+            events=get_events(1),
+            novaris_actions=['military_buildup', 'naval_deployment']
+        )
+
+        print(f"\nSection lengths:")
+        print(f"  Initial scenario: {len(scenario)} chars")
+        print(f"  History: {len(history)} chars")
+        print(f"  Current period data: {len(data)} chars")
+        print(f"  Instructions: {len(instructions)} chars")
+
+        # Verify instructions contain all 5 target actions
+        actions = get_target_actions(faction)
+        for action in actions:
+            assert action in instructions, f"Instructions missing action: {action}!"
+
+        # Verify instructions contain output format
+        assert "YOUR FORECASTING TASK" in instructions, "Missing task header!"
+        assert "JSON" in instructions, "Missing JSON format!"
+        assert "rationale" in instructions, "Missing rationale key!"
+
+        # Verify data does NOT contain instructions
+        assert "YOUR FORECASTING TASK" not in data, "Data should not contain instructions!"
+        assert "OUTPUT FORMAT" not in data, "Data should not contain output format!"
+
+        # Verify JSON braces render correctly
+        assert '{{' not in instructions, "Double braces in instructions - f-string escaping error!"
+        assert '{' in instructions, "JSON example braces missing!"
+
+        # Verify Tethys sees Novaris actions, Novaris does not
+        if faction == 'tethys':
+            assert 'NOVARIS ACTIONS THIS PERIOD' in data, "Tethys should see Novaris actions!"
+        else:
+            assert 'NOVARIS ACTIONS THIS PERIOD' not in data, "Novaris should NOT see own actions!"
+
+        print(f"\n  Target actions: {actions}")
+        print(f"\n  Instructions preview (first 300 chars):")
+        print(f"  {instructions[:300]}...")
+
+    print(f"\n{'='*60}")
+    print("[OK] 4-part section split working correctly!")
+    print("[OK] Instructions separated from data!")
+    print("[OK] JSON format renders correctly!")
+    print("[OK] Action visibility correct (Tethys sees Novaris, Novaris does not)!")
+    print("[OK] All target actions present in instructions!")

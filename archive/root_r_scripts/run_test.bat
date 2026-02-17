@@ -1,0 +1,3 @@
+@echo off
+set OPENROUTER_API_KEY=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
+python -u forecasting/run_action_probability_experiment.py --test

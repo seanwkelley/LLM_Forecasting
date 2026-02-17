@@ -1,8 +1,8 @@
 # Multi-Agent Wargame Simulation
 
-**Version 3.8.5** | **February 9, 2026**
+**Version 3.8.5** | **February 11, 2026**
 
-A sophisticated LLM-based geopolitical simulation modeling conflict dynamics with **11 autonomous agents** across fictionalized countries. Features multi-action systems, cognitive frameworks, and dynamic state tracking to forecast government collapse probability.
+A sophisticated LLM-based geopolitical simulation modeling conflict dynamics with **11 autonomous agents** across fictionalized countries. Features multi-action systems, cognitive frameworks, and dynamic state tracking. Includes a Python-based multi-agent forecasting system that uses **information sharding** to create ensemble diversity.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -50,6 +50,9 @@ export OPENROUTER_API_KEY="your-api-key-here"
 ```bash
 # Run full 10-period simulation (~2-3 hours)
 Rscript run_simulation_with_actions.R
+
+# Generate 100 parametrically varied 1-period scenarios (~25 hours)
+Rscript generate_multiscenario_dataset.R
 ```
 
 **Outputs:** Results saved to `outputs/` directory
@@ -57,20 +60,27 @@ Rscript run_simulation_with_actions.R
 - `simulation_summary_*.txt` - Action log
 - `interactions/period_*_actions.csv` - All decisions and outcomes
 - `human_forecasting/` - Forecasting prompts for human participants
+- `multiscenario/` - 100 parametric scenarios with ground truth
 
 ---
 
 ## 📖 Documentation
 
-### Getting Started
-- **[START_HERE.md](docs/START_HERE.md)** - Quick reference guide
-- **[README.md](docs/README.md)** - Full project documentation
-- **[VERSION_CHANGELOG.md](docs/VERSION_CHANGELOG.md)** - Complete version history
+### Active Documentation
 
-### System Guides
-- **[MULTI_ACTION_SYSTEM_GUIDE.md](docs/guides/MULTI_ACTION_SYSTEM_GUIDE.md)** - How multi-action proposals work
-- **[FACTION_OBJECTIVES.md](docs/guides/FACTION_OBJECTIVES.md)** - Strategic capabilities by faction
-- **[CLAUDE.md](docs/guides/CLAUDE.md)** - AI context and architecture
+| Document | Covers |
+|----------|--------|
+| **[EXPERIMENT_NOTES.md](EXPERIMENT_NOTES.md)** | Active experiment log -- market + conflict status, key findings |
+| **[MARKET_EXPERIMENT.md](docs/MARKET_EXPERIMENT.md)** | Market domain: simulation design, PID analysis (3 conditions), forecasting results |
+| **[RESULTS_FORECASTING_AND_PID.md](docs/RESULTS_FORECASTING_AND_PID.md)** | Cross-domain: LMM forecasting methods/results, conflict PID analysis, market vs conflict comparison |
+
+Legacy R wargame documentation is in `docs/archive/`.
+
+### Current Experiments (Feb 18)
+
+- **Market simulation** (complete): 7 LLM trading agents, double-auction clearing, PID analysis shows significant emergent coordination (EC = 0.032, p = 0.002). Forecasting with Theory of Mind significantly reduces prediction error (p = 0.027).
+- **Conflict simulation** (complete): 7 LLM geopolitical agents, escalation dynamics. PID shows 3.3x more emergent coordination than market (EC = 0.106, p = 0.000). Personas are unnecessary for synergy in conflict (no-persona EC = 0.115 vs persona EC = 0.106) -- opposite of market where personas are required. Theory of Mind significantly *increases* prediction error (p = 0.010).
+- See `docs/RESULTS_FORECASTING_AND_PID.md` for full statistical methods and results.
 
 ---
 
@@ -170,25 +180,47 @@ for (action in approved_actions) {
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 LLM_Forecasting/
-├── README.md                    # This file
-├── config.R                     # Model & scenario configuration
-├── run_simulation_with_actions.R  # Main entry point
-├── src/                         # Core simulation code
-│   ├── simulation_with_actions.R   # Main loop
-│   ├── multi_action_system.R      # Proposal/approval system
-│   ├── multi_action_effects.R     # State threading & effects
-│   ├── agent_system.R             # Agent initialization
-│   ├── event_generator.R          # External events
-│   └── ... (11 other files)
-├── docs/                        # Documentation
-│   ├── guides/                    # System guides
-│   ├── test_results/              # Test reports
-│   └── archive/                   # Historical docs
-└── archive/                     # Deprecated code & old outputs
+├── README.md                        # This file
+├── EXPERIMENT_NOTES.md              # Active experiment log
+├── config.R                         # Model & scenario configuration
+├── src/                             # Core R wargame simulation (16 files)
+│   ├── simulation_with_actions.R      # Main simulation loop
+│   ├── multi_action_system.R          # Proposal/approval system
+│   ├── multi_action_effects.R         # State threading & effects
+│   └── ...
+├── market/                          # Python market simulation
+│   ├── engine.py                      # Double-auction clearing, order book
+│   ├── agents_config.py               # 7 trading agent personas
+│   ├── run_market_sim.py              # Simulation runner
+│   ├── run_market_forecast.py         # Forecasting experiment
+│   ├── run_market_pid.py              # PID analysis runner
+│   ├── analyze_forecasts.R            # LMM statistical analysis
+│   └── ...
+├── conflict/                        # Python conflict simulation
+│   ├── engine.py                      # Escalation mechanics, state tracking
+│   ├── agents_config.py               # 7 geopolitical agent personas
+│   ├── run_conflict_sim.py            # Simulation runner
+│   ├── run_conflict_forecast.py       # Forecasting experiment
+│   ├── run_conflict_pid.py            # PID analysis runner
+│   ├── analyze_forecasts.R            # LMM statistical analysis
+│   └── ...
+├── docs/                            # Documentation
+│   ├── RESULTS_FORECASTING_AND_PID.md # Cross-domain: forecasting, PID, methods
+│   ├── MARKET_EXPERIMENT.md           # Market domain: design, PID, forecasting
+│   └── archive/                       # Legacy R wargame documentation
+├── outputs/                         # Experiment results
+│   ├── market_sim_llama_10s30p_persona/ # Market: LLM with personas
+│   ├── market_sim_llama_10s30p/         # Market: LLM no-persona
+│   ├── market_sim_baseline_10s30p/      # Market: rule-based baseline
+│   ├── conflict_sim_llama/              # Conflict: LLM with personas
+│   ├── conflict_sim_llama_no_persona/   # Conflict: LLM no-persona
+│   ├── conflict_sim_baseline/           # Conflict: rule-based baseline
+│   └── ...
+└── archive/                         # Archived code & old outputs
 ```
 
 ---
@@ -250,7 +282,7 @@ This is an active research project. For questions or collaboration:
 
 ## 🙏 Acknowledgments
 
-Built with assistance from **Claude Sonnet 4.5** (Anthropic)
+Built with assistance from **Claude** (Anthropic)
 
 **Related Work:**
 - Benjamin et al. (2025) - LLM forecasting capabilities
@@ -259,4 +291,14 @@ Built with assistance from **Claude Sonnet 4.5** (Anthropic)
 
 ---
 
-**Status:** ✅ Production Ready | **Last Updated:** February 9, 2026
+**Status:** Active Research | **Last Updated:** February 18, 2026
+
+**Recent Updates:**
+- **Feb 18:** No-persona conflict sim + PID: personas unnecessary for synergy in conflict (no-persona EC=0.115 vs persona EC=0.106), opposite of market. Three-condition comparison in `docs/STATISTICAL_ANALYSIS.md`
+- **Feb 18:** Conflict PID analysis: EC = 0.106 (p=0.000), 3.3x more emergent coordination than market. 100% positive triplet G3
+- **Feb 17:** Statistical analysis with period-within-scenario clustering. ToM helps market (p=0.027) but hurts conflict (p=0.010). See `docs/STATISTICAL_ANALYSIS.md`
+- **Feb 16:** Market and conflict forecasting experiments complete (6 conditions, 7,200 LLM forecasts)
+- **Feb 15-16:** Market PID analysis: personas recover 79% of baseline emergent coordination (EC=0.032, p=0.002)
+- **Feb 14:** Backstory reframing reduces forecast MSE by 58-61%
+- **Feb 11:** Multi-scenario dataset generation, information sharding, persona-rewrite infrastructure
+- **Feb 9:** State threading & probabilistic events implemented

@@ -1,0 +1,74 @@
+{
+  "experiment": "persona_rewrite_2x3_factorial",
+  "periods": [
+    1
+  ],
+  "n_agents": 5,
+  "prediction_model": "deepseek/deepseek-v3.2",
+  "rewrite_model": "qwen/qwen3-235b-a22b-2507",
+  "temperature": 1.0,
+  "test_mode": true,
+  "conditions": [
+    "raw_baseline",
+    "persona_baseline"
+  ],
+  "results": [
+    {
+      "condition": "raw_baseline",
+      "context_type": "raw",
+      "sharding_strategy": "none",
+      "period": 1,
+      "n_agents": 5,
+      "duration_seconds": 5.76152229309082,
+      "statistics": {
+        "ensemble_probability": 0.5,
+        "ensemble_brier_score": 0.07840000000000001,
+        "individual_mean_brier": 0.07840000000000001,
+        "individual_std_brier": 0.0,
+        "probability_mean": 0.5,
+        "probability_std": 0.0,
+        "probability_min": 0.5,
+        "probability_max": 0.5,
+        "ground_truth": 0.22,
+        "n_predictions": 5
+      },
+      "fallback_count": 5,
+      "fallback_types": {
+        "api_error": 5
+      },
+      "persona_ids": null
+    },
+    {
+      "condition": "persona_baseline",
+      "context_type": "persona",
+      "sharding_strategy": "none",
+      "period": 1,
+      "n_agents": 5,
+      "duration_seconds": 5.837564706802368,
+      "statistics": {
+        "ensemble_probability": 0.5,
+        "ensemble_brier_score": 0.07840000000000001,
+        "individual_mean_brier": 0.07840000000000001,
+        "individual_std_brier": 0.0,
+        "probability_mean": 0.5,
+        "probability_std": 0.0,
+        "probability_min": 0.5,
+        "probability_max": 0.5,
+        "ground_truth": 0.22,
+        "n_predictions": 5
+      },
+      "fallback_count": 5,
+      "fallback_types": {
+        "api_error": 5
+      },
+      "persona_ids": [
+        "persona_0003",
+        "persona_0000",
+        "persona_0004",
+        "persona_0001",
+        "persona_0002"
+      ]
+    }
+  ],
+  "timestamp": "2026-02-11T15:01:57.065630"
+}

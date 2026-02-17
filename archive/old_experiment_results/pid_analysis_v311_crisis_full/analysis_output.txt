@@ -1,0 +1,138 @@
+=== NOVARIS (primary only) ===
+Total primary rows: 150
+
+  Role: economic
+    N scenarios: 50
+    Unique proposed_escalation values: 4
+      escalation=-1: 6
+      escalation=0: 10
+      escalation=1: 27
+      escalation=2: 7
+
+  Role: intelligence
+    N scenarios: 50
+    Unique proposed_escalation values: 2
+      escalation=0: 32
+      escalation=2: 18
+
+  Role: military
+    N scenarios: 50
+    Unique proposed_escalation values: 2
+      escalation=1: 19
+      escalation=3: 31
+
+
+=== TETHYS (primary only) ===
+Total primary rows: 200
+
+  Role: diplomatic
+    N scenarios: 50
+    Unique proposed_escalation values: 2
+      escalation=-1: 34
+      escalation=1: 16
+
+  Role: economic
+    N scenarios: 50
+    Unique proposed_escalation values: 4
+      escalation=-1: 6
+      escalation=0: 10
+      escalation=1: 31
+      escalation=2: 3
+
+  Role: intelligence
+    N scenarios: 50
+    Unique proposed_escalation values: 2
+      escalation=0: 49
+      escalation=2: 1
+
+  Role: military
+    N scenarios: 50
+    Unique proposed_escalation values: 3
+      escalation=0: 17
+      escalation=1: 31
+      escalation=3: 2
+
+
+=== GROUND TRUTH ===
+final_crisis_level:
+  min: 7.0958
+  max: 10.0000
+  mean: 9.6494
+  median: 10.0000
+  std: 0.7269
+  N: 50
+  Distribution:
+    < 7: 0  |  >= 7: 50
+    < 8: 4  |  >= 8: 46
+    < 9: 5  |  >= 9: 45
+    < 9.5: 7  |  >= 9.5: 43
+    < 10: 23  |  >= 10: 27
+  Quintiles:
+    0th percentile: 7.0958
+    10th percentile: 9.0251
+    25th percentile: 9.6481
+    50th percentile: 10.0000
+    75th percentile: 10.0000
+    90th percentile: 10.0000
+    100th percentile: 10.0000
+
+collapse_probability:
+  min: 0.3485
+  max: 0.7675
+  mean: 0.5458
+  median: 0.5573
+  std: 0.0738
+  N: 50
+
+
+=== NOVARIS proposed_action by role (primary) ===
+
+  Role: economic
+    targeted_sanctions: 27
+    war_bonds: 10
+    resource_embargo: 7
+    trade_negotiation: 6
+
+  Role: intelligence
+    cyber_defense: 22
+    cyber_attack: 18
+    counterintelligence: 3
+    information_campaign: 3
+    enhanced_intelligence_gathering: 3
+    enhanced_surveillance: 1
+
+  Role: military
+    limited_strike: 31
+    show_of_force: 17
+    naval_demonstration: 2
+
+
+=== TETHYS proposed_action by role (primary) ===
+
+  Role: diplomatic
+    public_diplomatic_initiative: 13
+    formal_multilateral_engagement: 12
+    humanitarian_corridors: 11
+    diplomatic_visit: 10
+    coalition_building: 4
+
+  Role: economic
+    targeted_sanctions: 27
+    war_bonds: 10
+    trade_negotiation: 6
+    economic_sanctions: 4
+    resource_embargo: 3
+
+  Role: intelligence
+    cyber_defense: 28
+    counterintelligence: 17
+    enhanced_intelligence_gathering: 3
+    cyber_attack: 1
+    enhanced_surveillance: 1
+
+  Role: military
+    show_of_force: 27
+    defensive_fortification: 16
+    naval_demonstration: 4
+    limited_strike: 2
+    defensive_reinforcements: 1

@@ -1,0 +1,415 @@
+"""
+Collapse Probability Forecasting: Sharding Strategy Comparison
+===============================================================
+
+Compares 3 conditions for Periods 1-3:
+1. Baseline: 100% everything (initial scenario + history + current period)
+2. Shard Everything: X% of data sections (scenario + history + current period data)
+3. Shard Initial Only: X% initial scenario + 100% history + 100% current period
+
+Instructions/output format are NEVER sharded in any condition.
+Temperature set to 1.0 for maximum sampling diversity across all conditions.
+"""
+
+import sys
+sys.path.insert(0, 'D:/Northeastern/LLM_Forecasting')
+
+import json
+import time
+from pathlib import Path
+from typing import Dict, List
+from datetime import datetime
+import concurrent.futures
+import numpy as np
+
+# Import core components
+from forecasting.forecaster_base import BaseLLMForecaster
+from forecasting.collapse_prompts_with_scenario import get_prompt_sections
+from forecasting.action_ground_truth import load_ground_truth
+from forecasting.simulation_data import get_state_before, get_events
+from forecasting.information_sharding import create_information_distribution
+from forecasting.sharding_strategies import apply_sharding_strategy
+
+
+def load_collapse_ground_truth() -> Dict[int, float]:
+    """Load ground truth collapse probabilities."""
+    import pandas as pd
+    df = pd.read_csv("D:/Northeastern/LLM_Forecasting/outputs/assessments.csv")
+
+    ground_truth = {}
+    for _, row in df.iterrows():
+        ground_truth[row['period']] = row['probability']
+    return ground_truth
+
+
+def create_historical_summary(period: int, ground_truth_actions: dict) -> str:
+    """Create historical summary (observable info only)."""
+    if period <= 1:
+        return ""
+
+    history_lines = ["\n" + "="*80]
+    history_lines.append("HISTORICAL CONTEXT (Prior Periods)")
+    history_lines.append("="*80 + "\n")
+
+    for p in range(1, period):
+        history_lines.append(f"PERIOD {p}:")
+
+        # Get state
+        state = get_state_before(p + 1)
+        history_lines.append(f"  End State:")
+        history_lines.append(f"    - Tethys Territory: {(1-state.get('territory_controlled', 0))*100:.1f}%")
+        history_lines.append(f"    - Tethys GDP: ${state.get('tethys_gdp', 30):.1f}B")
+        history_lines.append(f"    - Novaris GDP: ${state.get('novaris_gdp', 100):.1f}B")
+        history_lines.append(f"    - Military Balance: {state.get('military_balance', 0):.2f}")
+        history_lines.append(f"    - International Support: {state.get('international_support', 0.5)*100:.0f}%")
+        history_lines.append(f"    - Sanctions Level: {state.get('sanctions_level', 0)*100:.0f}%")
+
+        # Get events
+        events = get_events(p)
+        if events:
+            history_lines.append(f"  Events:")
+            for event in events[:3]:
+                history_lines.append(f"    - {event}")
+
+        # Get actions
+        novaris_acts = ground_truth_actions[p]['major_power']['actions']
+        tethys_acts = ground_truth_actions[p]['small_power']['actions']
+        history_lines.append(f"  Actions:")
+        history_lines.append(f"    Novaris: {', '.join(novaris_acts[:5])}")
+        history_lines.append(f"    Tethys: {', '.join(tethys_acts[:5])}")
+        history_lines.append("")
+
+    return "\n".join(history_lines)
+
+
+def calculate_brier_score(predicted_prob: float, actual_outcome: float) -> float:
+    """Calculate Brier score (squared error between predicted and actual probability)."""
+    return (predicted_prob - actual_outcome) ** 2
+
+
+def calculate_ensemble_statistics(probabilities: List[float], ground_truth: float) -> Dict:
+    """Calculate ensemble statistics."""
+    ensemble_prob = np.mean(probabilities)
+    individual_brier = [calculate_brier_score(p, ground_truth) for p in probabilities]
+    ensemble_brier = calculate_brier_score(ensemble_prob, ground_truth)
+
+    return {
+        'ensemble_probability': float(ensemble_prob),
+        'ensemble_brier_score': float(ensemble_brier),
+        'individual_mean_brier': float(np.mean(individual_brier)),
+        'individual_std_brier': float(np.std(individual_brier)),
+        'probability_mean': float(np.mean(probabilities)),
+        'probability_std': float(np.std(probabilities)),
+        'probability_min': float(np.min(probabilities)),
+        'probability_max': float(np.max(probabilities)),
+        'ground_truth': float(ground_truth),
+        'n_predictions': len(probabilities)
+    }
+
+
+def run_single_prediction(
+    initial_scenario: str,
+    historical_summary: str,
+    current_period_data: str,
+    instructions: str,
+    sharding_strategy: str,
+    information_fraction: float,
+    agent_id: int,
+    model: str = "deepseek/deepseek-v3.2"
+) -> Dict:
+    """Run a single agent's collapse probability prediction."""
+
+    # Create forecaster with temperature=1.0 for max sampling diversity
+    forecaster = BaseLLMForecaster(model=model, temperature=1.0)
+
+    # Apply sharding strategy (instructions always protected)
+    prompt = apply_sharding_strategy(
+        strategy=sharding_strategy,
+        initial_scenario=initial_scenario,
+        historical_summary=historical_summary,
+        current_period_data=current_period_data,
+        instructions=instructions,
+        information_fraction=information_fraction,
+        seed=agent_id
+    )
+
+    # System prompt
+    system_prompt = """You are an expert geopolitical analyst specializing in government stability forecasting.
+
+Your task is to predict the probability of government collapse based on:
+- Strategic context and background
+- Historical developments
+- Current military, economic, and political situation
+- Recent events and actions
+
+Apply rigorous analytical reasoning and USE THE FULL PROBABILITY RANGE 0.0 to 1.0.
+Do NOT cluster around 0.5 - be decisive based on the evidence.
+
+Output ONLY valid JSON in the exact format specified."""
+
+    # Get prediction
+    try:
+        response_text, success = forecaster.call_llm(
+            user_prompt=prompt,
+            system_prompt=system_prompt,
+            response_format="json"
+        )
+
+        if not success or not response_text or response_text.strip() == "":
+            return {'probability': 0.5, 'confidence': 'low', 'rationale': 'Error', '_fallback': 'api_error'}
+
+        # Strip markdown fences
+        response_text = response_text.strip()
+        if response_text.startswith("```json"):
+            response_text = response_text[7:]
+        if response_text.startswith("```"):
+            response_text = response_text[3:]
+        if response_text.endswith("```"):
+            response_text = response_text[:-3]
+        response_text = response_text.strip()
+
+        result = json.loads(response_text)
+
+        # Validate probability
+        prob = result.get('probability', None)
+        if prob is None:
+            result['probability'] = 0.5
+            result['_fallback'] = 'missing_probability_key'
+        elif not (0.0 <= prob <= 1.0):
+            result['probability'] = max(0.0, min(1.0, prob))
+            result['_fallback'] = 'out_of_range'
+
+        return result
+
+    except json.JSONDecodeError:
+        return {'probability': 0.5, 'confidence': 'low', 'rationale': 'JSON parse error', '_fallback': 'json_error'}
+    except Exception as e:
+        return {'probability': 0.5, 'confidence': 'low', 'rationale': str(e), '_fallback': 'exception'}
+
+
+def run_n_predictions_parallel(
+    n: int,
+    initial_scenario: str,
+    historical_summary: str,
+    current_period_data: str,
+    instructions: str,
+    sharding_strategy: str,
+    information_fractions: List[float],
+    max_workers: int = 5
+) -> List[Dict]:
+    """Run N predictions in parallel."""
+
+    results = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = []
+        for i in range(n):
+            info_frac = information_fractions[i]
+
+            if i % 10 == 0 and i > 0:
+                time.sleep(0.5)
+
+            future = executor.submit(
+                run_single_prediction,
+                initial_scenario,
+                historical_summary,
+                current_period_data,
+                instructions,
+                sharding_strategy,
+                info_frac,
+                i
+            )
+            futures.append(future)
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                result = future.result()
+                results.append(result)
+            except Exception as e:
+                results.append({'probability': 0.5, 'confidence': 'low', 'rationale': 'Error', '_fallback': 'future_exception'})
+
+    return results
+
+
+def run_condition(
+    period: int,
+    condition_name: str,
+    sharding_strategy: str,
+    n_agents: int,
+    ground_truth_actions: dict,
+    collapse_ground_truth: float
+) -> Dict:
+    """Run a single condition for a single period."""
+
+    print(f"\n  Condition: {condition_name}")
+
+    # Get simulation data
+    state_before = get_state_before(period)
+    external_events = get_events(period)
+    novaris_actions = ground_truth_actions[period]['major_power']['actions']
+    tethys_actions = ground_truth_actions[period]['small_power']['actions']
+
+    # Create historical summary
+    historical_summary = create_historical_summary(period, ground_truth_actions)
+
+    # Get prompt sections (4-part: scenario, history, data, instructions)
+    initial_scenario, _, current_period_data, instructions = get_prompt_sections(
+        period=period,
+        state_before=state_before,
+        external_events=external_events,
+        novaris_actions=novaris_actions,
+        tethys_actions=tethys_actions,
+        historical_summary=historical_summary
+    )
+
+    # Create information distribution
+    info_fractions = create_information_distribution(n_agents)
+
+    # Run predictions
+    start_time = time.time()
+    prediction_dicts = run_n_predictions_parallel(
+        n=n_agents,
+        initial_scenario=initial_scenario,
+        historical_summary=historical_summary,
+        current_period_data=current_period_data,
+        instructions=instructions,
+        sharding_strategy=sharding_strategy,
+        information_fractions=info_fractions
+    )
+    duration = time.time() - start_time
+
+    # Track fallback/error rates
+    fallback_count = sum(1 for pred in prediction_dicts if '_fallback' in pred)
+    fallback_types = {}
+    for pred in prediction_dicts:
+        if '_fallback' in pred:
+            ft = pred['_fallback']
+            fallback_types[ft] = fallback_types.get(ft, 0) + 1
+
+    # Calculate statistics
+    probabilities = [pred.get('probability', 0.5) for pred in prediction_dicts]
+    stats = calculate_ensemble_statistics(probabilities, collapse_ground_truth)
+
+    print(f"    Completed in {duration:.1f}s")
+    print(f"    Ensemble: {stats['ensemble_probability']:.3f} (truth: {collapse_ground_truth:.3f})")
+    print(f"    Brier: {stats['ensemble_brier_score']:.4f}")
+    print(f"    Fallbacks: {fallback_count}/{n_agents}", end="")
+    if fallback_types:
+        print(f" ({fallback_types})", end="")
+    print()
+
+    return {
+        'condition': condition_name,
+        'sharding_strategy': sharding_strategy,
+        'period': period,
+        'n_agents': n_agents,
+        'duration_seconds': duration,
+        'statistics': stats,
+        'fallback_count': fallback_count,
+        'fallback_types': fallback_types
+    }
+
+
+def main():
+    """Run sharding strategy comparison for periods 1-3."""
+
+    print("="*60)
+    print("COLLAPSE FORECASTING: SHARDING STRATEGY COMPARISON")
+    print("Periods 1-3 | 3 Conditions | N=100 per condition")
+    print("Temperature: 1.0 | Instructions: Protected")
+    print("="*60)
+
+    # Setup
+    n_agents = 100
+    periods = [1, 2, 3]
+    output_dir = Path("outputs/collapse_sharding_comparison")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Load data
+    print("\nLoading data...")
+    ground_truth_actions = load_ground_truth()
+    collapse_ground_truth_all = load_collapse_ground_truth()
+
+    # Define conditions
+    conditions = [
+        ("baseline", "none"),
+        ("shard_everything", "shard_everything"),
+        ("shard_initial_only", "shard_initial_only")
+    ]
+
+    # Run each period
+    all_results = []
+
+    for period in periods:
+        print(f"\n{'='*60}")
+        print(f"PERIOD {period}")
+        print(f"{'='*60}")
+
+        collapse_truth = collapse_ground_truth_all[period]
+        print(f"  Ground truth: {collapse_truth:.3f}")
+
+        for condition_name, strategy in conditions:
+            try:
+                result = run_condition(
+                    period=period,
+                    condition_name=condition_name,
+                    sharding_strategy=strategy,
+                    n_agents=n_agents,
+                    ground_truth_actions=ground_truth_actions,
+                    collapse_ground_truth=collapse_truth
+                )
+                all_results.append(result)
+
+            except Exception as e:
+                print(f"\n[ERROR] {condition_name} failed: {e}")
+                import traceback
+                traceback.print_exc()
+
+    # Summary
+    print(f"\n{'='*60}")
+    print("SUMMARY")
+    print(f"{'='*60}")
+
+    print(f"\n{'Period':<10} {'Condition':<20} {'Truth':<10} {'Ensemble':<12} {'Brier':<12} {'Fallbacks':<10}")
+    print("-"*80)
+
+    for result in all_results:
+        p = result['period']
+        cond = result['condition']
+        truth = result['statistics']['ground_truth']
+        ensemble = result['statistics']['ensemble_probability']
+        brier = result['statistics']['ensemble_brier_score']
+        fallbacks = result['fallback_count']
+        print(f"{p:<10} {cond:<20} {truth:<10.3f} {ensemble:<12.3f} {brier:<12.4f} {fallbacks:<10}")
+
+    # Average by condition
+    print(f"\n{'='*60}")
+    print("AVERAGE PERFORMANCE BY CONDITION")
+    print(f"{'='*60}")
+
+    for cond_name, _ in conditions:
+        cond_results = [r for r in all_results if r['condition'] == cond_name]
+        avg_brier = np.mean([r['statistics']['ensemble_brier_score'] for r in cond_results])
+        total_fallbacks = sum(r['fallback_count'] for r in cond_results)
+        print(f"{cond_name:<20} Average Brier: {avg_brier:.4f}  Total Fallbacks: {total_fallbacks}")
+
+    # Save results
+    summary_file = output_dir / "experiment_summary.json"
+    with open(summary_file, 'w') as f:
+        json.dump({
+            'periods': periods,
+            'n_agents': n_agents,
+            'temperature': 1.0,
+            'instructions_protected': True,
+            'conditions': [c[0] for c in conditions],
+            'results': all_results,
+            'timestamp': datetime.now().isoformat()
+        }, f, indent=2)
+
+    print(f"\n{'='*60}")
+    print(f"EXPERIMENT COMPLETE")
+    print(f"Results saved: {summary_file}")
+    print(f"{'='*60}")
+
+
+if __name__ == "__main__":
+    main()

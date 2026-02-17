@@ -1,0 +1,187 @@
+{
+  "periods": [
+    1,
+    2,
+    3
+  ],
+  "n_agents": 100,
+  "conditions": [
+    "baseline",
+    "shard_everything",
+    "shard_initial_only"
+  ],
+  "results": [
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 1,
+      "n_agents": 100,
+      "duration_seconds": 88.45000839233398,
+      "statistics": {
+        "ensemble_probability": 0.1457,
+        "ensemble_brier_score": 0.005520490000000001,
+        "individual_mean_brier": 0.006347000000000003,
+        "individual_std_brier": 0.004233236468708073,
+        "probability_mean": 0.1457,
+        "probability_std": 0.02874908694202304,
+        "probability_min": 0.05,
+        "probability_max": 0.25,
+        "ground_truth": 0.22,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 1,
+      "n_agents": 100,
+      "duration_seconds": 217.0474398136139,
+      "statistics": {
+        "ensemble_probability": 0.2706,
+        "ensemble_brier_score": 0.0025603600000000007,
+        "individual_mean_brier": 0.03379000000000001,
+        "individual_std_brier": 0.05609288457549675,
+        "probability_mean": 0.2706,
+        "probability_std": 0.17671909913758613,
+        "probability_min": 0.05,
+        "probability_max": 0.85,
+        "ground_truth": 0.22,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 1,
+      "n_agents": 100,
+      "duration_seconds": 131.4880349636078,
+      "statistics": {
+        "ensemble_probability": 0.15709999999999996,
+        "ensemble_brier_score": 0.003956410000000005,
+        "individual_mean_brier": 0.006241000000000002,
+        "individual_std_brier": 0.008060025992513922,
+        "probability_mean": 0.15709999999999996,
+        "probability_std": 0.0477973848657016,
+        "probability_min": 0.08,
+        "probability_max": 0.5,
+        "ground_truth": 0.22,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 2,
+      "n_agents": 100,
+      "duration_seconds": 88.13719487190247,
+      "statistics": {
+        "ensemble_probability": 0.16779999999999995,
+        "ensemble_brier_score": 0.012588840000000018,
+        "individual_mean_brier": 0.015152,
+        "individual_std_brier": 0.008099141682919248,
+        "probability_mean": 0.16779999999999995,
+        "probability_std": 0.050627660423922416,
+        "probability_min": 0.08,
+        "probability_max": 0.35,
+        "ground_truth": 0.28,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 2,
+      "n_agents": 100,
+      "duration_seconds": 212.30348324775696,
+      "statistics": {
+        "ensemble_probability": 0.2739,
+        "ensemble_brier_score": 3.721000000000061e-05,
+        "individual_mean_brier": 0.028741000000000006,
+        "individual_std_brier": 0.03979134351840862,
+        "probability_mean": 0.2739,
+        "probability_std": 0.16942192892302932,
+        "probability_min": 0.08,
+        "probability_max": 0.85,
+        "ground_truth": 0.28,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 2,
+      "n_agents": 100,
+      "duration_seconds": 165.29823303222656,
+      "statistics": {
+        "ensemble_probability": 0.17319999999999994,
+        "ensemble_brier_score": 0.011406240000000019,
+        "individual_mean_brier": 0.013864000000000003,
+        "individual_std_brier": 0.007551099522586102,
+        "probability_mean": 0.17319999999999994,
+        "probability_std": 0.049575800548251364,
+        "probability_min": 0.08,
+        "probability_max": 0.35,
+        "ground_truth": 0.28,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "baseline",
+      "sharding_strategy": "none",
+      "period": 3,
+      "n_agents": 100,
+      "duration_seconds": 88.10332012176514,
+      "statistics": {
+        "ensemble_probability": 0.19099999999999995,
+        "ensemble_brier_score": 0.028561000000000013,
+        "individual_mean_brier": 0.03296599999999998,
+        "individual_std_brier": 0.01710309457378985,
+        "probability_mean": 0.19099999999999995,
+        "probability_std": 0.06637017402418047,
+        "probability_min": 0.12,
+        "probability_max": 0.35,
+        "ground_truth": 0.36,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "shard_everything",
+      "sharding_strategy": "shard_everything",
+      "period": 3,
+      "n_agents": 100,
+      "duration_seconds": 190.78731441497803,
+      "statistics": {
+        "ensemble_probability": 0.2969,
+        "ensemble_brier_score": 0.003981609999999998,
+        "individual_mean_brier": 0.032829,
+        "individual_std_brier": 0.026397940431026053,
+        "probability_mean": 0.2969,
+        "probability_std": 0.16984519422109065,
+        "probability_min": 0.05,
+        "probability_max": 0.78,
+        "ground_truth": 0.36,
+        "n_predictions": 100
+      }
+    },
+    {
+      "condition": "shard_initial_only",
+      "sharding_strategy": "shard_initial_only",
+      "period": 3,
+      "n_agents": 100,
+      "duration_seconds": 144.1346914768219,
+      "statistics": {
+        "ensemble_probability": 0.20789999999999992,
+        "ensemble_brier_score": 0.023134410000000022,
+        "individual_mean_brier": 0.028516999999999983,
+        "individual_std_brier": 0.01801758060894969,
+        "probability_mean": 0.20789999999999992,
+        "probability_std": 0.07336613660265885,
+        "probability_min": 0.15,
+        "probability_max": 0.35,
+        "ground_truth": 0.36,
+        "n_predictions": 100
+      }
+    }
+  ],
+  "timestamp": "2026-02-11T12:22:36.043798"
+}

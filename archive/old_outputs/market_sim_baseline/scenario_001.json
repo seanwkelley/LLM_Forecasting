@@ -1,0 +1,813 @@
+{
+  "summary": {
+    "scenario_id": "scenario_001",
+    "model": "rule_based",
+    "n_periods": 15,
+    "mean_price": 121.81,
+    "std_price": 7.11,
+    "min_price": 108.38,
+    "max_price": 134.44,
+    "mean_volume": 34.3,
+    "return_std": 0.0456,
+    "price_range_pct": 21.4
+  },
+  "agent_finals": {
+    "producer_A": {
+      "role": "producer",
+      "cash": 15541.86,
+      "inventory": 60,
+      "pnl": 14937.86
+    },
+    "producer_B": {
+      "role": "producer",
+      "cash": 63.41,
+      "inventory": 47,
+      "pnl": 710.61
+    },
+    "consumer_A": {
+      "role": "consumer",
+      "cash": 21386.01,
+      "inventory": 0,
+      "pnl": 11622.24
+    },
+    "consumer_B": {
+      "role": "consumer",
+      "cash": 5993.87,
+      "inventory": 0,
+      "pnl": 1365.87
+    },
+    "consumer_C": {
+      "role": "consumer",
+      "cash": 8477.2,
+      "inventory": 0,
+      "pnl": 2226.57
+    },
+    "speculator_A": {
+      "role": "speculator",
+      "cash": 6959.65,
+      "inventory": 10,
+      "pnl": -296.35
+    },
+    "speculator_B": {
+      "role": "speculator",
+      "cash": 6042.9,
+      "inventory": 5,
+      "pnl": -213.1
+    }
+  },
+  "price_history": [
+    108.38,
+    113.66,
+    113.66,
+    115.94,
+    119.75,
+    125.03,
+    125.03,
+    134.44,
+    134.44,
+    121.59,
+    123.84,
+    123.84,
+    116.31,
+    125.6,
+    125.6
+  ],
+  "volume_history": [
+    35,
+    40,
+    40,
+    60,
+    40,
+    40,
+    0,
+    30,
+    30,
+    40,
+    30,
+    30,
+    40,
+    30,
+    30
+  ],
+  "fundamental_history": [
+    101.56,
+    101.56,
+    101.56,
+    108.98,
+    108.98,
+    108.98,
+    133.16,
+    133.16,
+    133.16,
+    108.98,
+    123.35,
+    123.35,
+    108.98,
+    124.98,
+    124.98
+  ],
+  "orders_log": [
+    {
+      "period": 0,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 25,
+          "limit_price": 67.7,
+          "reasoning": "Sell at cost+15%, inv=25"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 90.27,
+          "reasoning": "Sell at cost+15%, inv=10"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 22.957248000000003,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=15"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 12.10496,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=5"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 13.599616000000001,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=10"
+        }
+      ],
+      "clearing_price": 108.38,
+      "volume": 35.0,
+      "fundamental_price": 101.56182559999999
+    },
+    {
+      "period": 1,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 67.7,
+          "reasoning": "Sell at cost+15%, inv=30.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 90.27,
+          "reasoning": "Sell at cost+15%, inv=10"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 48.392,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=10.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 24.09,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 28.514000000000003,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=6.042751999999997"
+        }
+      ],
+      "clearing_price": 113.655,
+      "volume": 40,
+      "fundamental_price": 101.56182559999999
+    },
+    {
+      "period": 2,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 67.7,
+          "reasoning": "Sell at cost+15%, inv=30.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 90.27,
+          "reasoning": "Sell at cost+15%, inv=10"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 51.392,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 24.09,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 30.514000000000003,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 113.655,
+      "volume": 40,
+      "fundamental_price": 101.56182559999999
+    },
+    {
+      "period": 3,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 84.77,
+          "reasoning": "Sell at cost+15%, inv=30.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 113.02,
+          "reasoning": "Sell at cost+15%, inv=10"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32.0,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19.0,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 115.93,
+          "reasoning": "Sell on uptrend, trend=2.64"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 115.93,
+          "reasoning": "Sell on uptrend, trend=2.64"
+        }
+      ],
+      "clearing_price": 115.945,
+      "volume": 60.0,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 4,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 84.77,
+          "reasoning": "Sell at cost+15%, inv=30.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 113.02,
+          "reasoning": "Sell at cost+15%, inv=10.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32.0,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15.0,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19.0,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 119.755,
+      "volume": 40.0,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 5,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 84.77,
+          "reasoning": "Sell at cost+15%, inv=30.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 113.02,
+          "reasoning": "Sell at cost+15%, inv=10.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 48.992,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 22.965,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 29.089,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 125.03,
+      "volume": 40,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 6,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 140.37,
+          "reasoning": "Sell at cost+15%, inv=30.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 187.16,
+          "reasoning": "Sell at cost+15%, inv=10.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 48.992,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 22.965,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 29.089,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 125.03,
+      "volume": 0,
+      "fundamental_price": 133.15688
+    },
+    {
+      "period": 7,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 131.83,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 187.16,
+          "reasoning": "Sell at cost+15%, inv=20.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 48.992,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 22.965,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 29.089,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 134.435,
+      "volume": 30,
+      "fundamental_price": 133.15688
+    },
+    {
+      "period": 8,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 131.83,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 187.16,
+          "reasoning": "Sell at cost+15%, inv=30.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32.0,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15.0,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19.0,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 134.435,
+      "volume": 30,
+      "fundamental_price": 133.15688
+    },
+    {
+      "period": 9,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 79.61,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 106.14,
+          "reasoning": "Sell at cost+8%, inv=40.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 46.24,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 21.675,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 27.455000000000002,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 121.59,
+      "volume": 40,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 10,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 110.65,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 147.54,
+          "reasoning": "Sell at cost+8%, inv=40.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 46.24,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 21.675,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 27.455000000000002,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 5,
+          "limit_price": 119.16,
+          "reasoning": "Buy on downtrend, trend=-6.42"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 5,
+          "limit_price": 119.16,
+          "reasoning": "Buy on downtrend, trend=-6.42"
+        }
+      ],
+      "clearing_price": 123.845,
+      "volume": 30,
+      "fundamental_price": 123.35345
+    },
+    {
+      "period": 11,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 110.65,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 147.54,
+          "reasoning": "Sell at cost+8%, inv=46.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 46.24,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 21.675,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 27.455000000000002,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 5,
+          "limit_price": 121.37,
+          "reasoning": "Buy on downtrend, trend=-5.30"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 5,
+          "limit_price": 121.37,
+          "reasoning": "Buy on downtrend, trend=-5.30"
+        }
+      ],
+      "clearing_price": 123.845,
+      "volume": 30,
+      "fundamental_price": 123.35345
+    },
+    {
+      "period": 12,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 79.61,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 106.14,
+          "reasoning": "Sell at cost+8%, inv=46.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32.0,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15.0,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19.0,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 116.315,
+      "volume": 40.0,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 13,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 114.16,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 152.21,
+          "reasoning": "Sell at cost+8%, inv=46.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32.0,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15.0,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19.0,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 5,
+          "limit_price": 113.99,
+          "reasoning": "Buy on downtrend, trend=-3.77"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 5,
+          "limit_price": 113.99,
+          "reasoning": "Buy on downtrend, trend=-3.77"
+        }
+      ],
+      "clearing_price": 125.6,
+      "volume": 30,
+      "fundamental_price": 124.97506999999999
+    },
+    {
+      "period": 14,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 114.16,
+          "reasoning": "Sell at cost+8%, inv=60.0"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 152.21,
+          "reasoning": "Sell at cost+8%, inv=47.0"
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32.0,
+          "limit_price": 137.04,
+          "reasoning": "Buy at value-5%, inv=0.957248000000007"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15.0,
+          "limit_price": 115.96,
+          "reasoning": "Buy at value-5%, inv=0.0"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19.0,
+          "limit_price": 126.49,
+          "reasoning": "Buy at value-5%, inv=0.04275199999999657"
+        }
+      ],
+      "clearing_price": 125.6,
+      "volume": 30,
+      "fundamental_price": 124.97506999999999
+    }
+  ],
+  "errors": []
+}

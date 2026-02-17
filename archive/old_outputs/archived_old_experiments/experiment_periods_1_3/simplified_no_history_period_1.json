@@ -1,0 +1,4797 @@
+{
+  "condition": "simplified_no_history",
+  "period": 1,
+  "n_agents": 100,
+  "factions": {
+    "novaris": {
+      "ground_truth": [
+        "military_buildup",
+        "naval_deployment",
+        "strategic_stockpiling",
+        "trade_negotiation"
+      ],
+      "n_predictions": 100,
+      "individual_metrics": {
+        "individual_metrics": [
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "full_scale_attack",
+              "cyber_attack",
+              "surveillance_operation",
+              "asset_seizure"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "precision_strike",
+              "enhanced_intelligence_gathering",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "spread_disinformation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "public_diplomatic_initiative",
+              "enhanced_intelligence_gathering",
+              "cyber_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "public_diplomatic_initiative",
+              "cyber_attack",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.3333333333333333,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 4,
+            "n_actual": 4,
+            "false_positives": [
+              "intelligence_gathering",
+              "public_diplomatic_initiative"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "information_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "intelligence_gathering",
+              "propaganda_campaign"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "asset_seizure",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "intelligence_gathering",
+              "propaganda_campaign"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "propaganda_campaign",
+              "occupation",
+              "enhanced_intelligence_gathering",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "propaganda_campaign",
+              "spread_disinformation",
+              "occupation",
+              "trade_restrictions",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "intelligence_gathering",
+              "propaganda_campaign"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "cyber_attack",
+              "public_diplomatic_initiative",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "diplomatic_visit",
+              "information_campaign",
+              "show_of_force",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "war_bonds",
+              "propaganda_campaign",
+              "counterintelligence",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "propaganda_campaign",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "public_diplomatic_initiative",
+              "cyber_attack",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "intelligence_gathering",
+              "propaganda_campaign"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "spread_disinformation",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "trade_agreement",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "information_campaign",
+              "formal_multilateral_engagement",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "intelligence_gathering",
+              "formal_multilateral_engagement",
+              "precision_strike"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "trade_restrictions",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "public_diplomatic_initiative",
+              "cyber_attack",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "spread_disinformation",
+              "blockade",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "cyber_attack",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "enhanced_patrols",
+              "intelligence_gathering",
+              "public_diplomatic_initiative",
+              "trade_agreement"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "border_incursion",
+              "propaganda_campaign",
+              "cyber_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "formal_multilateral_engagement",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "public_diplomatic_initiative",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "public_diplomatic_initiative",
+              "enhanced_intelligence_gathering",
+              "targeted_sanctions"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "cyber_attack",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "propaganda_campaign",
+              "trade_restrictions",
+              "information_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "propaganda_campaign",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "cyber_attack",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "humanitarian_corridors",
+              "public_diplomatic_initiative",
+              "enhanced_intelligence_gathering",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "full_scale_attack",
+              "propaganda_campaign",
+              "coalition_building",
+              "asset_seizure"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "trade_restrictions",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "cyber_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "border_incursion",
+              "propaganda_campaign",
+              "trade_agreement"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "intelligence_gathering",
+              "public_diplomatic_initiative",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "asset_seizure",
+              "occupation",
+              "enhanced_surveillance",
+              "information_campaign",
+              "naval_demonstration",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "propaganda_campaign",
+              "regime_destabilization",
+              "trade_restrictions",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "public_diplomatic_initiative",
+              "enhanced_intelligence_gathering"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation"
+            ]
+          },
+          {
+            "jaccard": 0.3333333333333333,
+            "precision": 0.5,
+            "recall": 0.5,
+            "f1": 0.5,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 4,
+            "n_actual": 4,
+            "false_positives": [
+              "public_diplomatic_initiative",
+              "enhanced_intelligence_gathering"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "propaganda_campaign",
+              "spread_disinformation",
+              "occupation",
+              "trade_restrictions",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "trade_agreement"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "trade_agreement",
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "propaganda_campaign",
+              "public_diplomatic_initiative",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "cyber_attack",
+              "occupation",
+              "enhanced_intelligence_gathering",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "propaganda_campaign",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "full_scale_attack",
+              "propaganda_campaign",
+              "cyber_defense"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "spread_disinformation",
+              "blockade",
+              "currency_manipulation",
+              "military_exercises",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "asset_seizure",
+              "spread_disinformation",
+              "public_diplomatic_initiative",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "cyber_attack",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "border_incursion",
+              "propaganda_campaign"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "cyber_defense"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "border_incursion",
+              "propaganda_campaign"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "information_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "trade_agreement"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "asset_seizure",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "full_scale_attack",
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "cyber_defense"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "cyber_attack",
+              "propaganda_campaign",
+              "trade_agreement",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "trade_agreement",
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "intelligence_gathering",
+              "diplomatic_visit",
+              "trade_agreement",
+              "cyber_defense"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "cyber_attack",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "occupation",
+              "cyber_attack",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.3333333333333333,
+            "recall": 0.5,
+            "f1": 0.4,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "intelligence_gathering",
+              "public_diplomatic_initiative",
+              "cyber_defense"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "backchannel_negotiations",
+              "intelligence_gathering",
+              "diplomatic_visit",
+              "military_exercises"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "public_diplomatic_initiative",
+              "enhanced_intelligence_gathering",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "trade_agreement",
+              "propaganda_campaign",
+              "blockade",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "backchannel_negotiations",
+              "intelligence_gathering",
+              "propaganda_campaign",
+              "border_incursion"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "occupation",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.1111111111111111,
+            "precision": 0.16666666666666666,
+            "recall": 0.25,
+            "f1": 0.2,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 4,
+            "false_positives": [
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "occupation",
+              "regime_destabilization",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "propaganda_campaign",
+              "cyber_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "information_campaign",
+              "border_incursion",
+              "enhanced_intelligence_gathering",
+              "trade_restrictions"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "trade_restrictions",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "exact_match": false,
+            "n_correct": 0,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "propaganda_campaign",
+              "trade_restrictions",
+              "enhanced_surveillance",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "trade_negotiation",
+              "strategic_stockpiling",
+              "military_buildup"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "formal_multilateral_engagement",
+              "cyber_defense"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "border_incursion",
+              "propaganda_campaign",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1": 0.4444444444444445,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "backchannel_negotiations",
+              "intelligence_gathering",
+              "propaganda_campaign"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "strategic_stockpiling"
+            ]
+          },
+          {
+            "jaccard": 0.125,
+            "precision": 0.2,
+            "recall": 0.25,
+            "f1": 0.22222222222222224,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 5,
+            "n_actual": 4,
+            "false_positives": [
+              "economic_sanctions",
+              "cyber_attack",
+              "propaganda_campaign",
+              "full_scale_attack"
+            ],
+            "false_negatives": [
+              "naval_deployment",
+              "military_buildup",
+              "strategic_stockpiling"
+            ]
+          }
+        ],
+        "mean_jaccard": 0.1480952380952381,
+        "std_jaccard": 0.10867058963746443,
+        "mean_precision": 0.21566666666666662,
+        "std_precision": 0.1505881063622814,
+        "mean_recall": 0.2775,
+        "std_recall": 0.1900493356999703,
+        "mean_f1": 0.24222222222222223,
+        "std_f1": 0.16707357734517322,
+        "mean_n_correct": 1.11,
+        "mean_n_predicted": 5.24,
+        "most_common_predictions": [
+          [
+            "propaganda_campaign",
+            73
+          ],
+          [
+            "full_scale_attack",
+            68
+          ],
+          [
+            "military_buildup",
+            49
+          ],
+          [
+            "trade_negotiation",
+            41
+          ],
+          [
+            "backchannel_negotiations",
+            36
+          ],
+          [
+            "cyber_attack",
+            33
+          ],
+          [
+            "occupation",
+            29
+          ],
+          [
+            "enhanced_intelligence_gathering",
+            22
+          ],
+          [
+            "strategic_stockpiling",
+            21
+          ],
+          [
+            "intelligence_gathering",
+            21
+          ]
+        ],
+        "prediction_diversity": 0.88,
+        "any_correct_rate": 0.76
+      },
+      "ensemble_prediction": [
+        "propaganda_campaign",
+        "full_scale_attack",
+        "military_buildup",
+        "trade_negotiation"
+      ],
+      "ensemble_metrics": {
+        "jaccard": 0.3333333333333333,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5,
+        "exact_match": false,
+        "n_correct": 2,
+        "n_predicted": 4,
+        "n_actual": 4,
+        "false_positives": [
+          "propaganda_campaign",
+          "full_scale_attack"
+        ],
+        "false_negatives": [
+          "naval_deployment",
+          "strategic_stockpiling"
+        ]
+      },
+      "duration_seconds": 117.88041567802429
+    },
+    "tethys": {
+      "ground_truth": [
+        "show_of_force",
+        "military_exercises",
+        "coalition_building",
+        "backchannel_negotiations",
+        "humanitarian_aid",
+        "strategic_stockpiling",
+        "trade_restrictions"
+      ],
+      "n_predictions": 100,
+      "individual_metrics": {
+        "individual_metrics": [
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "naval_patrols",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "joint_exercises",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "military_buildup",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance",
+              "naval_deployment"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "military_exercises",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.08333333333333333,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "f1": 0.15384615384615383,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.06666666666666667,
+            "precision": 0.1111111111111111,
+            "recall": 0.14285714285714285,
+            "f1": 0.125,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 9,
+            "n_actual": 7,
+            "false_positives": [
+              "economic_sanctions",
+              "counterintelligence",
+              "cyber_defense",
+              "public_diplomatic_initiative",
+              "diplomatic_visit",
+              "formal_multilateral_engagement",
+              "defensive_fortification",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "military_buildup",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "diplomatic_visit"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "military_buildup",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.14285714285714285,
+            "precision": 0.2222222222222222,
+            "recall": 0.2857142857142857,
+            "f1": 0.25,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 9,
+            "n_actual": 7,
+            "false_positives": [
+              "economic_sanctions",
+              "propaganda_campaign",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "naval_patrols",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "counterintelligence",
+              "cyber_defense",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "share_intelligence",
+              "formal_multilateral_engagement",
+              "public_diplomatic_initiative",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.08333333333333333,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "f1": 0.15384615384615383,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "cyber_defense",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "intelligence_gathering",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "intelligence_gathering",
+              "cyber_defense",
+              "defensive_fortification",
+              "public_diplomatic_initiative"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "military_buildup",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "diplomatic_visit"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "naval_patrols",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "naval_patrols",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "share_intelligence"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "cyber_defense",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "share_intelligence",
+              "formal_multilateral_engagement",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "naval_patrols",
+              "enhanced_intelligence_gathering",
+              "cyber_defense",
+              "defensive_fortification",
+              "diplomatic_visit"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.08333333333333333,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "f1": 0.15384615384615383,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "surveillance_operation"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "military_buildup",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "naval_patrols",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "joint_exercises",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "diplomatic_visit"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "military_buildup",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.2727272727272727,
+            "precision": 0.42857142857142855,
+            "recall": 0.42857142857142855,
+            "f1": 0.42857142857142855,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "defensive_fortification",
+              "enhanced_intelligence_gathering",
+              "trade_negotiation",
+              "counterintelligence"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "joint_exercises",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "defensive_reinforcements",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "financial_aid",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.18181818181818182,
+            "precision": 0.3333333333333333,
+            "recall": 0.2857142857142857,
+            "f1": 0.30769230769230765,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "defensive_fortification",
+              "naval_patrols",
+              "trade_agreement",
+              "counterintelligence"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.08333333333333333,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "f1": 0.15384615384615383,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "counterintelligence",
+              "joint_exercises",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "joint_exercises",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "military_buildup",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "enhanced_intelligence_gathering",
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "financial_aid",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "joint_exercises",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "surveillance_operation"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.14285714285714285,
+            "precision": 0.2222222222222222,
+            "recall": 0.2857142857142857,
+            "f1": 0.25,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 9,
+            "n_actual": 7,
+            "false_positives": [
+              "economic_sanctions",
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_agreement",
+              "enhanced_intelligence_gathering",
+              "cyber_defense",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "military_buildup",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "defensive_reinforcements",
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "share_intelligence",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.18181818181818182,
+            "precision": 0.3333333333333333,
+            "recall": 0.2857142857142857,
+            "f1": 0.30769230769230765,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "trade_negotiation",
+              "counterintelligence"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.2727272727272727,
+            "precision": 0.42857142857142855,
+            "recall": 0.42857142857142855,
+            "f1": 0.42857142857142855,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "enhanced_surveillance",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "counterintelligence"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "show_of_force",
+              "humanitarian_aid",
+              "coalition_building"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "public_diplomatic_initiative"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "military_buildup",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.06666666666666667,
+            "precision": 0.1111111111111111,
+            "recall": 0.14285714285714285,
+            "f1": 0.125,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 9,
+            "n_actual": 7,
+            "false_positives": [
+              "naval_patrols",
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "share_intelligence",
+              "formal_multilateral_engagement",
+              "public_diplomatic_initiative",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "military_buildup",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "public_diplomatic_initiative"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "share_intelligence",
+              "formal_multilateral_engagement",
+              "public_diplomatic_initiative",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.2727272727272727,
+            "precision": 0.42857142857142855,
+            "recall": 0.42857142857142855,
+            "f1": 0.42857142857142855,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "trade_agreement",
+              "counterintelligence"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "show_of_force",
+              "military_exercises",
+              "trade_restrictions"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "naval_patrols",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "cyber_defense",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "intelligence_gathering",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "surveillance_operation"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "counterintelligence",
+              "defensive_fortification",
+              "share_intelligence",
+              "formal_multilateral_engagement",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.3,
+            "precision": 0.5,
+            "recall": 0.42857142857142855,
+            "f1": 0.4615384615384615,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "counterintelligence"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid",
+              "coalition_building"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "military_exercises",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "surveillance_operation"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "intelligence_gathering",
+              "naval_patrols",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "naval_patrols",
+              "counterintelligence",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "public_diplomatic_initiative"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "share_intelligence",
+              "diplomatic_visit",
+              "public_diplomatic_initiative"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_agreement",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "economic_sanctions",
+              "trade_negotiation",
+              "propaganda_campaign",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "diplomatic_visit",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.08333333333333333,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "f1": 0.15384615384615383,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "joint_exercises",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_agreement",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "public_diplomatic_initiative",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.16666666666666666,
+            "precision": 0.2857142857142857,
+            "recall": 0.2857142857142857,
+            "f1": 0.2857142857142857,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification"
+            ],
+            "false_negatives": [
+              "trade_restrictions",
+              "backchannel_negotiations",
+              "show_of_force",
+              "humanitarian_aid"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "naval_patrols",
+              "military_buildup",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.08333333333333333,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "f1": 0.15384615384615383,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "military_buildup",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_agreement",
+              "counterintelligence",
+              "public_diplomatic_initiative",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07692307692307693,
+            "precision": 0.14285714285714285,
+            "recall": 0.14285714285714285,
+            "f1": 0.14285714285714285,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 7,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "intelligence_gathering",
+              "military_buildup",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.25,
+            "precision": 0.375,
+            "recall": 0.42857142857142855,
+            "f1": 0.39999999999999997,
+            "exact_match": false,
+            "n_correct": 3,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "counterintelligence",
+              "cyber_defense",
+              "defensive_fortification",
+              "formal_multilateral_engagement"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "show_of_force",
+              "military_exercises",
+              "trade_restrictions"
+            ]
+          },
+          {
+            "jaccard": 0.08333333333333333,
+            "precision": 0.16666666666666666,
+            "recall": 0.14285714285714285,
+            "f1": 0.15384615384615383,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 6,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_negotiation",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_patrols"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.07142857142857142,
+            "precision": 0.125,
+            "recall": 0.14285714285714285,
+            "f1": 0.13333333333333333,
+            "exact_match": false,
+            "n_correct": 1,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "humanitarian_corridors",
+              "trade_negotiation",
+              "propaganda_campaign",
+              "counterintelligence",
+              "defensive_fortification",
+              "formal_multilateral_engagement",
+              "enhanced_surveillance"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "coalition_building",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          },
+          {
+            "jaccard": 0.15384615384615385,
+            "precision": 0.25,
+            "recall": 0.2857142857142857,
+            "f1": 0.26666666666666666,
+            "exact_match": false,
+            "n_correct": 2,
+            "n_predicted": 8,
+            "n_actual": 7,
+            "false_positives": [
+              "trade_agreement",
+              "enhanced_intelligence_gathering",
+              "counterintelligence",
+              "financial_aid",
+              "defensive_fortification",
+              "diplomatic_visit"
+            ],
+            "false_negatives": [
+              "backchannel_negotiations",
+              "humanitarian_aid",
+              "trade_restrictions",
+              "show_of_force",
+              "military_exercises"
+            ]
+          }
+        ],
+        "mean_jaccard": 0.1420214785214785,
+        "std_jaccard": 0.0641491319318187,
+        "mean_precision": 0.23678571428571427,
+        "std_precision": 0.09328656134237615,
+        "mean_recall": 0.25142857142857133,
+        "std_recall": 0.10125740083811058,
+        "mean_f1": 0.24332417582417576,
+        "std_f1": 0.09619538654404033,
+        "mean_n_correct": 1.76,
+        "mean_n_predicted": 7.44,
+        "most_common_predictions": [
+          [
+            "strategic_stockpiling",
+            100
+          ],
+          [
+            "defensive_fortification",
+            99
+          ],
+          [
+            "counterintelligence",
+            93
+          ],
+          [
+            "formal_multilateral_engagement",
+            63
+          ],
+          [
+            "public_diplomatic_initiative",
+            55
+          ],
+          [
+            "coalition_building",
+            52
+          ],
+          [
+            "trade_negotiation",
+            51
+          ],
+          [
+            "enhanced_surveillance",
+            36
+          ],
+          [
+            "enhanced_intelligence_gathering",
+            21
+          ],
+          [
+            "military_buildup",
+            20
+          ]
+        ],
+        "prediction_diversity": 0.95,
+        "any_correct_rate": 1.0
+      },
+      "ensemble_prediction": [
+        "strategic_stockpiling",
+        "defensive_fortification",
+        "counterintelligence",
+        "formal_multilateral_engagement",
+        "public_diplomatic_initiative",
+        "coalition_building",
+        "trade_negotiation"
+      ],
+      "ensemble_metrics": {
+        "jaccard": 0.16666666666666666,
+        "precision": 0.2857142857142857,
+        "recall": 0.2857142857142857,
+        "f1": 0.2857142857142857,
+        "exact_match": false,
+        "n_correct": 2,
+        "n_predicted": 7,
+        "n_actual": 7,
+        "false_positives": [
+          "trade_negotiation",
+          "counterintelligence",
+          "defensive_fortification",
+          "public_diplomatic_initiative",
+          "formal_multilateral_engagement"
+        ],
+        "false_negatives": [
+          "backchannel_negotiations",
+          "humanitarian_aid",
+          "trade_restrictions",
+          "show_of_force",
+          "military_exercises"
+        ]
+      },
+      "duration_seconds": 117.43304824829102
+    }
+  }
+}

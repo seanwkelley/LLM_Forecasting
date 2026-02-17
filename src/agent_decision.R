@@ -831,29 +831,42 @@ Your decision should reflect the WARTIME REALITY:
 
 Your rationality level (", round(cognitive_rat * 100), "%), paranoia (", round(paranoia * 100), "%), and emotional volatility (", round(volatility * 100), "%) should significantly influence your assessment of threats and opportunities.
 
-=== CRITICAL: CROSS-EXPERTISE DECISION MAKING ===
+=== YOUR DOMAIN EXPERTISE ===
 
-You bring ", toupper(agent_role), " EXPERTISE to this decision, but you can recommend ANY action that serves your faction's interests.
+You bring ", toupper(agent_role), " EXPERTISE to this decision. Your value comes from your SPECIALIZED PERSPECTIVE - you see aspects of the situation that other experts miss.
 
-YOUR EXPERTISE:
-- You understand what makes certain options FEASIBLE vs futile in your domain
-- You can assess which approaches are likely to SUCCEED based on your experience
-- Your perspective reveals threats and opportunities others might miss
+YOUR UNIQUE CONTRIBUTION:
+- You understand what makes options in YOUR domain FEASIBLE vs futile
+- You can assess costs, risks, and timing that others cannot
+- The faction has OTHER experts covering other domains - your job is to provide the best ", toupper(agent_role), " assessment
 
-However, EXPERTISE DOES NOT MEAN CONSTRAINT:
-- A military expert CAN recommend diplomacy (if force has reached diminishing returns)
-- An economic expert CAN recommend strikes (if decisive action costs less than attrition)
-- A diplomat CAN recommend covert ops (if it creates leverage for negotiations)
-- An intelligence chief CAN recommend humanitarian aid (if it builds networks for intelligence)
-- A government leader CAN recommend actions outside traditional political comfort zones
+DOMAIN-SPECIFIC FOCUS:
+", if (agent_role == "military") {
+  "- Focus on MILITARY BALANCE and CRISIS LEVEL as your primary indicators
+  - Your domain: military posture, deployments, exercises, fortification, kinetic operations
+  - Consider the full RANGE of military options from defensive to offensive"
+} else if (agent_role == "intelligence") {
+  "- Focus on TERRITORY UNDER ENEMY CONTROL and MILITARY BALANCE for adversary vulnerabilities
+  - Your domain: intelligence collection, surveillance, covert operations, cyber, information warfare
+  - Consider the full RANGE from passive collection to active operations"
+} else if (agent_role == "economic") {
+  "- Focus on SANCTIONS SEVERITY, TERRITORY CONTROLLED, and INTERNATIONAL SUPPORT for economic leverage
+  - Your domain: sanctions, embargoes, trade, financial warfare, economic incentives
+  - Consider the full RANGE from economic pressure to economic inducements"
+} else if (agent_role == "diplomatic") {
+  "- Focus on INTERNATIONAL SUPPORT and SANCTIONS LEVEL for diplomatic leverage
+  - Your domain: negotiations, coalition-building, humanitarian initiatives, mediation
+  - Consider the full RANGE from de-escalation to diplomatic pressure"
+} else {
+  "- Assess ALL scenario parameters through the lens of your expertise
+  - Your domain covers a broad range of policy options"
+}, "
 
 YOUR TASK:
-- What does YOUR expertise tell you about which options will actually WORK?
-- How does YOUR worldview (", agent_worldview, ") shape what you see as threats and opportunities?
-- What does YOUR character genuinely believe is optimal - even if outside your traditional domain?
-- Are there actions in OTHER categories that might better serve your faction's strategic position?
-
-Recommend the action that BEST SERVES your faction, regardless of whether it fits your job title.
+- What does YOUR ", toupper(agent_role), " expertise tell you about the situation given the EXACT parameters above?
+- How does YOUR worldview (", agent_worldview, ") shape your assessment of threats and opportunities?
+- What is the best action FROM YOUR DOMAIN given current conditions?
+- Only recommend actions outside your domain if your own domain's tools are genuinely exhausted or counterproductive.
 
 AVAILABLE ACTIONS BY CATEGORY (with costs and effects):
 
@@ -1005,96 +1018,117 @@ format_situation_for_agent <- function(context, agent = NULL) {
     perceived_crisis <- state$crisis_level
     if (paranoia > 0.7) {
       perceived_crisis <- min(10, perceived_crisis * 1.25)  # High paranoia sees 25% more crisis
-      parts <- c(parts, sprintf("Crisis Level: %.0f/10 (CRITICAL - situation deteriorating rapidly)", round(perceived_crisis)))
+      parts <- c(parts, sprintf("Crisis Level: %.1f/10 (CRITICAL - situation deteriorating rapidly)", perceived_crisis))
     } else if (paranoia < 0.3) {
       perceived_crisis <- max(1, perceived_crisis * 0.85)  # Low paranoia underestimates
-      parts <- c(parts, sprintf("Crisis Level: %.0f/10 (manageable)", round(perceived_crisis)))
+      parts <- c(parts, sprintf("Crisis Level: %.1f/10 (manageable)", perceived_crisis))
     } else {
-      parts <- c(parts, sprintf("Crisis Level: %.0f/10", round(perceived_crisis)))
+      parts <- c(parts, sprintf("Crisis Level: %.1f/10", state$crisis_level))
     }
   }
 
-  # Military balance - worldview affects interpretation
+  # Military balance - worldview affects interpretation, but always show exact value
   if (!is.null(state$military_balance)) {
     mb <- state$military_balance
+    # Always include the numeric value (negative = favors Novaris, positive = favors Tethys)
+    numeric_tag <- sprintf("[exact: %+.2f]", mb)
     if (!is.null(worldview)) {
       if (worldview == "realist") {
-        # Realists see military balance as MORE concerning (threat-focused)
         if (mb < -0.2) {
-          parts <- c(parts, "Military Balance: DANGEROUS - enemy has significant advantage")
+          parts <- c(parts, sprintf("Military Balance: DANGEROUS - enemy has significant advantage %s", numeric_tag))
         } else if (mb < 0) {
-          parts <- c(parts, "Military Balance: Unfavorable - requires immediate attention")
+          parts <- c(parts, sprintf("Military Balance: Unfavorable - requires immediate attention %s", numeric_tag))
         } else if (mb > 0.2) {
-          parts <- c(parts, "Military Balance: Strong position - maintain pressure")
+          parts <- c(parts, sprintf("Military Balance: Strong position - maintain pressure %s", numeric_tag))
         } else {
-          parts <- c(parts, "Military Balance: Contested - window of opportunity")
+          parts <- c(parts, sprintf("Military Balance: Contested - window of opportunity %s", numeric_tag))
         }
       } else if (worldview == "liberal_institutionalist") {
-        # Liberals see opportunity for negotiation
         if (mb < -0.3) {
-          parts <- c(parts, "Military Balance: Favors adversary, but diplomatic solutions remain viable")
+          parts <- c(parts, sprintf("Military Balance: Favors adversary, but diplomatic solutions remain viable %s", numeric_tag))
         } else if (mb > 0.1) {
-          parts <- c(parts, "Military Balance: Favorable - negotiate from strength")
+          parts <- c(parts, sprintf("Military Balance: Favorable - negotiate from strength %s", numeric_tag))
         } else {
-          parts <- c(parts, "Military Balance: Balanced - ideal conditions for talks")
+          parts <- c(parts, sprintf("Military Balance: Balanced - ideal conditions for talks %s", numeric_tag))
         }
       } else if (worldview == "nationalist_populist") {
-        # Nationalists see any adversary advantage as existential
         if (mb < 0) {
-          parts <- c(parts, "Military Balance: ENEMY ADVANCING - national survival at stake")
+          parts <- c(parts, sprintf("Military Balance: ENEMY ADVANCING - national survival at stake %s", numeric_tag))
         } else {
-          parts <- c(parts, "Military Balance: Our strength prevails - press the advantage")
+          parts <- c(parts, sprintf("Military Balance: Our strength prevails - press the advantage %s", numeric_tag))
         }
       } else {
-        # Default neutral assessment
-        if (mb < -0.3) {
-          parts <- c(parts, "Military Balance: Heavily favors major power")
-        } else if (mb < -0.1) {
-          parts <- c(parts, "Military Balance: Favors major power")
-        } else if (mb > 0.1) {
-          parts <- c(parts, "Military Balance: Favors smaller power")
-        } else {
-          parts <- c(parts, "Military Balance: Roughly equal")
-        }
+        parts <- c(parts, sprintf("Military Balance: %s %s",
+          if (mb < -0.3) "Heavily favors major power"
+          else if (mb < -0.1) "Favors major power"
+          else if (mb > 0.1) "Favors smaller power"
+          else "Roughly equal",
+          numeric_tag))
       }
     } else {
-      # No agent - neutral assessment
-      if (mb < -0.3) {
-        parts <- c(parts, "Military Balance: Heavily favors major power")
-      } else if (mb < -0.1) {
-        parts <- c(parts, "Military Balance: Favors major power")
-      } else if (mb > 0.1) {
-        parts <- c(parts, "Military Balance: Favors smaller power")
-      } else {
-        parts <- c(parts, "Military Balance: Roughly equal")
-      }
+      parts <- c(parts, sprintf("Military Balance: %s %s",
+        if (mb < -0.3) "Heavily favors major power"
+        else if (mb < -0.1) "Favors major power"
+        else if (mb > 0.1) "Favors smaller power"
+        else "Roughly equal",
+        numeric_tag))
     }
   }
 
-  # Sanctions - worldview affects interpretation
-  if (!is.null(state$sanctions_level) && state$sanctions_level > 0) {
-    if (!is.null(worldview) && worldview == "pragmatic_technocrat") {
-      # Technocrats focus on exact numbers
-      parts <- c(parts, sprintf("Economic Sanctions: %.0f%% severity (estimated GDP impact: -%.1f%%)",
-                               state$sanctions_level * 100,
-                               state$sanctions_level * 20))
-    } else if (state$sanctions_level > 0.5) {
-      parts <- c(parts, "Economic Sanctions: Severe")
-    } else if (state$sanctions_level > 0.2) {
-      parts <- c(parts, "Economic Sanctions: Moderate")
+  # Sanctions - worldview affects interpretation, but always show exact value
+  if (!is.null(state$sanctions_level)) {
+    sl <- state$sanctions_level
+    numeric_tag <- sprintf("[exact: %.0f%%]", sl * 100)
+    if (sl > 0) {
+      if (!is.null(worldview) && worldview == "pragmatic_technocrat") {
+        parts <- c(parts, sprintf("Economic Sanctions: %.0f%% severity (estimated GDP impact: -%.1f%%)",
+                                 sl * 100, sl * 20))
+      } else if (sl > 0.5) {
+        parts <- c(parts, sprintf("Economic Sanctions: Severe %s", numeric_tag))
+      } else if (sl > 0.2) {
+        parts <- c(parts, sprintf("Economic Sanctions: Moderate %s", numeric_tag))
+      } else {
+        parts <- c(parts, sprintf("Economic Sanctions: Limited %s", numeric_tag))
+      }
     } else {
-      parts <- c(parts, "Economic Sanctions: Limited")
+      parts <- c(parts, "Economic Sanctions: None [exact: 0%]")
     }
   }
 
-  # Territory - paranoia affects interpretation
+  # Territory - always show exact percentage
   if (!is.null(state$territory_controlled)) {
-    if (paranoia > 0.7 && state$territory_controlled > 0.1) {
-      parts <- c(parts, sprintf("Territory Under Enemy Control: %.0f%% - UNACCEPTABLE losses mounting",
-                               state$territory_controlled * 100))
+    tc <- state$territory_controlled
+    if (paranoia > 0.7 && tc > 0.1) {
+      parts <- c(parts, sprintf("Territory Under Enemy Control: %.1f%% - UNACCEPTABLE losses mounting",
+                               tc * 100))
     } else {
-      parts <- c(parts, sprintf("Territory Under Control: %.0f%%",
-                               state$territory_controlled * 100))
+      parts <- c(parts, sprintf("Territory Under Enemy Control: %.1f%%", tc * 100))
+    }
+  }
+
+  # International support - was previously missing entirely
+  if (!is.null(state$international_support)) {
+    is_val <- state$international_support
+    if (!is.null(worldview)) {
+      if (worldview == "liberal_institutionalist") {
+        if (is_val > 0.7) {
+          parts <- c(parts, sprintf("International Support: Strong coalition backing (%.0f%%) - multilateral framework holds", is_val * 100))
+        } else if (is_val > 0.4) {
+          parts <- c(parts, sprintf("International Support: Moderate (%.0f%%) - coalition needs strengthening", is_val * 100))
+        } else {
+          parts <- c(parts, sprintf("International Support: Weak (%.0f%%) - URGENT need for diplomatic outreach", is_val * 100))
+        }
+      } else if (worldview == "realist") {
+        if (is_val > 0.7) {
+          parts <- c(parts, sprintf("International Support: %.0f%% - useful but ultimately unreliable", is_val * 100))
+        } else {
+          parts <- c(parts, sprintf("International Support: %.0f%% - cannot depend on external actors", is_val * 100))
+        }
+      } else {
+        parts <- c(parts, sprintf("International Support: %.0f%%", is_val * 100))
+      }
+    } else {
+      parts <- c(parts, sprintf("International Support: %.0f%%", is_val * 100))
     }
   }
 

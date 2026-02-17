@@ -1,0 +1,467 @@
+"""
+Information Sharding Experiment: Period 1 Action Prediction
+============================================================
+
+Tests whether information asymmetry increases prediction diversity and
+improves ensemble performance.
+
+Conditions:
+- Baseline: Generic, 100% information (N=100)
+- Sharding: Generic, mixed information (N=100: 20@25%, 20@50%, 20@75%, 40@100%)
+
+Hypothesis: Ensemble with sharded information outperforms uniform full information
+due to increased diversity without excessive noise.
+"""
+
+import sys
+sys.path.insert(0, 'D:/Northeastern/LLM_Forecasting')
+
+import json
+import time
+from pathlib import Path
+from typing import Dict, List, Optional
+from datetime import datetime
+import concurrent.futures
+import numpy as np
+
+# Import core components
+from forecasting.forecaster_base import BaseLLMForecaster
+from forecasting.action_library import (
+    load_plausible_actions,
+    get_all_valid_actions,
+    format_plausible_actions_for_prompt
+)
+from forecasting.action_ground_truth import load_ground_truth
+from forecasting.action_evaluation import (
+    evaluate_action_set_prediction,
+    evaluate_aggregate_predictions,
+    validate_predictions
+)
+from forecasting.ensemble_aggregation import threshold_capped_ensemble
+from forecasting.action_prompts import (
+    create_novaris_action_prediction_prompt,
+    create_tethys_action_prediction_prompt
+)
+from forecasting.simulation_data import get_state_before, get_events
+from forecasting.information_sharding import (
+    shard_information,
+    create_information_distribution,
+    analyze_sharding
+)
+
+
+def run_single_prediction(
+    faction: str,
+    period: int,
+    state_before: dict,
+    external_events: list,
+    plausible_text: str,
+    novaris_actions: list,
+    information_fraction: float,
+    agent_id: int,
+    model: str = "deepseek/deepseek-v3.2"
+) -> dict:
+    """Run a single agent's prediction with information sharding."""
+
+    # Create forecaster in this thread
+    forecaster = BaseLLMForecaster(model=model)
+
+    # Create base prompt
+    if faction == 'novaris':
+        base_prompt = create_novaris_action_prediction_prompt(
+            period=period,
+            state_before=state_before,
+            external_events=external_events,
+            plausible_actions_text=plausible_text
+        )
+    else:
+        base_prompt = create_tethys_action_prediction_prompt(
+            period=period,
+            state_before=state_before,
+            external_events=external_events,
+            novaris_actions=novaris_actions,
+            plausible_actions_text=plausible_text
+        )
+
+    # Apply information sharding
+    if information_fraction < 1.0:
+        prompt = shard_information(base_prompt, information_fraction, seed=agent_id)
+    else:
+        prompt = base_prompt
+
+    # System prompt
+    system_prompt = """You are an expert strategic analyst specializing in geopolitical forecasting.
+
+Your task is to predict which actions a faction will take based on strategic analysis of:
+- Current military, economic, and diplomatic position
+- External events and their implications
+- Strategic objectives and constraints
+- Available action options
+
+Apply rigorous strategic reasoning to predict the most likely action set.
+Output ONLY valid JSON in the exact format specified."""
+
+    # Get prediction
+    try:
+        response_text, success = forecaster.call_llm(
+            user_prompt=prompt,
+            system_prompt=system_prompt,
+            response_format="json"
+        )
+
+        if not success:
+            return {
+                'predicted_actions': [],
+                'information_fraction': information_fraction,
+                'agent_id': agent_id
+            }
+
+        if not response_text or response_text.strip() == "":
+            return {
+                'predicted_actions': [],
+                'information_fraction': information_fraction,
+                'agent_id': agent_id
+            }
+
+        # Strip markdown code fences
+        response_text = response_text.strip()
+        if response_text.startswith("```json"):
+            response_text = response_text[7:]
+        if response_text.startswith("```"):
+            response_text = response_text[3:]
+        if response_text.endswith("```"):
+            response_text = response_text[:-3]
+        response_text = response_text.strip()
+
+        result = json.loads(response_text)
+        result['information_fraction'] = information_fraction
+        result['agent_id'] = agent_id
+        return result
+
+    except json.JSONDecodeError as e:
+        return {
+            'predicted_actions': [],
+            'information_fraction': information_fraction,
+            'agent_id': agent_id
+        }
+    except Exception as e:
+        return {
+            'predicted_actions': [],
+            'information_fraction': information_fraction,
+            'agent_id': agent_id
+        }
+
+
+def run_n_predictions_parallel(
+    n: int,
+    faction: str,
+    period: int,
+    state_before: dict,
+    external_events: list,
+    plausible_text: str,
+    novaris_actions: list,
+    information_fractions: List[float],
+    max_workers: int = 5
+) -> List[dict]:
+    """Run N predictions in parallel with information sharding."""
+
+    results = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = []
+        for i in range(n):
+            info_frac = information_fractions[i]
+
+            # Small delay to avoid overwhelming API
+            if i % 10 == 0 and i > 0:
+                time.sleep(0.5)
+
+            future = executor.submit(
+                run_single_prediction,
+                faction,
+                period,
+                state_before,
+                external_events,
+                plausible_text,
+                novaris_actions,
+                info_frac,
+                i  # agent_id for seeding
+            )
+            futures.append(future)
+
+        # Collect results
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                result = future.result()
+                results.append(result)
+            except Exception as e:
+                print(f"    [ERROR] Prediction failed: {e}")
+                results.append({'predicted_actions': [], 'information_fraction': 1.0, 'agent_id': -1})
+
+    return results
+
+
+def analyze_diversity(predictions: List[dict], valid_actions: List[str]) -> dict:
+    """Analyze prediction diversity across information levels."""
+
+    # Group by information level
+    by_level = {}
+    for pred in predictions:
+        level = pred['information_fraction']
+        if level not in by_level:
+            by_level[level] = []
+        by_level[level].append(pred['predicted_actions'])
+
+    # Calculate diversity metrics for each level
+    diversity_by_level = {}
+    for level, pred_lists in by_level.items():
+        # Flatten all actions
+        all_actions = []
+        for actions in pred_lists:
+            all_actions.extend(actions)
+
+        # Count unique actions
+        unique_actions = set(all_actions)
+
+        # Calculate average set size
+        avg_set_size = np.mean([len(a) for a in pred_lists])
+
+        # Calculate action frequency variance (how spread out are votes)
+        action_counts = {}
+        for action in valid_actions:
+            count = sum(1 for pred in pred_lists if action in pred)
+            action_counts[action] = count
+
+        vote_variance = np.var(list(action_counts.values()))
+
+        diversity_by_level[level] = {
+            'n_predictions': len(pred_lists),
+            'unique_actions': len(unique_actions),
+            'avg_set_size': float(avg_set_size),
+            'vote_variance': float(vote_variance),
+            'total_action_instances': len(all_actions)
+        }
+
+    return diversity_by_level
+
+
+def run_condition(
+    condition_name: str,
+    use_sharding: bool,
+    period: int,
+    n_agents: int,
+    ground_truth: dict,
+    valid_actions: List[str],
+    plausible_text: str,
+    output_dir: Path
+) -> Dict:
+    """Run a single condition."""
+
+    print(f"\n{'='*60}")
+    print(f"Condition: {condition_name}")
+    print(f"Sharding: {'Yes' if use_sharding else 'No'}")
+    print(f"Period: {period}")
+    print(f"N agents: {n_agents}")
+    print(f"{'='*60}")
+
+    # Get simulation data
+    state_before = get_state_before(period)
+    external_events = get_events(period)
+
+    # Create information distribution
+    if use_sharding:
+        info_fractions = create_information_distribution(n_agents)
+        print(f"  Information distribution:")
+        from collections import Counter
+        counts = Counter(info_fractions)
+        for level in sorted(counts.keys()):
+            print(f"    {level*100:.0f}%: {counts[level]} agents")
+    else:
+        info_fractions = [1.0] * n_agents  # All agents get 100%
+        print(f"  All agents: 100% information")
+
+    results = {
+        'condition': condition_name,
+        'period': period,
+        'n_agents': n_agents,
+        'use_sharding': use_sharding,
+        'factions': {}
+    }
+
+    # Get ground truth actions for Novaris (needed for Tethys prompt)
+    novaris_actual = ground_truth[period]['major_power']['actions']
+
+    # Run for both factions
+    for faction_key, faction_name in [('major_power', 'novaris'), ('small_power', 'tethys')]:
+        print(f"\n  Faction: {faction_name.upper()}")
+
+        # Get ground truth
+        actual_actions = ground_truth[period][faction_key]['actions']
+        print(f"  Ground truth: {len(actual_actions)} actions")
+
+        # Run N predictions in parallel
+        start_time = time.time()
+        prediction_dicts = run_n_predictions_parallel(
+            n=n_agents,
+            faction=faction_name,
+            period=period,
+            state_before=state_before,
+            external_events=external_events,
+            plausible_text=plausible_text,
+            novaris_actions=novaris_actual,
+            information_fractions=info_fractions
+        )
+
+        # Validate predictions
+        validated_predictions = validate_predictions(prediction_dicts, valid_actions)
+
+        duration = time.time() - start_time
+        print(f"  Completed in {duration:.1f}s ({duration/n_agents:.2f}s per agent)")
+
+        # Analyze diversity
+        diversity_stats = analyze_diversity(validated_predictions, valid_actions)
+
+        # Evaluate individual averaging
+        individual_metrics = evaluate_aggregate_predictions(
+            validated_predictions,
+            actual_actions
+        )
+
+        # Evaluate ensemble aggregation
+        ensemble_pred = threshold_capped_ensemble(
+            validated_predictions,
+            min_vote_fraction=0.30,
+            max_actions=12
+        )
+        ensemble_metrics = evaluate_action_set_prediction(ensemble_pred, actual_actions)
+
+        print(f"  [RESULTS] Individual F1: {individual_metrics['mean_f1']:.3f}, Ensemble F1: {ensemble_metrics['f1']:.3f}")
+        print(f"            Diversity: {len(set([tuple(sorted(p['predicted_actions'])) for p in validated_predictions]))} unique prediction sets")
+
+        # Store results
+        results['factions'][faction_name] = {
+            'ground_truth': actual_actions,
+            'n_predictions': len(validated_predictions),
+            'individual_metrics': individual_metrics,
+            'ensemble_prediction': ensemble_pred,
+            'ensemble_metrics': ensemble_metrics,
+            'diversity_by_level': diversity_stats,
+            'duration_seconds': duration
+        }
+
+    # Save condition results
+    condition_file = output_dir / f"{condition_name}_period_{period}.json"
+    with open(condition_file, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"\n  Saved: {condition_file}")
+
+    return results
+
+
+def main():
+    """Run information sharding experiment: Baseline vs Sharding, Period 1."""
+
+    print("="*60)
+    print("INFORMATION SHARDING EXPERIMENT")
+    print("Baseline vs Sharding | Period 1 | N=100")
+    print("="*60)
+
+    # Setup
+    period = 1
+    n_agents = 100
+    output_dir = Path("outputs/information_sharding_experiment")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Load data
+    print("\nLoading data...")
+    plausible_actions, descriptions = load_plausible_actions()
+    plausible_text = format_plausible_actions_for_prompt(plausible_actions, descriptions)
+    valid_actions = get_all_valid_actions()
+    ground_truth = load_ground_truth()
+
+    print(f"  Valid actions: {len(valid_actions)}")
+    print(f"  Ground truth periods: {len(ground_truth)}")
+
+    # Define conditions - only run sharding (baseline already exists from generic_no_history)
+    conditions = [
+        ("sharding_mixed_info", True)
+    ]
+
+    # Load baseline results from earlier experiment
+    baseline_file = Path("outputs/experiment_period_1/generic_no_history_period_1.json")
+    baseline_results = None
+    if baseline_file.exists():
+        with open(baseline_file) as f:
+            baseline_results = json.load(f)
+        print(f"\n[OK] Loaded baseline results from: {baseline_file}")
+    else:
+        print(f"\n[WARNING] Baseline file not found: {baseline_file}")
+
+    # Run each condition
+    all_results = []
+    if baseline_results:
+        all_results.append(baseline_results)  # Include baseline for comparison
+
+    for condition_name, use_sharding in conditions:
+        try:
+            result = run_condition(
+                condition_name=condition_name,
+                use_sharding=use_sharding,
+                period=period,
+                n_agents=n_agents,
+                ground_truth=ground_truth,
+                valid_actions=valid_actions,
+                plausible_text=plausible_text,
+                output_dir=output_dir
+            )
+            all_results.append(result)
+
+        except Exception as e:
+            print(f"\n[ERROR] Condition {condition_name} failed: {e}")
+            import traceback
+            traceback.print_exc()
+
+    # Compare conditions
+    print(f"\n{'='*60}")
+    print("COMPARISON SUMMARY")
+    print(f"{'='*60}")
+
+    print(f"\n{'Condition':<25} {'Faction':<10} {'Individual F1':<15} {'Ensemble F1':<12}")
+    print("-"*70)
+
+    for result in all_results:
+        for faction_name, faction_data in result['factions'].items():
+            ind_f1 = faction_data['individual_metrics']['mean_f1']
+            ens_f1 = faction_data['ensemble_metrics']['f1']
+            print(f"{result['condition']:<25} {faction_name:<10} {ind_f1:<15.3f} {ens_f1:<12.3f}")
+
+    # Calculate improvement
+    if len(all_results) == 2:
+        baseline = all_results[0]
+        sharding = all_results[1]
+
+        for faction in ['novaris', 'tethys']:
+            base_f1 = baseline['factions'][faction]['ensemble_metrics']['f1']
+            shard_f1 = sharding['factions'][faction]['ensemble_metrics']['f1']
+            improvement = ((shard_f1 - base_f1) / base_f1) * 100 if base_f1 > 0 else 0
+
+            print(f"\n{faction.upper()} - Sharding vs Baseline improvement: {improvement:+.1f}%")
+
+    # Save summary
+    summary_file = output_dir / "experiment_summary.json"
+    with open(summary_file, 'w') as f:
+        json.dump({
+            'period': period,
+            'n_agents': n_agents,
+            'results': all_results,
+            'timestamp': datetime.now().isoformat()
+        }, f, indent=2)
+
+    print(f"\n{'='*60}")
+    print(f"EXPERIMENT COMPLETE")
+    print(f"Conditions run: {len(all_results)}")
+    print(f"Summary saved: {summary_file}")
+    print(f"{'='*60}")
+
+
+if __name__ == "__main__":
+    main()

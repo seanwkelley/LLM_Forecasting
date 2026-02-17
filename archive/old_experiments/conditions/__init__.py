@@ -1,0 +1,1 @@
+"""Forecasting condition implementations"""

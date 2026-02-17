@@ -1,0 +1,675 @@
+{
+  "summary": {
+    "scenario_id": "scenario_001",
+    "model": "meta-llama/llama-3.1-8b-instruct",
+    "n_periods": 10,
+    "mean_price": 126.73,
+    "std_price": 8.8,
+    "min_price": 107.39,
+    "max_price": 139.88,
+    "mean_volume": 49.0,
+    "return_std": 0.0496,
+    "price_range_pct": 25.6,
+    "llm_stats": {
+      "total_calls": 70,
+      "successful_calls": 70,
+      "failed_calls": 0,
+      "parse_failures": 0,
+      "success_rate": "100.0%",
+      "total_tokens": 57141
+    }
+  },
+  "agent_finals": {
+    "producer_A": {
+      "role": "producer",
+      "cash": 17336.26,
+      "inventory": 30,
+      "pnl": 13035.66
+    },
+    "producer_B": {
+      "role": "producer",
+      "cash": 4214.0,
+      "inventory": 20,
+      "pnl": 1612.8
+    },
+    "consumer_A": {
+      "role": "consumer",
+      "cash": 15195.86,
+      "inventory": 0,
+      "pnl": 5097.66
+    },
+    "consumer_B": {
+      "role": "consumer",
+      "cash": 5768.27,
+      "inventory": 0,
+      "pnl": 1068.87
+    },
+    "consumer_C": {
+      "role": "consumer",
+      "cash": 7987.81,
+      "inventory": 0,
+      "pnl": 1589.01
+    },
+    "speculator_A": {
+      "role": "speculator",
+      "cash": 6237.81,
+      "inventory": 16,
+      "pnl": -321.71
+    },
+    "speculator_B": {
+      "role": "speculator",
+      "cash": 7089.16,
+      "inventory": 0,
+      "pnl": -9.04
+    }
+  },
+  "price_history": [
+    107.39,
+    114.3,
+    130.22,
+    131.62,
+    131.62,
+    127.39,
+    127.39,
+    127.39,
+    130.12,
+    139.88
+  ],
+  "volume_history": [
+    35,
+    40,
+    40,
+    40,
+    60,
+    10,
+    100,
+    85,
+    40,
+    40
+  ],
+  "fundamental_history": [
+    101.56,
+    101.56,
+    101.56,
+    108.98,
+    108.98,
+    108.98,
+    133.16,
+    133.16,
+    133.16,
+    108.98
+  ],
+  "orders_log": [
+    {
+      "period": 0,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 25,
+          "limit_price": 94.32,
+          "reasoning": "Setting the minimum price to sell at to maximize profit while clearing inventory due to high production capacity and relatively low breakeven price."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 94.32,
+          "reasoning": "Setting the limit price at the minimum available price to ensure a sale, as the breakeven selling price is $82.42 and the market is expected to be favorable with increasing demand."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 27,
+          "limit_price": 106.2,
+          "reasoning": "Demand is high, and I want to cover my immediate needs. Setting limit_price at 106.20 allows me to profit on consumption while being aggressive enough to secure my required quantity."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 13,
+          "limit_price": 122.85,
+          "reasoning": "I'm buying the full demand of 13 units at my maximum acceptable price to avoid stockouts and maximize production value."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 16,
+          "limit_price": 106.2,
+          "reasoning": "Setting limit_price at $106.20, a moderate price, to balance the need to secure sufficient Meridium with the goal of minimizing costs. Buying 16 units meets my current demand and leaves room for adjustments in future periods."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 63,
+          "limit_price": 94.32,
+          "reasoning": "Buying at the lowest price available, expecting prices to rise with increased consumer demand and decreasing production costs"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 50,
+          "limit_price": 120.47,
+          "reasoning": "Expect price to rise due to increased consumer demand and decreased production costs"
+        }
+      ],
+      "clearing_price": 107.395,
+      "volume": 35,
+      "fundamental_price": 101.56182559999999
+    },
+    {
+      "period": 1,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 105.09,
+          "reasoning": "I'm setting a slightly lower price than the last market price to incentivize buying and move my inventory. Considering the increased demand and stable production costs, I'm optimistic about getting a good price."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 105.09,
+          "reasoning": "I'm choosing a limit price of $105.09, which is higher than my production cost and will ensure profit per unit. I'm also selling the entire inventory to minimize storage costs and capitalize on the increasing consumer demand."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 51,
+          "limit_price": 123.5,
+          "reasoning": "I need to meet my demand of 51 units, and given the current market conditions, I'm anticipating a potential price increase due to consumer demand increase. Setting my limit price to the maximum possible allows me to secure the required quantity at the lowest possible cost."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 24,
+          "limit_price": 105.09,
+          "reasoning": "Current price is $107.39, but I want to save cash. With production costs increasing, I expect prices to rise further. I'll buy at $105.09 to ensure I profit from consumption and maintain some cushion against future price increases."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 30,
+          "limit_price": 105.09,
+          "reasoning": "Increasing demand and production costs suggest a price increase. I'll bid at the higher end of my available price levels to secure the necessary supply, while still being cautious not to overshoot the market."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 65,
+          "limit_price": 121.2,
+          "reasoning": "Expecting prices to rise due to increased demand and slight decrease in production costs, and want to take advantage of the current low price level."
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 30,
+          "limit_price": 105.09,
+          "reasoning": "Expecting price to rise due to increased consumer demand and decrease in production costs, and buying at a limit price that balances risk and potential gain."
+        }
+      ],
+      "clearing_price": 114.295,
+      "volume": 40,
+      "fundamental_price": 101.56182559999999
+    },
+    {
+      "period": 2,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 128.99,
+          "reasoning": "I will sell at the highest price to maximize profit, considering the recent price trend and my production capacity."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 97.15,
+          "reasoning": "Given rising prices, consumer demand increase, and the opportunity to sell before production costs increase, I choose to sell at an aggressive price to clear inventory and maximize revenue, while still ensuring profit per unit."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 51,
+          "limit_price": 131.44,
+          "reasoning": "Demand is high and increasing, but production costs are increasing. I want to secure my demand at a relatively low price, considering the expected increase in production costs. I'm setting my limit price high enough to ensure I get the quantity I need, but not so high that I overpay."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 24,
+          "limit_price": 109.4,
+          "reasoning": "I will bid at $109.40, the price that covers my demand and gives me room to profit at $122.06 per unit."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 65,
+          "limit_price": 131.44,
+          "reasoning": "Current market conditions show high demand and increasing production costs, which should drive up prices. I have sufficient cash reserves, and with my high demand and limited inventory, I should be willing to pay a premium for the Meridium. I choose the highest available price level to maximize my chances of securing the needed supply."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 10,
+          "limit_price": 109.4,
+          "reasoning": "Expecting prices to rise due to increased consumer demand and a temporary decrease in production costs, I'm buying 10 units at a limit price of $109.40 to take advantage of the potential upward trend."
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 26,
+          "limit_price": 109.4,
+          "reasoning": "Expecting prices to rise due to increased consumer demand and decrease in production costs, while production costs increase is only temporary."
+        }
+      ],
+      "clearing_price": 130.215,
+      "volume": 40,
+      "fundamental_price": 101.56182559999999
+    },
+    {
+      "period": 3,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 127.42,
+          "reasoning": "The price has been going up, and I have a significant inventory. I want to sell some units, but I don't want to sell too low. Setting my limit price at $127.42 gives me a good balance between selling and holding onto more valuable units."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 130.22,
+          "reasoning": "I'm selling at the current price to avoid holding onto inventory and incurring storage costs."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32,
+          "limit_price": 127.42,
+          "reasoning": "Demand is stable, and the price increase is moderate. I want to secure my current demand at a relatively low price to maintain profit margins and ensure timely production."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15,
+          "limit_price": 130.22,
+          "reasoning": "Demand is high, and current market conditions are favorable. I'll buy at the current market price to meet my demand and take advantage of the subsidy."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19,
+          "limit_price": 133.01,
+          "reasoning": "Demand is 19 units and value per unit is $133.15, so I should buy at the maximum price I can to ensure I profit."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 10,
+          "limit_price": 133.01,
+          "reasoning": "Expecting price to rise due to subsidy, buying at a moderate price to manage risk and maximize potential profit"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 20,
+          "limit_price": 133.01,
+          "reasoning": "Market is still trending upwards, consumers are receiving cash subsidy, and storage costs are relatively low. Buying at a slightly lower price than the current market price should be a good opportunity to grow my portfolio."
+        }
+      ],
+      "clearing_price": 131.615,
+      "volume": 40,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 4,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 128.79,
+          "reasoning": "Maintaining a price above production cost while considering recent market trends and storage costs"
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 131.62,
+          "reasoning": "Given the recent price trend and last period's P&L change, I'm confident in selling at the current market price to maximize profit."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32,
+          "limit_price": 131.62,
+          "reasoning": "Demand matches my available budget, so I'm buying at the current market price to cover my demand and minimize storage costs."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15,
+          "limit_price": 131.62,
+          "reasoning": "Matching demand while considering the recent market price trend"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19,
+          "limit_price": 131.62,
+          "reasoning": "Demand is high and I'm low on inventory, so I'm bidding at the current price to ensure I get the required 19 units."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 20,
+          "limit_price": 131.62,
+          "reasoning": "Expecting prices to rise, buying to increase position value"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "sell",
+          "quantity": 20,
+          "limit_price": 131.62,
+          "reasoning": "Sell some of my inventory at the current price, as it seems to be stable and I don't want to hold too much and incur storage costs."
+        }
+      ],
+      "clearing_price": 131.62,
+      "volume": 60,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 5,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 148.54,
+          "reasoning": "I'm choosing a higher limit price due to increased demand and recent price stability, aiming to maximize profit with a breakeven price of $77.40 and current market conditions."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 123.16,
+          "reasoning": "Setting a limit price of $123.16 allows for profit above production cost, while also considering the current market price and potential for future price increases due to increased demand."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 121,
+          "limit_price": 128.8,
+          "reasoning": "Aggressive bidding to cover demand with comfortable margin"
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 22,
+          "limit_price": 131.62,
+          "reasoning": "Demand is increasing, but prices are flat. Given my high value per unit consumed, I'll set my limit price at the current price to ensure I secure the needed units without risking higher costs."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 20,
+          "limit_price": 128.8,
+          "reasoning": "Given the increased demand, I am bidding more aggressively to ensure I meet my production needs. I set my limit price below the current market price to maximize the chances of execution while still ensuring I profit on consumption."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 40,
+          "limit_price": 128.8,
+          "reasoning": "Expected price to rise with increasing consumer demand, and 128.80 is a balance between expected price increase and storage costs."
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 32,
+          "limit_price": 123.16,
+          "reasoning": "Expecting prices to rise due to increased consumer demand"
+        }
+      ],
+      "clearing_price": 127.39,
+      "volume": 10,
+      "fundamental_price": 108.97999999999999
+    },
+    {
+      "period": 6,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 60,
+          "limit_price": 127.39,
+          "reasoning": "The current market price is at the breakeven point, so I'm setting my limit price to the current price to ensure I make a profit."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 127.39,
+          "reasoning": "Setting limit_price to current market price to maximize profit and match last period's selling price."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 48,
+          "limit_price": 127.39,
+          "reasoning": "Demand is high, but not extremely high, and I need to secure my supply to avoid stockouts. I'm setting my limit price at the current market price to ensure I get the quantity I need."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 22,
+          "limit_price": 124.66,
+          "reasoning": "Demand is high, but production costs are increasing. I want to secure my needed 22 units at a reasonable price. I've chosen a limit price that's slightly above the current market price, but below the highest available price to ensure I get the quantity I need."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 29,
+          "limit_price": 127.39,
+          "reasoning": "Matching demand with current market price to ensure immediate satisfaction and minimize storage costs."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 127.39,
+          "reasoning": "Expecting price to fall due to increased production costs and normalizing consumer demand"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 33,
+          "limit_price": 130.12,
+          "reasoning": "Expecting price to rise due to increased consumer demand and no significant increase in production costs"
+        }
+      ],
+      "clearing_price": 127.39,
+      "volume": 100,
+      "fundamental_price": 133.15688
+    },
+    {
+      "period": 7,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 127.39,
+          "reasoning": "Holding the current price to maximize profit, given production costs are increasing."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 130.12,
+          "reasoning": "Market is flat and has been trending downward, but I still want to capture some profit. I'll aim for a price above my production cost to ensure a positive P&L."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 48,
+          "limit_price": 127.39,
+          "reasoning": "Demand is high, but the market price is stable. I'll buy at the current price to cover my demand and maintain my production levels."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 54,
+          "limit_price": 127.39,
+          "reasoning": "High demand and production costs, but I have no inventory. I'm willing to pay near the current market price to ensure I meet my demand."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 29,
+          "limit_price": 138.31,
+          "reasoning": "Demand is high and increasing, so I'm willing to pay a premium for Meridium to meet my production needs. Given the flat price trend and increasing production costs for sellers, I expect the market to move upwards, and I want to secure a portion of my demand at a price that allows me to stay profitable."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 10,
+          "limit_price": 130.12,
+          "reasoning": "Expecting a price increase due to increased consumer demand and potential upward pressure from producers' increased costs."
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "sell",
+          "quantity": 55,
+          "limit_price": 124.66,
+          "reasoning": "Expecting prices to rise after consumer demand increases, but also considering production costs increase for producers, which might drive up prices in the long term. Selling at 124.66 is a good balance between current market conditions and future expectations."
+        }
+      ],
+      "clearing_price": 127.39,
+      "volume": 85,
+      "fundamental_price": 133.15688
+    },
+    {
+      "period": 8,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 119.2,
+          "reasoning": "I'm increasing the limit price to take advantage of the flat market price, but I'm not going too high due to the production costs and storage costs associated with holding onto inventory."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 130.12,
+          "reasoning": "Production costs are increasing, so I want to maximize profit per unit by selling at a higher price. I'll sell 10 units at $130.12 to ensure a good margin."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 32,
+          "limit_price": 127.39,
+          "reasoning": "Demand is 32 units, so I will buy exactly that amount. I set the limit price to the current market price to ensure execution at the lowest possible cost."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 15,
+          "limit_price": 146.5,
+          "reasoning": "Production costs are increasing, which may lead to higher prices in the future. To mitigate this, I'm bidding at the highest available price to secure my required quantity."
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 19,
+          "limit_price": 146.5,
+          "reasoning": "Production costs have increased. I will pay a premium to secure my required Meridium supply due to the rise in production costs. I will buy at the highest limit price possible ($146.50) to ensure I secure at least my required demand of 19 units."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 10,
+          "limit_price": 130.12,
+          "reasoning": "Expecting prices to rise due to high production costs and recent flat price"
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 40,
+          "limit_price": 130.12,
+          "reasoning": "Expecting price to rise due to recent flat trend and increasing production costs."
+        }
+      ],
+      "clearing_price": 130.12,
+      "volume": 40,
+      "fundamental_price": 133.15688
+    },
+    {
+      "period": 9,
+      "orders": [
+        {
+          "agent_id": "producer_A",
+          "side": "sell",
+          "quantity": 30,
+          "limit_price": 127.33,
+          "reasoning": "I'm selling at a price that's slightly above the current market price and below the last price, reflecting my cautious optimism about future prices and my desire to liquidate my inventory quickly."
+        },
+        {
+          "agent_id": "producer_B",
+          "side": "sell",
+          "quantity": 10,
+          "limit_price": 130.12,
+          "reasoning": "Market price is already above my production cost and I don't want to leave profit on the table, so I'll sell at the current market price to ensure maximum profit."
+        },
+        {
+          "agent_id": "consumer_A",
+          "side": "buy",
+          "quantity": 46,
+          "limit_price": 149.64,
+          "reasoning": "Increasing consumer demand warrants a more aggressive bid to secure supply. Given the current price trend and my demand, I'll bid at the highest available price to maximize my chances of meeting my needs."
+        },
+        {
+          "agent_id": "consumer_B",
+          "side": "buy",
+          "quantity": 52,
+          "limit_price": 138.48,
+          "reasoning": "High demand and increasing prices, I'm willing to pay a premium to ensure I meet my demand"
+        },
+        {
+          "agent_id": "consumer_C",
+          "side": "buy",
+          "quantity": 27,
+          "limit_price": 130.12,
+          "reasoning": "Demand is high, and current market conditions favor buying at the last price. I need to cover my current demand of 27 units."
+        },
+        {
+          "agent_id": "speculator_A",
+          "side": "buy",
+          "quantity": 56,
+          "limit_price": 132.91,
+          "reasoning": "Expected price to rise due to increased consumer demand and recent price trend."
+        },
+        {
+          "agent_id": "speculator_B",
+          "side": "buy",
+          "quantity": 40,
+          "limit_price": 130.12,
+          "reasoning": "Expected price to rise due to increasing consumer demand, and this price is slightly above the current market price, so I'll buy 40 units at this price."
+        }
+      ],
+      "clearing_price": 139.88,
+      "volume": 40,
+      "fundamental_price": 108.97999999999999
+    }
+  ],
+  "errors": []
+}

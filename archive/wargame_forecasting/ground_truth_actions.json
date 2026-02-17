@@ -1,0 +1,996 @@
+{
+  "1": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "naval_deployment",
+        "intelligence_gathering",
+        "strategic_stockpiling",
+        "trade_negotiation",
+        "economic_sanctions"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "naval_deployment"
+        ],
+        "intelligence": [
+          "intelligence_gathering"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_negotiation",
+          "economic_sanctions"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "primary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "n_actions": 6,
+      "success_rate": 0.5
+    },
+    "small_power": {
+      "actions": [
+        "show_of_force",
+        "military_exercises",
+        "intelligence_gathering",
+        "coalition_building",
+        "backchannel_negotiations",
+        "humanitarian_aid",
+        "strategic_stockpiling",
+        "trade_restrictions"
+      ],
+      "by_domain": {
+        "military": [
+          "show_of_force",
+          "military_exercises"
+        ],
+        "intelligence": [
+          "intelligence_gathering"
+        ],
+        "diplomatic": [
+          "coalition_building",
+          "backchannel_negotiations",
+          "humanitarian_aid"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_restrictions"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "tertiary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "n_actions": 8,
+      "success_rate": 0.375
+    }
+  },
+  "2": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "show_of_force",
+        "sabotage",
+        "cyber_theft",
+        "strategic_stockpiling",
+        "resource_embargo"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "show_of_force"
+        ],
+        "intelligence": [
+          "sabotage",
+          "cyber_theft"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "resource_embargo"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "primary",
+        "tertiary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "n_actions": 6,
+      "success_rate": 0.6666666666666666
+    },
+    "small_power": {
+      "actions": [
+        "military_buildup",
+        "enhanced_patrols",
+        "intelligence_gathering",
+        "false_flag_operation",
+        "coalition_building",
+        "humanitarian_corridors",
+        "backchannel_negotiations",
+        "resource_embargo",
+        "strategic_stockpiling",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "enhanced_patrols"
+        ],
+        "intelligence": [
+          "intelligence_gathering",
+          "false_flag_operation"
+        ],
+        "diplomatic": [
+          "coalition_building",
+          "humanitarian_corridors",
+          "backchannel_negotiations"
+        ],
+        "economic": [
+          "resource_embargo",
+          "strategic_stockpiling",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true
+      ],
+      "n_actions": 10,
+      "success_rate": 0.7
+    }
+  },
+  "3": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "naval_deployment",
+        "sabotage",
+        "cyber_attack",
+        "strategic_stockpiling",
+        "trade_negotiation",
+        "economic_sanctions"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "naval_deployment"
+        ],
+        "intelligence": [
+          "sabotage",
+          "cyber_attack"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_negotiation",
+          "economic_sanctions"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true
+      ],
+      "n_actions": 7,
+      "success_rate": 0.7142857142857143
+    },
+    "small_power": {
+      "actions": [
+        "enhanced_patrols",
+        "military_exercises",
+        "intelligence_gathering",
+        "coalition_building",
+        "humanitarian_corridors",
+        "backchannel_negotiations",
+        "strategic_stockpiling",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "enhanced_patrols",
+          "military_exercises"
+        ],
+        "intelligence": [
+          "intelligence_gathering"
+        ],
+        "diplomatic": [
+          "coalition_building",
+          "humanitarian_corridors",
+          "backchannel_negotiations"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "n_actions": 8,
+      "success_rate": 0.625
+    }
+  },
+  "4": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "naval_deployment",
+        "sabotage",
+        "cyber_attack",
+        "strategic_stockpiling",
+        "trade_negotiation"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "naval_deployment"
+        ],
+        "intelligence": [
+          "sabotage",
+          "cyber_attack"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_negotiation"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        true,
+        true,
+        false,
+        true,
+        true,
+        false
+      ],
+      "n_actions": 6,
+      "success_rate": 0.6666666666666666
+    },
+    "small_power": {
+      "actions": [
+        "show_of_force",
+        "naval_deployment",
+        "share_intelligence",
+        "coalition_building",
+        "backchannel_negotiations",
+        "humanitarian_corridors",
+        "targeted_sanctions",
+        "strategic_stockpiling",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "show_of_force",
+          "naval_deployment"
+        ],
+        "intelligence": [
+          "share_intelligence"
+        ],
+        "diplomatic": [
+          "coalition_building",
+          "backchannel_negotiations",
+          "humanitarian_corridors"
+        ],
+        "economic": [
+          "targeted_sanctions",
+          "strategic_stockpiling",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "tertiary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "n_actions": 9,
+      "success_rate": 0.3333333333333333
+    }
+  },
+  "5": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "cyber_attack",
+        "sabotage",
+        "share_intelligence",
+        "strategic_stockpiling",
+        "trade_negotiation",
+        "economic_sanctions"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "cyber_attack"
+        ],
+        "intelligence": [
+          "sabotage",
+          "share_intelligence"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_negotiation",
+          "economic_sanctions"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "n_actions": 7,
+      "success_rate": 0.5714285714285714
+    },
+    "small_power": {
+      "actions": [
+        "military_buildup",
+        "show_of_force",
+        "intelligence_gathering",
+        "backchannel_negotiations",
+        "mediation_offer",
+        "strategic_stockpiling",
+        "trade_negotiation",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "show_of_force"
+        ],
+        "intelligence": [
+          "intelligence_gathering"
+        ],
+        "diplomatic": [
+          "backchannel_negotiations",
+          "mediation_offer"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_negotiation",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "secondary",
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true
+      ],
+      "n_actions": 8,
+      "success_rate": 0.5
+    }
+  },
+  "6": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "naval_deployment",
+        "counterintelligence",
+        "strategic_stockpiling",
+        "war_bonds",
+        "trade_diversification"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "naval_deployment"
+        ],
+        "intelligence": [
+          "counterintelligence"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "war_bonds",
+          "trade_diversification"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "tertiary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "n_actions": 6,
+      "success_rate": 0.3333333333333333
+    },
+    "small_power": {
+      "actions": [
+        "military_exercises",
+        "enhanced_patrols",
+        "share_intelligence",
+        "backchannel_negotiations",
+        "coalition_building",
+        "humanitarian_aid",
+        "sanctions",
+        "strategic_stockpiling",
+        "trade_negotiation"
+      ],
+      "by_domain": {
+        "military": [
+          "military_exercises",
+          "enhanced_patrols"
+        ],
+        "intelligence": [
+          "share_intelligence"
+        ],
+        "diplomatic": [
+          "backchannel_negotiations",
+          "coalition_building",
+          "humanitarian_aid"
+        ],
+        "economic": [
+          "sanctions",
+          "strategic_stockpiling",
+          "trade_negotiation"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "n_actions": 9,
+      "success_rate": 0.4444444444444444
+    }
+  },
+  "7": {
+    "major_power": {
+      "actions": [
+        "show_of_force",
+        "military_exercises",
+        "intelligence_gathering",
+        "strategic_stockpiling",
+        "resource_embargo"
+      ],
+      "by_domain": {
+        "military": [
+          "show_of_force",
+          "military_exercises"
+        ],
+        "intelligence": [
+          "intelligence_gathering"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "resource_embargo"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "tertiary",
+        "secondary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "n_actions": 5,
+      "success_rate": 0.8
+    },
+    "small_power": {
+      "actions": [
+        "show_of_force",
+        "enhanced_patrols",
+        "coalition_building",
+        "backchannel_negotiations",
+        "humanitarian_aid",
+        "strategic_stockpiling",
+        "trade_negotiation",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "show_of_force",
+          "enhanced_patrols"
+        ],
+        "diplomatic": [
+          "coalition_building",
+          "backchannel_negotiations",
+          "humanitarian_aid"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_negotiation",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        true,
+        false,
+        true
+      ],
+      "n_actions": 8,
+      "success_rate": 0.625
+    }
+  },
+  "8": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "cyber_attack",
+        "cyber_theft",
+        "leadership_targeting",
+        "trade_restrictions",
+        "strategic_stockpiling"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "cyber_attack"
+        ],
+        "intelligence": [
+          "cyber_theft",
+          "leadership_targeting"
+        ],
+        "economic": [
+          "trade_restrictions",
+          "strategic_stockpiling"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "n_actions": 6,
+      "success_rate": 0.5
+    },
+    "small_power": {
+      "actions": [
+        "show_of_force",
+        "naval_deployment",
+        "share_intelligence",
+        "backchannel_negotiations",
+        "humanitarian_corridors",
+        "cultural_exchange",
+        "economic_sanctions",
+        "strategic_stockpiling",
+        "trade_negotiation"
+      ],
+      "by_domain": {
+        "military": [
+          "show_of_force",
+          "naval_deployment"
+        ],
+        "intelligence": [
+          "share_intelligence"
+        ],
+        "diplomatic": [
+          "backchannel_negotiations",
+          "humanitarian_corridors",
+          "cultural_exchange"
+        ],
+        "economic": [
+          "economic_sanctions",
+          "strategic_stockpiling",
+          "trade_negotiation"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "tertiary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "n_actions": 9,
+      "success_rate": 0.5555555555555556
+    }
+  },
+  "9": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "cyber_attack",
+        "intelligence_gathering",
+        "share_intelligence",
+        "strategic_stockpiling",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "cyber_attack"
+        ],
+        "intelligence": [
+          "intelligence_gathering",
+          "share_intelligence"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "n_actions": 6,
+      "success_rate": 0.6666666666666666
+    },
+    "small_power": {
+      "actions": [
+        "naval_deployment",
+        "show_of_force",
+        "intelligence_gathering",
+        "cyber_attack",
+        "coalition_building",
+        "backchannel_negotiations",
+        "humanitarian_corridors",
+        "resource_embargo",
+        "strategic_stockpiling",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "naval_deployment",
+          "show_of_force"
+        ],
+        "intelligence": [
+          "intelligence_gathering",
+          "cyber_attack"
+        ],
+        "diplomatic": [
+          "coalition_building",
+          "backchannel_negotiations",
+          "humanitarian_corridors"
+        ],
+        "economic": [
+          "resource_embargo",
+          "strategic_stockpiling",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "n_actions": 10,
+      "success_rate": 0.5
+    }
+  },
+  "10": {
+    "major_power": {
+      "actions": [
+        "military_buildup",
+        "precision_strike",
+        "intelligence_gathering",
+        "share_intelligence",
+        "strategic_stockpiling",
+        "trade_negotiation"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "precision_strike"
+        ],
+        "intelligence": [
+          "intelligence_gathering",
+          "share_intelligence"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "trade_negotiation"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "secondary",
+        "primary",
+        "tertiary",
+        "primary",
+        "secondary"
+      ],
+      "successes": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        false
+      ],
+      "n_actions": 6,
+      "success_rate": 0.5
+    },
+    "small_power": {
+      "actions": [
+        "military_buildup",
+        "show_of_force",
+        "share_intelligence",
+        "backchannel_negotiations",
+        "humanitarian_corridors",
+        "peace_talks",
+        "strategic_stockpiling",
+        "resource_embargo",
+        "war_bonds"
+      ],
+      "by_domain": {
+        "military": [
+          "military_buildup",
+          "show_of_force"
+        ],
+        "intelligence": [
+          "share_intelligence"
+        ],
+        "diplomatic": [
+          "backchannel_negotiations",
+          "humanitarian_corridors",
+          "peace_talks"
+        ],
+        "economic": [
+          "strategic_stockpiling",
+          "resource_embargo",
+          "war_bonds"
+        ]
+      },
+      "priorities": [
+        "primary",
+        "tertiary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary",
+        "primary",
+        "secondary",
+        "tertiary"
+      ],
+      "successes": [
+        false,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "n_actions": 9,
+      "success_rate": 0.6666666666666666
+    }
+  }
+}

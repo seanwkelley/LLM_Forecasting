@@ -198,6 +198,33 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 - Post-fix results: `outputs/causal_discovery/pilot_runs/recall_fix_test/` (market, DeepSeek V3)
 - Post-fix results: `outputs/causal_discovery/conflict_pilot_runs/recall_fix_test/` (conflict, DeepSeek V3)
 
+### To-Do
+
+**Immediate (before multi-agent):**
+
+- [ ] Run 3 replicates on market with DeepSeek V3 + all fixes (current results are single runs — need variance estimates)
+- [ ] Run 3 replicates on conflict with DeepSeek V3 + all fixes
+- [ ] Investigate conflict recall gap (29% vs market 65%) — try: (a) multi-variable interventions to detect interaction modifier, (b) explicitly prompt model about aggregation step, (c) longer rollout periods (run_periods=5 instead of 3) to let longer chains propagate
+- [ ] Ground truth edge audit: `storage_cost → agent_orders` doesn't hold in rule-based sim (agents don't reference storage_cost when generating orders) — consider removing (1/23 edges)
+
+**Multi-agent conditions (Phase 7):**
+
+- [ ] Implement the 5 communication structures (single, independent, sequential, debate, specialization)
+- [ ] Calibrate per-agent budget — single agent at budget=30 gets market F1=0.508; set multi-agent per-agent budget below the diminishing-returns inflection so coordination is needed
+- [ ] Design specialization assignments (which variable subsets per agent?)
+- [ ] Run all 5 conditions × 2 domains × N replicates
+
+**PID analysis (Phase 8):**
+
+- [ ] Adapt edge-level PID for causal discovery (source: agent_i confidence on edge_k, target: ground truth)
+- [ ] Determine number of scenarios needed for reliable Williams-Beer estimation (currently estimated 10–20+)
+- [ ] Correlate EC with graph recovery quality across conditions
+
+**Other:**
+
+- [ ] Model comparison on improved pipeline (Llama 3.3 70B vs DeepSeek V3 vs others) — initial test showed identical results on limited return vars, but haven't compared on the expanded pipeline
+- [ ] Consider whether conflict ground truth needs coarser granularity (collapse agent_recommendation + faction_action?) to be recoverable at budget=30
+
 ---
 
 ## Market Experiment (Feb 15-16) — PRIMARY FOCUS

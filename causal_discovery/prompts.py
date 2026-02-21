@@ -382,22 +382,32 @@ def _to_generic_var(var: str) -> str:
 
     Faction-prefixed: 'novaris_gdp' -> 'gdp'
     Market aggregates: 'avg_bid_price' -> 'agent_orders', 'total_cash' -> 'cash'
+    Conflict aggregates: 'novaris_rec_escalation' -> 'agent_recommendation'
     """
-    # Faction prefixes (conflict domain)
-    for prefix in ("novaris_", "tethys_"):
-        if var.startswith(prefix):
-            return var[len(prefix):]
-
-    # Market aggregate mappings
-    _MARKET_AGG_MAP = {
+    # Explicit aggregate mappings (check before prefix stripping)
+    _AGG_MAP = {
+        # Market
         "avg_bid_price": "agent_orders",
         "avg_ask_price": "agent_orders",
         "total_bid_qty": "agent_orders",
         "total_ask_qty": "agent_orders",
         "total_cash": "cash",
         "total_inventory": "inventory",
+        # Conflict
+        "novaris_rec_escalation": "agent_recommendation",
+        "tethys_rec_escalation": "agent_recommendation",
+        "novaris_action_delta": "faction_action",
+        "tethys_action_delta": "faction_action",
     }
-    return _MARKET_AGG_MAP.get(var, var)
+    if var in _AGG_MAP:
+        return _AGG_MAP[var]
+
+    # Faction prefixes (conflict domain)
+    for prefix in ("novaris_", "tethys_"):
+        if var.startswith(prefix):
+            return var[len(prefix):]
+
+    return var
 
 
 # =============================================================================

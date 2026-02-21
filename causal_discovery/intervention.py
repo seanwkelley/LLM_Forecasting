@@ -509,6 +509,8 @@ def run_conflict_intervention(
             "novaris_gdp", "tethys_gdp",
             "novaris_military_strength", "tethys_military_strength",
             "novaris_political_stability", "tethys_political_stability",
+            "novaris_rec_escalation", "tethys_rec_escalation",
+            "novaris_action_delta", "tethys_action_delta",
         ]
 
     n_periods = intervention.run_periods
@@ -678,6 +680,32 @@ def _run_conflict_rollout(
             result[f"{faction_id}_gdp"] = round(f.gdp, 4)
             result[f"{faction_id}_military_strength"] = round(f.military_strength, 4)
             result[f"{faction_id}_political_stability"] = round(f.political_stability, 4)
+
+        # Add aggregate recommendation stats (scalar proxies for agent_recommendation)
+        nov_deltas = []
+        teth_deltas = []
+        for rec in recommendations:
+            spec = ACTION_SPACE.get(rec["action"])
+            if spec:
+                delta = spec["escalation_delta"]
+                if rec["faction"] == "novaris":
+                    nov_deltas.append(delta)
+                else:
+                    teth_deltas.append(delta)
+        result["novaris_rec_escalation"] = round(
+            sum(nov_deltas) / len(nov_deltas), 4
+        ) if nov_deltas else 0
+        result["tethys_rec_escalation"] = round(
+            sum(teth_deltas) / len(teth_deltas), 4
+        ) if teth_deltas else 0
+
+        # Add faction action escalation deltas (scalar proxy for faction_action)
+        result["novaris_action_delta"] = round(
+            ACTION_SPACE.get(novaris_action.action_name, {}).get("escalation_delta", 0), 4
+        )
+        result["tethys_action_delta"] = round(
+            ACTION_SPACE.get(tethys_action.action_name, {}).get("escalation_delta", 0), 4
+        )
 
         # Add recommendation details
         result["recommendations"] = [

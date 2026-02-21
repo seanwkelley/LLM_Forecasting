@@ -562,6 +562,28 @@ def run_pilot(
         target = int_spec.get("target", {})
         int_type = int_spec.get("type", "event")
 
+        # Reject invalid intervention types
+        if int_type not in ("action", "trait", "event"):
+            if verbose:
+                print(f"  Proposed: {int_type} — {int_spec.get('description', '?')}")
+                print(f"  [INVALID] Type '{int_type}' is not valid")
+            reject_msg = (
+                f"'{int_type}' is not a valid intervention type. "
+                f"You MUST use one of: action, trait, event. "
+                f"Propose a valid intervention."
+            )
+            conversation.append({"role": "user", "content": reject_msg})
+            conversation.append({"role": "assistant", "content": json.dumps(
+                {"acknowledged": "Will propose a valid intervention."})})
+            all_interventions.append({
+                "step": step + 1,
+                "intervention": {"type": int_type, "target": target,
+                                 "description": int_spec.get("description", "")},
+                "result_summary": f"INVALID TYPE ({int_type})",
+                "hypothesis_update": {},
+            })
+            continue
+
         # Normalize event targets: LLMs sometimes use "event"/"shock"/"type"
         # instead of "shock_type"
         if int_type == "event" and "shock_type" not in target:
@@ -971,6 +993,28 @@ def run_conflict_pilot(
         int_spec = proposal.get("intervention", proposal)
         target = int_spec.get("target", {})
         int_type = int_spec.get("type", "event")
+
+        # Reject invalid intervention types
+        if int_type not in ("action", "trait", "event"):
+            if verbose:
+                print(f"  Proposed: {int_type} — {int_spec.get('description', '?')}")
+                print(f"  [INVALID] Type '{int_type}' is not valid")
+            reject_msg = (
+                f"'{int_type}' is not a valid intervention type. "
+                f"You MUST use one of: action, trait, event. "
+                f"Propose a valid intervention."
+            )
+            conversation.append({"role": "user", "content": reject_msg})
+            conversation.append({"role": "assistant", "content": json.dumps(
+                {"acknowledged": "Will propose a valid intervention."})})
+            all_interventions.append({
+                "step": step + 1,
+                "intervention": {"type": int_type, "target": target,
+                                 "description": int_spec.get("description", "")},
+                "result_summary": f"INVALID TYPE ({int_type})",
+                "hypothesis_update": {},
+            })
+            continue
 
         # Normalize event targets
         if int_type == "event" and "shock_type" not in target:

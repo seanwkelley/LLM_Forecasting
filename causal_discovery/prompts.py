@@ -273,6 +273,134 @@ Respond in JSON format:
 
 
 # =============================================================================
+# Evidence Summary (programmatic, no LLM calls)
+# =============================================================================
+
+def build_evidence_summary(
+    all_results: list,
+    variables: list[str],
+    delta_threshold: float = 0.01,
+) -> str:
+    """Build a per-variable evidence summary from intervention results.
+
+    For each variable, lists which interventions caused it to change
+    and which variables changed when it was the target of an intervention.
+    No LLM calls — pure computation over InterventionResult objects.
+    """
+    # Track: when variable X was intervened on, which other variables changed?
+    # This gives evidence for X -> Y edges.
+    caused_by = {}   # {target_var: [(intervened_var, delta, intervention_desc), ...]}
+    effects_of = {}  # {intervened_var: [(affected_var, delta, intervention_desc), ...]}
+
+    for result in all_results:
+        intervention = result.intervention
+        desc = intervention.description or f"{intervention.type} intervention"
+
+        # Determine which variable was intervened on
+        target = intervention.target
+        if intervention.type == "trait":
+            intervened_var = target.get("param", "unknown")
+        elif intervention.type == "action":
+            intervened_var = "agent_orders" if "param" in target else "agent_recommendation"
+        elif intervention.type == "event":
+            intervened_var = "shock"
+        else:
+            intervened_var = "unknown"
+
+        # Compute deltas for each returned variable
+        for var in result.variables_returned:
+            baseline_vals = [
+                p.get(var) for p in result.baseline_trajectory
+                if p.get(var) is not None
+            ]
+            int_vals = [
+                p.get(var) for p in result.intervention_trajectory
+                if p.get(var) is not None
+            ]
+            if not baseline_vals or not int_vals:
+                continue
+
+            b_mean = sum(baseline_vals) / len(baseline_vals)
+            i_mean = sum(int_vals) / len(int_vals)
+            delta = i_mean - b_mean
+
+            if abs(delta) > delta_threshold:
+                # Map faction-prefixed vars to generic names for grouping
+                generic_var = _to_generic_var(var)
+
+                entry = (intervened_var, delta, desc)
+                caused_by.setdefault(generic_var, []).append(entry)
+
+                entry2 = (generic_var, delta, desc)
+                effects_of.setdefault(intervened_var, []).append(entry2)
+
+    # Format the summary
+    lines = ["EVIDENCE SUMMARY FROM INTERVENTIONS", "=" * 40, ""]
+
+    # Section 1: What each intervention target affected
+    lines.append("EFFECTS OF EACH INTERVENTION:")
+    for var in sorted(effects_of.keys()):
+        entries = effects_of[var]
+        affected = {}
+        for affected_var, delta, desc in entries:
+            if affected_var not in affected:
+                affected[affected_var] = []
+            affected[affected_var].append(delta)
+
+        lines.append(f"  Intervening on {var}:")
+        for av in sorted(affected.keys()):
+            deltas = affected[av]
+            avg_delta = sum(deltas) / len(deltas)
+            lines.append(f"    -> {av} changed (avg delta={avg_delta:+.4f}, {len(deltas)} obs)")
+        lines.append("")
+
+    # Section 2: For each variable, what interventions caused it to change
+    lines.append("WHAT CAUSED EACH VARIABLE TO CHANGE:")
+    for var in sorted(variables):
+        if var in caused_by:
+            entries = caused_by[var]
+            sources = {}
+            for src_var, delta, desc in entries:
+                if src_var not in sources:
+                    sources[src_var] = []
+                sources[src_var].append(delta)
+
+            lines.append(f"  {var} changed when:")
+            for sv in sorted(sources.keys()):
+                deltas = sources[sv]
+                avg_delta = sum(deltas) / len(deltas)
+                lines.append(f"    <- {sv} was intervened on (avg delta={avg_delta:+.4f}, {len(deltas)} obs)")
+        else:
+            lines.append(f"  {var}: no observed changes from interventions")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+def _to_generic_var(var: str) -> str:
+    """Map aggregate/prefixed variable names to ground truth variable names.
+
+    Faction-prefixed: 'novaris_gdp' -> 'gdp'
+    Market aggregates: 'avg_bid_price' -> 'agent_orders', 'total_cash' -> 'cash'
+    """
+    # Faction prefixes (conflict domain)
+    for prefix in ("novaris_", "tethys_"):
+        if var.startswith(prefix):
+            return var[len(prefix):]
+
+    # Market aggregate mappings
+    _MARKET_AGG_MAP = {
+        "avg_bid_price": "agent_orders",
+        "avg_ask_price": "agent_orders",
+        "total_bid_qty": "agent_orders",
+        "total_ask_qty": "agent_orders",
+        "total_cash": "cash",
+        "total_inventory": "inventory",
+    }
+    return _MARKET_AGG_MAP.get(var, var)
+
+
+# =============================================================================
 # Final Declaration Prompt
 # =============================================================================
 
@@ -281,34 +409,66 @@ def build_declaration_prompt(
     variables: list[str],
     current_hypothesis: str,
     all_interventions_summary: str,
+    evidence_summary: str = "",
 ) -> str:
     """Build prompt for the final causal graph declaration.
 
     The agent reviews all evidence and declares its best estimate of
-    the causal graph.
+    the causal graph. Uses per-variable enumeration to reduce omissions.
     """
+    evidence_block = ""
+    if evidence_summary:
+        evidence_block = f"""
+PROGRAMMATIC EVIDENCE SUMMARY:
+The following was computed automatically from your intervention results. Use it \
+to remind yourself what you observed — do not rely solely on memory.
+
+{evidence_summary}
+"""
+
+    var_list = "\n".join(f"  - {v}" for v in variables)
+
     return f"""\
 You have completed all your interventions on a {domain} simulation. Now declare \
 your final causal graph.
 
-VARIABLES: {', '.join(variables)}
-
+VARIABLES:
+{var_list}
+{evidence_block}
 YOUR RUNNING HYPOTHESIS:
 {current_hypothesis}
 
 INTERVENTION HISTORY:
 {all_interventions_summary}
 
-Review all the evidence and declare your final causal graph. For each possible \
-directed edge between variables, state whether it exists and your confidence level.
+INSTRUCTIONS — Per-variable enumeration:
+Go through EACH variable listed above and determine:
+1. What are its PARENTS (direct causes)? Which variables, when intervened on, \
+caused this variable to change?
+2. What are its CHILDREN (direct effects)? When this variable was intervened on, \
+which other variables changed?
 
-IMPORTANT: Only include edges you believe are DIRECT causal relationships. \
-If A causes C through B (A -> B -> C), include A -> B and B -> C, but NOT A -> C \
-(unless A also directly causes C independent of B).
+IMPORTANT GUIDANCE:
+- Err on the side of INCLUSION. Include edges you have moderate evidence for. \
+A false negative (missing a real edge) is WORSE than a false positive (including \
+a spurious edge) for this task.
+- If a variable changed when another was intervened on, that is evidence of a \
+causal edge — include it unless you have strong reason to believe it is purely \
+indirect.
+- Only exclude edges you are confident do NOT exist (i.e., you tested the \
+intervention and saw NO effect).
+- Include edges at "low" confidence if you have some evidence but are unsure.
 
 Respond in JSON format:
 ```json
 {{
+    "per_variable": {{
+        "variable_name": {{
+            "parents": ["var_A", "var_B"],
+            "children": ["var_C", "var_D"]
+        }},
+        ...
+    }},
     "final_graph": [
         {{"from": "var_A", "to": "var_B", "confidence": "high/medium/low"}},
         ...

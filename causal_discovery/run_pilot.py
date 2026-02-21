@@ -44,7 +44,7 @@ from causal_discovery.prompts import (
     SYSTEM_PROMPT_MARKET, MARKET_INTERVENTION_TYPES,
     SYSTEM_PROMPT_CONFLICT, CONFLICT_INTERVENTION_TYPES,
     build_observation_prompt, build_intervention_prompt,
-    build_declaration_prompt,
+    build_declaration_prompt, build_evidence_summary,
     format_market_history, format_conflict_history,
 )
 
@@ -265,18 +265,42 @@ def _mock_market_response(prompt_type: str, step: int) -> dict:
         }
     elif prompt_type == "declaration":
         return {
+            "per_variable": {
+                "shock": {"parents": [], "children": ["production_cost", "demand_per_period", "demand_value", "storage_cost"]},
+                "production_cost": {"parents": ["shock"], "children": ["agent_orders", "fundamental_price"]},
+                "demand_per_period": {"parents": ["shock"], "children": ["agent_orders"]},
+                "demand_value": {"parents": ["shock"], "children": ["agent_orders", "fundamental_price"]},
+                "storage_cost": {"parents": ["shock"], "children": ["agent_orders"]},
+                "agent_orders": {"parents": ["production_cost", "demand_per_period", "demand_value", "storage_cost", "cash", "inventory", "price_history"], "children": ["clearing_price", "volume"]},
+                "clearing_price": {"parents": ["agent_orders"], "children": ["cash", "inventory", "price_history", "fundamental_price"]},
+                "volume": {"parents": ["agent_orders"], "children": ["cash", "inventory"]},
+                "cash": {"parents": ["clearing_price", "volume"], "children": ["agent_orders"]},
+                "inventory": {"parents": ["clearing_price", "volume"], "children": ["agent_orders"]},
+                "price_history": {"parents": ["clearing_price"], "children": ["agent_orders"]},
+                "fundamental_price": {"parents": ["production_cost", "demand_value", "clearing_price"], "children": []},
+            },
             "final_graph": [
                 {"from": "shock", "to": "production_cost", "confidence": "high"},
                 {"from": "shock", "to": "demand_per_period", "confidence": "high"},
+                {"from": "shock", "to": "demand_value", "confidence": "medium"},
+                {"from": "shock", "to": "storage_cost", "confidence": "low"},
                 {"from": "production_cost", "to": "agent_orders", "confidence": "high"},
+                {"from": "demand_per_period", "to": "agent_orders", "confidence": "high"},
                 {"from": "demand_value", "to": "agent_orders", "confidence": "high"},
+                {"from": "storage_cost", "to": "agent_orders", "confidence": "low"},
                 {"from": "agent_orders", "to": "clearing_price", "confidence": "high"},
+                {"from": "agent_orders", "to": "volume", "confidence": "high"},
                 {"from": "clearing_price", "to": "cash", "confidence": "medium"},
                 {"from": "clearing_price", "to": "inventory", "confidence": "medium"},
+                {"from": "clearing_price", "to": "price_history", "confidence": "high"},
+                {"from": "clearing_price", "to": "fundamental_price", "confidence": "low"},
+                {"from": "volume", "to": "cash", "confidence": "medium"},
+                {"from": "volume", "to": "inventory", "confidence": "medium"},
                 {"from": "cash", "to": "agent_orders", "confidence": "medium"},
                 {"from": "inventory", "to": "agent_orders", "confidence": "medium"},
                 {"from": "price_history", "to": "agent_orders", "confidence": "medium"},
-                {"from": "clearing_price", "to": "price_history", "confidence": "high"},
+                {"from": "production_cost", "to": "fundamental_price", "confidence": "medium"},
+                {"from": "demand_value", "to": "fundamental_price", "confidence": "medium"},
             ],
             "absent_edges": [
                 {"from": "fundamental_price", "to": "clearing_price",
@@ -337,6 +361,21 @@ def _mock_conflict_response(prompt_type: str, step: int) -> dict:
         }
     elif prompt_type == "declaration":
         return {
+            "per_variable": {
+                "shock": {"parents": [], "children": ["escalation_index", "resources", "military_balance", "sanctions_level"]},
+                "hawk_score": {"parents": [], "children": ["agent_recommendation"]},
+                "escalation_index": {"parents": ["shock", "faction_action"], "children": ["agent_recommendation", "gdp", "sanctions_level", "international_support", "political_stability"]},
+                "resources": {"parents": ["shock", "faction_action", "gdp"], "children": ["agent_recommendation"]},
+                "gdp": {"parents": ["escalation_index", "sanctions_level"], "children": ["resources", "political_stability"]},
+                "military_strength": {"parents": ["faction_action"], "children": ["military_balance"]},
+                "political_stability": {"parents": ["escalation_index", "gdp"], "children": ["agent_recommendation"]},
+                "military_balance": {"parents": ["shock", "military_strength"], "children": ["territory_controlled", "faction_action"]},
+                "territory_controlled": {"parents": ["military_balance", "faction_action"], "children": []},
+                "sanctions_level": {"parents": ["shock", "escalation_index"], "children": ["gdp"]},
+                "international_support": {"parents": ["escalation_index"], "children": ["sanctions_level"]},
+                "agent_recommendation": {"parents": ["hawk_score", "escalation_index", "resources", "political_stability"], "children": ["faction_action"]},
+                "faction_action": {"parents": ["agent_recommendation", "military_balance"], "children": ["escalation_index", "military_strength", "territory_controlled", "resources"]},
+            },
             "final_graph": [
                 {"from": "shock", "to": "escalation_index", "confidence": "high"},
                 {"from": "shock", "to": "resources", "confidence": "high"},
@@ -344,19 +383,24 @@ def _mock_conflict_response(prompt_type: str, step: int) -> dict:
                 {"from": "shock", "to": "sanctions_level", "confidence": "medium"},
                 {"from": "hawk_score", "to": "agent_recommendation", "confidence": "high"},
                 {"from": "escalation_index", "to": "agent_recommendation", "confidence": "high"},
+                {"from": "escalation_index", "to": "gdp", "confidence": "medium"},
+                {"from": "escalation_index", "to": "sanctions_level", "confidence": "high"},
+                {"from": "escalation_index", "to": "international_support", "confidence": "medium"},
+                {"from": "escalation_index", "to": "political_stability", "confidence": "low"},
                 {"from": "resources", "to": "agent_recommendation", "confidence": "medium"},
+                {"from": "political_stability", "to": "agent_recommendation", "confidence": "low"},
                 {"from": "agent_recommendation", "to": "faction_action", "confidence": "high"},
                 {"from": "faction_action", "to": "escalation_index", "confidence": "high"},
                 {"from": "faction_action", "to": "military_strength", "confidence": "medium"},
                 {"from": "faction_action", "to": "territory_controlled", "confidence": "medium"},
                 {"from": "faction_action", "to": "resources", "confidence": "high"},
-                {"from": "escalation_index", "to": "gdp", "confidence": "medium"},
-                {"from": "escalation_index", "to": "sanctions_level", "confidence": "high"},
-                {"from": "escalation_index", "to": "international_support", "confidence": "medium"},
                 {"from": "gdp", "to": "resources", "confidence": "medium"},
+                {"from": "gdp", "to": "political_stability", "confidence": "low"},
                 {"from": "sanctions_level", "to": "gdp", "confidence": "medium"},
+                {"from": "international_support", "to": "sanctions_level", "confidence": "low"},
                 {"from": "military_strength", "to": "military_balance", "confidence": "high"},
                 {"from": "military_balance", "to": "territory_controlled", "confidence": "medium"},
+                {"from": "military_balance", "to": "faction_action", "confidence": "low"},
             ],
             "absent_edges": [
                 {"from": "territory_controlled", "to": "escalation_index",
@@ -627,23 +671,37 @@ def run_pilot(
     if verbose:
         print(f"\nPhase 3: Declaring final causal graph...")
 
+    evidence_summary = build_evidence_summary(all_results, MARKET_VARIABLES)
+    latest_hypothesis = _extract_latest_hypothesis(all_interventions)
+    intervention_summary = _build_intervention_summary(all_interventions)
+
     declaration_prompt = build_declaration_prompt(
         domain="market",
         variables=MARKET_VARIABLES,
-        current_hypothesis="(see your full conversation history above)",
-        all_interventions_summary="(see your full conversation history above)",
+        current_hypothesis=latest_hypothesis,
+        all_interventions_summary=intervention_summary,
+        evidence_summary=evidence_summary,
     )
 
-    conversation.append({"role": "user", "content": declaration_prompt})
+    # Use a truncated conversation for declaration — the full 60+ turn history
+    # drowns the model in noise. The evidence summary + latest hypothesis contain
+    # all the information needed.
+    declaration_conversation = [
+        {"role": "system", "content": SYSTEM_PROMPT_MARKET},
+        {"role": "user", "content": declaration_prompt},
+    ]
 
     if dry_run:
         declaration = mock_llm_response("declaration", 0)
         declaration_raw = json.dumps(declaration)
     else:
-        declaration_raw = call_llm(conversation, api_key, model, max_tokens=3000)
+        declaration_raw = call_llm(
+            declaration_conversation, api_key, model, max_tokens=4000
+        )
         declaration = parse_json_response(declaration_raw)
         llm_calls += 1
 
+    conversation.append({"role": "user", "content": declaration_prompt})
     conversation.append({"role": "assistant", "content": declaration_raw})
 
     # --- Phase 4: Scoring ---
@@ -653,7 +711,7 @@ def run_pilot(
     # Convert declared edges to adjacency matrix
     final_edges = declaration.get("final_graph", [])
     edge_pairs = [(e["from"], e["to"]) for e in final_edges
-                  if e.get("confidence") in ("high", "medium")]
+                  if e.get("confidence") in ("high", "medium", "low")]
     estimated_matrix = edges_to_matrix(edge_pairs, MARKET_VARIABLES)
 
     scores = score_market_graph(estimated_matrix)
@@ -712,6 +770,42 @@ def run_pilot(
             print(f"\n  Results saved to: {out_path}")
 
     return scores
+
+
+def _extract_latest_hypothesis(all_interventions: list) -> str:
+    """Extract the latest current_graph from intervention update responses."""
+    for inv in reversed(all_interventions):
+        update = inv.get("hypothesis_update", {})
+        if "current_graph" in update:
+            edges = update["current_graph"]
+            lines = ["Current believed edges:"]
+            for e in edges:
+                if isinstance(e, dict):
+                    lines.append(
+                        f"  {e.get('from', '?')} -> {e.get('to', '?')} "
+                        f"({e.get('confidence', '?')})"
+                    )
+                else:
+                    # Some models return edges as strings
+                    lines.append(f"  {e}")
+            uncertainties = update.get("key_uncertainties", [])
+            if uncertainties:
+                lines.append("\nKey uncertainties:")
+                for u in uncertainties:
+                    lines.append(f"  - {u}")
+            return "\n".join(lines)
+    return "No hypothesis formed yet."
+
+
+def _build_intervention_summary(all_interventions: list) -> str:
+    """Build a brief summary of all interventions run and their effects."""
+    lines = []
+    for inv in all_interventions:
+        step = inv["step"]
+        spec = inv["intervention"]
+        result = inv["result_summary"]
+        lines.append(f"  {step}. [{spec['type']}] {spec['description']} => {result}")
+    return "\n".join(lines) if lines else "No interventions completed."
 
 
 def _summarize_effect(result) -> str:
@@ -993,23 +1087,37 @@ def run_conflict_pilot(
     if verbose:
         print(f"\nPhase 3: Declaring final causal graph...")
 
+    evidence_summary = build_evidence_summary(all_results, CONFLICT_VARIABLES)
+    latest_hypothesis = _extract_latest_hypothesis(all_interventions)
+    intervention_summary = _build_intervention_summary(all_interventions)
+
     declaration_prompt = build_declaration_prompt(
         domain="conflict",
         variables=CONFLICT_VARIABLES,
-        current_hypothesis="(see your full conversation history above)",
-        all_interventions_summary="(see your full conversation history above)",
+        current_hypothesis=latest_hypothesis,
+        all_interventions_summary=intervention_summary,
+        evidence_summary=evidence_summary,
     )
 
-    conversation.append({"role": "user", "content": declaration_prompt})
+    # Use a truncated conversation for declaration — the full 60+ turn history
+    # drowns the model in noise. The evidence summary + latest hypothesis contain
+    # all the information needed.
+    declaration_conversation = [
+        {"role": "system", "content": SYSTEM_PROMPT_CONFLICT},
+        {"role": "user", "content": declaration_prompt},
+    ]
 
     if dry_run:
         declaration = mock_llm_response("declaration", 0, domain="conflict")
         declaration_raw = json.dumps(declaration)
     else:
-        declaration_raw = call_llm(conversation, api_key, model, max_tokens=3000)
+        declaration_raw = call_llm(
+            declaration_conversation, api_key, model, max_tokens=4000
+        )
         declaration = parse_json_response(declaration_raw)
         llm_calls += 1
 
+    conversation.append({"role": "user", "content": declaration_prompt})
     conversation.append({"role": "assistant", "content": declaration_raw})
 
     # --- Phase 4: Scoring ---
@@ -1018,7 +1126,7 @@ def run_conflict_pilot(
 
     final_edges = declaration.get("final_graph", [])
     edge_pairs = [(e["from"], e["to"]) for e in final_edges
-                  if e.get("confidence") in ("high", "medium")]
+                  if e.get("confidence") in ("high", "medium", "low")]
     estimated_matrix = edges_to_matrix(edge_pairs, CONFLICT_VARIABLES)
 
     scores = score_conflict_graph(estimated_matrix)

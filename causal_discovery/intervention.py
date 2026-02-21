@@ -107,7 +107,12 @@ def run_market_intervention(
     from market.shocks import apply_shocks, get_active_shocks, describe_shocks
 
     if return_vars is None:
-        return_vars = ["clearing_price", "volume", "fundamental_price"]
+        return_vars = [
+            "clearing_price", "volume", "fundamental_price",
+            "avg_bid_price", "avg_ask_price",
+            "total_bid_qty", "total_ask_qty",
+            "total_cash", "total_inventory",
+        ]
 
     n_periods = intervention.run_periods
 
@@ -289,6 +294,28 @@ def _run_market_rollout(
 
         # --- Run period ---
         result = run_period(state, orders)
+
+        # Add aggregate order stats for causal discovery observability
+        buy_orders = [o for o in orders if o.side == "buy"]
+        sell_orders = [o for o in orders if o.side == "sell"]
+        result["avg_bid_price"] = (
+            round(sum(o.limit_price for o in buy_orders) / len(buy_orders), 4)
+            if buy_orders else 0
+        )
+        result["avg_ask_price"] = (
+            round(sum(o.limit_price for o in sell_orders) / len(sell_orders), 4)
+            if sell_orders else 0
+        )
+        result["total_bid_qty"] = sum(o.quantity for o in buy_orders)
+        result["total_ask_qty"] = sum(o.quantity for o in sell_orders)
+
+        # Add aggregate agent state
+        result["total_cash"] = round(
+            sum(agent.cash for agent in agents.values()), 4
+        )
+        result["total_inventory"] = sum(
+            agent.inventory for agent in agents.values()
+        )
 
         # Add agent states to result for richer trajectory
         agent_states = {}
@@ -479,6 +506,9 @@ def run_conflict_intervention(
             "escalation_index", "military_balance", "territory_controlled",
             "sanctions_level", "international_support",
             "novaris_resources", "tethys_resources",
+            "novaris_gdp", "tethys_gdp",
+            "novaris_military_strength", "tethys_military_strength",
+            "novaris_political_stability", "tethys_political_stability",
         ]
 
     n_periods = intervention.run_periods
@@ -641,6 +671,13 @@ def _run_conflict_rollout(
 
         # --- Run period ---
         result = run_period(state, novaris_action, tethys_action)
+
+        # Add faction-level state for richer observation
+        for faction_id in ["novaris", "tethys"]:
+            f = state.factions[faction_id]
+            result[f"{faction_id}_gdp"] = round(f.gdp, 4)
+            result[f"{faction_id}_military_strength"] = round(f.military_strength, 4)
+            result[f"{faction_id}_political_stability"] = round(f.political_stability, 4)
 
         # Add recommendation details
         result["recommendations"] = [

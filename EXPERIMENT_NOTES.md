@@ -118,7 +118,7 @@ All runs use Llama 3.3 70B via OpenRouter, multi-turn conversation, role/faction
 
 ### Key Findings
 
-**Shared failure modes (both domains):**
+**Shared failure modes (both domains, baseline Llama runs):**
 
 1. **Under-declaration** — The model declares only 3-9 edges out of 21-23 true edges. Recall is the bottleneck (~16%). It only reports edges it directly tested and misses all state-update and feedback edges it never probed.
 
@@ -138,6 +138,33 @@ All runs use Llama 3.3 70B via OpenRouter, multi-turn conversation, role/faction
 
 7. **Higher variance** — F1 ranges from 0.083 to 0.400 across replicates (market: 0.188 to 0.312). The conflict domain outcome is more sensitive to which interventions the model happens to choose.
 
+### Root Cause Analysis & Fixes (Feb 21)
+
+**Root cause: Data observability, not model quality.** Two models (Llama 3.3 70B and DeepSeek V3) produced identical failure patterns on the original return variables. Market trajectories only returned 3 variables (clearing_price, volume, fundamental_price), making intermediate variables like `agent_orders` invisible. Without seeing mediators change, no model could distinguish direct from indirect effects.
+
+**Fixes applied:**
+
+1. **Expanded return variables** — Market: added aggregate order stats (avg_bid/ask_price, total_bid/ask_qty) and agent state (total_cash, total_inventory) as scalar proxies for `agent_orders`, `cash`, `inventory`. Conflict: added faction-level state ({faction}_gdp, _military_strength, _political_stability), recommendation escalation deltas, and faction action deltas.
+
+2. **Evidence summary** — Programmatic (no LLM) function that scans all intervention results and builds per-variable tables of what moved when. Provided at declaration time so the model doesn't need to recall from a long conversation.
+
+3. **Per-variable enumeration** — Rewrote declaration prompt to enumerate parents/children for each variable. Instructs model to err on the side of inclusion (include moderate-evidence edges).
+
+4. **Truncated declaration context** — Fresh 2-message conversation for declaration instead of full 69k-token multi-turn history. Eliminates context saturation.
+
+5. **Invalid intervention type guard** — Rejects invented types (e.g., "terminate") and asks the model to propose a valid action/trait/event intervention.
+
+**Results after fixes (single runs, DeepSeek V3):**
+
+| Run | Domain | Model | Precision | Recall | F1 | HD |
+|-----|--------|-------|-----------|--------|----|----|
+| Baseline (3-rep avg) | Market | Llama 3.3 70B | 0.487 | 0.174 | 0.256 | 23.3 |
+| + all fixes | Market | DeepSeek V3 | 0.417 | 0.652 | 0.508 | 17 |
+| Baseline (3-rep avg) | Conflict | Llama 3.3 70B | 0.500 | 0.159 | 0.235 | 20.3 |
+| + all fixes | Conflict | DeepSeek V3 | 0.300 | 0.286 | 0.293 | 19 |
+
+Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 16% → 29% — smaller gain because conflict chains are longer (3 hops vs 2) and the interaction modifier creates nonlinearities harder to detect with single-variable interventions.
+
 ### Infrastructure Decisions
 
 - **Role-level trait overrides**: `{"role": "producer", "param": "production_cost", "value": 200}` overrides ALL producers, not just one. Same for `{"faction": "novaris", ...}` in conflict. Solves the infra-marginal agent problem.
@@ -154,20 +181,22 @@ All runs use Llama 3.3 70B via OpenRouter, multi-turn conversation, role/faction
 | 3. Single-agent pilot (market) | **Complete** | 3 replicates @ budget=30, F1=0.256±0.052 |
 | 4. Infrastructure fixes | Complete | Role-level overrides, multi-turn conversation |
 | 5. Single-agent pilot (conflict) | **Complete** | 3 replicates @ budget=30, F1=0.235±0.130 |
-| 6. Budget calibration | **Next** | Both domains show ~16% recall — need prompt improvements or higher budget |
-| 7. Multi-agent conditions | Pending | 5 communication structures x 2 engines |
+| 6. Recall improvement | **Complete** | Expanded return vars, evidence summary, truncated context → Market F1=0.508, Conflict F1=0.293 |
+| 7. Multi-agent conditions | **Next** | 5 communication structures x 2 engines |
 | 8. PID analysis | Pending | Edge-level epistemic coordination |
 
 ### Files
 
-- `causal_discovery/intervention.py` — Clamp-and-react rollouts (action, trait, event)
-- `causal_discovery/run_pilot.py` — Single-agent pilot runner (market + conflict, multi-turn)
-- `causal_discovery/prompts.py` — Causal modeler agent prompts
+- `causal_discovery/intervention.py` — Clamp-and-react rollouts (action, trait, event), expanded return vars
+- `causal_discovery/run_pilot.py` — Single-agent pilot runner (market + conflict, multi-turn, truncated declaration)
+- `causal_discovery/prompts.py` — Causal modeler agent prompts, evidence summary builder
 - `causal_discovery/ground_truth.py` — Ground truth adjacency matrices + scoring
 - `causal_discovery/test_intervention.py` — Smoke tests for intervention interface
 - `docs/CAUSAL_DISCOVERY_DESIGN.md` — Full design document
-- Results: `outputs/causal_discovery/pilot_runs/run_{1,2,3}_seed{42,43,44}/`
-- Results: `outputs/causal_discovery/conflict_pilot_runs/run_{1,2,3}_seed{42,43,44}/`
+- Baseline results: `outputs/causal_discovery/pilot_runs/run_{1,2,3}_seed{42,43,44}/`
+- Baseline results: `outputs/causal_discovery/conflict_pilot_runs/run_{1,2,3}_seed{42,43,44}/`
+- Post-fix results: `outputs/causal_discovery/pilot_runs/recall_fix_test/` (market, DeepSeek V3)
+- Post-fix results: `outputs/causal_discovery/conflict_pilot_runs/recall_fix_test/` (conflict, DeepSeek V3)
 
 ---
 

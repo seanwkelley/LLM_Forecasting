@@ -13,7 +13,7 @@ This document outlines the design for a causal discovery layer added to the exis
 
 **Secondary DV:** Does PID-measured epistemic synergy (edge-level) predict recovery quality? If so, this validates PID as a measure beyond behavioral coordination.
 
-**Model:** Llama 3.3 70B via OpenRouter (or Qwen 2.5 72B). Larger than simulation agents (Llama 8B) due to the reasoning demands of causal inference.
+**Model:** Llama 3.3 70B or DeepSeek V3 via OpenRouter. Larger than simulation agents (Llama 8B) due to the reasoning demands of causal inference.
 
 ---
 
@@ -310,7 +310,7 @@ Whether agents demonstrate this awareness spontaneously or need prompting is its
 - [x] Evaluate: can the agent recover any structure? Where does it fail?
 - [x] Run single agent, conflict domain (multi-turn + faction-level overrides)
 - [x] Cross-domain comparison (3 replicates × 2 domains, budget=30)
-- [ ] Calibrate budget / improve prompts based on pilot failure modes
+- [x] Calibrate budget / improve prompts based on pilot failure modes
 
 ### Phase 3: Multi-agent conditions
 - [ ] Implement 5 communication structures
@@ -406,16 +406,69 @@ Per-replicate:
 
 **Domain CLI:** `run_pilot.py` supports `--domain market|conflict`, routing to `run_pilot()` or `run_conflict_pilot()` with domain-appropriate setup, warm-up, history formatting, intervention execution, and scoring.
 
+### Recall improvement fixes (Feb 21)
+
+Root cause analysis identified **data observability** as the primary bottleneck, not model reasoning quality. Two models (Llama 3.3 70B and DeepSeek V3) produced identical failure patterns on the original return variables, proving the issue was structural.
+
+**Fix 1: Expanded return variables (both domains)**
+
+Market trajectories originally returned only 3 variables (clearing_price, volume, fundamental_price). The key mediator `agent_orders` was never visible, so no model could distinguish direct from indirect effects (e.g., `production_cost → clearing_price` vs `production_cost → agent_orders → clearing_price`).
+
+Added aggregate order stats and agent state to market rollout:
+- `avg_bid_price`, `avg_ask_price` (scalar proxies for agent_orders)
+- `total_bid_qty`, `total_ask_qty` (quantity proxies for agent_orders)
+- `total_cash`, `total_inventory` (agent state proxies)
+
+Added intermediate variables to conflict rollout:
+- Faction-level state: `{faction}_gdp`, `{faction}_military_strength`, `{faction}_political_stability`
+- Recommendation proxies: `{faction}_rec_escalation` (mean escalation delta of agent recommendations)
+- Action proxies: `{faction}_action_delta` (escalation delta of chosen faction action)
+
+These are mapped back to ground truth variable names via `_to_generic_var()` for scoring.
+
+**Fix 2: Evidence summary (programmatic, no LLM)**
+
+New `build_evidence_summary()` function scans all `InterventionResult` objects and builds per-variable tables of what moved when. Provided to the model at declaration time so it doesn't need to recall evidence from a long conversation.
+
+**Fix 3: Per-variable enumeration declaration prompt**
+
+Rewrote declaration prompt to ask the model to enumerate parents and children for EACH variable, with explicit instruction to err on the side of inclusion. Includes low-confidence edges in the output schema.
+
+**Fix 4: Truncated declaration context**
+
+Replaced the full multi-turn conversation (69k+ tokens after 30 interventions) with a fresh 2-message conversation (system prompt + declaration prompt with evidence summary). Eliminates context saturation at declaration time.
+
+**Fix 5: Invalid intervention type guard**
+
+DeepSeek V3 occasionally invented invalid intervention types (e.g., "terminate") when stuck. Added validation that rejects anything not in `("action", "trait", "event")` and asks the model to propose a valid intervention instead.
+
+### Results after fixes (Feb 21)
+
+| Run | Domain | Model | Precision | Recall | F1 | HD |
+|-----|--------|-------|-----------|--------|----|----|
+| Baseline (3-rep avg) | Market | Llama 3.3 70B | 0.487 | 0.174 | 0.256 | 23.3 |
+| + all fixes | Market | DeepSeek V3 | 0.417 | 0.652 | 0.508 | 17 |
+| Baseline (3-rep avg) | Conflict | Llama 3.3 70B | 0.500 | 0.159 | 0.235 | 20.3 |
+| + all fixes | Conflict | DeepSeek V3 | 0.300 | 0.286 | 0.293 | 19 |
+
+Market recall improved **17% → 65%** (3.7× increase). F1 nearly doubled from 0.256 to 0.508. The expanded return variables allowed the model to correctly identify mediator edges like `production_cost → agent_orders` and `cash → agent_orders` instead of declaring the collapsed `production_cost → clearing_price`.
+
+Conflict recall improved **16% → 29%** (1.8× increase). Smaller improvement because conflict causal chains are longer (3 hops: `hawk_score → agent_recommendation → faction_action → escalation_index`) and the interaction modifier creates nonlinearities that are harder to detect via single-variable interventions.
+
 ---
 
 ## Open Questions
 
-1. **Recall bottleneck** — Single-agent recall is ~16% in both domains at budget=30. The model tests ~20 unique interventions but only declares edges for a handful. Possible fixes: (a) stronger declaration prompt encouraging exhaustive enumeration, (b) explicit "for each variable pair, state present/absent" format, (c) higher budget, (d) multi-agent conditions where agents cover different variable subsets.
+1. **~~Recall bottleneck~~** — ~~Single-agent recall is ~16% in both domains at budget=30.~~ **Largely resolved for market** (recall now 65% with expanded return vars + evidence summary). Conflict recall (29%) still has room for improvement — the longer causal chains and interaction modifier nonlinearities remain challenging.
 
-2. **Conflict duplication** — 7-10 duplicates per 30-budget run wastes ~25-33% of the budget. The dedup mechanism catches exact duplicates but the model struggles to generate novel interventions. May need: (a) explicit "you have NOT yet tested these variables" hints, (b) structured intervention planning phase before the loop.
+2. **Conflict duplication** — Fixed by invalid type guard (prevents "terminate" loops) but the fundamental issue of limited parameter space remains. Conflict has fewer independent knobs to turn than market.
 
 3. **Number of scenarios** — 10 scenarios per condition gives 150-230 edge-level observations for PID (depending on variable count). May need 20+ for reliable Williams-Beer estimation.
 
 4. **Variable granularity** — Current: 12 market / 13 conflict variables. Both are at the limit of what a single agent can probe with 30 interventions. Consider whether coarser graphs (collapsing agent_recommendation + faction_action) would be more appropriate for single-agent recovery.
 
-5. **Prompt engineering** — Structured explicit-enumeration declaration ("for each of these N² possible edges, state present/absent") may dramatically improve recall at the cost of longer outputs. The current free-form "list your confident edges" format leads to conservative under-reporting.
+5. **~~Prompt engineering~~** — ~~Structured explicit-enumeration declaration may dramatically improve recall.~~ **Implemented** — per-variable enumeration with evidence summary. Combined with expanded return vars, this was effective for market domain.
+
+6. **Model comparison** — DeepSeek V3 and Llama 3.3 70B produced identical results on the original (limited) return vars, confirming data observability as the bottleneck rather than model quality. Systematic model comparison on the improved pipeline is still needed.
+
+7. **Conflict nonlinearity** — The interaction modifier (mutual escalation ×1.2, mixed ×0.8) means `action_A → EI` depends on `action_B`. Single-variable interventions cannot fully capture this. May need multi-variable interventions or factorial designs.

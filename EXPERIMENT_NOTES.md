@@ -1,6 +1,175 @@
 # Experiment Notes
 
-**Last Updated:** February 18, 2026
+**Last Updated:** February 21, 2026
+
+## Belief Sensitivity Experiment (Feb 20) — ACTIVE
+
+### Motivation
+
+The market and conflict experiments measure how LLM agents *coordinate* and how external forecasters *predict* outcomes. The belief sensitivity experiment asks a complementary question: **how robust are LLM forecasts to targeted challenges?**
+
+When an LLM produces a probability estimate for a real-world event, does it:
+- Anchor too strongly (barely shift regardless of challenge)?
+- Update rationally (shift proportional to challenge strength)?
+- Cave easily (large shifts from weak challenges)?
+
+This reveals calibration properties that PID and forecasting experiments cannot detect.
+
+### Design
+
+**Pipeline (3 stages):**
+
+| Stage | Input | Output | Shared? |
+|-------|-------|--------|---------|
+| 1. Initial forecast | Binary question | Probability + 3-5 explicit reasons (each rated high/medium/low importance) | Yes |
+| 2. Probe generation | Each reason | Targeted challenge (negation, counterfactual, or weakening) | Yes |
+| 3. Probed forecast | Challenge + context | Updated probability | No — differs by condition |
+
+**Conditions (Stage 3 only):**
+
+| Condition | Description |
+|-----------|-------------|
+| **One-turn** | Fresh 2-message API call per probe (system + user). No memory of prior probes. |
+| **Multi-turn** | Growing messages array. Model sees all prior probes and its own responses. |
+
+**Experimental factors:**
+
+| Factor | Levels |
+|--------|--------|
+| Condition | one-turn, multi-turn |
+| Probe type | negation, counterfactual, weakening, strengthening (control), irrelevant (control) |
+| Reason importance | high, medium, low |
+
+**Model:** Llama 3.1 8B via OpenRouter (consistent with existing experiments)
+**Questions:** ~50 binary questions from ForecastBench (HuggingFace), with built-in fallback set
+**Estimated calls:** ~650 total for both conditions
+
+### Analysis Metrics
+
+1. **Anchoring**: Mean/median absolute shift, % no-change (<1%), % small-shift (<5%)
+2. **Sensitivity by importance**: Do "high" importance reasons produce larger shifts when challenged?
+3. **Sensitivity by probe type**: Are counterfactuals more persuasive than negations or weakenings? Do strengthening probes shift in the expected direction? Does the model correctly ignore irrelevant probes?
+4. **Conversational drift**: Does cumulative shift grow with probe order? (Spearman correlation)
+5. **Condition comparison**: Paired t-test + Cohen's d on mean absolute shifts (multi-turn vs one-turn)
+
+### Status
+
+| Phase | Status | Details |
+|-------|--------|---------|
+| 1. Pipeline implementation | Complete | 6 files in `forecast_bench/` |
+| 2. One-turn condition run | In progress | |
+| 3. Multi-turn condition run | Pending | |
+| 4. Analysis | Pending | |
+
+### Files
+- `forecast_bench/llm_client.py` — OpenRouter client (single-shot + multi-turn)
+- `forecast_bench/questions.py` — ForecastBench loader (HuggingFace + fallback)
+- `forecast_bench/prompts.py` — 3-stage prompt templates
+- `forecast_bench/run_sensitivity.py` — Main pipeline runner
+- `forecast_bench/analysis.py` — Sensitivity metrics (anchoring, drift, condition comparison)
+
+### Usage
+
+```bash
+# Quick smoke test (2 questions, one-turn only)
+python forecast_bench/run_sensitivity.py --max-questions 2 --condition one-turn
+
+# Full run (50 questions, both conditions)
+python forecast_bench/run_sensitivity.py --max-questions 50 --condition both
+
+# Resume interrupted run
+python forecast_bench/run_sensitivity.py --max-questions 50 --condition both --resume
+
+# Analyze results
+python forecast_bench/analysis.py outputs/sensitivity_llama_one-turn outputs/sensitivity_llama_multi-turn
+```
+
+---
+
+## Causal Discovery (Feb 19-20) — IN PROGRESS
+
+### Motivation
+
+The market and conflict experiments establish that LLM agent groups exhibit emergent coordination (PID synergy) and that persona knowledge helps/hurts forecasting depending on domain. The causal discovery experiment asks: **can LLM agents recover the known causal structure of these simulations through targeted interventional queries?**
+
+This extends the framework from behavioral coordination → epistemic coordination. If groups of modeler agents can recover more of the causal graph than individuals (especially when their edge-level PID synergy is high), it validates PID as a measure of epistemic coordination.
+
+### Pilot Results (Single Agent, Budget=30, 3 Replicates Each)
+
+All runs use Llama 3.3 70B via OpenRouter, multi-turn conversation, role/faction-level overrides.
+
+**Cross-domain comparison (Feb 21):**
+
+| Domain | Mean F1 | Mean Precision | Mean Recall | Mean HD | True Edges |
+|--------|---------|----------------|-------------|---------|------------|
+| **Market** | 0.256 ± 0.052 | 0.487 ± 0.109 | 0.174 ± 0.036 | 23.3 ± 1.9 | 23 |
+| **Conflict** | 0.235 ± 0.130 | 0.500 ± 0.136 | 0.159 ± 0.098 | 20.3 ± 1.7 | 21 |
+
+**Per-replicate detail:**
+
+| Run | P | R | F1 | HD | Edges | Dup | No-effect |
+|-----|---|---|----|----|-------|-----|-----------|
+| Market seed42 | 0.571 | 0.174 | 0.267 | 22 | 7/23 | 3 | 9 |
+| Market seed43 | 0.333 | 0.130 | 0.188 | 26 | 9/23 | 1 | 10 |
+| Market seed44 | 0.556 | 0.217 | 0.312 | 22 | 9/23 | 3 | 9 |
+| Conflict seed42 | 0.333 | 0.048 | 0.083 | 22 | 3/21 | 8 | 4 |
+| Conflict seed43 | 0.667 | 0.286 | 0.400 | 18 | 9/21 | 7 | 2 |
+| Conflict seed44 | 0.500 | 0.143 | 0.222 | 21 | 6/21 | 10 | 1 |
+
+### Key Findings
+
+**Shared failure modes (both domains):**
+
+1. **Under-declaration** — The model declares only 3-9 edges out of 21-23 true edges. Recall is the bottleneck (~16%). It only reports edges it directly tested and misses all state-update and feedback edges it never probed.
+
+2. **Path collapse / indirect-as-direct** — The model collapses multi-step causal paths into direct edges. Market: `demand_value → clearing_price` instead of `demand_value → agent_orders → clearing_price`. Conflict: `hawk_score → escalation_index` instead of `hawk_score → agent_recommendation → faction_action → escalation_index`.
+
+**Market-specific:**
+
+3. **Confound trap** — `fundamental_price → clearing_price` is hallucinated in 3/3 runs. They share common causes (production_cost, demand_value) but the model never intervenes on the mediator to distinguish correlation from causation.
+
+4. **Reliable core recovery** — The clearing mechanism (`agent_orders → clearing_price`, `agent_orders → volume`) is recovered 3/3 times. The diagnostic output edges (`production_cost → fundamental_price`, `demand_value → fundamental_price`) are also reliable. But everything else (shock effects, feedback loops, state updates) is missed.
+
+**Conflict-specific:**
+
+5. **Severe duplication** — 7-10 duplicate interventions per run (vs 1-3 for market). The model exhausts novel intervention ideas by ~intervention 15 and starts repeating. The conflict domain has fewer parameter dimensions to vary (hawk_dove is the main trait vs production_cost, demand_value, demand_per_period, etc. in market).
+
+6. **Decision chain missed** — `agent_recommendation → faction_action` is recovered 0/3 times. The aggregation step (weighted voting within factions) is invisible to the model because it never tested individual vs faction-level overrides comparatively.
+
+7. **Higher variance** — F1 ranges from 0.083 to 0.400 across replicates (market: 0.188 to 0.312). The conflict domain outcome is more sensitive to which interventions the model happens to choose.
+
+### Infrastructure Decisions
+
+- **Role-level trait overrides**: `{"role": "producer", "param": "production_cost", "value": 200}` overrides ALL producers, not just one. Same for `{"faction": "novaris", ...}` in conflict. Solves the infra-marginal agent problem.
+- **Multi-turn conversation**: Persistent message history replaces stateless 2-message calls. Model sees full history including past interventions and its own reasoning. Eliminates repetition (mostly — conflict still has duplication due to limited parameter space).
+- **JSON mode**: Added `response_format: {"type": "json_object"}` to API calls for reliable structured output.
+- **Domain CLI**: `--domain market|conflict` routes to `run_pilot()` or `run_conflict_pilot()` with auto-selected output directories.
+
+### Status
+
+| Phase | Status | Details |
+|-------|--------|---------|
+| 1. Intervention interface | Complete | Market + conflict, 3 types each, role/faction-level |
+| 2. Ground truth + scoring | Complete | Adjacency matrices, Hamming distance, precision/recall |
+| 3. Single-agent pilot (market) | **Complete** | 3 replicates @ budget=30, F1=0.256±0.052 |
+| 4. Infrastructure fixes | Complete | Role-level overrides, multi-turn conversation |
+| 5. Single-agent pilot (conflict) | **Complete** | 3 replicates @ budget=30, F1=0.235±0.130 |
+| 6. Budget calibration | **Next** | Both domains show ~16% recall — need prompt improvements or higher budget |
+| 7. Multi-agent conditions | Pending | 5 communication structures x 2 engines |
+| 8. PID analysis | Pending | Edge-level epistemic coordination |
+
+### Files
+
+- `causal_discovery/intervention.py` — Clamp-and-react rollouts (action, trait, event)
+- `causal_discovery/run_pilot.py` — Single-agent pilot runner (market + conflict, multi-turn)
+- `causal_discovery/prompts.py` — Causal modeler agent prompts
+- `causal_discovery/ground_truth.py` — Ground truth adjacency matrices + scoring
+- `causal_discovery/test_intervention.py` — Smoke tests for intervention interface
+- `docs/CAUSAL_DISCOVERY_DESIGN.md` — Full design document
+- Results: `outputs/causal_discovery/pilot_runs/run_{1,2,3}_seed{42,43,44}/`
+- Results: `outputs/causal_discovery/conflict_pilot_runs/run_{1,2,3}_seed{42,43,44}/`
+
+---
 
 ## Market Experiment (Feb 15-16) — PRIMARY FOCUS
 

@@ -248,6 +248,21 @@ def run_baseline_simulation(scenario_config: dict, verbose: bool = True) -> dict
 
         result = run_period(state, novaris_action, tethys_action)
         period_log["escalation_index"] = result["escalation_index"]
+
+        # Per-period state for forecasting framework
+        period_log["military_balance"] = round(state.military_balance, 4)
+        period_log["territory_controlled"] = round(state.territory_controlled, 4)
+        period_log["sanctions_level"] = round(state.sanctions_level, 4)
+        period_log["international_support"] = round(state.international_support, 4)
+        period_log["novaris_resources"] = round(state.factions["novaris"].resources, 2)
+        period_log["tethys_resources"] = round(state.factions["tethys"].resources, 2)
+        period_log["novaris_gdp"] = round(state.factions["novaris"].gdp, 4)
+        period_log["tethys_gdp"] = round(state.factions["tethys"].gdp, 4)
+        period_log["novaris_military_strength"] = round(state.factions["novaris"].military_strength, 4)
+        period_log["tethys_military_strength"] = round(state.factions["tethys"].military_strength, 4)
+        period_log["novaris_political_stability"] = round(state.factions["novaris"].political_stability, 4)
+        period_log["tethys_political_stability"] = round(state.factions["tethys"].political_stability, 4)
+
         all_actions_log.append(period_log)
 
         if verbose and (t < 3 or t >= n_periods - 2 or t % 10 == 0):

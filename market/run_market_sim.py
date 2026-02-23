@@ -250,6 +250,19 @@ def run_baseline_simulation(scenario_config: dict, verbose: bool = True) -> dict
         period_log["clearing_price"] = result["clearing_price"]
         period_log["volume"] = result["volume"]
         period_log["fundamental_price"] = result["fundamental_price"]
+
+        # Per-period agent state and order aggregates for forecasting framework
+        period_log["agent_states"] = {
+            a.agent_id: {"cash": round(a.cash, 2), "inventory": int(a.inventory)}
+            for a in agents.values()
+        }
+        buy_orders = [o for o in orders if o.side == "buy"]
+        sell_orders = [o for o in orders if o.side == "sell"]
+        period_log["avg_bid_price"] = round(np.mean([o.limit_price for o in buy_orders]), 2) if buy_orders else None
+        period_log["avg_ask_price"] = round(np.mean([o.limit_price for o in sell_orders]), 2) if sell_orders else None
+        period_log["total_bid_qty"] = sum(o.quantity for o in buy_orders)
+        period_log["total_ask_qty"] = sum(o.quantity for o in sell_orders)
+
         all_orders_log.append(period_log)
 
         if verbose and (t < 3 or t >= n_periods - 2 or t % 10 == 0):

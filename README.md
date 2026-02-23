@@ -10,12 +10,14 @@ LLM-based multi-agent simulations across two domains (commodity market and geopo
 
 ## Overview
 
-This project investigates how LLM agents coordinate in multi-agent simulations and whether knowledge of agent personas (Theory of Mind) improves external forecasting. Two simulation domains provide a controlled comparison:
+This project investigates how LLM agents coordinate in multi-agent simulations and whether knowledge of agent personas (Theory of Mind) improves external forecasting. Four components provide a controlled comparison:
 
 - **Market**: 7 LLM trading agents in a double-auction commodity market. Prices emerge deterministically from agent orders.
 - **Conflict**: 7 LLM geopolitical agents across two factions (Novaris vs. Tethys). Escalation dynamics emerge from strategic decisions.
+- **Multi-Agent Forecasting**: Tests whether causal graph knowledge and multi-agent deliberation improve time-series forecasting. 13 experimental conditions (4 communication structures × 4 information levels) across both domains.
+- **Belief Sensitivity**: Tests how robust LLM probability forecasts are by systematically challenging the model's stated assumptions and measuring probability shifts.
 
-Each domain runs three simulation conditions (rule-based baseline, LLM without personas, LLM with personas) and a forecasting experiment where external LLM forecasters predict next-period outcomes with or without Theory of Mind context.
+The market and conflict domains each run three simulation conditions (rule-based baseline, LLM without personas, LLM with personas) and a forecasting experiment where external LLM forecasters predict next-period outcomes with or without Theory of Mind context. The multi-agent forecasting framework extends this by systematically varying what forecasters know (time-series only → causal graph → mechanistic rules) and how they communicate (single → independent ensemble → debate → specialization). The belief sensitivity experiment complements these by measuring whether LLMs anchor too strongly, update rationally, or are easily swayed when their reasoning is challenged.
 
 ---
 
@@ -86,6 +88,53 @@ python conflict/run_conflict_pid.py
 python conflict/run_conflict_forecast.py
 ```
 
+### Run Multi-Agent Forecasting
+
+```bash
+# Re-generate baseline simulations with augmented state fields
+python market/run_market_sim.py --baseline --n_scenarios 10 --n_periods 30 --seed 42
+python conflict/run_conflict_sim.py --baseline --n_scenarios 10 --n_periods 30 --seed 42
+
+# Single forecaster, time-series only (simplest condition)
+python -m forecast_multi.runner \
+    --domain market --communication single --info-level L0 \
+    --baseline-dir outputs/market_baseline --model llama
+
+# Independent ensemble with causal graph knowledge
+python -m forecast_multi.runner \
+    --domain market --communication independent --info-level L2 \
+    --baseline-dir outputs/market_baseline --model llama
+
+# Debate with full mechanistic transparency
+python -m forecast_multi.runner \
+    --domain conflict --communication debate --info-level L3 \
+    --baseline-dir outputs/conflict_baseline --model llama
+
+# Specialization with mechanistic aggregator
+python -m forecast_multi.runner \
+    --domain market --communication specialization --info-level L2 \
+    --baseline-dir outputs/market_baseline --model llama \
+    --mechanistic-aggregator
+
+# Resume interrupted run
+python -m forecast_multi.runner \
+    --domain market --communication debate --info-level L2 \
+    --baseline-dir outputs/market_baseline --model llama --resume
+```
+
+### Run Belief Sensitivity Analysis
+
+```bash
+# Quick smoke test (2 questions, one-turn only, ~1 min)
+python forecast_bench/run_sensitivity.py --max-questions 2 --condition one-turn
+
+# Full run (50 questions, both conditions, ~15-20 min)
+python forecast_bench/run_sensitivity.py --max-questions 50 --condition both
+
+# Analyze results (one or two output dirs)
+python forecast_bench/analysis.py outputs/sensitivity_llama_one-turn outputs/sensitivity_llama_multi-turn
+```
+
 ### Statistical Analysis
 
 ```bash
@@ -96,7 +145,17 @@ Rscript conflict/analyze_forecasts.R
 
 ---
 
-## Simulation Design
+## Experiment Design
+
+### Belief Sensitivity
+
+Tests how robustly LLMs hold their forecast beliefs under targeted challenges. A 3-stage pipeline:
+
+1. **Initial Forecast**: LLM estimates probability for a binary question and enumerates 3-5 explicit reasons with importance ratings
+2. **Probe Generation**: For each reason, a targeted challenge is generated (negation, counterfactual, or weakening)
+3. **Probed Forecast**: The challenge is presented and the model provides an updated probability
+
+Stage 3 runs under two conditions: **one-turn** (fresh API call per probe, no memory) and **multi-turn** (growing message history, model sees all prior challenges). Key metrics include anchoring strength, sensitivity by reason importance, probe type persuasiveness, and conversational drift.
 
 ### Market Domain
 
@@ -133,6 +192,30 @@ Rscript conflict/analyze_forecasts.R
 | **LLM no-persona** | LLM agents with role but no personality | Tests whether domain alone elicits coordination |
 | **LLM persona** | LLM agents with full backstory and personality | Tests whether identity adds to coordination |
 
+### Multi-Agent Forecasting Framework (`forecast_multi/`)
+
+Tests whether causal graph knowledge and multi-agent deliberation improve forecasting of aggregate outcomes (clearing price / escalation index) from rule-based baseline simulations.
+
+**Information Levels (what the forecaster knows):**
+
+| Level | Content | Purpose |
+|-------|---------|---------|
+| **L0** | Time-series history only | Baseline — pure pattern recognition |
+| **L1** | + random 50% of expanded variables | Controls for "more data" vs structured data |
+| **L2** | + full causal graph + all variables | Tests whether causal structure helps |
+| **L3** | + mechanistic agent decision rules | Tests whether full transparency helps |
+
+**Communication Structures (how forecasters interact):**
+
+| Structure | Agents | Calls/period | Design |
+|-----------|--------|-------------|--------|
+| **Single** | 1 generic analyst | 1 | No deliberation baseline |
+| **Independent** | 5 diverse personas | 5 | Post-hoc ensemble (averaged probabilities) |
+| **Debate** | 2 opposing analysts | 6 | 3 rounds: predict → critique → finalize |
+| **Specialization** | 3 specialists + 1 aggregator | 4 | Subgraph experts + chief analyst integration |
+
+**Design matrix:** 13 conditions per domain (single×4, independent×4, debate×3, specialization×2). ~12,500 LLM calls per domain.
+
 ---
 
 ## Methods
@@ -146,13 +229,22 @@ We use the Williams-Beer I_min decomposition to decompose mutual information bet
 - **Higher-order synergy (G3)**: Triplet coalition test -- MI(A,B,C;Y) - max(MI pairwise)
 - **Permutation tests**: Row-shuffle (500 permutations) destroys temporal alignment; column-shift preserves autocorrelation but destroys cross-agent alignment
 
-### Forecasting Experiment
+### Forecasting Experiment (Phase 1)
 
 External LLM forecasters observe simulation history and predict next-period outcomes. 2x2 factorial design: demographic personas x Theory of Mind (agent descriptions).
 
 - **Market**: 4 conditions (Llama/Qwen x ToM), 4,800 forecasts
 - **Conflict**: 2 conditions (Llama x ToM), 2,400 forecasts
 - **Statistical model**: Linear mixed-effects with nested random intercepts for period-within-scenario clustering
+
+### Multi-Agent Forecasting (Phase 2)
+
+Extends Phase 1 by systematically decomposing the causal graph and deliberation contributions. Forecasts are made against rule-based baseline simulation data (10 scenarios × 30 periods per domain).
+
+- **Key question**: Does causal structure help beyond "more data"? (L1 vs L2)
+- **Key question**: Does deliberation help beyond ensembling? (independent vs debate/specialization)
+- **Key question**: Interaction — does graph knowledge help *more* with deliberation?
+- **Statistical model**: `brier_score ~ communication * info_level + (1|scenario_id/period)` (linear mixed-effects)
 
 ---
 
@@ -163,8 +255,9 @@ External LLM forecasters observe simulation history and predict next-period outc
 | **[EXPERIMENT_NOTES.md](EXPERIMENT_NOTES.md)** | Active experiment log -- market + conflict status, key findings |
 | **[MARKET_EXPERIMENT.md](docs/MARKET_EXPERIMENT.md)** | Market domain: simulation design, PID analysis (3 conditions), forecasting results |
 | **[RESULTS_FORECASTING_AND_PID.md](docs/RESULTS_FORECASTING_AND_PID.md)** | Cross-domain: LMM forecasting methods/results, conflict PID analysis, market vs conflict comparison |
+| **[MOTIVATION.md](docs/MOTIVATION.md)** | Research motivation and theoretical framing |
 
-Legacy R wargame documentation is in `docs/archive/`.
+The multi-agent forecasting framework is documented in [EXPERIMENT_NOTES.md](EXPERIMENT_NOTES.md) under "Multi-Agent Forecasting Framework". The belief sensitivity experiment is documented under "Belief Sensitivity Experiment". Legacy R wargame documentation is in `docs/archive/`.
 
 ---
 
@@ -190,18 +283,42 @@ LLM_Forecasting/
 │   ├── run_conflict_pid.py              # PID analysis runner
 │   ├── analyze_forecasts.R              # LMM statistical analysis
 │   └── ...
+├── forecast_multi/                    # Multi-agent forecasting framework
+│   ├── domain.py                        # Domain adapters (MarketDomain, ConflictDomain)
+│   ├── llm_client.py                    # LLM client wrapper + forecast parser
+│   ├── evaluation.py                    # Brier, log score, F1, baselines, ensemble
+│   ├── causal_text.py                   # Adjacency matrix → natural language
+│   ├── config.py                        # Personas, subgraph assignments, design matrix
+│   ├── info_builder.py                  # L0–L3 information level builders
+│   ├── single.py                        # SingleForecaster (1 call/period)
+│   ├── independent.py                   # IndependentEnsemble (5 calls/period)
+│   ├── debate.py                        # DebateForecaster (6 calls/period, 3 rounds)
+│   ├── specialization.py                # SpecializationForecaster (4 calls/period)
+│   └── runner.py                        # CLI + experiment loop + checkpoint/resume
+├── forecast_bench/                    # Belief sensitivity analysis
+│   ├── llm_client.py                    # OpenRouter client (single + multi-turn)
+│   ├── questions.py                     # ForecastBench question loader
+│   ├── prompts.py                       # 3-stage prompt templates
+│   ├── run_sensitivity.py               # Pipeline runner (CLI)
+│   └── analysis.py                      # Sensitivity metrics & statistics
 ├── docs/                              # Documentation
 │   ├── RESULTS_FORECASTING_AND_PID.md   # Cross-domain: forecasting, PID, methods
 │   ├── MARKET_EXPERIMENT.md             # Market domain: design, PID, forecasting
 │   └── archive/                         # Legacy R wargame documentation
 ├── src/                               # Legacy R wargame simulation
 ├── outputs/                           # Experiment results
-│   ├── market_llama_persona/   # Market: LLM with personas
-│   ├── market_llama_no_persona/           # Market: LLM no-persona
-│   ├── market_baseline/        # Market: rule-based baseline
-│   ├── conflict_llama_persona/                # Conflict: LLM with personas
-│   ├── conflict_llama_no_persona/     # Conflict: LLM no-persona
-│   ├── conflict_baseline/             # Conflict: rule-based baseline
+│   ├── market_baseline/                 # Market: rule-based baseline (10×30, augmented)
+│   ├── market_llama_persona/            # Market: LLM with personas
+│   ├── market_llama_no_persona/         # Market: LLM no-persona
+│   ├── conflict_baseline/               # Conflict: rule-based baseline (10×30, augmented)
+│   ├── conflict_llama_persona/          # Conflict: LLM with personas
+│   ├── conflict_llama_no_persona/       # Conflict: LLM no-persona
+│   ├── forecast_multi/                  # Multi-agent forecasting results
+│   │   ├── market_single_L0/              # Single × L0 condition
+│   │   ├── market_debate_L2/              # Debate × L2 condition
+│   │   └── ...                            # 13 conditions × 2 domains
+│   ├── sensitivity_llama_one-turn/      # Belief sensitivity: one-turn condition
+│   ├── sensitivity_llama_multi-turn/    # Belief sensitivity: multi-turn condition
 │   └── ...
 └── archive/                           # Archived code & old outputs
 ```
@@ -247,4 +364,4 @@ This is an active research project. For questions or collaboration:
 
 ---
 
-**Status:** Active Research | **Last Updated:** February 18, 2026
+**Status:** Active Research | **Last Updated:** February 23, 2026

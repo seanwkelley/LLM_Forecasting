@@ -1,6 +1,129 @@
 # Experiment Notes
 
-**Last Updated:** February 21, 2026
+**Last Updated:** February 23, 2026
+
+## Multi-Agent Forecasting Framework (Feb 23) — ACTIVE
+
+### Motivation
+
+The causal discovery phase established ground truth causal graphs for both domains (market: 23 edges, conflict: 21 edges). The existing forecasting experiments (Phase 1) tested a single factor — Theory of Mind — finding it helps in market (+17 MSE, p=0.027) and hurts in conflict (+0.286 MSE, p=0.010). The multi-agent forecasting framework (Phase 2) decomposes this further by independently varying **what forecasters know** (information level) and **how they communicate** (communication structure).
+
+Key architectural decision: use **rule-based baseline simulations** as the forecasting target. This is supported by findings that rule-based agents produce the richest mechanistic dynamics (highest emergence capacity in market) and that the causal graphs are fully characterized for these engines.
+
+### Design
+
+**13 conditions per domain** (communication × information level):
+
+| | L0 (time-series) | L1 (random vars) | L2 (causal graph) | L3 (graph + ToM) |
+|---|---|---|---|---|
+| **Single** | ✓ | ✓ | ✓ | ✓ |
+| **Independent (5)** | ✓ | ✓ | ✓ | ✓ |
+| **Debate (2×3 rounds)** | ✓ | | ✓ | ✓ |
+| **Specialization (3+1)** | | | ✓ | ✓ |
+
+**Information levels:**
+- **L0**: Time-series history only (price/volume/fundamental or EI/actions)
+- **L1**: + random 50% of expanded variables (no causal framing — controls for "more data")
+- **L2**: + full causal graph in natural language + all expanded variables
+- **L3**: + mechanistic agent decision rules (producer margin logic, hawk_score → target_delta formula, etc.)
+
+**Communication structures:**
+- **Single**: 1 generic analyst, 1 LLM call/period
+- **Independent**: 5 diverse personas, averaged post-hoc, 5 calls/period
+- **Debate**: 2 opposing analysts (momentum vs fundamental / escalation spiral vs stability), 3 rounds (predict → critique → finalize), 6 calls/period
+- **Specialization**: 3 subgraph specialists (supply/demand/shock or military/economic/political) + 1 LLM aggregator, 4 calls/period
+
+**Key statistical contrasts:**
+1. L1 vs L2 — does causal structure help beyond more data?
+2. Independent vs Debate/Specialization — does deliberation help?
+3. Interaction: does graph knowledge help MORE with deliberation?
+
+**LLM call budget:** ~12,500 per domain (25,000 total). Llama 8B via OpenRouter: ~$1-2, ~4-6 hours.
+
+### Implementation
+
+**Phase 0: Data preparation** — Complete (Feb 23)
+- Augmented `conflict/run_conflict_sim.py` baseline to log per-period state: military_balance, territory_controlled, sanctions_level, international_support, per-faction resources/gdp/military_strength/political_stability
+- Augmented `market/run_market_sim.py` baseline to log per-period agent states (cash/inventory) and order aggregates (avg_bid/ask_price, total_bid/ask_qty)
+- Re-ran both baselines: 10 scenarios × 30 periods, seed 42
+
+**Phase 1-4: `forecast_multi/` package** — Complete (Feb 23)
+
+| File | Purpose |
+|------|---------|
+| `domain.py` | MarketDomain / ConflictDomain adapters (data loading, prompt building, classification) |
+| `llm_client.py` | Re-exports LLMClient from forecast_bench + forecast-specific parser |
+| `evaluation.py` | Brier score, log score, F1, baselines (uniform/majority/frequency), ensemble averaging |
+| `causal_text.py` | Adjacency matrix → structured natural language (edges grouped by functional role) |
+| `config.py` | Design matrix, 5 ensemble personas/domain, debate pairs, specialization subgraphs |
+| `info_builder.py` | L0–L3 information level builders |
+| `single.py` | SingleForecaster — 1 call/period |
+| `independent.py` | IndependentEnsemble — N parallel + average |
+| `debate.py` | DebateForecaster — 2 agents × 3 multi-turn rounds |
+| `specialization.py` | SpecializationForecaster — 3 specialists + LLM/mechanistic aggregator |
+| `runner.py` | CLI, experiment loop, checkpoint/resume, CSV + JSON output |
+
+### Output Format
+
+**Per-condition directory** (`outputs/forecast_multi/{domain}_{comm}_{level}/`):
+- `forecast_results.csv` — one row per individual forecast (scenario_id, period, communication, info_level, forecaster_id, round, probabilities, scores)
+- `forecast_details.json` — same + reasoning text
+- `forecast_summary.json` — aggregate metrics + baselines
+- `checkpoint.json` — resume support
+
+### Status
+
+| Phase | Status | Details |
+|-------|--------|---------|
+| 0. Data preparation | **Complete** | Baseline sims augmented + re-run (10×30, both domains) |
+| 1. Core module (domain, llm_client, evaluation) | **Complete** | Imports verified, tested against real data |
+| 2. Graph text + config | **Complete** | Market: 1978 chars, Conflict: 2118 chars |
+| 3. Info builder (L0–L3) | **Complete** | Tested: L0=0, L1≈70, L2≈2150, L3≈3500 chars |
+| 4. Single + Independent | **Complete** | |
+| 5. Debate + Specialization | **Complete** | |
+| 6. Runner + CLI | **Complete** | Checkpoint/resume, auto-named output dirs |
+| 7. Validation run | **Next** | Run single+L0 on 1 scenario, compare to existing forecaster |
+| 8. Full experiment | Pending | All 13 conditions × 2 domains |
+| 9. Statistical analysis | Pending | LMM in R, key contrasts |
+
+### Usage
+
+```bash
+# Single condition
+python -m forecast_multi.runner \
+    --domain market --communication single --info-level L0 \
+    --baseline-dir outputs/market_baseline --model llama
+
+# With resume support
+python -m forecast_multi.runner \
+    --domain market --communication debate --info-level L2 \
+    --baseline-dir outputs/market_baseline --model llama --resume
+
+# Subset of scenarios for testing
+python -m forecast_multi.runner \
+    --domain market --communication single --info-level L0 \
+    --baseline-dir outputs/market_baseline --model llama --scenarios 0 1
+```
+
+### Files
+- `forecast_multi/` — Full package (13 modules)
+- `conflict/run_conflict_sim.py` — Augmented baseline state logging (lines 248-260)
+- `market/run_market_sim.py` — Augmented baseline order/state logging (lines 249-265)
+- `causal_discovery/ground_truth.py` — Adjacency matrices reused for L2/L3 prompts
+- Baseline data: `outputs/market_baseline/` (10 scenarios, 30 periods, augmented)
+- Baseline data: `outputs/conflict_baseline/` (10 scenarios, 30 periods, augmented)
+
+### Next Steps
+
+1. **Validation run** — Run `single + L0 + market` on 1 scenario, compare metrics against existing `market/run_market_forecast.py` on the same data (sanity check)
+2. **Smoke test all communication structures** — Run each of {single, independent, debate, specialization} × L0 on 1 market scenario to verify call counts and output structure
+3. **Full experiment** — Run all 13 conditions × 2 domains (25,000 LLM calls)
+4. **Merge CSVs** — Concatenate all condition CSVs into `combined_results.csv` for R analysis
+5. **Statistical analysis** — `brier_score ~ communication * info_level + (1|scenario_id/period)` in R with lme4
+6. **Convergence analysis** — For debate conditions, analyze whether agents converge or diverge across rounds
+7. **Specialist contribution analysis** — For specialization, compare specialist-only vs aggregator improvement
+
+---
 
 ## Belief Sensitivity Experiment (Feb 20) — ACTIVE
 

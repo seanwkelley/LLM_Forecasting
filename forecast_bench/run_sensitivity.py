@@ -51,7 +51,7 @@ from forecast_bench.prompts_causal import (
     build_causal_probed_forecast_prompt,
     build_causal_conversational_probe_message,
 )
-from forecast_bench.network_analysis import analyze_network
+from forecast_bench.network_analysis import analyze_network, plot_causal_network
 
 MODEL_MAP = {
     "llama": "meta-llama/llama-3.1-8b-instruct",
@@ -1086,6 +1086,20 @@ def _run_shared_stages_causal(
             try:
                 cached = json.loads(cache_path.read_text(encoding="utf-8"))
                 results[question["id"]] = cached
+                # Generate visualization if missing (retroactive for older caches)
+                viz_dir = cache_dir.parent / "network_plots"
+                viz_path = viz_dir / f"q_{question['id']}_network.png"
+                if not viz_path.exists() and "nodes" in cached and "edges" in cached:
+                    try:
+                        net_analysis = analyze_network(cached["nodes"], cached["edges"])
+                        plot_causal_network(
+                            cached["nodes"], cached["edges"], net_analysis,
+                            save_path=viz_path,
+                            title=cached.get("question_text", "")[:100],
+                            initial_prob=cached.get("initial_probability"),
+                        )
+                    except Exception:
+                        pass
                 print(f"  [{q_idx+1}/{len(questions)}] {question['id']} -- cached")
                 continue
             except (json.JSONDecodeError, KeyError):
@@ -1111,6 +1125,19 @@ def _run_shared_stages_causal(
         net_dict = net_analysis.to_dict()
         probe_targets = [pt.to_dict() for pt in net_analysis.probe_targets]
         print(f"{len(probe_targets)} targets", end=" -> ")
+
+        # Save network visualization
+        viz_dir = cache_dir.parent / "network_plots"
+        viz_path = viz_dir / f"q_{question['id']}_network.png"
+        try:
+            plot_causal_network(
+                nodes, edges, net_analysis,
+                save_path=viz_path,
+                title=question["question"][:100],
+                initial_prob=initial_prob,
+            )
+        except Exception as e:
+            print(f"[viz warning: {e}]", end=" ")
 
         # Stage 2: Probe generation
         probes = run_causal_probe_generation(

@@ -11,6 +11,7 @@ No LLM calls — pure graph computation.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 import networkx as nx
@@ -528,6 +529,184 @@ def _select_probe_targets(
     ))
 
     return targets
+
+
+# =============================================================================
+# VISUALIZATION
+# =============================================================================
+
+def plot_causal_network(
+    nodes: list[dict],
+    edges: list[dict],
+    analysis: "NetworkAnalysis",
+    save_path: str | Path,
+    title: str = "",
+    initial_prob: float | None = None,
+) -> None:
+    """Save a visualization of the LLM-elicited causal network.
+
+    Parameters
+    ----------
+    nodes : list[dict]
+        LLM-elicited nodes with "id", "description", "role".
+    edges : list[dict]
+        LLM-elicited edges with "from", "to", "mechanism".
+    analysis : NetworkAnalysis
+        Computed analysis (for importance scores and critical-path info).
+    save_path : str or Path
+        Output PNG file path.
+    title : str
+        Plot title (e.g., question text).
+    initial_prob : float or None
+        If given, displayed in the subtitle.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as mpatches
+    import matplotlib.cm as cm
+    import matplotlib.colors as mcolors
+
+    G = _build_digraph(nodes, edges)
+
+    # Build importance lookup from analysis
+    importance_map = {}
+    for nm in analysis.node_metrics:
+        importance_map[nm.node_id] = nm.composite_importance
+
+    # Build critical-path edge set
+    critical_edges = set()
+    for em in analysis.edge_metrics:
+        if em.on_critical_path:
+            critical_edges.add((em.source, em.target))
+
+    # Layout
+    try:
+        pos = nx.kamada_kawai_layout(G)
+    except Exception:
+        pos = nx.spring_layout(G, seed=42, k=2.0)
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 7))
+    fig.patch.set_facecolor("white")
+
+    # --- Draw edges ---
+    # Split into critical and non-critical for different styling
+    crit_edgelist = [(u, v) for u, v in G.edges() if (u, v) in critical_edges]
+    other_edgelist = [(u, v) for u, v in G.edges() if (u, v) not in critical_edges]
+
+    if other_edgelist:
+        nx.draw_networkx_edges(
+            G, pos, edgelist=other_edgelist, ax=ax,
+            edge_color="#999999", width=1.2, alpha=0.6,
+            arrows=True, arrowsize=15, arrowstyle="-|>",
+            connectionstyle="arc3,rad=0.1",
+        )
+    if crit_edgelist:
+        nx.draw_networkx_edges(
+            G, pos, edgelist=crit_edgelist, ax=ax,
+            edge_color="#D32F2F", width=2.5, alpha=0.85,
+            arrows=True, arrowsize=18, arrowstyle="-|>",
+            connectionstyle="arc3,rad=0.1",
+        )
+
+    # --- Draw nodes ---
+    # Factor nodes: colored by composite importance (blue gradient)
+    # Outcome node: distinct color (gold)
+    factor_nodes = [n for n in G.nodes if G.nodes[n].get("role") != "outcome"]
+    outcome_nodes = [n for n in G.nodes if G.nodes[n].get("role") == "outcome"]
+
+    # Color factor nodes by importance
+    if factor_nodes:
+        imp_values = [importance_map.get(n, 0.0) for n in factor_nodes]
+        max_imp = max(imp_values) if imp_values else 1.0
+        if max_imp == 0:
+            max_imp = 1.0
+        norm = mcolors.Normalize(vmin=0, vmax=max_imp)
+        cmap = cm.get_cmap("Blues")
+        factor_colors = [cmap(norm(v) * 0.7 + 0.3) for v in imp_values]  # shift up so lightest isn't white
+
+        nx.draw_networkx_nodes(
+            G, pos, nodelist=factor_nodes, ax=ax,
+            node_color=factor_colors, node_size=900,
+            edgecolors="#333333", linewidths=1.5,
+        )
+
+    if outcome_nodes:
+        nx.draw_networkx_nodes(
+            G, pos, nodelist=outcome_nodes, ax=ax,
+            node_color="#FFD600", node_size=1100,
+            edgecolors="#333333", linewidths=2.0,
+            node_shape="s",  # square for outcome
+        )
+
+    # --- Labels ---
+    # Use short IDs as labels, wrap long ones
+    labels = {}
+    for n in G.nodes:
+        label = n.replace("_", "\n")
+        if len(label) > 20:
+            mid = len(label) // 2
+            # find nearest space or underscore
+            for offset in range(6):
+                if mid + offset < len(label) and label[mid + offset] in (" ", "\n"):
+                    label = label[:mid + offset] + "\n" + label[mid + offset + 1:]
+                    break
+                if mid - offset >= 0 and label[mid - offset] in (" ", "\n"):
+                    label = label[:mid - offset] + "\n" + label[mid - offset + 1:]
+                    break
+        labels[n] = label
+
+    nx.draw_networkx_labels(
+        G, pos, labels=labels, ax=ax,
+        font_size=8, font_weight="bold", font_color="#111111",
+    )
+
+    # --- Edge mechanism labels (abbreviated) ---
+    edge_labels = {}
+    for edge_data in edges:
+        u, v = edge_data["from"], edge_data["to"]
+        mech = edge_data.get("mechanism", "")
+        if mech and len(mech) > 30:
+            mech = mech[:27] + "..."
+        if mech:
+            edge_labels[(u, v)] = mech
+
+    nx.draw_networkx_edge_labels(
+        G, pos, edge_labels=edge_labels, ax=ax,
+        font_size=6, font_color="#555555", alpha=0.8,
+    )
+
+    # --- Legend ---
+    legend_handles = [
+        mpatches.Patch(facecolor="#4A90D9", edgecolor="#333", label="Factor (high importance)"),
+        mpatches.Patch(facecolor="#C6DBEF", edgecolor="#333", label="Factor (low importance)"),
+        mpatches.Patch(facecolor="#FFD600", edgecolor="#333", label="Outcome"),
+        mpatches.FancyArrow(0, 0, 0.1, 0, width=0.02, color="#D32F2F", label="Critical path"),
+        mpatches.FancyArrow(0, 0, 0.1, 0, width=0.01, color="#999999", label="Other edge"),
+    ]
+    ax.legend(handles=legend_handles, loc="upper left", fontsize=8, framealpha=0.9)
+
+    # --- Title ---
+    if title:
+        display_title = title if len(title) <= 80 else title[:77] + "..."
+        ax.set_title(display_title, fontsize=10, fontweight="bold", pad=12)
+
+    subtitle_parts = [f"{analysis.n_nodes} nodes, {analysis.n_edges} edges"]
+    if initial_prob is not None:
+        subtitle_parts.append(f"P={initial_prob:.2f}")
+    subtitle_parts.append(f"density={analysis.density:.2f}")
+    ax.text(
+        0.5, 1.01, "  |  ".join(subtitle_parts),
+        transform=ax.transAxes, ha="center", fontsize=8, color="#666666",
+    )
+
+    ax.set_axis_off()
+    plt.tight_layout()
+
+    save_path = Path(save_path)
+    save_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(str(save_path), dpi=200, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
 
 
 # =============================================================================

@@ -274,6 +274,27 @@ python forecast_bench/analysis_causal.py outputs/sensitivity_causal_llama_one-tu
 python forecast_bench/run_sensitivity.py --mode causal --max-questions 50 --condition both --resume
 ```
 
+### Next Steps
+
+**Immediate (full experiment):**
+
+- [ ] Run causal mode full: `--mode causal --max-questions 50 --condition both` (~3,700 calls, ~2-3 hours)
+- [ ] Run causal analysis on both output dirs
+- [ ] Core hypothesis test: does importance-sensitivity Spearman rho reach significance at n=50? (smoke test: rho=0.19 at n=2)
+
+**Analysis (after full run):**
+
+- [ ] Cross-mode comparison — compare flat-reasons vs causal network results on the same 50 questions. Does structural framing change the model's sensitivity pattern?
+- [ ] False negative deep dive — 85.7% fabrication acceptance is alarming. Characterize which fabricated edges are accepted vs rejected (outcome-adjacent? semantically plausible?)
+- [ ] Graph quality analysis — assess the elicited causal graphs: are they DAGs? How many edges on average? Do they vary meaningfully across questions? Correlate graph complexity (density, n_nodes) with sensitivity patterns
+- [ ] SSR stability — does the structural sensitivity ratio hold at >1 across questions, or is it driven by a few outliers?
+
+**Extensions:**
+
+- [ ] Model comparison — run causal mode on DeepSeek V3 or a larger model to see if structural calibration improves with scale
+- [ ] Connect to causal discovery — the causal discovery experiment tests whether LLMs can *recover* ground-truth graphs; causal sensitivity tests whether they can *defend* self-constructed graphs. Compare failure modes (path collapse in discovery vs fabrication acceptance in sensitivity)
+- [ ] Importance weight tuning — the composite importance formula (0.3×betweenness + 0.2×PageRank + 0.2×out_degree + 0.3×path_relevance) was chosen heuristically. Post-hoc analysis: which single metric best predicts actual sensitivity?
+
 ---
 
 ## Causal Discovery (Feb 19-20) — IN PROGRESS

@@ -125,6 +125,8 @@ python -m forecast_multi.runner \
 ### Run Belief Sensitivity Analysis
 
 ```bash
+# --- Flat-reasons mode (default) ---
+
 # Quick smoke test (2 questions, one-turn only, ~1 min)
 python forecast_bench/run_sensitivity.py --max-questions 2 --condition one-turn
 
@@ -133,6 +135,17 @@ python forecast_bench/run_sensitivity.py --max-questions 50 --condition both
 
 # Analyze results (one or two output dirs)
 python forecast_bench/analysis.py outputs/sensitivity_llama_one-turn outputs/sensitivity_llama_multi-turn
+
+# --- Causal network mode ---
+
+# Smoke test (2 questions, one-turn, ~3 min)
+python forecast_bench/run_sensitivity.py --mode causal --max-questions 2 --condition one-turn
+
+# Full run (50 questions, both conditions, ~2-3 hours)
+python forecast_bench/run_sensitivity.py --mode causal --max-questions 50 --condition both
+
+# Analyze causal results
+python forecast_bench/analysis_causal.py outputs/sensitivity_causal_llama_one-turn outputs/sensitivity_causal_llama_multi-turn
 ```
 
 ### Statistical Analysis
@@ -149,13 +162,24 @@ Rscript conflict/analyze_forecasts.R
 
 ### Belief Sensitivity
 
-Tests how robustly LLMs hold their forecast beliefs under targeted challenges. A 3-stage pipeline:
+Tests how robustly LLMs hold their forecast beliefs under targeted challenges. Two pipeline modes:
+
+**Flat-reasons mode** (`--mode reasons`, default): A 3-stage pipeline:
 
 1. **Initial Forecast**: LLM estimates probability for a binary question and enumerates 3-5 explicit reasons with importance ratings
-2. **Probe Generation**: For each reason, a targeted challenge is generated (negation, counterfactual, or weakening)
+2. **Probe Generation**: For each reason × 5 probe types (full factorial), a targeted challenge is generated (~20 probes)
 3. **Probed Forecast**: The challenge is presented and the model provides an updated probability
 
-Stage 3 runs under two conditions: **one-turn** (fresh API call per probe, no memory) and **multi-turn** (growing message history, model sees all prior challenges). Key metrics include anchoring strength, sensitivity by reason importance, probe type persuasiveness, and conversational drift.
+**Causal network mode** (`--mode causal`): Replaces flat reasons with a directed causal graph:
+
+1. **Causal Forecast**: LLM estimates probability and constructs a directed causal graph (4-8 factor nodes + 1 outcome node + edges with mechanisms)
+2. **Network Analysis**: Pure computation (no LLM) — betweenness centrality, PageRank, path relevance, composite importance scores. Selects ~16 structurally motivated probe targets
+3. **Probe Generation**: One probe per target across 10 types: node negation (high/medium/low importance), node strengthening, edge negation (critical/peripheral), edge reversal, edge fabrication, missing node, irrelevant
+4. **Probed Forecast**: Challenge presented with full network context
+
+**Core hypothesis**: Probing structurally important elements (high-centrality nodes, critical-path edges) should produce larger probability shifts than probing peripheral elements.
+
+Both modes run under two conditions: **one-turn** (fresh API call per probe, no memory) and **multi-turn** (growing message history, model sees all prior challenges).
 
 ### Market Domain
 
@@ -298,9 +322,12 @@ LLM_Forecasting/
 ├── forecast_bench/                    # Belief sensitivity analysis
 │   ├── llm_client.py                    # OpenRouter client (single + multi-turn)
 │   ├── questions.py                     # ForecastBench question loader
-│   ├── prompts.py                       # 3-stage prompt templates
-│   ├── run_sensitivity.py               # Pipeline runner (CLI)
-│   └── analysis.py                      # Sensitivity metrics & statistics
+│   ├── prompts.py                       # Flat-reasons prompt templates
+│   ├── prompts_causal.py                # Causal network prompt templates
+│   ├── network_analysis.py              # Graph centrality, target selection (networkx)
+│   ├── run_sensitivity.py               # Pipeline runner (--mode reasons|causal)
+│   ├── analysis.py                      # Flat-reasons metrics & statistics
+│   └── analysis_causal.py              # Causal network metrics (SSR, path premium, etc.)
 ├── docs/                              # Documentation
 │   ├── RESULTS_FORECASTING_AND_PID.md   # Cross-domain: forecasting, PID, methods
 │   ├── MARKET_EXPERIMENT.md             # Market domain: design, PID, forecasting
@@ -317,8 +344,10 @@ LLM_Forecasting/
 │   │   ├── market_single_L0/              # Single × L0 condition
 │   │   ├── market_debate_L2/              # Debate × L2 condition
 │   │   └── ...                            # 13 conditions × 2 domains
-│   ├── sensitivity_llama_one-turn/      # Belief sensitivity: one-turn condition
-│   ├── sensitivity_llama_multi-turn/    # Belief sensitivity: multi-turn condition
+│   ├── sensitivity_llama_one-turn/      # Belief sensitivity (reasons): one-turn
+│   ├── sensitivity_llama_multi-turn/    # Belief sensitivity (reasons): multi-turn
+│   ├── sensitivity_causal_llama_one-turn/  # Belief sensitivity (causal): one-turn
+│   ├── sensitivity_causal_llama_multi-turn/ # Belief sensitivity (causal): multi-turn
 │   └── ...
 └── archive/                           # Archived code & old outputs
 ```

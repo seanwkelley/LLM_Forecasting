@@ -125,7 +125,7 @@ python -m forecast_multi.runner \
 
 ---
 
-## Belief Sensitivity Experiment (Feb 20) — ACTIVE
+## Belief Sensitivity Experiment (Feb 20-23) — ACTIVE
 
 ### Motivation
 
@@ -138,73 +138,140 @@ When an LLM produces a probability estimate for a real-world event, does it:
 
 This reveals calibration properties that PID and forecasting experiments cannot detect.
 
-### Design
+### Two Modes
+
+#### Flat-Reasons Mode (`--mode reasons`, default)
 
 **Pipeline (3 stages):**
 
 | Stage | Input | Output | Shared? |
 |-------|-------|--------|---------|
 | 1. Initial forecast | Binary question | Probability + 3-5 explicit reasons (each rated high/medium/low importance) | Yes |
-| 2. Probe generation | Each reason | Targeted challenge (negation, counterfactual, or weakening) | Yes |
+| 2. Probe generation | Each reason × 5 types | Targeted challenge (negation, counterfactual, weakening, strengthening, irrelevant) | Yes |
 | 3. Probed forecast | Challenge + context | Updated probability | No — differs by condition |
-
-**Conditions (Stage 3 only):**
-
-| Condition | Description |
-|-----------|-------------|
-| **One-turn** | Fresh 2-message API call per probe (system + user). No memory of prior probes. |
-| **Multi-turn** | Growing messages array. Model sees all prior probes and its own responses. |
 
 **Experimental factors:**
 
 | Factor | Levels |
 |--------|--------|
 | Condition | one-turn, multi-turn |
-| Probe type | negation, counterfactual, weakening, strengthening (control), irrelevant (control) |
+| Probe type | negation, counterfactual, weakening, strengthening, irrelevant |
 | Reason importance | high, medium, low |
 
-**Model:** Llama 3.1 8B via OpenRouter (consistent with existing experiments)
-**Questions:** ~50 binary questions from ForecastBench (HuggingFace), with built-in fallback set
-**Estimated calls:** ~650 total for both conditions
+~20 probes per question, ~650 calls for 50 questions × 2 conditions.
+
+#### Causal Network Mode (`--mode causal`)
+
+Replaces flat reasons with a directed causal graph. Probes target structural elements of the graph, providing a network-theoretic basis for measuring probe importance.
+
+**Pipeline (4 stages):**
+
+| Stage | Input | Output | LLM? |
+|-------|-------|--------|------|
+| 1. Causal forecast | Binary question | Probability + causal graph (4-8 factor nodes, 1 outcome, directed edges with mechanisms) | Yes |
+| 1.5. Network analysis | Causal graph | Node centralities, edge betweenness, composite importance scores, ~16 probe targets | No |
+| 2. Probe generation | Each target | One probe per structural target | Yes |
+| 3. Probed forecast | Probe + network context | Updated probability | Yes |
+
+**10 probe types across 3 categories:**
+
+| Probe Type | Category | Target | Count | Purpose |
+|---|---|---|---|---|
+| `node_negate_high` | node | High-centrality node | 2 | Core hypothesis test |
+| `node_negate_medium` | node | Medium-centrality node | 1 | Calibration check |
+| `node_negate_low` | node | Low-centrality node | 1 | Baseline comparison |
+| `node_strengthen` | node | High-centrality node | 2 | Asymmetry test (neg vs pos) |
+| `edge_negate_critical` | edge | Critical-path edge | 2 | Edge importance test |
+| `edge_negate_peripheral` | edge | Non-critical edge | 1 | Edge baseline |
+| `edge_reverse` | edge | Critical-path edge | 1 | Direction sensitivity |
+| `edge_fabricate` | edge | Missing-edge candidate | 2 | False negative acceptance |
+| `missing_node` | structural | LLM-generated | 2 | Structural vulnerability |
+| `irrelevant` | structural | LLM-generated | 2 | Control (should not shift) |
+
+**Network analysis metrics (per node):**
+- In/out-degree, betweenness centrality, closeness centrality, PageRank
+- Path relevance (fraction of shortest paths to outcome passing through node)
+- Composite importance: 0.3 × betweenness + 0.2 × PageRank + 0.2 × out_degree_norm + 0.3 × path_relevance
+
+**Core hypothesis**: Probing structurally important elements (high-centrality nodes, critical-path edges) should produce larger probability shifts than probing peripheral elements.
+
+~18 probes per question, ~3,700 calls for 50 questions × 2 conditions.
+
+### Conditions (both modes)
+
+| Condition | Description |
+|-----------|-------------|
+| **One-turn** | Fresh 2-message API call per probe (system + user). No memory of prior probes. |
+| **Multi-turn** | Growing messages array. Model sees all prior probes and its own responses. |
 
 ### Analysis Metrics
 
+**Base metrics (both modes):**
 1. **Anchoring**: Mean/median absolute shift, % no-change (<1%), % small-shift (<5%)
-2. **Sensitivity by importance**: Do "high" importance reasons produce larger shifts when challenged?
-3. **Sensitivity by probe type**: Are counterfactuals more persuasive than negations or weakenings? Do strengthening probes shift in the expected direction? Does the model correctly ignore irrelevant probes?
-4. **Conversational drift**: Does cumulative shift grow with probe order? (Spearman correlation)
-5. **Condition comparison**: Paired t-test + Cohen's d on mean absolute shifts (multi-turn vs one-turn)
+2. **Sensitivity by probe type**: Mean shift per type
+3. **Conversational drift**: Spearman correlation of probe order vs cumulative shift
+4. **Condition comparison**: Paired t-test + Cohen's d (multi-turn vs one-turn)
+
+**Reasons-mode specific:**
+5. **Sensitivity by importance**: high vs medium vs low reason importance
+
+**Causal-mode specific (6 network metrics):**
+5. **Importance-sensitivity correlation**: Spearman(composite_importance, |shift|) — does centrality predict sensitivity?
+6. **Structural sensitivity ratio (SSR)**: mean_shift(high-importance) / mean_shift(low-importance) — >1 = calibrated
+7. **Sensitivity by probe category**: node vs edge vs structural mean shifts
+8. **Critical path premium**: mean_shift(on-path) - mean_shift(off-path)
+9. **False negative acceptance rate**: fraction of fabrication probes where |shift| ≥ 0.05
+10. **Asymmetry index**: mean_shift(negation) / mean_shift(strengthening) — >1 = negativity bias
+
+### Smoke Test Results (Causal, 2 questions, one-turn, Feb 23)
+
+| Metric | Value |
+|--------|-------|
+| API calls | 64 (0 failures, 0 parse failures) |
+| Mean absolute shift | 0.141 |
+| SSR | 1.10 (slight calibration to importance) |
+| Importance-sensitivity rho | 0.19 (weak positive — expected with n=2) |
+| Critical path premium | +0.007 |
+| False negative acceptance | 85.7% (6/7 fabrications accepted) |
+| Asymmetry index | 0.86 (slight confirmation bias) |
+| Irrelevant probe mean shift | 0.078 (lowest — good control) |
 
 ### Status
 
 | Phase | Status | Details |
 |-------|--------|---------|
-| 1. Pipeline implementation | Complete | 6 files in `forecast_bench/` |
-| 2. One-turn condition run | In progress | |
-| 3. Multi-turn condition run | Pending | |
-| 4. Analysis | Pending | |
+| 1. Reasons-mode pipeline | Complete | 5 files in `forecast_bench/` |
+| 2. Reasons-mode runs | Complete | 50 questions × 2 conditions |
+| 3. Causal-mode pipeline | **Complete** | 3 new files + runner modifications |
+| 4. Causal-mode smoke test | **Complete** | 2 questions × one-turn, 100% success |
+| 5. Causal-mode full run | **Next** | 50 questions × 2 conditions (~3,700 calls) |
+| 6. Cross-mode comparison | Pending | Compare flat-reasons vs causal network results |
 
 ### Files
 - `forecast_bench/llm_client.py` — OpenRouter client (single-shot + multi-turn)
 - `forecast_bench/questions.py` — ForecastBench loader (HuggingFace + fallback)
-- `forecast_bench/prompts.py` — 3-stage prompt templates
-- `forecast_bench/run_sensitivity.py` — Main pipeline runner
-- `forecast_bench/analysis.py` — Sensitivity metrics (anchoring, drift, condition comparison)
+- `forecast_bench/prompts.py` — Flat-reasons prompt templates (stages 1-3)
+- `forecast_bench/prompts_causal.py` — Causal network prompt templates (stages 1-3)
+- `forecast_bench/network_analysis.py` — Graph centrality, composite importance, target selection (networkx)
+- `forecast_bench/run_sensitivity.py` — Main pipeline runner (`--mode reasons|causal`)
+- `forecast_bench/analysis.py` — Flat-reasons metrics (anchoring, drift, condition comparison)
+- `forecast_bench/analysis_causal.py` — Network-specific metrics (SSR, path premium, false negative rate, asymmetry)
 
 ### Usage
 
 ```bash
-# Quick smoke test (2 questions, one-turn only)
+# --- Flat-reasons mode (default) ---
 python forecast_bench/run_sensitivity.py --max-questions 2 --condition one-turn
-
-# Full run (50 questions, both conditions)
 python forecast_bench/run_sensitivity.py --max-questions 50 --condition both
-
-# Resume interrupted run
-python forecast_bench/run_sensitivity.py --max-questions 50 --condition both --resume
-
-# Analyze results
 python forecast_bench/analysis.py outputs/sensitivity_llama_one-turn outputs/sensitivity_llama_multi-turn
+
+# --- Causal network mode ---
+python forecast_bench/run_sensitivity.py --mode causal --max-questions 2 --condition one-turn
+python forecast_bench/run_sensitivity.py --mode causal --max-questions 50 --condition both
+python forecast_bench/analysis_causal.py outputs/sensitivity_causal_llama_one-turn outputs/sensitivity_causal_llama_multi-turn
+
+# Resume interrupted run (either mode)
+python forecast_bench/run_sensitivity.py --mode causal --max-questions 50 --condition both --resume
 ```
 
 ---

@@ -169,7 +169,7 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 | Stage | Input | Output | LLM? |
 |-------|-------|--------|------|
 | 1. Causal forecast | Binary question | Probability + causal graph (4-8 factor nodes, 1 outcome, directed edges with mechanisms) | Yes |
-| 1.5. Network analysis | Causal graph | Node centralities, edge betweenness, composite importance scores, ~16 probe targets | No |
+| 1.5. Network analysis | Causal graph | Node centralities, edge betweenness, composite importance scores, ~16 probe targets, network visualization (PNG) | No |
 | 2. Probe generation | Each target | One probe per structural target | Yes |
 | 3. Probed forecast | Probe + network context | Updated probability | Yes |
 
@@ -194,6 +194,8 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 - Composite importance: 0.3 × betweenness + 0.2 × PageRank + 0.2 × out_degree_norm + 0.3 × path_relevance
 
 **Core hypothesis**: Probing structurally important elements (high-centrality nodes, critical-path edges) should produce larger probability shifts than probing peripheral elements.
+
+**Network visualization**: Each elicited causal graph is saved as a PNG plot (`outputs/network_plots/q_{id}_network.png`). Factor nodes are colored by composite importance (blue gradient — darker = higher), outcome node shown as a gold square, critical-path edges highlighted in red. Plots are generated automatically during the pipeline run and retroactively for cached results on resume.
 
 ~18 probes per question, ~3,700 calls for 50 questions × 2 conditions.
 
@@ -252,7 +254,7 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 - `forecast_bench/questions.py` — ForecastBench loader (HuggingFace + fallback)
 - `forecast_bench/prompts.py` — Flat-reasons prompt templates (stages 1-3)
 - `forecast_bench/prompts_causal.py` — Causal network prompt templates (stages 1-3)
-- `forecast_bench/network_analysis.py` — Graph centrality, composite importance, target selection (networkx)
+- `forecast_bench/network_analysis.py` — Graph centrality, composite importance, target selection, network visualization (networkx + matplotlib)
 - `forecast_bench/run_sensitivity.py` — Main pipeline runner (`--mode reasons|causal`)
 - `forecast_bench/analysis.py` — Flat-reasons metrics (anchoring, drift, condition comparison)
 - `forecast_bench/analysis_causal.py` — Network-specific metrics (SSR, path premium, false negative rate, asymmetry)

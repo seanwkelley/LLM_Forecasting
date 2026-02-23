@@ -173,7 +173,7 @@ Tests how robustly LLMs hold their forecast beliefs under targeted challenges. T
 **Causal network mode** (`--mode causal`): Replaces flat reasons with a directed causal graph:
 
 1. **Causal Forecast**: LLM estimates probability and constructs a directed causal graph (4-8 factor nodes + 1 outcome node + edges with mechanisms)
-2. **Network Analysis**: Pure computation (no LLM) — betweenness centrality, PageRank, path relevance, composite importance scores. Selects ~16 structurally motivated probe targets
+2. **Network Analysis**: Pure computation (no LLM) — betweenness centrality, PageRank, path relevance, composite importance scores. Selects ~16 structurally motivated probe targets. Saves a network visualization (PNG) per question
 3. **Probe Generation**: One probe per target across 10 types: node negation (high/medium/low importance), node strengthening, edge negation (critical/peripheral), edge reversal, edge fabrication, missing node, irrelevant
 4. **Probed Forecast**: Challenge presented with full network context
 
@@ -324,7 +324,7 @@ LLM_Forecasting/
 │   ├── questions.py                     # ForecastBench question loader
 │   ├── prompts.py                       # Flat-reasons prompt templates
 │   ├── prompts_causal.py                # Causal network prompt templates
-│   ├── network_analysis.py              # Graph centrality, target selection (networkx)
+│   ├── network_analysis.py              # Graph centrality, target selection, visualization (networkx)
 │   ├── run_sensitivity.py               # Pipeline runner (--mode reasons|causal)
 │   ├── analysis.py                      # Flat-reasons metrics & statistics
 │   └── analysis_causal.py              # Causal network metrics (SSR, path premium, etc.)
@@ -348,6 +348,7 @@ LLM_Forecasting/
 │   ├── sensitivity_llama_multi-turn/    # Belief sensitivity (reasons): multi-turn
 │   ├── sensitivity_causal_llama_one-turn/  # Belief sensitivity (causal): one-turn
 │   ├── sensitivity_causal_llama_multi-turn/ # Belief sensitivity (causal): multi-turn
+│   ├── network_plots/                    # Causal network visualizations (PNG per question)
 │   └── ...
 └── archive/                           # Archived code & old outputs
 ```

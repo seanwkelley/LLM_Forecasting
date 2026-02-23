@@ -202,19 +202,25 @@ def run_experiment(
                     "reasoning": forecast.get("reasoning", ""),
                 })
 
-            # Also add ensemble row (unless single)
+            # Also add ensemble row (unless single, or ensemble is already
+            # in forecasts — e.g. specialization aggregator)
             if communication != "single":
                 ens = result["ensemble"]
-                ens_row = _build_row(
-                    domain, ens, sid, t, actual_dir,
-                    current_val, actual_val,
-                    communication, info_level,
+                ens_id = ens.get("forecaster_id", "ensemble")
+                already_in = any(
+                    f.get("forecaster_id") == ens_id for f in result["forecasts"]
                 )
-                all_rows.append(ens_row)
-                all_details.append({
-                    **ens_row,
-                    "reasoning": ens.get("reasoning", ""),
-                })
+                if not already_in:
+                    ens_row = _build_row(
+                        domain, ens, sid, t, actual_dir,
+                        current_val, actual_val,
+                        communication, info_level,
+                    )
+                    all_rows.append(ens_row)
+                    all_details.append({
+                        **ens_row,
+                        "reasoning": ens.get("reasoning", ""),
+                    })
 
             # Progress
             if (t - start_period) % 5 == 0:

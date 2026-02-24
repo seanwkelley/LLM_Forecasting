@@ -24,8 +24,8 @@ Key architectural decision: use **rule-based baseline simulations** as the forec
 **Information levels:**
 - **L0**: Time-series history only (price/volume/fundamental or EI/actions)
 - **L1**: + random 50% of expanded variables (no causal framing — controls for "more data")
-- **L2**: + full causal graph in natural language + all expanded variables
-- **L3**: + mechanistic agent decision rules (producer margin logic, hawk_score → target_delta formula, etc.)
+- **L2**: + full causal graph in natural language + all expanded variables (knows *what affects what*)
+- **L3**: + mechanistic agent decision rules with exact thresholds and multipliers (knows *how* each edge works — e.g., "hawks (score > 0.6): target_delta = +0.5 to +1.5", "mutual escalation ×1.2")
 
 **Communication structures:**
 - **Single**: 1 generic analyst, 1 LLM call/period

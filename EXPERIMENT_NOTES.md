@@ -454,7 +454,7 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 | 4. Infrastructure fixes | Complete | Role-level overrides, multi-turn conversation |
 | 5. Single-agent pilot (conflict) | **Complete** | 3 replicates @ budget=30, F1=0.235±0.130 |
 | 6. Recall improvement | **Complete** | Expanded return vars, evidence summary, truncated context -> Market F1=0.508, Conflict F1=0.293 |
-| 7. Multi-agent conditions | **Complete** | 4 communication structures x 2 domains, dry-run verified |
+| 7. Multi-agent conditions | **Complete** | 4 structures x 2 domains, dry-run + live (Llama 3.3 70B) |
 | 8. PID analysis | **Next** | Edge-level epistemic coordination |
 
 ### Files
@@ -500,14 +500,51 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 - Specialization enforces variable constraints: specialists can only target their assigned variables for trait interventions, but see full observation data
 - All conditions share the same domain setup (warmup, snapshots) via `setup_domain()`
 
-**Dry-run verification (Feb 24):** All 8 conditions (4 x 2 domains) pass with budget=30. Comparison output:
+**Dry-run verification (Feb 24):** All 8 conditions (4 x 2 domains) pass with budget=30. Scores identical in dry-run due to deterministic mock responses.
 
-```
-MARKET:    single F1=0.773, independent F1=0.773, debate F1=0.773, specialization F1=0.773
-CONFLICT:  single F1=0.889, independent F1=0.889, debate F1=0.889, specialization F1=0.889
-```
+### Live Results (Feb 24, Llama 3.3 70B via OpenRouter, budget=30, seed=42)
 
-(Scores identical in dry-run due to deterministic mock responses; real differentiation requires live LLM calls.)
+**Market Domain (12 variables, 23 true edges):**
+
+| Condition | Primary Method | F1 | Precision | Recall | LLM Calls |
+|-----------|---------------|-----|-----------|--------|-----------|
+| **Single** | — | **0.517** | 0.429 | 0.652 | 58 |
+| Independent | majority_vote | 0.444 | 0.455 | 0.435 | 70 |
+| Debate | union | 0.500 | 0.424 | 0.609 | 57 |
+| Specialization | llm_aggregator | 0.508 | 0.400 | **0.696** | 65 |
+
+**Conflict Domain (13 variables, 21 true edges):**
+
+| Condition | Primary Method | F1 | Precision | Recall | LLM Calls |
+|-----------|---------------|-----|-----------|--------|-----------|
+| Single | — | 0.444 | 0.417 | 0.476 | 57 |
+| Independent | majority_vote | 0.294 | 0.385 | 0.238 | 70 |
+| **Debate** | union | **0.531** | **0.464** | **0.619** | 52 |
+| Specialization | llm_aggregator | 0.303 | 0.417 | 0.238 | 60 |
+
+**Key findings:**
+
+1. **Debate wins on conflict (+20% F1 over single).** The maximalist/minimalist debate structure produced the best conflict F1 (0.531 vs 0.444 single). Shared evidence from alternating interventions helps both agents build better graphs than either could alone.
+
+2. **Single agent wins on market.** The full 30-intervention budget concentrated in one agent (F1=0.517) slightly outperforms all multi-agent structures. Specialization comes closest (0.508) with the best recall (0.696).
+
+3. **Independent consistently underperforms.** With only 6 interventions per agent (30/5), none can build reliable causal models. Market F1=0.444, conflict F1=0.294 — worst in both domains.
+
+4. **Specialization is domain-dependent.** Works well on market (F1=0.508, best recall 0.696) where variable subgraphs (supply/demand/dynamics) map cleanly to the true causal structure. Fails on conflict (F1=0.303) where the subgraphs (military/economic/political) don't align well — many cross-domain causal links are missed.
+
+5. **Debate agents converge.** In both domains, maximalist and minimalist agents declare identical graphs. Shared evidence dominates persona differences — the debate injection doesn't meaningfully differentiate their conclusions.
+
+6. **Budget fragmentation is the main bottleneck.** The gap between single (30 interventions) and independent (6 each) shows that intervention count drives accuracy more than diversity. Debate (15 each + shared evidence) partially mitigates this.
+
+**Aggregation method comparison (market independent):**
+
+| Method | F1 | Notes |
+|--------|-----|-------|
+| majority_vote | 0.444 | Edge if >50% of agents declare |
+| confidence_weighted | 0.444 | Weighted by high/medium/low confidence |
+| union | 0.449 | Edge if any agent declares |
+
+Aggregation method made little difference — the bottleneck is per-agent evidence quality, not merging strategy.
 
 ### Usage
 
@@ -537,9 +574,11 @@ python -m causal_discovery.multi_agent.run_all --budget 30
 - [x] Implement 4 communication structures (single, independent, debate, specialization)
 - [x] Design specialization assignments (variable subsets per domain)
 - [x] Dry-run verification: all 8 conditions pass
-- [ ] Run all 4 conditions x 2 domains x 3 replicates with live LLM calls
-- [ ] Compare aggregation methods: majority vote vs confidence-weighted vs union vs LLM aggregator
-- [ ] Analyze whether multi-agent collaboration improves F1 over single-agent baseline
+- [x] Run all 4 conditions x 2 domains with live LLM calls (Llama 3.3 70B, budget=30)
+- [x] Compare aggregation methods: majority vote vs confidence-weighted vs union — minimal difference (~0.005 F1)
+- [x] Analyze multi-agent vs single-agent: debate wins conflict (+20%), single wins market; independent underperforms everywhere
+- [ ] Run 3 replicates per condition for variance estimates
+- [ ] Investigate debate convergence: both agents declare identical graphs — does debate injection need stronger persona enforcement?
 
 **PID analysis (Phase 8):**
 

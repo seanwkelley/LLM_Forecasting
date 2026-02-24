@@ -1,6 +1,6 @@
 # Experiment Notes
 
-**Last Updated:** February 23, 2026
+**Last Updated:** February 24, 2026
 
 ## Multi-Agent Forecasting Framework (Feb 23) — ACTIVE
 
@@ -453,9 +453,9 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 | 3. Single-agent pilot (market) | **Complete** | 3 replicates @ budget=30, F1=0.256±0.052 |
 | 4. Infrastructure fixes | Complete | Role-level overrides, multi-turn conversation |
 | 5. Single-agent pilot (conflict) | **Complete** | 3 replicates @ budget=30, F1=0.235±0.130 |
-| 6. Recall improvement | **Complete** | Expanded return vars, evidence summary, truncated context → Market F1=0.508, Conflict F1=0.293 |
-| 7. Multi-agent conditions | **Next** | 5 communication structures x 2 engines |
-| 8. PID analysis | Pending | Edge-level epistemic coordination |
+| 6. Recall improvement | **Complete** | Expanded return vars, evidence summary, truncated context -> Market F1=0.508, Conflict F1=0.293 |
+| 7. Multi-agent conditions | **Complete** | 4 communication structures x 2 domains, dry-run verified |
+| 8. PID analysis | **Next** | Edge-level epistemic coordination |
 
 ### Files
 
@@ -464,37 +464,92 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 - `causal_discovery/prompts.py` — Causal modeler agent prompts, evidence summary builder
 - `causal_discovery/ground_truth.py` — Ground truth adjacency matrices + scoring
 - `causal_discovery/test_intervention.py` — Smoke tests for intervention interface
+- `causal_discovery/multi_agent/` — Multi-agent causal discovery package (Feb 24):
+  - `agent.py` — Extracted single-agent pipeline (AgentResult dataclass, setup_domain, run_single_agent)
+  - `aggregation.py` — Graph merging: majority_vote, confidence_weighted_vote, union_merge, intersection_merge
+  - `config.py` — 5 causal reasoning personas, maximalist/minimalist debate pair, variable subgraphs per domain
+  - `prompts_multi.py` — Prompt builders: persona injection, specialist constraints, debate injection, LLM aggregator
+  - `independent.py` — N=5 agents in parallel, persona-diverse, vote to merge
+  - `debate.py` — 2 agents alternate interventions from shared budget, share results + debate injection
+  - `specialization.py` — 3 variable-subset specialists + 1 LLM aggregator
+  - `runner.py` — CLI for single condition (`python -m causal_discovery.multi_agent.runner`)
+  - `run_all.py` — Sweep all conditions x both domains, produces comparison.json
 - `docs/CAUSAL_DISCOVERY_DESIGN.md` — Full design document
 - Baseline results: `outputs/causal_discovery/pilot_runs/run_{1,2,3}_seed{42,43,44}/`
 - Baseline results: `outputs/causal_discovery/conflict_pilot_runs/run_{1,2,3}_seed{42,43,44}/`
 - Post-fix results: `outputs/causal_discovery/pilot_runs/recall_fix_test/` (market, DeepSeek V3)
 - Post-fix results: `outputs/causal_discovery/conflict_pilot_runs/recall_fix_test/` (conflict, DeepSeek V3)
 
+### Multi-Agent Implementation (Feb 24)
+
+**Design:** 4 communication structures (single, independent, debate, specialization) x 2 domains, all with total budget=30 for fair comparison.
+
+| Condition | Agents | Per-Agent Budget | Design |
+|-----------|--------|-----------------|--------|
+| Single | 1 | 30 | Baseline (reuses run_pilot.py) |
+| Independent | 5 diverse personas | 6 each | Interventionist, correlational, structural, feedback_hunter, parsimony |
+| Debate | 2 opposing | 15 each (alternating) | Maximalist (high recall) vs minimalist (high precision) |
+| Specialization | 3 + 1 aggregator | ~10 each (proportional) | Supply/demand/dynamics (market) or military/economic/political (conflict) |
+
+**Aggregation methods:** majority vote, confidence-weighted (high=3, medium=2, low=1), union merge, intersection merge. Specialization also uses an LLM aggregator that sees all specialists' declared edges + evidence summaries.
+
+**Key design decisions:**
+- Budget split is fair: all conditions use exactly 30 total interventions
+- Independent personas are causal-reasoning-specific (not reused from forecast_multi)
+- Debate uses global dedup across both agents to prevent redundant interventions
+- Specialization enforces variable constraints: specialists can only target their assigned variables for trait interventions, but see full observation data
+- All conditions share the same domain setup (warmup, snapshots) via `setup_domain()`
+
+**Dry-run verification (Feb 24):** All 8 conditions (4 x 2 domains) pass with budget=30. Comparison output:
+
+```
+MARKET:    single F1=0.773, independent F1=0.773, debate F1=0.773, specialization F1=0.773
+CONFLICT:  single F1=0.889, independent F1=0.889, debate F1=0.889, specialization F1=0.889
+```
+
+(Scores identical in dry-run due to deterministic mock responses; real differentiation requires live LLM calls.)
+
+### Usage
+
+```bash
+# Single condition
+python -m causal_discovery.multi_agent.runner \
+    --domain market --communication independent --budget 30 --dry-run
+
+# Full sweep
+python -m causal_discovery.multi_agent.run_all --budget 30 --dry-run
+
+# Live run (requires OPENROUTER_API_KEY)
+python -m causal_discovery.multi_agent.run_all --budget 30
+```
+
 ### To-Do
 
-**Immediate (before multi-agent):**
+**Immediate (before live runs):**
 
 - [ ] Run 3 replicates on market with DeepSeek V3 + all fixes (current results are single runs — need variance estimates)
 - [ ] Run 3 replicates on conflict with DeepSeek V3 + all fixes
 - [ ] Investigate conflict recall gap (29% vs market 65%) — try: (a) multi-variable interventions to detect interaction modifier, (b) explicitly prompt model about aggregation step, (c) longer rollout periods (run_periods=5 instead of 3) to let longer chains propagate
-- [ ] Ground truth edge audit: `storage_cost → agent_orders` doesn't hold in rule-based sim (agents don't reference storage_cost when generating orders) — consider removing (1/23 edges)
+- [ ] Ground truth edge audit: `storage_cost -> agent_orders` doesn't hold in rule-based sim — consider removing (1/23 edges)
 
-**Multi-agent conditions (Phase 7):**
+**Multi-agent live runs (Phase 7):**
 
-- [ ] Implement the 5 communication structures (single, independent, sequential, debate, specialization)
-- [ ] Calibrate per-agent budget — single agent at budget=30 gets market F1=0.508; set multi-agent per-agent budget below the diminishing-returns inflection so coordination is needed
-- [ ] Design specialization assignments (which variable subsets per agent?)
-- [ ] Run all 5 conditions × 2 domains × N replicates
+- [x] Implement 4 communication structures (single, independent, debate, specialization)
+- [x] Design specialization assignments (variable subsets per domain)
+- [x] Dry-run verification: all 8 conditions pass
+- [ ] Run all 4 conditions x 2 domains x 3 replicates with live LLM calls
+- [ ] Compare aggregation methods: majority vote vs confidence-weighted vs union vs LLM aggregator
+- [ ] Analyze whether multi-agent collaboration improves F1 over single-agent baseline
 
 **PID analysis (Phase 8):**
 
 - [ ] Adapt edge-level PID for causal discovery (source: agent_i confidence on edge_k, target: ground truth)
-- [ ] Determine number of scenarios needed for reliable Williams-Beer estimation (currently estimated 10–20+)
+- [ ] Determine number of scenarios needed for reliable Williams-Beer estimation (currently estimated 10-20+)
 - [ ] Correlate EC with graph recovery quality across conditions
 
 **Other:**
 
-- [ ] Model comparison on improved pipeline (Llama 3.3 70B vs DeepSeek V3 vs others) — initial test showed identical results on limited return vars, but haven't compared on the expanded pipeline
+- [ ] Model comparison on improved pipeline (Llama 3.3 70B vs DeepSeek V3 vs others)
 - [ ] Consider whether conflict ground truth needs coarser granularity (collapse agent_recommendation + faction_action?) to be recoverable at budget=30
 
 ---

@@ -122,6 +122,28 @@ python -m forecast_multi.runner \
     --baseline-dir outputs/market_baseline --model llama --resume
 ```
 
+### Run Causal Discovery
+
+```bash
+# Single-agent pilot (market, dry-run test)
+python causal_discovery/run_pilot.py --domain market --budget 30 --dry-run
+
+# Multi-agent: independent (5 agents, budget split equally)
+python -m causal_discovery.multi_agent.runner \
+    --domain market --communication independent --budget 30 --dry-run
+
+# Multi-agent: debate (2 agents alternate from shared budget)
+python -m causal_discovery.multi_agent.runner \
+    --domain conflict --communication debate --budget 30 --dry-run
+
+# Multi-agent: specialization (3 specialists + LLM aggregator)
+python -m causal_discovery.multi_agent.runner \
+    --domain market --communication specialization --budget 30 --dry-run
+
+# Sweep all 4 conditions x 2 domains
+python -m causal_discovery.multi_agent.run_all --budget 30 --dry-run
+```
+
 ### Run Belief Sensitivity Analysis
 
 ```bash
@@ -240,6 +262,25 @@ Tests whether causal graph knowledge and multi-agent deliberation improve foreca
 
 **Design matrix:** 13 conditions per domain (single×4, independent×4, debate×3, specialization×2). ~12,500 LLM calls per domain.
 
+### Causal Discovery (`causal_discovery/`)
+
+Tests whether LLM agents can recover the known causal structure of the market and conflict engines through targeted interventional experiments. Extends the framework from behavioral coordination to **epistemic coordination**: can groups of causal modeler agents recover more of the causal graph than individuals?
+
+**Intervention types:** action overrides (force agent orders), trait overrides (change parameters), event overrides (inject/suppress shocks). All use clamp-and-react semantics with 3-period rollouts.
+
+**Communication structures (4 conditions, fair budget=30 total):**
+
+| Structure | Agents | Per-Agent Budget | Design |
+|-----------|--------|-----------------|--------|
+| **Single** | 1 | 30 | Baseline |
+| **Independent** | 5 diverse personas | 6 each | Post-hoc graph merge (majority vote) |
+| **Debate** | 2 opposing (maximalist vs minimalist) | 15 each (alternating) | Shared results, debate injection |
+| **Specialization** | 3 specialists + 1 LLM aggregator | ~10 each (proportional) | Variable-subset experts + unified merge |
+
+**Aggregation methods:** majority vote, confidence-weighted vote, union merge, intersection merge, LLM aggregator (specialization only).
+
+**Scoring:** Adjacency matrix Hamming distance, precision, recall, F1 against ground truth causal graphs (market: 23 edges across 12 variables, conflict: 21 edges across 13 variables).
+
 ---
 
 ## Methods
@@ -281,7 +322,9 @@ Extends Phase 1 by systematically decomposing the causal graph and deliberation 
 | **[RESULTS_FORECASTING_AND_PID.md](docs/RESULTS_FORECASTING_AND_PID.md)** | Cross-domain: LMM forecasting methods/results, conflict PID analysis, market vs conflict comparison |
 | **[MOTIVATION.md](docs/MOTIVATION.md)** | Research motivation and theoretical framing |
 
-The multi-agent forecasting framework is documented in [EXPERIMENT_NOTES.md](EXPERIMENT_NOTES.md) under "Multi-Agent Forecasting Framework". The belief sensitivity experiment is documented under "Belief Sensitivity Experiment". Legacy R wargame documentation is in `docs/archive/`.
+| **[CAUSAL_DISCOVERY_DESIGN.md](docs/CAUSAL_DISCOVERY_DESIGN.md)** | Causal discovery: intervention interface, ground truth graphs, pilot findings, multi-agent conditions |
+
+The multi-agent forecasting framework is documented in [EXPERIMENT_NOTES.md](EXPERIMENT_NOTES.md) under "Multi-Agent Forecasting Framework". The causal discovery experiment is documented under "Causal Discovery". The belief sensitivity experiment is documented under "Belief Sensitivity Experiment". Legacy R wargame documentation is in `docs/archive/`.
 
 ---
 
@@ -319,6 +362,21 @@ LLM_Forecasting/
 │   ├── debate.py                        # DebateForecaster (6 calls/period, 3 rounds)
 │   ├── specialization.py                # SpecializationForecaster (4 calls/period)
 │   └── runner.py                        # CLI + experiment loop + checkpoint/resume
+├── causal_discovery/                  # Causal discovery experiments
+│   ├── intervention.py                  # Clamp-and-react rollouts (action, trait, event)
+│   ├── ground_truth.py                  # Ground truth adjacency matrices + scoring
+│   ├── prompts.py                       # Causal modeler agent prompts
+│   ├── run_pilot.py                     # Single-agent pilot runner (market + conflict)
+│   └── multi_agent/                     # Multi-agent causal discovery
+│       ├── agent.py                       # Extracted single-agent pipeline (AgentResult)
+│       ├── aggregation.py                 # Graph merging (majority vote, union, etc.)
+│       ├── config.py                      # Causal reasoning personas, subgraph assignments
+│       ├── prompts_multi.py               # Multi-agent prompt builders
+│       ├── independent.py                 # N agents in parallel, vote to merge
+│       ├── debate.py                      # 2 agents alternate interventions, shared budget
+│       ├── specialization.py              # 3 specialists + LLM aggregator
+│       ├── runner.py                      # CLI for single condition
+│       └── run_all.py                     # Sweep all conditions x both domains
 ├── forecast_bench/                    # Belief sensitivity analysis
 │   ├── llm_client.py                    # OpenRouter client (single + multi-turn)
 │   ├── questions.py                     # ForecastBench question loader
@@ -344,6 +402,16 @@ LLM_Forecasting/
 │   │   ├── market_single_L0/              # Single × L0 condition
 │   │   ├── market_debate_L2/              # Debate × L2 condition
 │   │   └── ...                            # 13 conditions × 2 domains
+│   ├── causal_discovery/                  # Causal discovery results
+│   │   ├── pilot_runs/                      # Single-agent market pilot
+│   │   ├── conflict_pilot_runs/             # Single-agent conflict pilot
+│   │   └── multi_agent/                     # Multi-agent conditions
+│   │       ├── market_single/                 # Single-agent baseline
+│   │       ├── market_independent/            # 5 independent agents
+│   │       ├── market_debate/                 # 2-agent debate
+│   │       ├── market_specialization/         # 3 specialists + aggregator
+│   │       ├── conflict_{single,independent,debate,specialization}/
+│   │       └── comparison.json                # Side-by-side F1/P/R/HD
 │   ├── sensitivity_llama_one-turn/      # Belief sensitivity (reasons): one-turn
 │   ├── sensitivity_llama_multi-turn/    # Belief sensitivity (reasons): multi-turn
 │   ├── sensitivity_causal_llama_one-turn/  # Belief sensitivity (causal): one-turn
@@ -394,4 +462,4 @@ This is an active research project. For questions or collaboration:
 
 ---
 
-**Status:** Active Research | **Last Updated:** February 23, 2026
+**Status:** Active Research | **Last Updated:** February 24, 2026

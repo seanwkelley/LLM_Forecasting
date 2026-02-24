@@ -215,15 +215,16 @@ Conflict is expected to be harder to recover.
 
 ### Communication structures
 
-| # | Condition | Agents | Communication | Key question |
-|---|-----------|--------|---------------|-------------|
-| 1 | **Single agent** | 1 | N/A | Baseline: how far can one agent get? |
-| 2 | **Independent** | 3 | None — pool graphs at end | Emergent epistemic coordination |
-| 3 | **Sequential sharing** | 3 | Each sees all prior agents' results | Do agents build on others' evidence? |
-| 4 | **Debate** | 3 | Propose graphs, argue, interventions as evidence | Does social pressure affect inference? |
-| 5 | **Specialization** | 3 | Assigned to variable subsets (trait/action/event) | Designed complementary coverage |
+| # | Condition | Agents | Per-Agent Budget | Communication | Key question |
+|---|-----------|--------|-----------------|---------------|-------------|
+| 1 | **Single agent** | 1 | 30 | N/A | Baseline: how far can one agent get? |
+| 2 | **Independent** | 5 | 6 each | None -- vote to merge graphs | Emergent epistemic coordination |
+| 3 | **Debate** | 2 | 15 each (alternating) | Shared results + debate injection | Does social pressure affect inference? |
+| 4 | **Specialization** | 3+1 | ~10 each (proportional) | Variable subsets + LLM aggregator | Designed complementary coverage |
 
-Crossed with **2 engines** (market, conflict) = 10 cells.
+Crossed with **2 engines** (market, conflict) = 8 cells. All conditions use total budget=30 for fair comparison.
+
+**Implementation status (Feb 24):** All 4 structures implemented in `causal_discovery/multi_agent/`. Dry-run verified for all 8 conditions. Sequential sharing was dropped from the original 5-condition design in favor of the more informative debate structure (which subsumes sequential sharing's evidence-building with the addition of adversarial hypothesis testing).
 
 ### Per-condition procedure
 
@@ -313,8 +314,13 @@ Whether agents demonstrate this awareness spontaneously or need prompting is its
 - [x] Calibrate budget / improve prompts based on pilot failure modes
 
 ### Phase 3: Multi-agent conditions
-- [ ] Implement 5 communication structures
-- [ ] Run all conditions on both engines
+- [x] Implement 4 communication structures (single, independent, debate, specialization) in `causal_discovery/multi_agent/`
+- [x] Extract reusable agent pipeline (`agent.py`: AgentResult, setup_domain, run_single_agent)
+- [x] Graph aggregation (`aggregation.py`: majority_vote, confidence_weighted, union, intersection)
+- [x] Causal-discovery-specific personas (`config.py`: 5 reasoning strategies, maximalist/minimalist debate pair, variable subgraphs)
+- [x] CLI runner + full sweep (`runner.py`, `run_all.py`)
+- [x] Dry-run verification: all 8 conditions (4 structures x 2 domains) pass at budget=30
+- [ ] Run all conditions on both engines with live LLM calls
 - [ ] Score graph recovery across conditions
 
 ### Phase 4: PID analysis

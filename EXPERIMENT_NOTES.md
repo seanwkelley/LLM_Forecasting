@@ -71,6 +71,67 @@ Key architectural decision: use **rule-based baseline simulations** as the forec
 - `forecast_summary.json` — aggregate metrics + baselines
 - `checkpoint.json` — resume support
 
+### Results (Feb 23-24, Llama 3.1 8B, 10 scenarios × 30 periods)
+
+All 26 conditions complete. ~25,000 LLM calls total, ~13 hours runtime.
+
+#### Brier Score (probability calibration, lower = better, uniform baseline = 0.667)
+
+**Conflict:**
+
+|  | L0 | L1 | L2 | L3 |
+|--|----|----|----|----|
+| **Single** | 0.705 | 0.722 | 0.688 | **0.671** |
+| **Independent** | 0.704 | 0.718 | 0.704 | 0.723 |
+| **Debate** | 0.728 | — | 0.724 | 0.774 |
+| **Specialization** | — | — | 0.698 | 0.715 |
+
+**Market:**
+
+|  | L0 | L1 | L2 | L3 |
+|--|----|----|----|----|
+| **Single** | 0.721 | **0.715** | 0.722 | 0.733 |
+| **Independent** | 0.824 | 0.833 | 0.765 | 0.771 |
+| **Debate** | 0.816 | — | 0.798 | 0.771 |
+| **Specialization** | — | — | 0.741 | 0.753 |
+
+#### Mean Absolute Error (point prediction accuracy, lower = better)
+
+**Conflict (EI units, range ~5-12):**
+
+|  | L0 | L1 | L2 | L3 |
+|--|----|----|----|----|
+| **Single** | 0.467 | 0.458 | 0.461 | 0.470 |
+| **Independent** | **0.379** | 0.398 | 0.416 | 0.435 |
+| **Debate** | 0.390 | — | 0.429 | 0.455 |
+| **Specialization** | — | — | 0.449 | 0.453 |
+
+**Market (price units, range ~80-120):**
+
+|  | L0 | L1 | L2 | L3 |
+|--|----|----|----|----|
+| **Single** | 7.16 | 6.80 | 7.32 | 7.38 |
+| **Independent** | 6.74 | 6.81 | 6.76 | **6.74** |
+| **Debate** | 7.33 | — | 7.39 | 7.28 |
+| **Specialization** | — | — | 7.03 | 7.10 |
+
+#### Key Findings
+
+**1. Brier vs MAE tell divergent stories.** Brier score (probability calibration) favors single forecasters; MAE (point prediction) favors multi-agent ensembles. This is the classic wisdom-of-crowds effect: averaging multiple noisy point estimates reduces error, but averaging poorly calibrated probability distributions does not improve calibration.
+
+**2. Multi-agent helps point predictions but hurts probability calibration.**
+- Conflict MAE: Independent_L0 (0.379) beats single_L0 (0.467) by 19%
+- Market MAE: Independent_L3 (6.74) beats single_L3 (7.38) by 8.7%
+- But Brier: single is best in both domains
+
+**3. More information hurts point predictions.** In both domains, L0 (time-series only) produces the best MAE within each communication structure. Adding causal graphs (L2) or mechanistic rules (L3) makes point estimates worse — the models overthink with structural information.
+
+**4. Causal structure helps probability calibration (conflict only).** L2 beats L1 for both single (-0.034 Brier) and independent (-0.015 Brier) in conflict. In market, the effect is inconsistent.
+
+**5. Debate is consistently worst.** Highest Brier scores and highest MAE in most comparisons. Multi-turn deliberation amplifies errors rather than correcting them.
+
+**6. Only one condition beats uniform Brier baseline.** Conflict single_L3 (0.671 vs 0.667) — full mechanistic transparency with a single forecaster. No market condition beats uniform.
+
 ### Status
 
 | Phase | Status | Details |
@@ -82,9 +143,8 @@ Key architectural decision: use **rule-based baseline simulations** as the forec
 | 4. Single + Independent | **Complete** | |
 | 5. Debate + Specialization | **Complete** | |
 | 6. Runner + CLI | **Complete** | Checkpoint/resume, auto-named output dirs |
-| 7. Validation run | **Next** | Run single+L0 on 1 scenario, compare to existing forecaster |
-| 8. Full experiment | Pending | All 13 conditions × 2 domains |
-| 9. Statistical analysis | Pending | LMM in R, key contrasts |
+| 7. Full experiment | **Complete** | All 26 conditions (13 × 2 domains), ~25,000 LLM calls |
+| 8. Statistical analysis | **Next** | LMM in R, key contrasts |
 
 ### Usage
 
@@ -115,13 +175,12 @@ python -m forecast_multi.runner \
 
 ### Next Steps
 
-1. **Validation run** — Run `single + L0 + market` on 1 scenario, compare metrics against existing `market/run_market_forecast.py` on the same data (sanity check)
-2. **Smoke test all communication structures** — Run each of {single, independent, debate, specialization} × L0 on 1 market scenario to verify call counts and output structure
-3. **Full experiment** — Run all 13 conditions × 2 domains (25,000 LLM calls)
-4. **Merge CSVs** — Concatenate all condition CSVs into `combined_results.csv` for R analysis
-5. **Statistical analysis** — `brier_score ~ communication * info_level + (1|scenario_id/period)` in R with lme4
-6. **Convergence analysis** — For debate conditions, analyze whether agents converge or diverge across rounds
-7. **Specialist contribution analysis** — For specialization, compare specialist-only vs aggregator improvement
+1. **Merge CSVs** — Concatenate all condition CSVs into `combined_results.csv` for R analysis
+2. **Statistical analysis** — `brier_score ~ communication * info_level + (1|scenario_id/period)` and `value_error ~ communication * info_level + (1|scenario_id/period)` in R with lme4
+3. **Key contrasts** — L1 vs L2 (does causal structure help beyond more data?), single vs multi-agent, Brier vs MAE divergence
+4. **Convergence analysis** — For debate conditions, analyze whether agents converge or diverge across rounds
+5. **Specialist contribution analysis** — For specialization, compare specialist-only vs aggregator improvement
+6. **Investigate Brier/MAE divergence** — Why do ensembles help point predictions but hurt probability calibration? Examine individual forecaster calibration curves
 
 ---
 

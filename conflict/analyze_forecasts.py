@@ -26,7 +26,7 @@ import statsmodels.formula.api as smf
 # Load and combine all 4 conditions
 # ---------------------------------------------------------------------------
 
-BASE = Path(__file__).parent.parent / "outputs" / "conflict_llama_persona"
+BASE = Path(__file__).parent.parent / "outputs" / "_archive" / "llm_agents" / "conflict_llama_persona"
 
 CONDITIONS = {
     ("strategy", 0): BASE / "forecasting" / "forecast_results.csv",

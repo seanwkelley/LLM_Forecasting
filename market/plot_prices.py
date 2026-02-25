@@ -357,12 +357,12 @@ def plot_detailed(scenario_path, output_path):
 
 if __name__ == "__main__":
     root = Path(__file__).parent.parent
-    out = root / "outputs" / "market_plots"
-    out.mkdir(exist_ok=True)
+    out = root / "outputs" / "plots" / "market"
+    out.mkdir(parents=True, exist_ok=True)
 
-    baseline_dir = root / "outputs" / "market_baseline"
-    nopersona_dir = root / "outputs" / "market_llama_no_persona"
-    persona_dir = root / "outputs" / "market_llama_persona"
+    baseline_dir = root / "outputs" / "simulations" / "market"
+    nopersona_dir = root / "outputs" / "_archive" / "llm_agents" / "market_llama_no_persona"
+    persona_dir = root / "outputs" / "_archive" / "llm_agents" / "market_llama_persona"
 
     # 1. Price comparison (scenario 001)
     plot_price_comparison(

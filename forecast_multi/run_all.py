@@ -40,8 +40,8 @@ def main():
 
     domains = [args.domain] if args.domain else ["market", "conflict"]
     baseline_dirs = {
-        "market": "outputs/market_baseline",
-        "conflict": "outputs/conflict_baseline",
+        "market": "outputs/simulations/market",
+        "conflict": "outputs/simulations/conflict",
     }
 
     # Build ordered condition list

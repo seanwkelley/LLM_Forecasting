@@ -7,7 +7,7 @@ Usage:
         --communication single \\
         --info-level L0 \\
         --model llama \\
-        --baseline-dir outputs/market_baseline \\
+        --baseline-dir outputs/simulations/market \\
         --output-dir outputs/forecast_multi/market_single_L0 \\
         --start-period 5 \\
         --seed 42

@@ -10,8 +10,8 @@ Six network-specific metrics on top of the base analysis:
 6. Asymmetry index
 
 Usage:
-    python forecast_bench/analysis_causal.py outputs/sensitivity_causal_llama_one-turn
-    python forecast_bench/analysis_causal.py outputs/sensitivity_causal_llama_one-turn outputs/sensitivity_causal_llama_multi-turn
+    python forecast_bench/analysis_causal.py outputs/sensitivity/causal/llama_one_turn
+    python forecast_bench/analysis_causal.py outputs/sensitivity/causal/llama_one_turn outputs/sensitivity/causal/70b_multi_turn
 """
 
 from __future__ import annotations

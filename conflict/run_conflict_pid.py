@@ -6,18 +6,12 @@ Partial Information Decomposition to measure emergent coordination
 between LLM geopolitical agents.
 
 Usage:
-    # Analyze LLM results
-    python conflict/run_conflict_pid.py --results-dir outputs/conflict_llama_persona
-
-    # Compare LLM vs baseline
-    python conflict/run_conflict_pid.py \
-        --results-dir outputs/conflict_llama_persona \
-        --baseline-dir outputs/conflict_baseline
+    # Analyze baseline results
+    python conflict/run_conflict_pid.py --results-dir outputs/simulations/conflict
 
     # Full analysis with permutation tests
     python conflict/run_conflict_pid.py \
-        --results-dir outputs/conflict_llama_persona \
-        --baseline-dir outputs/conflict_baseline \
+        --results-dir outputs/simulations/conflict \
         --n-permutations 500 \
         --encoding direction_aggr
 """

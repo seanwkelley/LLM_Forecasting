@@ -16,12 +16,12 @@ Design:
 Usage:
     # Quick test (1 scenario, 5 forecasters)
     python conflict/run_conflict_forecast.py \\
-        --results-dir outputs/conflict_llama_persona \\
+        --results-dir outputs/simulations/conflict \\
         --n-forecasters 5 --model llama
 
     # Full run with ToM
     python conflict/run_conflict_forecast.py \\
-        --results-dir outputs/conflict_llama_persona \\
+        --results-dir outputs/simulations/conflict \\
         --n-forecasters 5 --model llama --tom
 """
 

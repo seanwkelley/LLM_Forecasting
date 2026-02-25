@@ -9,8 +9,8 @@ Reads sensitivity_results.csv and produces experiment_summary.json with:
 5. Condition comparison (paired t-test + Cohen's d)
 
 Usage:
-    python forecast_bench/analysis.py outputs/sensitivity_llama_independent
-    python forecast_bench/analysis.py outputs/sensitivity_llama_independent outputs/sensitivity_llama_conversational
+    python forecast_bench/analysis.py outputs/sensitivity/forecasting/one_turn
+    python forecast_bench/analysis.py outputs/sensitivity/forecasting/one_turn outputs/sensitivity/forecasting/multi_turn
 """
 
 from __future__ import annotations

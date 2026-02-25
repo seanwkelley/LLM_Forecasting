@@ -260,13 +260,14 @@ def compute_fundamental_price(state: MarketState) -> float:
     # Walk supply and demand curves to find crossing
     s_idx, d_idx = 0, 0
     cum_supply, cum_demand = 0, 0
+    fundamental = (supply_points[0][0] + demand_points[0][0]) / 2  # default
 
     while s_idx < len(supply_points) and d_idx < len(demand_points):
         s_price, s_qty = supply_points[s_idx]
         d_price, d_qty = demand_points[d_idx]
 
         if s_price > d_price:
-            # No more overlap
+            # No overlap — fundamental is midpoint of closest pair
             break
 
         # Fundamental price = midpoint of marginal supply/demand
@@ -279,9 +280,6 @@ def compute_fundamental_price(state: MarketState) -> float:
             s_idx += 1
         else:
             d_idx += 1
-
-    else:
-        fundamental = (supply_points[0][0] + demand_points[0][0]) / 2
 
     return fundamental
 

@@ -654,8 +654,8 @@ def plot_causal_network(
 
     nx.draw_networkx_labels(
         G, label_pos, labels=labels, ax=ax,
-        font_size=7, font_weight="bold", font_color="#111111",
-        bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=1.0),
+        font_size=8, font_weight="bold", font_color="#111111",
+        bbox=dict(facecolor="white", edgecolor="none", alpha=0.8, pad=1.5),
     )
 
     # --- Edge mechanism labels ---
@@ -666,16 +666,17 @@ def plot_causal_network(
         if (u, v) not in critical_edges:
             continue
         mech = edge_data.get("mechanism", "")
-        if mech and len(mech) > 25:
-            mech = mech[:23] + "..."
+        if mech and len(mech) > 30:
+            mech = mech[:28] + "..."
         if mech:
             edge_labels[(u, v)] = mech
 
     if edge_labels:
         nx.draw_networkx_edge_labels(
             G, pos, edge_labels=edge_labels, ax=ax,
-            font_size=5.5, font_color="#444444", alpha=0.85,
-            bbox=dict(facecolor="white", edgecolor="none", alpha=0.6, pad=0.5),
+            font_size=7, font_color="#333333", alpha=0.9,
+            bbox=dict(facecolor="white", edgecolor="#cccccc", alpha=0.8, pad=1.0),
+            label_pos=0.4,
         )
 
     # --- Legend ---

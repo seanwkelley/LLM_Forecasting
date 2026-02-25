@@ -297,6 +297,49 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 | Asymmetry index | 0.86 (slight confirmation bias) |
 | Irrelevant probe mean shift | 0.078 (lowest — good control) |
 
+### Full Run Results (Causal, Llama 3.3 70B, one-turn, Feb 24)
+
+50 questions, 784 successful probes (50 shared causal stages cached).
+
+**Anchoring:**
+
+| Metric | Value |
+|--------|-------|
+| N probes | 784 |
+| Mean absolute shift | 8.64pp |
+| Median absolute shift | 6.0pp |
+| % no change (<1pp) | 4.1% |
+| % small shift (<5pp) | 32.7% |
+
+**Sensitivity by Probe Type:**
+
+| Probe Type | Mean Shift | Median Shift | n |
+|---|---|---|---|
+| node_strengthen | **15.14pp** | 15.5pp | 100 |
+| missing_node | **14.22pp** | 14.5pp | 100 |
+| node_negate_high | 9.94pp | 7.5pp | 100 |
+| edge_fabricate | 9.04pp | 8.0pp | 84 |
+| node_negate_medium | 7.74pp | 6.0pp | 50 |
+| edge_negate_critical | 6.87pp | 6.0pp | 100 |
+| node_negate_low | 6.40pp | 5.0pp | 50 |
+| edge_negate_peripheral | 5.64pp | 4.5pp | 50 |
+| edge_reverse | 5.26pp | 4.5pp | 50 |
+| irrelevant | **1.46pp** | 1.0pp | 100 |
+
+**Key findings at n=50:**
+
+1. **Structural sensitivity is well-calibrated.** The importance gradient holds clearly: high-importance node negations (9.94pp) > medium (7.74pp) > low (6.40pp). Critical-path edge negations (6.87pp) > peripheral (5.64pp).
+
+2. **Strengthen probes cause the largest shifts (15.14pp).** Models are more responsive to confirmatory evidence than to negation — asymmetry index < 1 indicates confirmation bias (strengthen/negate ratio ~1.52).
+
+3. **Missing node probes are highly effective (14.22pp).** The model readily incorporates novel causal factors not in its original network, suggesting vulnerability to framing effects.
+
+4. **Irrelevant probes are well-controlled (1.46pp).** The lowest shift of any probe type, confirming the model doesn't shift indiscriminately. This validates the experimental design.
+
+5. **Edge fabrication acceptance remains high (9.04pp mean shift).** Fabricated edges produce shifts comparable to high-importance node negations, suggesting the model doesn't robustly validate proposed causal links.
+
+6. **Edge reversal has minimal impact (5.26pp).** Reversing causal direction on critical-path edges produces less shift than negating them entirely, suggesting models are more sensitive to existence than directionality of causal links.
+
 ### Status
 
 | Phase | Status | Details |
@@ -305,7 +348,8 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 | 2. Reasons-mode runs | Complete | 50 questions × 2 conditions |
 | 3. Causal-mode pipeline | **Complete** | 3 new files + runner modifications |
 | 4. Causal-mode smoke test | **Complete** | 2 questions × one-turn, 100% success |
-| 5. Causal-mode full run | **Next** | 50 questions × 2 conditions (~3,700 calls) |
+| 5. Causal-mode full run (one-turn) | **Complete** | 50 questions, 784 probes, Llama 3.3 70B |
+| 5b. Causal-mode full run (multi-turn) | **Next** | 50 questions × multi-turn condition |
 | 6. Cross-mode comparison | Pending | Compare flat-reasons vs causal network results |
 
 ### Files
@@ -337,18 +381,21 @@ python forecast_bench/run_sensitivity.py --mode causal --max-questions 50 --cond
 
 ### Next Steps
 
-**Immediate (full experiment):**
+**Immediate:**
 
-- [ ] Run causal mode full: `--mode causal --max-questions 50 --condition both` (~3,700 calls, ~2-3 hours)
-- [ ] Run causal analysis on both output dirs
-- [ ] Core hypothesis test: does importance-sensitivity Spearman rho reach significance at n=50? (smoke test: rho=0.19 at n=2)
+- [x] Run causal mode one-turn: 50 questions, Llama 3.3 70B — **Complete** (784 probes, Feb 24)
+- [x] Run causal analysis — **Complete** (experiment_summary.json saved)
+- [ ] Run causal mode multi-turn: `--mode causal --max-questions 50 --condition multi-turn` (~1,850 calls)
+- [ ] Run causal analysis on both output dirs + condition comparison
+- [ ] Core hypothesis test: compute importance-sensitivity Spearman rho with `analysis_causal.py` (SSR, asymmetry index, critical path premium)
 
-**Analysis (after full run):**
+**Analysis (after multi-turn run):**
 
 - [ ] Cross-mode comparison — compare flat-reasons vs causal network results on the same 50 questions. Does structural framing change the model's sensitivity pattern?
-- [ ] False negative deep dive — 85.7% fabrication acceptance is alarming. Characterize which fabricated edges are accepted vs rejected (outcome-adjacent? semantically plausible?)
+- [ ] False negative deep dive — fabrication acceptance produces 9.04pp mean shift (comparable to high-importance negation). Characterize which fabricated edges are accepted vs rejected (outcome-adjacent? semantically plausible?)
 - [ ] Graph quality analysis — assess the elicited causal graphs: are they DAGs? How many edges on average? Do they vary meaningfully across questions? Correlate graph complexity (density, n_nodes) with sensitivity patterns
 - [ ] SSR stability — does the structural sensitivity ratio hold at >1 across questions, or is it driven by a few outliers?
+- [ ] Confirmation bias investigation — strengthen (15.14pp) >> negate_high (9.94pp). Is this consistent across question types or driven by specific domains?
 
 **Extensions:**
 

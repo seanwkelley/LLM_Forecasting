@@ -580,13 +580,15 @@ def plot_causal_network(
         if em.on_critical_path:
             critical_edges.add((em.source, em.target))
 
-    # Layout
+    # Layout — use spring with generous spacing to reduce overlap
     try:
         pos = nx.kamada_kawai_layout(G)
     except Exception:
         pos = nx.spring_layout(G, seed=42, k=2.0)
+    # Scale positions out to give more room between nodes
+    pos = {n: (x * 1.4, y * 1.4) for n, (x, y) in pos.items()}
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 7))
+    fig, ax = plt.subplots(1, 1, figsize=(14, 10))
     fig.patch.set_facecolor("white")
 
     # --- Draw edges ---
@@ -640,41 +642,41 @@ def plot_causal_network(
         )
 
     # --- Labels ---
-    # Use short IDs as labels, wrap long ones
+    # Place labels below nodes to avoid overlapping the node circles
+    label_pos = {n: (x, y - 0.08) for n, (x, y) in pos.items()}
     labels = {}
     for n in G.nodes:
-        label = n.replace("_", "\n")
-        if len(label) > 20:
-            mid = len(label) // 2
-            # find nearest space or underscore
-            for offset in range(6):
-                if mid + offset < len(label) and label[mid + offset] in (" ", "\n"):
-                    label = label[:mid + offset] + "\n" + label[mid + offset + 1:]
-                    break
-                if mid - offset >= 0 and label[mid - offset] in (" ", "\n"):
-                    label = label[:mid - offset] + "\n" + label[mid - offset + 1:]
-                    break
+        # Use readable short names: replace underscores with spaces, title case
+        label = n.replace("_", " ")
+        if len(label) > 22:
+            label = label[:20] + "..."
         labels[n] = label
 
     nx.draw_networkx_labels(
-        G, pos, labels=labels, ax=ax,
-        font_size=8, font_weight="bold", font_color="#111111",
+        G, label_pos, labels=labels, ax=ax,
+        font_size=7, font_weight="bold", font_color="#111111",
+        bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=1.0),
     )
 
-    # --- Edge mechanism labels (abbreviated) ---
+    # --- Edge mechanism labels ---
+    # Only show on critical-path edges to reduce clutter
     edge_labels = {}
     for edge_data in edges:
         u, v = edge_data["from"], edge_data["to"]
+        if (u, v) not in critical_edges:
+            continue
         mech = edge_data.get("mechanism", "")
-        if mech and len(mech) > 30:
-            mech = mech[:27] + "..."
+        if mech and len(mech) > 25:
+            mech = mech[:23] + "..."
         if mech:
             edge_labels[(u, v)] = mech
 
-    nx.draw_networkx_edge_labels(
-        G, pos, edge_labels=edge_labels, ax=ax,
-        font_size=6, font_color="#555555", alpha=0.8,
-    )
+    if edge_labels:
+        nx.draw_networkx_edge_labels(
+            G, pos, edge_labels=edge_labels, ax=ax,
+            font_size=5.5, font_color="#444444", alpha=0.85,
+            bbox=dict(facecolor="white", edgecolor="none", alpha=0.6, pad=0.5),
+        )
 
     # --- Legend ---
     legend_handles = [
@@ -684,12 +686,16 @@ def plot_causal_network(
         mpatches.FancyArrow(0, 0, 0.1, 0, width=0.02, color="#D32F2F", label="Critical path"),
         mpatches.FancyArrow(0, 0, 0.1, 0, width=0.01, color="#999999", label="Other edge"),
     ]
-    ax.legend(handles=legend_handles, loc="upper left", fontsize=8, framealpha=0.9)
+    ax.legend(
+        handles=legend_handles, loc="lower left", fontsize=7,
+        framealpha=0.85, edgecolor="#cccccc",
+        bbox_to_anchor=(0.0, 0.0),
+    )
 
     # --- Title ---
     if title:
-        display_title = title if len(title) <= 80 else title[:77] + "..."
-        ax.set_title(display_title, fontsize=10, fontweight="bold", pad=12)
+        display_title = title if len(title) <= 90 else title[:87] + "..."
+        ax.set_title(display_title, fontsize=11, fontweight="bold", pad=14)
 
     subtitle_parts = [f"{analysis.n_nodes} nodes, {analysis.n_edges} edges"]
     if initial_prob is not None:
@@ -701,7 +707,9 @@ def plot_causal_network(
     )
 
     ax.set_axis_off()
-    plt.tight_layout()
+    # Add margin to prevent clipping
+    ax.margins(0.12)
+    plt.tight_layout(pad=1.5)
 
     save_path = Path(save_path)
     save_path.parent.mkdir(parents=True, exist_ok=True)

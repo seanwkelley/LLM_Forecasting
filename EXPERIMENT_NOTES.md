@@ -769,6 +769,18 @@ Rule-based agents with hard-coded different strategies show significant synergy 
 | 5. Forecasting experiment | Complete | Demographic personas +/- ToM, Llama 8B |
 | 6. Statistical analysis | Complete | LMM with period-within-scenario clustering |
 
+### Known Limitation: Low EI Variation Across Scenarios
+
+The 10 baseline conflict scenarios show limited diversity in escalation dynamics:
+
+- **Narrow EI band:** Cross-scenario mean is ~8.0 with std of only 0.21. All scenarios hover in the "High" zone (EI 7–9). Nothing dips into "Low" or solidly "Moderate" territory.
+- **Monotonic trend bias:** 9 of 10 scenarios trend upward (only S001 de-escalates). No scenarios show regime changes (e.g., peace → crisis → resolution).
+- **Oscillatory, not structural variation:** Within-scenario std (~0.64) comes from noisy period-to-period swings rather than meaningful regime shifts. EI floor across all scenarios is ~5.4.
+- **Possible causes:** Initial conditions start too hot (~7–8 EI), de-escalation mechanisms are underpowered relative to hawkish agents, and Novaris has 4 agents (mostly hawkish) vs Tethys 3.
+- **Potential fixes (not yet implemented):** Vary initial EI (some at 3–4 vs 7–8), strengthen de-escalation paths, add structural shocks (ceasefires, interventions, resource collapses), rebalance agent hawk/dove ratios.
+
+This may limit the forecasting task difficulty — with most scenarios occupying the same regime, period-to-period prediction is primarily about oscillation direction rather than trajectory shape.
+
 ### Forecasting Results
 
 **Design:** Demographic personas only, +/- ToM, Llama 8B only. 2,400 total forecasts.

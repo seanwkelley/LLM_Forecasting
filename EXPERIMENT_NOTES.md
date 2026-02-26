@@ -243,7 +243,7 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 | `edge_negate_critical` | edge | Critical-path edge | 2 | Edge importance test |
 | `edge_negate_peripheral` | edge | Non-critical edge | 1 | Edge baseline |
 | `edge_reverse` | edge | Critical-path edge | 1 | Direction sensitivity |
-| `edge_fabricate` | edge | Missing-edge candidate | 2 | False negative acceptance |
+| `edge_spurious` | edge | Missing-edge candidate | 2 | Spurious acceptance |
 | `missing_node` | structural | LLM-generated | 2 | Structural vulnerability |
 | `irrelevant` | structural | LLM-generated | 2 | Control (should not shift) |
 
@@ -281,7 +281,7 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 6. **Structural sensitivity ratio (SSR)**: mean_shift(high-importance) / mean_shift(low-importance) — >1 = calibrated
 7. **Sensitivity by probe category**: node vs edge vs structural mean shifts
 8. **Critical path premium**: mean_shift(on-path) - mean_shift(off-path)
-9. **False negative acceptance rate**: fraction of fabrication probes where |shift| ≥ 0.05
+9. **Spurious acceptance rate**: fraction of spurious probes where |shift| ≥ 0.05
 10. **Asymmetry index**: mean_shift(negation) / mean_shift(strengthening) — >1 = negativity bias
 
 ### Smoke Test Results (Causal, 2 questions, one-turn, Feb 23)
@@ -293,7 +293,7 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 | SSR | 1.10 (slight calibration to importance) |
 | Importance-sensitivity rho | 0.19 (weak positive — expected with n=2) |
 | Critical path premium | +0.007 |
-| False negative acceptance | 85.7% (6/7 fabrications accepted) |
+| Spurious acceptance | 85.7% (6/7 spurious probes accepted) |
 | Asymmetry index | 0.86 (slight confirmation bias) |
 | Irrelevant probe mean shift | 0.078 (lowest — good control) |
 
@@ -318,7 +318,7 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 | node_strengthen | **15.14pp** | 15.5pp | 100 |
 | missing_node | **14.22pp** | 14.5pp | 100 |
 | node_negate_high | 9.94pp | 7.5pp | 100 |
-| edge_fabricate | 9.04pp | 8.0pp | 84 |
+| edge_spurious | 9.04pp | 8.0pp | 84 |
 | node_negate_medium | 7.74pp | 6.0pp | 50 |
 | edge_negate_critical | 6.87pp | 6.0pp | 100 |
 | node_negate_low | 6.40pp | 5.0pp | 50 |
@@ -336,7 +336,7 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 
 4. **Irrelevant probes are well-controlled (1.46pp).** The lowest shift of any probe type, confirming the model doesn't shift indiscriminately. This validates the experimental design.
 
-5. **Edge fabrication acceptance remains high (9.04pp mean shift).** Fabricated edges produce shifts comparable to high-importance node negations, suggesting the model doesn't robustly validate proposed causal links.
+5. **Spurious edge acceptance remains high (9.04pp mean shift).** Spurious edges produce shifts comparable to high-importance node negations, suggesting the model doesn't robustly validate proposed causal links.
 
 6. **Edge reversal has minimal impact (5.26pp).** Reversing causal direction on critical-path edges produces less shift than negating them entirely, suggesting models are more sensitive to existence than directionality of causal links.
 
@@ -392,7 +392,7 @@ python forecast_bench/run_sensitivity.py --mode causal --max-questions 50 --cond
 **Analysis (after multi-turn run):**
 
 - [ ] Cross-mode comparison — compare flat-reasons vs causal network results on the same 50 questions. Does structural framing change the model's sensitivity pattern?
-- [ ] False negative deep dive — fabrication acceptance produces 9.04pp mean shift (comparable to high-importance negation). Characterize which fabricated edges are accepted vs rejected (outcome-adjacent? semantically plausible?)
+- [ ] Spurious acceptance deep dive — spurious acceptance produces 9.04pp mean shift (comparable to high-importance negation). Characterize which spurious edges are accepted vs rejected (outcome-adjacent? semantically plausible?)
 - [ ] Graph quality analysis — assess the elicited causal graphs: are they DAGs? How many edges on average? Do they vary meaningfully across questions? Correlate graph complexity (density, n_nodes) with sensitivity patterns
 - [ ] SSR stability — does the structural sensitivity ratio hold at >1 across questions, or is it driven by a few outliers?
 - [ ] Confirmation bias investigation — strengthen (15.14pp) >> negate_high (9.94pp). Is this consistent across question types or driven by specific domains?
@@ -400,7 +400,7 @@ python forecast_bench/run_sensitivity.py --mode causal --max-questions 50 --cond
 **Extensions:**
 
 - [ ] Model comparison — run causal mode on DeepSeek V3 or a larger model to see if structural calibration improves with scale
-- [ ] Connect to causal discovery — the causal discovery experiment tests whether LLMs can *recover* ground-truth graphs; causal sensitivity tests whether they can *defend* self-constructed graphs. Compare failure modes (path collapse in discovery vs fabrication acceptance in sensitivity)
+- [ ] Connect to causal discovery — the causal discovery experiment tests whether LLMs can *recover* ground-truth graphs; causal sensitivity tests whether they can *defend* self-constructed graphs. Compare failure modes (path collapse in discovery vs spurious acceptance in sensitivity)
 - [ ] Importance weight tuning — the composite importance formula (0.3×betweenness + 0.2×PageRank + 0.2×out_degree + 0.3×path_relevance) was chosen heuristically. Post-hoc analysis: which single metric best predicts actual sensitivity?
 
 ---

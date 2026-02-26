@@ -12,7 +12,7 @@ The belief sensitivity experiment isolates the most fundamental question: can a 
 
 **Flat-reasons mode** elicits explicit reasons behind a probability forecast, then systematically challenges each reason with adversarial probes (negation, counterfactual, weakening), supportive probes (strengthening), and controls (irrelevant information), measuring whether the model updates rationally or is simply suggestible.
 
-**Causal network mode** goes deeper: instead of flat reasons, the LLM constructs a directed causal graph (factor nodes + edges with mechanisms + one outcome node). Probes then target specific structural elements — high-centrality nodes, critical-path edges, fabricated connections, missing factors. This ties belief sensitivity to network theory: does the model's sensitivity to a challenge correlate with that challenge's structural importance in its own causal model?
+**Causal network mode** goes deeper: instead of flat reasons, the LLM constructs a directed causal graph (factor nodes + edges with mechanisms + one outcome node). Probes then target specific structural elements — high-centrality nodes, critical-path edges, spurious connections, missing factors. This ties belief sensitivity to network theory: does the model's sensitivity to a challenge correlate with that challenge's structural importance in its own causal model?
 
 Key findings (flat-reasons mode):
 - **One-turn (stateless) calls produce rational updating**: adversarial probes decrease probability, strengthening increases it, irrelevant probes have near-zero effect. This is what a well-calibrated reasoner should do.
@@ -21,8 +21,8 @@ Key findings (flat-reasons mode):
 
 Early causal-mode findings (smoke test, n=2 questions):
 - **Slight structural calibration**: Structural sensitivity ratio of 1.10 — high-importance probes produce somewhat larger shifts than low-importance probes.
-- **High false negative acceptance**: 85.7% of fabricated causal links are accepted (produce |shift| ≥ 0.05), suggesting vulnerability to invented structure.
-- **Connection to causal discovery**: The same LLM that constructs a causal graph fails to defend it against fabricated edges, paralleling the path-collapse failures observed in the causal discovery experiments.
+- **High spurious acceptance**: 85.7% of spurious causal links are accepted (produce |shift| ≥ 0.05), suggesting vulnerability to invented structure.
+- **Connection to causal discovery**: The same LLM that constructs a causal graph fails to defend it against spurious edges, paralleling the path-collapse failures observed in the causal discovery experiments.
 
 ### Market Simulations: Structured Multi-Agent Dynamics
 
@@ -44,7 +44,7 @@ This domain tests whether LLMs can reason coherently in environments where the r
 
 The domains are ordered by complexity, and each builds on the findings of the last:
 
-1. **Belief sensitivity** isolates the individual reasoning mechanism. If the model can't resist irrelevant probes in a simple single-agent forecasting task, that fragility will compound in more complex settings. The causal network mode adds a structural dimension: if the model can't defend the graph it just constructed against fabricated edges, its causal reasoning is shallow rather than principled.
+1. **Belief sensitivity** isolates the individual reasoning mechanism. If the model can't resist irrelevant probes in a simple single-agent forecasting task, that fragility will compound in more complex settings. The causal network mode adds a structural dimension: if the model can't defend the graph it just constructed against spurious edges, its causal reasoning is shallow rather than principled.
 
 2. **Markets** test that same mechanism in a structured multi-agent setting. The biases identified in belief sensitivity -- anchoring, suggestibility, conversational drift -- manifest as coordination failures, herding, or mispricing when multiple LLM agents interact.
 

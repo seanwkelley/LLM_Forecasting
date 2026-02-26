@@ -6,7 +6,7 @@ Six network-specific metrics on top of the base analysis:
 2. Structural sensitivity ratio (SSR)
 3. Sensitivity by probe category (node/edge/structural)
 4. Critical path premium
-5. False negative acceptance rate
+5. Spurious acceptance rate
 6. Asymmetry index
 
 Usage:
@@ -246,31 +246,31 @@ def critical_path_premium(rows: list[dict]) -> dict:
     }
 
 
-def false_negative_acceptance_rate(rows: list[dict]) -> dict:
-    """Fraction of edge_fabricate + missing_node probes where |shift| >= 0.05.
+def spurious_acceptance_rate(rows: list[dict]) -> dict:
+    """Fraction of edge_spurious + missing_node probes where |shift| >= 0.05.
 
-    High rate = model is vulnerable to accepting fabricated causal structure.
+    High rate = model is vulnerable to accepting spurious causal structure.
 
     Returns
     -------
     Dict with acceptance_rate, n_accepted, n_total.
     """
-    fabrication_types = {"edge_fabricate", "missing_node"}
-    fabrication_rows = [
+    spurious_types = {"edge_spurious", "missing_node"}
+    spurious_rows = [
         r for r in rows
         if r["success"] and r["absolute_shift"] is not None
-        and r.get("probe_type") in fabrication_types
+        and r.get("probe_type") in spurious_types
     ]
 
-    if not fabrication_rows:
+    if not spurious_rows:
         return {"acceptance_rate": None, "n_accepted": 0, "n_total": 0}
 
-    accepted = sum(1 for r in fabrication_rows if r["absolute_shift"] >= 0.05)
+    accepted = sum(1 for r in spurious_rows if r["absolute_shift"] >= 0.05)
 
     return {
-        "acceptance_rate": round(accepted / len(fabrication_rows), 4),
+        "acceptance_rate": round(accepted / len(spurious_rows), 4),
         "n_accepted": accepted,
-        "n_total": len(fabrication_rows),
+        "n_total": len(spurious_rows),
     }
 
 
@@ -408,10 +408,10 @@ def run_causal_analysis(*dirs: str):
         print(f"    Mean shift (on-path): {cpp['mean_shift_on_path']} (n={cpp['n_on']})")
         print(f"    Mean shift (off-path): {cpp['mean_shift_off_path']} (n={cpp['n_off']})")
 
-        # 4. False negative acceptance rate
-        fnar = false_negative_acceptance_rate(rows)
-        print(f"\n  False Negative Acceptance Rate:")
-        print(f"    Rate: {fnar['acceptance_rate']} ({fnar['n_accepted']}/{fnar['n_total']} accepted fabrications)")
+        # 4. Spurious acceptance rate
+        fnar = spurious_acceptance_rate(rows)
+        print(f"\n  Spurious Acceptance Rate:")
+        print(f"    Rate: {fnar['acceptance_rate']} ({fnar['n_accepted']}/{fnar['n_total']} spurious probes accepted)")
 
         # 5. Asymmetry index
         ai = asymmetry_index(rows)
@@ -438,7 +438,7 @@ def run_causal_analysis(*dirs: str):
             "importance_sensitivity_correlation": isc,
             "structural_sensitivity_ratio": ssr,
             "critical_path_premium": cpp,
-            "false_negative_acceptance_rate": fnar,
+            "spurious_acceptance_rate": fnar,
             "asymmetry_index": ai,
             "conversational_drift": drift,
         }

@@ -196,7 +196,7 @@ Tests how robustly LLMs hold their forecast beliefs under targeted challenges. T
 
 1. **Causal Forecast**: LLM estimates probability and constructs a directed causal graph (4-8 factor nodes + 1 outcome node + edges with mechanisms)
 2. **Network Analysis**: Pure computation (no LLM) — betweenness centrality, PageRank, path relevance, composite importance scores. Selects ~16 structurally motivated probe targets. Saves a network visualization (PNG) per question
-3. **Probe Generation**: One probe per target across 10 types: node negation (high/medium/low importance), node strengthening, edge negation (critical/peripheral), edge reversal, edge fabrication, missing node, irrelevant
+3. **Probe Generation**: One probe per target across 10 types: node negation (high/medium/low importance), node strengthening, edge negation (critical/peripheral), edge reversal, spurious edge, missing node, irrelevant
 4. **Probed Forecast**: Challenge presented with full network context
 
 **Core hypothesis**: Probing structurally important elements (high-centrality nodes, critical-path edges) should produce larger probability shifts than probing peripheral elements.

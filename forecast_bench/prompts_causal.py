@@ -23,7 +23,7 @@ CAUSAL_PROBE_TYPES = [
     "edge_negate_critical",
     "edge_negate_peripheral",
     "edge_reverse",
-    "edge_fabricate",
+    "edge_spurious",
     "missing_node",
     "irrelevant",
 ]
@@ -36,7 +36,7 @@ PROBE_CATEGORIES = {
     "edge_negate_critical": "edge",
     "edge_negate_peripheral": "edge",
     "edge_reverse": "edge",
-    "edge_fabricate": "edge",
+    "edge_spurious": "edge",
     "missing_node": "structural",
     "irrelevant": "structural",
 }
@@ -217,7 +217,7 @@ def build_causal_probe_prompt(
             f"arrow should be reversed. Provide a specific mechanism for "
             f"reverse causation."
         ),
-        "edge_fabricate": (
+        "edge_spurious": (
             f"The forecaster's causal network does NOT include a direct link "
             f"'{target_id}'. Argue that this missing causal link DOES exist "
             f"and is important. Describe a specific causal mechanism connecting "

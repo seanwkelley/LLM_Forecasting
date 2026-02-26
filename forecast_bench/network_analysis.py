@@ -303,7 +303,7 @@ def _select_probe_targets(
     - 2 critical-path edge negations
     - 1 peripheral edge negation
     - 1 critical-path edge reversal
-    - 2 missing-edge fabrications
+    - 2 spurious missing-edge probes
     - 2 missing-node probes (LLM-generated)
     - 2 irrelevant probes (LLM-generated)
 
@@ -483,7 +483,7 @@ def _select_probe_targets(
             importance=0.0,
             centrality_rank=0,
             on_critical_path=False,
-            probe_type="edge_fabricate",
+            probe_type="edge_spurious",
         ))
 
     # --- Structural targets (LLM-generated) ---

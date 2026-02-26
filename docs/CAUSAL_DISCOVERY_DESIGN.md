@@ -235,6 +235,36 @@ Crossed with **2 engines** (market, conflict) = 8 cells. All conditions use tota
 5. After budget exhaustion, agents declare a final candidate graph
 6. Score against ground truth
 
+### Multi-agent graph aggregation
+
+In multi-agent conditions (independent, debate, specialization), each agent produces its own declared graph. These are merged into a single group graph using one of four aggregation strategies (`causal_discovery/multi_agent/aggregation.py`):
+
+**1. Majority vote** — Include an edge if >50% of agents declare it. For 5 independent agents, an edge needs ≥3 votes.
+
+```
+Agent A declares: shock → resources, hawk_score → escalation_index
+Agent B declares: shock → resources, hawk_score → agent_recommendation
+Agent C declares: shock → resources
+
+Majority vote result: shock → resources (3/3 ✓), hawk_score → escalation_index (1/3 ✗),
+                      hawk_score → agent_recommendation (1/3 ✗)
+```
+
+**2. Confidence-weighted vote** — Weight each agent's edge declaration by its confidence level (high=3, medium=2, low=1). Include edge if weighted sum exceeds `n_agents × 3 / 2`. This means a single high-confidence declaration from one agent can't override the group, but two medium-confidence declarations can.
+
+```
+Agent A: shock → resources (high, weight=3)
+Agent B: shock → resources (low, weight=1)
+Threshold for 2 agents: 2 × 3 / 2 = 3.0
+Weighted sum: 3 + 1 = 4 > 3 → included
+```
+
+**3. Union** — Include an edge if ANY agent declares it. Maximizes recall at the expense of precision. Useful when individual agents explore different parts of the graph and under-declaration is the primary failure mode.
+
+**4. Intersection** — Include an edge only if ALL agents declare it. Maximizes precision at the expense of recall. Acts as a conservative filter — only edges with unanimous agreement survive.
+
+The choice of aggregation strategy interacts with the communication condition. In the **independent** condition, agents explore independently, so union captures the broadest coverage while intersection filters to only the most robust findings. In the **specialization** condition, agents cover different variable subsets, so union is the natural merge (each specialist contributes edges from their assigned region). The **debate** condition produces 2 graphs from adversarial partners, where intersection captures consensus and union captures the full space of plausible edges.
+
 ---
 
 ## Scoring
@@ -282,18 +312,64 @@ Agents maintain a **confidence matrix** over possible directed edges. For N vari
 5. Update confidence matrix based on observed vs. expected outcomes
 6. Repeat until budget exhausted
 
+The agent loop is implemented as a **multi-turn LLM conversation** (`agent.py:run_single_agent`). The full conversation history — including all past proposals, results, and hypothesis updates — is carried forward, so the agent can reason over its accumulated evidence without explicit memory management.
+
+#### Intervention selection prompting
+
+Intervention selection is entirely LLM-driven. The `build_intervention_prompt()` in `prompts.py` provides the agent with its current hypothesis, past results, remaining budget, and available intervention types, then enforces six critical rules:
+
+1. **No repetition** — Never repeat an intervention already run. If the same variable was already tested with the same type, choose a different variable or type.
+2. **Type diversity** — Use all three intervention types (action, trait, event). If you haven't used events yet, use one now.
+3. **Extreme values** — Use extreme values to maximize detectable effects. For traits, try 0 or 10× the normal value. For events, use magnitude ≥ 2.0.
+4. **No futile retries** — If an intervention showed "no detectable effect", do not retry the same thing. Try a different variable or a much more extreme value.
+5. **Direct vs. indirect** — Distinguish direct from indirect causation. If X → Y → Z, intervening on X changes Z but X does not directly cause Z. To test whether X directly causes Z, you must also intervene on the mediator Y.
+6. **Common causes** — Correlation between two variables may be due to a common cause. Intervene on the suspected cause to test this.
+
+The agent must also specify what it expects to observe if the hypothesized edge exists vs. does not exist, enforcing an explicit hypothesis-testing structure:
+
+```json
+{
+    "intervention": {"type": "trait", "target": {...}, "run_periods": 3, "description": "..."},
+    "hypothesis_being_tested": "Does hawk_score cause escalation_index directly?",
+    "expected_if_edge_exists": "Escalation index increases when hawk_score is set to 0.9",
+    "expected_if_no_edge": "Escalation index unchanged despite hawk_score override"
+}
+```
+
+After each intervention executes, the result deltas are fed back and the agent produces a structured hypothesis update — marking edges as confirmed, disconfirmed, or still uncertain, plus listing `key_uncertainties` that inform the next intervention choice. This creates an iterative uncertainty-reduction loop where the agent maintains a running set of unknowns and selects the intervention that would most reduce that set.
+
+#### Guardrails
+
+The agent loop includes several guardrails in `agent.py`:
+
+- **Duplicate detection** (line 524): Interventions are keyed by `(type, json(target))`. If an agent proposes an already-run intervention, it is skipped and the agent is told to propose something different.
+- **Invalid type rejection** (line 450): If the agent invents a type outside `{action, trait, event}`, the proposal is rejected with a corrective message.
+- **Variable specialization** (line 493): In the specialization condition, agents are restricted to a subset of variables. Out-of-scope proposals are rejected.
+- **Target normalization** (lines 472–489): The loop normalizes variant key names (e.g., `"shock"` → `"shock_type"`, `"action"` → `"value"`) so minor format deviations from the LLM don't cause execution failures.
+
 ### Interleaving
 
 Agents may interleave structure discovery (which edges exist?) and effect estimation (how strong are they?) within a single intervention. Whether LLM agents do this spontaneously vs. rigidly separating phases is a behavioral outcome of interest.
 
 ### Confound awareness
 
-Agents need to be aware that:
+Agents need to be aware of three classes of confound:
+
 - **Agent reactivity**: Forcing one agent's action changes other agents' responses (mediated through market/conflict state). Naive pairwise testing ignores this mediation.
 - **Feedback loops**: Effects propagate forward in time and loop back. An intervention at period t affects period t+1 through state updates.
 - **Common causes**: Variables may be correlated without direct causal connection (e.g., fundamental_price and clearing_price in market).
 
 Whether agents demonstrate this awareness spontaneously or need prompting is itself an outcome.
+
+#### Prompting strategies for confound mitigation
+
+The prompt design in `prompts.py` addresses each confound class:
+
+**Path collapse prevention.** The intervention prompt's Rule 5 explicitly instructs agents to distinguish direct from indirect causation: "If X → Y → Z, intervening on X changes Z but X does not DIRECTLY cause Z. To test whether X directly causes Z, you must also intervene on the mediator Y." This is reinforced by the expanded return variables (Fix 1 in pilot findings), which make mediators like `agent_orders` and `faction_action` visible in intervention trajectories. Without visible mediators, path collapse is inevitable regardless of prompting.
+
+**Common cause awareness.** Rule 6 instructs agents to consider that "correlation between two variables may be due to a COMMON CAUSE, not direct causation. Intervene on the suspected cause to test this." The system prompt for both domains also states "Correlation does not imply causation. Two variables may be correlated because they share a common cause." Despite this, the `fundamental_price → clearing_price` confound trap persisted in 3/3 pilot runs — the model observes the correlation but never designs an intervention that tests the common-cause hypothesis (e.g., intervening on `fundamental_price` directly to see if clearing_price changes). This suggests explicit prompting is necessary but insufficient for common cause reasoning.
+
+**Feedback loop awareness.** The system prompts note that "Feedback loops exist: A may cause B which causes A in the next period." The declaration prompt asks agents to report `feedback_loops` as a separate output field, encouraging them to consider cyclical structure. The 3-period rollout window (`run_periods=3`) is long enough for one feedback cycle to manifest but short enough that multi-hop effects remain distinguishable from direct effects.
 
 ---
 

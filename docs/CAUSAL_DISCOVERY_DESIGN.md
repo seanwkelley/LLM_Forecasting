@@ -148,16 +148,25 @@ Derived from `conflict/engine.py`, `conflict/agents_config.py`.
 #### Primary causal graph (cyclic)
 
 ```
-AGENT DECISION:
-  hawk_score_i ──────────→ action_recommendation_i_t  (prompt-mediated)
-  escalation_index_{t-1} → action_recommendation_i_t  (agents respond to state)
-  resources_i_t ─────────→ action_recommendation_i_t  (affordability constraint)
-  faction_state_t ───────→ action_recommendation_i_t  (GDP, military, stability)
+AGENT DECISION (9 inputs → agent_recommendation):
+  hawk_score_i ──────────────→ agent_recommendation_i_t  (prompt-mediated)
+  escalation_index_{t-1} ────→ agent_recommendation_i_t  (modulates target_delta range)
+  resources_i_t ─────────────→ agent_recommendation_i_t  (affordability constraint)
+  gdp_i_t ───────────────────→ agent_recommendation_i_t  (economic pressure: low → dovish)
+  military_strength_i_t ─────→ agent_recommendation_i_t  (military confidence → hawkish)
+  political_stability_i_t ───→ agent_recommendation_i_t  (war fatigue: low → dovish)
+  sanctions_level_t ─────────→ agent_recommendation_i_t  (erodes Novaris resolve)
+  international_support_t ───→ agent_recommendation_i_t  (emboldens Tethys resistance)
+  military_balance_t ────────→ agent_recommendation_i_t  (faction-specific advantage)
+
+  State feedback computed by compute_state_modifier() in agents_config.py:
+    effective_hawk = clamp(hawk_score + state_modifier, 0.05, 0.95)
+    Each term contributes ~±0.03–0.12; combined worst case ~±0.35.
 
 AGGREGATION (within faction, deterministic):
   action_recommendations (all faction agents) → faction_action_t
     weighted by role × action_category matrix
-    snapped to nearest action in action space
+    continuous weighted-average delta preserved through to compute_escalation
 
 ESCALATION (deterministic):
   novaris_action_t + tethys_action_t → escalation_index_t
@@ -167,18 +176,29 @@ ESCALATION (deterministic):
       mixed         → ×0.8 (dampening)
     momentum: -0.06 × (EI - 5.0) (mean reversion)
 
-STATE UPDATES (deterministic, multiple):
-  escalation_index_t → military_balance_t+1
-  escalation_index_t → sanctions_level_t+1
-  escalation_index_t → international_support_t+1
-  escalation_index_t → GDP_t+1 (damage at high EI)
-  escalation_index_t → political_stability_t+1
-  GDP_t+1 → resources_t+1 (regeneration)
-  faction_action_t → military_strength_t+1 (buildup/depletion)
+STATE UPDATES (deterministic, 12 edges):
+  From escalation_index:
+    escalation_index_t → GDP_t+1 (damage at high EI, recovery at low EI)
+    escalation_index_t → political_stability_t+1 (high EI erodes, low EI restores)
+    escalation_index_t → international_support_t+1 (high EI increases Tethys support)
+  From faction_action:
+    faction_action_t → resources_t+1 (action cost deducted)
+    faction_action_t → military_strength_t+1 (military buildup/depletion)
+    faction_action_t → territory_controlled_t+1 (offensive + advantage → territory)
+    faction_action_t → sanctions_level_t+1 (Novaris escalatory actions increase sanctions)
+  Cross-variable:
+    GDP_t → resources_t (GDP-dependent regeneration)
+    sanctions_level_t → GDP_t+1 (sanctions damage Novaris economy)
+    military_strength_t → military_balance_t+1 (strength difference)
+    military_balance_t → territory_controlled_t+1 (advantage threshold)
 
-FEEDBACK (cyclic):
-  escalation_index_t → faction_state_{t+1} → action_recommendations_{t+1}
-  resources_t → action_choice_t → costs → resources_{t+1}
+FEEDBACK LOOPS (6 cycles, all edges encoded above):
+  1. EI → rec → faction_action → EI (core escalation loop)
+  2. resources → rec → faction_action → resources (resource depletion loop)
+  3. EI → GDP → rec → faction_action → EI (economic pressure loop)
+  4. EI → political_stability → rec → faction_action → EI (war fatigue loop)
+  5. faction_action → sanctions → GDP → rec → faction_action (sanctions spiral)
+  6. faction_action → mil_strength → mil_balance → rec → faction_action (military confidence)
 
 SHOCKS (exogenous):
   border_incident (11%/period) → escalation_index (+0.5 to +1.5)
@@ -190,18 +210,20 @@ SHOCKS (exogenous):
   international_pressure (8%) → sanctions_level (+0.1 to +0.3)
 ```
 
+**Total: 13 variables, 26 directed edges.**
+
 #### Key causal facts
 
 - **Aggregation is weighted, not equal**: Role weights range from 0.5 to 2.0 depending on role × action category. Military Chief has 2.0× weight on military actions; Economic Advisor has 0.5×. A modeler that assumes equal aggregation will misestimate effect sizes.
 - **Interaction modifier creates nonlinearity**: Two actions with delta=0.5 each produce 1.2 EI increase (mutual escalation) vs. 0.0 (mixed signals). This means `action_A → EI` depends on `action_B` — the effect is not separable.
-- **16 actions** (not 15 as originally noted): ranging from troop_withdrawal (-1.0) to full_scale_attack (+2.5), each with a resource cost.
+- **17 actions**: ranging from troop_withdrawal (-1.0) to full_scale_attack (+2.5), each with a resource cost. Includes backchannel_talks (-0.1) and diplomatic_summit (-0.5).
 - **Mean reversion**: System pushes toward EI=5.0 with force proportional to deviation. This makes extreme states self-correcting, which modelers need to distinguish from agent de-escalation behavior.
 
 #### Attractor dynamics and per-scenario hawk/dove shift
 
 The escalation index converges to a **scenario-specific attractor** determined by the balance of three forces:
 
-**1. Agent pressure.** Each agent's desired escalation change is `(hawk_dove - 0.5) * multiplier`, where multiplier=3.0 in mid-range EI (2–8) and drops to 1.0 at extremes (EI<2 or EI>8). Agents above hawk_dove=0.5 push EI up; agents below push it down. The per-faction deltas are weighted-averaged (role × action category weights), producing one continuous delta per faction per period.
+**1. Agent pressure.** Each agent's desired escalation change is `(effective_hawk - 0.5) * multiplier`, where multiplier=3.0 in mid-range EI (2–8) and drops to 1.0 at extremes (EI<2 or EI>8). The effective hawk score = `clamp(hawk_dove + state_modifier, 0.05, 0.95)`, where `state_modifier` is computed from the agent's faction state (GDP, military strength, political stability, sanctions, international support, military balance). This creates delayed negative feedback: escalation damages faction state → state modifier shifts agents dovish → de-escalation → state recovers → agents shift back hawkish. Agents above effective_hawk=0.5 push EI up; agents below push it down. The per-faction deltas are weighted-averaged (role × action category weights), producing one continuous delta per faction per period.
 
 **2. Mean reversion.** `momentum = -0.06 * (EI - 5.0)` — a weak restoring force centered at EI=5.0. At EI=8.0 this contributes -0.18/period; at EI=2.0 it contributes +0.18/period. Weak enough that agent pressure dominates in mid-range.
 
@@ -221,6 +243,8 @@ The attractor is the EI where these forces balance (net delta ≈ 0). With the b
 
 The asymmetric range [-0.25, +0.10] centers near -0.075 (the approximate break-even shift), yielding roughly equal numbers of escalating and de-escalating scenarios. Cross-scenario EI standard deviation increases from ~0.20 (no shift) to ~2.7 (with shift).
 
+**State modifier makes attractors dynamic.** The table above describes the static equilibrium from hawk_dove_shift alone. With `compute_state_modifier`, attractors are no longer truly fixed — sustained high EI damages GDP, stability, and increases sanctions, which shifts agents dovish and pulls EI down; sustained low EI allows recovery, shifting agents back hawkish. This creates oscillatory dynamics around the nominal attractor rather than monotone convergence, increasing within-scenario variance (mean std ~0.94 vs ~0.91 without modifier).
+
 #### Key differences from market for causal discovery
 
 | Feature | Market | Conflict |
@@ -229,7 +253,7 @@ The asymmetric range [-0.25, +0.10] centers near -0.075 (the approximate break-e
 | Trait mechanism | Hard engine constraint | Prompt-only (LLM-mediated) |
 | Nonlinearity | Marginal pair (mild) | Interaction modifier (strong) |
 | State variables | 3 (cash, inventory, price) | 8+ (EI, GDP, military, stability, etc.) |
-| Feedback complexity | Single loop | Multiple interlocking loops |
+| Feedback complexity | Single loop | 6 interlocking feedback cycles |
 | PID synergy | EC = 0.032 (persona-dependent) | EC = 0.106 (domain-driven) |
 
 Conflict is expected to be harder to recover.

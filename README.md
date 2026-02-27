@@ -226,7 +226,7 @@ Both modes run under two conditions: **one-turn** (fresh API call per probe, no 
 | Novaris (4) | Krasnov, Volkov, Petrova, Morozov | 0.85, 0.55, 0.25, 0.50 |
 | Tethys (3) | Marchetti, Bondar, Kovalenko | 0.45, 0.75, 0.30 |
 
-- **Action space**: 15 actions from troop withdrawal (-1.0) to full-scale attack (+2.5)
+- **Action space**: 17 actions from troop withdrawal (-1.0) to full-scale attack (+2.5)
 - **Escalation index**: Tracks cumulative conflict intensity
 - **Target variable**: Next-period escalation index
 
@@ -279,7 +279,7 @@ Tests whether LLM agents can recover the known causal structure of the market an
 
 **Aggregation methods:** majority vote, confidence-weighted vote, union merge, intersection merge, LLM aggregator (specialization only).
 
-**Scoring:** Adjacency matrix Hamming distance, precision, recall, F1 against ground truth causal graphs (market: 23 edges across 12 variables, conflict: 21 edges across 13 variables).
+**Scoring:** Adjacency matrix Hamming distance, precision, recall, F1 against ground truth causal graphs (market: 23 edges across 12 variables, conflict: 26 edges across 13 variables).
 
 ---
 

@@ -6,7 +6,7 @@
 
 ### Motivation
 
-The causal discovery phase established ground truth causal graphs for both domains (market: 23 edges, conflict: 21 edges). The existing forecasting experiments (Phase 1) tested a single factor — Theory of Mind — finding it helps in market (+17 MSE, p=0.027) and hurts in conflict (+0.286 MSE, p=0.010). The multi-agent forecasting framework (Phase 2) decomposes this further by independently varying **what forecasters know** (information level) and **how they communicate** (communication structure).
+The causal discovery phase established ground truth causal graphs for both domains (market: 23 edges, conflict: 26 edges). The existing forecasting experiments (Phase 1) tested a single factor — Theory of Mind — finding it helps in market (+17 MSE, p=0.027) and hurts in conflict (+0.286 MSE, p=0.010). The multi-agent forecasting framework (Phase 2) decomposes this further by independently varying **what forecasters know** (information level) and **how they communicate** (communication structure).
 
 Key architectural decision: use **rule-based baseline simulations** as the forecasting target. This is supported by findings that rule-based agents produce the richest mechanistic dynamics (highest emergence capacity in market) and that the causal graphs are fully characterized for these engines.
 
@@ -596,7 +596,7 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 | Debate | union | 0.500 | 0.424 | 0.609 | 57 |
 | Specialization | llm_aggregator | 0.508 | 0.400 | **0.696** | 65 |
 
-**Conflict Domain (13 variables, 21 true edges):**
+**Conflict Domain (13 variables, 26 true edges):**
 
 | Condition | Primary Method | F1 | Precision | Recall | LLM Calls |
 |-----------|---------------|-----|-----------|--------|-----------|

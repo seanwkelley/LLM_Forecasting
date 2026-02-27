@@ -103,7 +103,7 @@ def run_all(
                         "f1": result.get("f1", 0),
                         "precision": result.get("precision", 0),
                         "recall": result.get("recall", 0),
-                        "hamming_distance": result.get("hamming_distance", 0),
+                        "shd": result.get("shd", result.get("hamming_distance", 0)),
                         "elapsed_seconds": round(elapsed, 1),
                     }
                 else:
@@ -126,7 +126,7 @@ def run_all(
                         "f1": primary.get("f1", 0),
                         "precision": primary.get("precision", 0),
                         "recall": primary.get("recall", 0),
-                        "hamming_distance": primary.get("hamming_distance", 0),
+                        "shd": primary.get("shd", primary.get("hamming_distance", 0)),
                         "all_methods": {
                             k: {
                                 "f1": v.get("f1", 0),

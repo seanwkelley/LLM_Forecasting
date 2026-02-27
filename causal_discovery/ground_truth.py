@@ -4,8 +4,9 @@ Ground Truth Causal Graphs — Adjacency matrices for market and conflict engine
 Defines the variable set (nodes) and causal edges for each engine based on
 engine code analysis. Used to score causal modeler agents' recovered graphs.
 
-Scoring uses adjacency matrix Hamming distance on cyclic directed graphs.
+Scoring uses Structural Hamming Distance (SHD) on cyclic directed graphs.
 Both engines have feedback loops, so no DAG assumption is made.
+SHD counts extra edges, missing edges, and reversed edges (each as 1 error).
 """
 
 from __future__ import annotations
@@ -245,16 +246,56 @@ def get_conflict_ground_truth() -> np.ndarray:
 # Scoring Functions
 # =============================================================================
 
-def hamming_distance(estimated: np.ndarray, ground_truth: np.ndarray) -> int:
-    """Adjacency matrix Hamming distance.
+def structural_hamming_distance(
+    estimated: np.ndarray, ground_truth: np.ndarray
+) -> dict:
+    """Structural Hamming Distance (SHD) for directed graphs.
 
-    Count the number of cells where the estimated and ground truth adjacency
-    matrices disagree. Each cell is a possible directed edge.
+    Counts three error types:
+    - extra: edge in estimated but not in ground truth
+    - missing: edge in ground truth but not in estimated
+    - reversed: edge exists in both but with opposite orientation
+      (truth has i→j only, estimate has j→i only) — counted as 1 error
 
+    This matches the standard SHD definition (Tsamardinos et al. 2006).
     Works on cyclic graphs — no DAG assumption.
     """
     assert estimated.shape == ground_truth.shape
-    return int(np.sum(estimated != ground_truth))
+    n = estimated.shape[0]
+    extra = 0
+    missing = 0
+    reversed_ = 0
+    reversal_cells = set()
+
+    # First pass: detect reversals (pairs where direction is swapped)
+    for i in range(n):
+        for j in range(i + 1, n):
+            t_ij, t_ji = ground_truth[i, j], ground_truth[j, i]
+            e_ij, e_ji = estimated[i, j], estimated[j, i]
+            # Reversal: truth has one direction, estimate has the other
+            if t_ij == 1 and t_ji == 0 and e_ij == 0 and e_ji == 1:
+                reversed_ += 1
+                reversal_cells.update(((i, j), (j, i)))
+            elif t_ij == 0 and t_ji == 1 and e_ij == 1 and e_ji == 0:
+                reversed_ += 1
+                reversal_cells.update(((i, j), (j, i)))
+
+    # Second pass: count remaining extra/missing (excluding reversal cells)
+    for i in range(n):
+        for j in range(n):
+            if i == j or (i, j) in reversal_cells:
+                continue
+            if estimated[i, j] == 1 and ground_truth[i, j] == 0:
+                extra += 1
+            elif estimated[i, j] == 0 and ground_truth[i, j] == 1:
+                missing += 1
+
+    return {
+        "shd": extra + missing + reversed_,
+        "extra": extra,
+        "missing": missing,
+        "reversed": reversed_,
+    }
 
 
 def precision_recall(estimated: np.ndarray, ground_truth: np.ndarray) -> dict:
@@ -271,6 +312,8 @@ def precision_recall(estimated: np.ndarray, ground_truth: np.ndarray) -> dict:
     recall = true_positives / (true_positives + false_negatives) if (true_positives + false_negatives) > 0 else 0.0
     f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
 
+    shd = structural_hamming_distance(estimated, ground_truth)
+
     return {
         "precision": round(precision, 4),
         "recall": round(recall, 4),
@@ -278,7 +321,10 @@ def precision_recall(estimated: np.ndarray, ground_truth: np.ndarray) -> dict:
         "true_positives": true_positives,
         "false_positives": false_positives,
         "false_negatives": false_negatives,
-        "hamming_distance": hamming_distance(estimated, ground_truth),
+        "shd": shd["shd"],
+        "shd_extra": shd["extra"],
+        "shd_missing": shd["missing"],
+        "shd_reversed": shd["reversed"],
         "total_true_edges": int(np.sum(ground_truth)),
         "total_estimated_edges": int(np.sum(estimated)),
         "total_possible_edges": ground_truth.shape[0] * ground_truth.shape[1],
@@ -293,11 +339,23 @@ def per_edge_analysis(
     """Per-edge analysis: which edges were correctly/incorrectly identified?
 
     Returns a list of dicts for edges that were either in ground truth or
-    in the estimated graph (or both).
+    in the estimated graph (or both). Detects reversed edges (truth has
+    i→j only, estimate has j→i only).
     """
     n = ground_truth.shape[0]
-    edges = []
 
+    # Detect reversal pairs first
+    reversal_cells = set()
+    for i in range(n):
+        for j in range(i + 1, n):
+            t_ij, t_ji = ground_truth[i, j], ground_truth[j, i]
+            e_ij, e_ji = estimated[i, j], estimated[j, i]
+            if t_ij == 1 and t_ji == 0 and e_ij == 0 and e_ji == 1:
+                reversal_cells.update(((i, j), (j, i)))
+            elif t_ij == 0 and t_ji == 1 and e_ij == 1 and e_ji == 0:
+                reversal_cells.update(((i, j), (j, i)))
+
+    edges = []
     for i in range(n):
         for j in range(n):
             gt = int(ground_truth[i, j])
@@ -306,9 +364,18 @@ def per_edge_analysis(
             if gt == 0 and est == 0:
                 continue  # neither — skip
 
-            status = "correct" if gt == est else (
-                "false_positive" if est == 1 else "false_negative"
-            )
+            if (i, j) in reversal_cells:
+                # This cell is part of a reversal pair
+                if gt == 1 and est == 0:
+                    status = "reversed"  # truth has i→j, estimate has j→i
+                else:
+                    continue  # skip the FP half; reversal reported on the FN side
+            elif gt == est:
+                status = "correct"
+            elif est == 1:
+                status = "false_positive"
+            else:
+                status = "false_negative"
 
             edges.append({
                 "from": variable_names[i],
@@ -389,7 +456,7 @@ if __name__ == "__main__":
     perfect = score_market_graph(gt_market)
     assert perfect["precision"] == 1.0
     assert perfect["recall"] == 1.0
-    assert perfect["hamming_distance"] == 0
+    assert perfect["shd"] == 0
     print("\n[OK] Perfect recovery scores correctly")
 
     # Score an empty graph
@@ -397,8 +464,20 @@ if __name__ == "__main__":
     empty_score = score_market_graph(empty)
     assert empty_score["precision"] == 0.0
     assert empty_score["recall"] == 0.0
-    assert empty_score["hamming_distance"] == int(np.sum(gt_market))
+    assert empty_score["shd"] == int(np.sum(gt_market))
     print("[OK] Empty graph scores correctly")
+
+    # Test reversal detection
+    gt_rev = np.zeros((3, 3), dtype=int)
+    gt_rev[0, 1] = 1  # truth: 0→1
+    est_rev = np.zeros((3, 3), dtype=int)
+    est_rev[1, 0] = 1  # estimate: 1→0 (reversed)
+    shd_rev = structural_hamming_distance(est_rev, gt_rev)
+    assert shd_rev["shd"] == 1, f"Reversal should be 1 error, got {shd_rev['shd']}"
+    assert shd_rev["reversed"] == 1
+    assert shd_rev["extra"] == 0
+    assert shd_rev["missing"] == 0
+    print("[OK] Reversal counted as 1 SHD error (not 2)")
 
     # Score a random graph
     rng = np.random.default_rng(42)
@@ -406,4 +485,7 @@ if __name__ == "__main__":
     random_score = score_market_graph(random_graph)
     print(f"\nRandom graph (20% density): {random_score['precision']:.2f} precision, "
           f"{random_score['recall']:.2f} recall, "
-          f"HD={random_score['hamming_distance']}")
+          f"SHD={random_score['shd']} "
+          f"(extra={random_score['shd_extra']}, "
+          f"missing={random_score['shd_missing']}, "
+          f"reversed={random_score['shd_reversed']})")

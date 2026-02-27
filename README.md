@@ -279,7 +279,7 @@ Tests whether LLM agents can recover the known causal structure of the market an
 
 **Aggregation methods:** majority vote, confidence-weighted vote, union merge, intersection merge, LLM aggregator (specialization only).
 
-**Scoring:** Adjacency matrix Hamming distance, precision, recall, F1 against ground truth causal graphs (market: 23 edges across 12 variables, conflict: 26 edges across 13 variables).
+**Scoring:** Structural Hamming Distance (SHD), precision, recall, F1 against ground truth causal graphs (market: 23 edges across 12 variables, conflict: 26 edges across 13 variables).
 
 ---
 

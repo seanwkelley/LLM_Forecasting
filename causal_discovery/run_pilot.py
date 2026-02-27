@@ -759,7 +759,7 @@ def run_pilot(
         print(f"  Interventions completed: {len(all_results)}")
         print(f"  Declared edges: {scores['total_estimated_edges']}")
         print(f"  True edges: {scores['total_true_edges']}")
-        print(f"  Hamming distance: {scores['hamming_distance']}")
+        print(f"  SHD: {scores['shd']} (extra={scores['shd_extra']}, missing={scores['shd_missing']}, reversed={scores['shd_reversed']})")
         print(f"  Precision: {scores['precision']:.3f}")
         print(f"  Recall: {scores['recall']:.3f}")
         print(f"  F1: {scores['f1']:.3f}")
@@ -767,9 +767,9 @@ def run_pilot(
         # Per-edge analysis
         print(f"\n  Edge analysis:")
         for edge in scores["per_edge"]:
-            status_sym = {"correct": "+", "false_positive": "FP", "false_negative": "FN"}
+            status_sym = {"correct": "+", "false_positive": "FP", "false_negative": "FN", "reversed": "REV"}
             sym = status_sym.get(edge["status"], "?")
-            print(f"    [{sym:>2s}] {edge['from']:20s} -> {edge['to']}")
+            print(f"    [{sym:>3s}] {edge['from']:20s} -> {edge['to']}")
 
     # --- Save results ---
     if output_dir:
@@ -1196,16 +1196,16 @@ def run_conflict_pilot(
         print(f"  Interventions completed: {len(all_results)}")
         print(f"  Declared edges: {scores['total_estimated_edges']}")
         print(f"  True edges: {scores['total_true_edges']}")
-        print(f"  Hamming distance: {scores['hamming_distance']}")
+        print(f"  SHD: {scores['shd']} (extra={scores['shd_extra']}, missing={scores['shd_missing']}, reversed={scores['shd_reversed']})")
         print(f"  Precision: {scores['precision']:.3f}")
         print(f"  Recall: {scores['recall']:.3f}")
         print(f"  F1: {scores['f1']:.3f}")
 
         print(f"\n  Edge analysis:")
         for edge in scores["per_edge"]:
-            status_sym = {"correct": "+", "false_positive": "FP", "false_negative": "FN"}
+            status_sym = {"correct": "+", "false_positive": "FP", "false_negative": "FN", "reversed": "REV"}
             sym = status_sym.get(edge["status"], "?")
-            print(f"    [{sym:>2s}] {edge['from']:25s} -> {edge['to']}")
+            print(f"    [{sym:>3s}] {edge['from']:25s} -> {edge['to']}")
 
     # --- Save results ---
     if output_dir:

@@ -455,14 +455,14 @@ All runs use Llama 3.3 70B via OpenRouter, multi-turn conversation, role/faction
 
 **Cross-domain comparison (Feb 21):**
 
-| Domain | Mean F1 | Mean Precision | Mean Recall | Mean HD | True Edges |
+| Domain | Mean F1 | Mean Precision | Mean Recall | Mean SHD | True Edges |
 |--------|---------|----------------|-------------|---------|------------|
 | **Market** | 0.256 ± 0.052 | 0.487 ± 0.109 | 0.174 ± 0.036 | 23.3 ± 1.9 | 23 |
 | **Conflict** | 0.235 ± 0.130 | 0.500 ± 0.136 | 0.159 ± 0.098 | 20.3 ± 1.7 | 21 |
 
 **Per-replicate detail:**
 
-| Run | P | R | F1 | HD | Edges | Dup | No-effect |
+| Run | P | R | F1 | SHD | Edges | Dup | No-effect |
 |-----|---|---|----|----|-------|-----|-----------|
 | Market seed42 | 0.571 | 0.174 | 0.267 | 22 | 7/23 | 3 | 9 |
 | Market seed43 | 0.333 | 0.130 | 0.188 | 26 | 9/23 | 1 | 10 |
@@ -511,7 +511,7 @@ All runs use Llama 3.3 70B via OpenRouter, multi-turn conversation, role/faction
 
 **Results after fixes (single runs, DeepSeek V3):**
 
-| Run | Domain | Model | Precision | Recall | F1 | HD |
+| Run | Domain | Model | Precision | Recall | F1 | SHD |
 |-----|--------|-------|-----------|--------|----|----|
 | Baseline (3-rep avg) | Market | Llama 3.3 70B | 0.487 | 0.174 | 0.256 | 23.3 |
 | + all fixes | Market | DeepSeek V3 | 0.417 | 0.652 | 0.508 | 17 |
@@ -532,7 +532,7 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 | Phase | Status | Details |
 |-------|--------|---------|
 | 1. Intervention interface | Complete | Market + conflict, 3 types each, role/faction-level |
-| 2. Ground truth + scoring | Complete | Adjacency matrices, Hamming distance, precision/recall |
+| 2. Ground truth + scoring | Complete | Adjacency matrices, SHD, precision/recall |
 | 3. Single-agent pilot (market) | **Complete** | 3 replicates @ budget=30, F1=0.256±0.052 |
 | 4. Infrastructure fixes | Complete | Role-level overrides, multi-turn conversation |
 | 5. Single-agent pilot (conflict) | **Complete** | 3 replicates @ budget=30, F1=0.235±0.130 |
@@ -837,7 +837,7 @@ Qwen 3.5 397B is a thinking model — required max_tokens increase from 2000 to 
 
 **Results:**
 
-| Model | Params | Domain | F1 | Precision | Recall | Hamming | Edges Declared | Interventions |
+| Model | Params | Domain | F1 | Precision | Recall | SHD | Edges Declared | Interventions |
 |-------|--------|--------|-----|-----------|--------|---------|----------------|---------------|
 | Llama 8B | 8B | Market | 0.471 | 0.429 | 0.522 | 27 | — | — |
 | Llama 70B | 70B | Market | 0.478 | 0.478 | 0.478 | 24 | — | — |

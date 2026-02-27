@@ -9,7 +9,7 @@
 
 This document outlines the design for a causal discovery layer added to the existing multi-agent simulation framework. The goal is to determine whether multi-agent LLM groups can recover the known causal structure of the market and conflict engines through targeted interventional queries.
 
-**Primary DV:** Graph recovery quality (adjacency matrix Hamming distance, precision/recall on edges) across communication conditions.
+**Primary DV:** Graph recovery quality (Structural Hamming Distance, precision/recall on edges) across communication conditions.
 
 **Secondary DV:** Does PID-measured epistemic synergy (edge-level) predict recovery quality? If so, this validates PID as a measure beyond behavioral coordination.
 
@@ -320,9 +320,9 @@ The choice of aggregation strategy interacts with the communication condition. I
 
 ### Graph recovery (primary DV)
 
-**Adjacency matrix Hamming distance** on cyclic directed graphs. For each possible directed edge, the ground truth says present/absent, the agent says present/absent. Count disagreements.
+**Structural Hamming Distance (SHD)** on cyclic directed graphs. Counts three error types: extra edges (FP), missing edges (FN), and reversed edges (truth has i→j, estimate has j→i) — each counted as 1 error. This matches the standard definition (Tsamardinos et al. 2006).
 
-Both engines have feedback loops, so the ground truth is cyclic. Scoring allows cycles — no DAG assumption. This is mechanically the same as SHD (count edge additions, deletions, reversals) applied to an adjacency matrix without acyclicity constraint.
+Both engines have feedback loops, so the ground truth is cyclic. Scoring allows cycles — no DAG assumption.
 
 **Supplementary metrics:**
 - Precision: fraction of reported edges that are correct
@@ -340,7 +340,7 @@ Both engines have feedback loops, so the ground truth is cyclic. Scoring allows 
 
 Synergy means the pair jointly identifies edges that neither identifies alone. This is **epistemic coordination** — a novel application of PID beyond behavioral coordination.
 
-**Key analysis:** Correlate EC with graph recovery quality (Hamming distance) across scenarios and conditions. If higher synergy predicts better recovery, PID is validated as a measure of epistemic coordination.
+**Key analysis:** Correlate EC with graph recovery quality (SHD) across scenarios and conditions. If higher synergy predicts better recovery, PID is validated as a measure of epistemic coordination.
 
 PID is most meaningful in the **independent** condition, where synergy is emergent (not designed). Structured conditions (sequential, debate, specialization) test whether designed coordination beats emergent coordination.
 
@@ -426,7 +426,7 @@ Each pilot run saves two files to `outputs/causal_discovery/multi_agent/{conditi
 
 **`pilot_results.json`** — structured results for programmatic analysis:
 - `config`: run parameters (domain, budget, model, seed, scenario_id, multi_turn flag)
-- `scores`: precision, recall, F1, Hamming distance, true/false positive/negative counts, total edge counts
+- `scores`: precision, recall, F1, SHD (with extra/missing/reversed breakdown), true/false positive/negative counts, total edge counts
 - `per_edge`: list of all possible directed edges with ground truth, estimated, and status (`TP`, `FP`, `FN`, `TN`)
 - `declaration`: the agent's final causal graph declaration, including:
   - `per_variable`: parents and children declared for each variable
@@ -450,7 +450,7 @@ Each pilot run saves two files to `outputs/causal_discovery/multi_agent/{conditi
 - [x] Add `run_intervention()` to market engine (action, trait, event overrides)
 - [x] Add `run_intervention()` to conflict engine (action, trait, event overrides)
 - [x] Define ground truth adjacency matrices for both engines
-- [x] Implement scoring functions (Hamming distance, precision, recall)
+- [x] Implement scoring functions (SHD, precision, recall)
 
 ### Phase 2: Single-agent pilot
 - [x] Design causal modeler agent prompts (hypothesis representation, intervention proposal)

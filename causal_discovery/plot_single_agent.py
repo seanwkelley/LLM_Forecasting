@@ -164,7 +164,7 @@ def plot_estimated_graph(
     ax.set_title(
         f"{title} Engine — Single-Agent Estimated Graph\n"
         f"P={scores['precision']:.2f}  R={scores['recall']:.2f}  "
-        f"F1={scores['f1']:.2f}  HD={scores['hamming_distance']}",
+        f"F1={scores['f1']:.2f}  SHD={scores.get('shd', scores.get('hamming_distance', '?'))}",
         fontsize=13, fontweight="bold", pad=15,
     )
     ax.axis("off")

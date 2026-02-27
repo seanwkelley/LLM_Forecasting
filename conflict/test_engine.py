@@ -208,7 +208,7 @@ def test_resource_depletion():
 def test_closest_action():
     """closest_action should find the nearest action by delta."""
     action = closest_action(0.0)
-    assert action.action_name == "intelligence_gathering", f"Got {action.action_name}"
+    assert action.action_name in ("intelligence_gathering", "backchannel_talks"), f"Got {action.action_name}"
 
     action = closest_action(-0.7)
     assert action.action_name in ("peace_talks", "ceasefire_offer"), f"Got {action.action_name}"

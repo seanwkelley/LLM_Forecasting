@@ -100,7 +100,7 @@ def plot_ei_grid(results_dir, output_path, title_prefix="Baseline", n_cols=5):
         sid = fpath.stem.replace("scenario_", "S")
         std = np.std(ei)
         ax.set_title(f"{sid} (std={std:.2f})", fontsize=9)
-        ax.set_ylim(4, 10.5)
+        ax.set_ylim(-0.3, 10.5)
         ax.tick_params(labelsize=7)
         ax.grid(True, alpha=0.2)
 
@@ -155,7 +155,7 @@ def plot_detailed(scenario_path, output_path):
     ax.set_title(f"Conflict Simulation — Rule-Based Baseline — {sid}",
                  fontsize=13, fontweight="bold")
     ax.set_ylabel("Escalation Index")
-    ax.set_ylim(4, 10.5)
+    ax.set_ylim(-0.3, 10.5)
     ax.legend(loc="upper right", fontsize=9)
     ax.grid(True, alpha=0.3)
 
@@ -262,14 +262,15 @@ if __name__ == "__main__":
     out = root / "outputs" / "plots" / "conflict"
     out.mkdir(parents=True, exist_ok=True)
 
-    baseline_dir = root / "outputs" / "simulations" / "conflict"
+    baseline_dir = root / "outputs" / "conflict_baseline"
 
     # 1. Multi-scenario EI grid
     plot_ei_grid(baseline_dir, str(out / "ei_grid_Baseline.png"),
                  title_prefix="Rule-Based Baseline")
 
     # 2. Detailed plots for scenarios with interesting dynamics
-    for sid in ["001", "003", "009"]:
+    # 001: strong de-escalation, 002: strong escalation, 005: mid-range
+    for sid in ["001", "002", "005"]:
         fpath = baseline_dir / f"scenario_{sid}.json"
         if fpath.exists():
             plot_detailed(str(fpath), str(out / f"detailed_baseline_s{sid}.png"))

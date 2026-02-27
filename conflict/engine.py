@@ -28,9 +28,11 @@ ACTION_SPACE = {
     # De-escalatory (negative delta)
     "peace_talks":        {"escalation_delta": -0.8, "cost": 0.1, "category": "diplomatic"},
     "ceasefire_offer":    {"escalation_delta": -0.6, "cost": 0.05, "category": "diplomatic"},
+    "diplomatic_summit":  {"escalation_delta": -0.5, "cost": 0.15, "category": "diplomatic"},
     "humanitarian_aid":   {"escalation_delta": -0.3, "cost": 0.5, "category": "diplomatic"},
     "trade_agreement":    {"escalation_delta": -0.4, "cost": 0.1, "category": "economic"},
     "troop_withdrawal":   {"escalation_delta": -1.0, "cost": 0.2, "category": "military"},
+    "backchannel_talks":  {"escalation_delta": -0.1, "cost": 0.05, "category": "diplomatic"},
 
     # Neutral / positioning
     "intelligence_gathering": {"escalation_delta": 0.1, "cost": 0.3, "category": "intelligence"},
@@ -59,6 +61,7 @@ class Action:
     cost: float = 0.0
     category: str = ""
     reasoning: str = ""
+    continuous_delta: Optional[float] = None  # preserves weighted avg before snapping
 
     @classmethod
     def from_name(cls, faction_id: str, action_name: str, reasoning: str = "") -> "Action":
@@ -123,6 +126,11 @@ class ConflictState:
 # Escalation Computation (Deterministic)
 # =============================================================================
 
+def _effective_delta(action: Action) -> float:
+    """Return continuous delta if available, else snapped escalation_delta."""
+    return action.continuous_delta if action.continuous_delta is not None else action.escalation_delta
+
+
 def compute_escalation(
     state: ConflictState,
     novaris_action: Action,
@@ -134,22 +142,24 @@ def compute_escalation(
     EI_new = EI_old + (novaris_delta + tethys_delta) * interaction_modifier + momentum
 
     Where:
-    - novaris_delta, tethys_delta = escalation_delta from action definitions
+    - novaris_delta, tethys_delta = continuous delta from aggregation (or snapped delta)
     - interaction_modifier accounts for action-pair interactions
     - momentum = mean-reverting pressure at extremes
     """
-    base_delta = novaris_action.escalation_delta + tethys_action.escalation_delta
+    nov_d = _effective_delta(novaris_action)
+    teth_d = _effective_delta(tethys_action)
+    base_delta = nov_d + teth_d
 
     # Interaction effects
-    if novaris_action.escalation_delta > 0 and tethys_action.escalation_delta > 0:
+    if nov_d > 0 and teth_d > 0:
         interaction = 1.2  # mutual escalation amplifies
-    elif novaris_action.escalation_delta < 0 and tethys_action.escalation_delta < 0:
+    elif nov_d < 0 and teth_d < 0:
         interaction = 1.3  # mutual de-escalation amplifies
     else:
         interaction = 0.8  # asymmetric dampens
 
     # Mean reversion at extremes
-    momentum = -0.05 * (state.escalation_index - 5.0)
+    momentum = -0.06 * (state.escalation_index - 5.0)
 
     new_ei = state.escalation_index + base_delta * interaction + momentum
     return max(0.0, min(10.0, new_ei))
@@ -320,6 +330,7 @@ def aggregate_faction_action(
 
     avg_delta = weighted_delta / total_weight
     action = closest_action(avg_delta, faction_id)
+    action.continuous_delta = avg_delta  # preserve the continuous value
     action.reasoning = " | ".join(all_reasoning)
     return action
 

@@ -114,11 +114,24 @@ def call_llm(
             time.sleep(wait)
             continue
 
+        if response.status_code == 400:
+            # Context length overflow or unsupported param — trim conversation
+            error_body = response.text[:500]
+            msg_tokens = sum(len(m.get("content", "")) for m in messages) // 4
+            print(f"  [400 ERROR] ~{msg_tokens} prompt tokens. Response: {error_body}")
+            # Retry with trimmed history: keep system + last 4 messages
+            if len(messages) > 6:
+                messages = [messages[0]] + messages[-4:]
+                payload["messages"] = messages
+                print(f"  [RETRY] Trimmed to {len(messages)} messages, retrying...")
+                continue
+            response.raise_for_status()
+
         response.raise_for_status()
         data = response.json()
         return data["choices"][0]["message"]["content"]
 
-    raise RuntimeError(f"Rate limited {max_retries} times, giving up")
+    raise RuntimeError(f"Rate limited or errored {max_retries} times, giving up")
 
 
 def parse_json_response(text: str) -> dict:

@@ -1,6 +1,6 @@
 # Experiment Notes
 
-**Last Updated:** February 24, 2026
+**Last Updated:** February 27, 2026
 
 ## Multi-Agent Forecasting Framework (Feb 23) — ACTIVE
 
@@ -669,7 +669,14 @@ Path collapse is the dominant pattern. The agent observes end-to-end effects fro
 - `agent_orders → cash/inventory` (2 edges) — reversed feedback (clearing_price mediates)
 - `inventory → cash` (1 edge) — spurious
 
-**Conflict — True Positives (10/21 recovered):**
+**Conflict — True Positives (10/21 recovered, scored against pre-Feb 27 ground truth):**
+
+> **NOTE (Feb 27):** Ground truth updated to 26 edges. Added 6 state feedback edges
+> (gdp/military_strength/political_stability/sanctions/international_support/military_balance
+> → agent_recommendation) via `compute_state_modifier`. Removed spurious
+> `escalation_index → sanctions_level` (sanctions driven by faction_action, not EI).
+> The TP below for `escalation_index → sanctions_level` is now a false positive under the
+> new ground truth. Results below are historical; re-run with Qwen models in progress.
 
 | Edge | Notes |
 |------|-------|
@@ -792,6 +799,38 @@ python -m causal_discovery.multi_agent.run_all --budget 30
 
 - [ ] Model comparison on improved pipeline (Llama 3.3 70B vs DeepSeek V3 vs others)
 - [ ] Consider whether conflict ground truth needs coarser granularity (collapse agent_recommendation + faction_action?) to be recoverable at budget=30
+
+### Qwen Model Comparison (Feb 27)
+
+**Motivation:** Test causal discovery across a wider parameter range than Llama offers. Qwen family has 7B, 72B, and 235B (MoE) variants on OpenRouter, enabling a clean scaling comparison.
+
+**Models — Llama scaling comparison:**
+| Model | Parameters | OpenRouter ID |
+|-------|-----------|---------------|
+| Llama 3.1 8B | 8B | `meta-llama/llama-3.1-8b-instruct` |
+| Llama 3.3 70B | 70B | `meta-llama/llama-3.3-70b-instruct` |
+
+**Models — Qwen scaling comparison (to-do):**
+| Model | Parameters | OpenRouter ID |
+|-------|-----------|---------------|
+| Qwen 2.5 7B | 7B | `qwen/qwen-2.5-7b-instruct` |
+| Qwen 2.5 72B | 72B | `qwen/qwen-2.5-72b-instruct` |
+| Qwen 3 235B | 235B (MoE, 22B active) | `qwen/qwen3-235b-a22b-2507` |
+
+Note: Qwen 2.5 7B failed with 400 errors (likely context overflow at ~intervention 11).
+Pipeline proven with Llama; Qwen may need prompt compression to fit 7B context window.
+
+**Protocol:** Single-agent, budget=30, seed=42, both domains. Scored against updated ground truth (market: 23 edges, conflict: 26 edges).
+
+**Status:**
+- [ ] Llama 3.1 8B — conflict (running)
+- [ ] Llama 3.1 8B — market (running)
+- [ ] Llama 3.3 70B — conflict (running)
+- [ ] Llama 3.3 70B — market (running)
+- [ ] Qwen 2.5 72B — conflict
+- [ ] Qwen 2.5 72B — market
+- [ ] Qwen 3 235B — conflict
+- [ ] Qwen 3 235B — market
 
 ---
 

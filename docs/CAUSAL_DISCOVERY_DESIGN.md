@@ -420,6 +420,28 @@ The prompt design in `prompts.py` addresses each confound class:
 
 **Feedback loop awareness.** The system prompts note that "Feedback loops exist: A may cause B which causes A in the next period." The declaration prompt asks agents to report `feedback_loops` as a separate output field, encouraging them to consider cyclical structure. The 3-period rollout window (`run_periods=3`) is long enough for one feedback cycle to manifest but short enough that multi-hop effects remain distinguishable from direct effects.
 
+### Output artifacts
+
+Each pilot run saves two files to `outputs/causal_discovery/multi_agent/{condition_name}/`:
+
+**`pilot_results.json`** — structured results for programmatic analysis:
+- `config`: run parameters (domain, budget, model, seed, scenario_id, multi_turn flag)
+- `scores`: precision, recall, F1, Hamming distance, true/false positive/negative counts, total edge counts
+- `per_edge`: list of all possible directed edges with ground truth, estimated, and status (`TP`, `FP`, `FN`, `TN`)
+- `declaration`: the agent's final causal graph declaration, including:
+  - `per_variable`: parents and children declared for each variable
+  - `final_graph`: adjacency list of declared edges
+  - `absent_edges`: edges explicitly declared absent with reasoning
+  - `feedback_loops`: identified cyclical structures
+  - `common_causes`: suspected common cause relationships
+  - `limitations`: agent's self-reported confidence limitations
+- `interventions`: list of all 30 intervention steps, each with the proposed intervention, result summary (delta values), and the agent's hypothesis update
+- `observation`: initial observational hypothesis (confident edges, uncertain edges, candidate common causes, priority interventions)
+- `llm_calls`: total LLM API calls made
+- `conversation_turns`: total messages in the conversation
+
+**`conversation_log.json`** — full multi-turn conversation history (system/user/assistant messages). Enables post-hoc analysis of the agent's reasoning chain, intervention strategy evolution, and failure modes. Each message preserves the exact prompt and response content.
+
 ---
 
 ## Implementation Plan

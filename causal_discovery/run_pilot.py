@@ -58,7 +58,7 @@ def call_llm(
     api_key: str,
     model: str = "meta-llama/llama-3.3-70b-instruct",
     temperature: float = 0.3,
-    max_tokens: int = 2000,
+    max_tokens: int = 4000,
     json_mode: bool = True,
     max_retries: int = 5,
 ) -> str:

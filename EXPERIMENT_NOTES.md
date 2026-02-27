@@ -816,21 +816,41 @@ python -m causal_discovery.multi_agent.run_all --budget 30
 | Qwen 2.5 7B | 7B | `qwen/qwen-2.5-7b-instruct` |
 | Qwen 2.5 72B | 72B | `qwen/qwen-2.5-72b-instruct` |
 | Qwen 3 235B | 235B (MoE, 22B active) | `qwen/qwen3-235b-a22b-2507` |
+| Qwen 3.5 397B | 397B (MoE, 17B active) | `qwen/qwen3.5-397b-a17b` |
 
 Note: Qwen 2.5 7B failed with 400 errors (likely context overflow at ~intervention 11).
-Pipeline proven with Llama; Qwen may need prompt compression to fit 7B context window.
+Qwen 3.5 397B is a thinking model — required max_tokens increase from 2000 to 4000 to avoid empty responses (reasoning tokens consume the budget before producing content).
 
 **Protocol:** Single-agent, budget=30, seed=42, both domains. Scored against updated ground truth (market: 23 edges, conflict: 26 edges).
 
 **Status:**
-- [ ] Llama 3.1 8B — conflict (running)
-- [ ] Llama 3.1 8B — market (running)
-- [ ] Llama 3.3 70B — conflict (running)
-- [ ] Llama 3.3 70B — market (running)
+- [x] Llama 3.1 8B — conflict
+- [x] Llama 3.1 8B — market
+- [x] Llama 3.3 70B — conflict
+- [x] Llama 3.3 70B — market
+- [x] Qwen 3.5 397B — conflict
+- [x] Qwen 3.5 397B — market
 - [ ] Qwen 2.5 72B — conflict
 - [ ] Qwen 2.5 72B — market
 - [ ] Qwen 3 235B — conflict
 - [ ] Qwen 3 235B — market
+
+**Results:**
+
+| Model | Params | Domain | F1 | Precision | Recall | Hamming | Edges Declared | Interventions |
+|-------|--------|--------|-----|-----------|--------|---------|----------------|---------------|
+| Llama 8B | 8B | Market | 0.471 | 0.429 | 0.522 | 27 | — | — |
+| Llama 70B | 70B | Market | 0.478 | 0.478 | 0.478 | 24 | — | — |
+| Qwen 397B | 17B active | Market | **0.537** | 0.409 | **0.783** | 31 | 44 | 30 |
+| Llama 8B | 8B | Conflict | 0.263 | 0.417 | 0.192 | 28 | 12 | 12 |
+| Llama 70B | 70B | Conflict | 0.267 | 0.316 | 0.231 | 33 | 19 | 21 |
+| Qwen 397B | 17B active | Conflict | **0.304** | 0.350 | 0.269 | 32 | 20 | 21 |
+
+**Observations:**
+- **Minimal 8B→70B scaling effect**: Llama 8B and 70B produce nearly identical F1 on both domains. The bottleneck is intervention strategy and observability, not model capability at these sizes.
+- **Qwen 397B best F1 on both domains**: Thinking/reasoning model produces better intervention designs (more systematic, fewer duplicates on market — 0 skipped vs Llama's duplicates). Market recall of 0.783 is highest seen, but at the cost of many false positives (44 declared vs 23 true).
+- **Conflict remains much harder**: Best conflict F1 (0.304) is still well below best market F1 (0.537). All models miss the 6 state-feedback edges (`gdp/military_strength/political_stability/sanctions/international_support/military_balance → agent_recommendation`) — these operate through subtle modifier adjustments that 3-period rollouts don't amplify enough.
+- **Consistent FP pattern**: All models falsely attribute direct effects to `shock → clearing_price/volume/GDP` (indirect through mediators) and `hawk_score → escalation_index` (indirect through recommendation → action → EI).
 
 ---
 

@@ -383,6 +383,44 @@ AGENT_TEMPLATES = [
 ]
 
 
+def compute_state_modifier(agent: dict, state) -> float:
+    """Compute hawk/dove adjustment from faction state variables.
+
+    Positive = more hawkish, negative = more dovish.
+    Creates feedback loops: escalation damages state -> agents become
+    more dovish -> de-escalation -> state recovers -> agents become
+    more hawkish.
+    """
+    faction = state.factions[agent["faction"]]
+    modifier = 0.0
+
+    # Economic pressure: declining GDP -> dovish
+    modifier += (faction.gdp - 1.0) * 0.15
+
+    # Resource exhaustion: low resources -> cautious
+    modifier += (faction.resources - 8.0) * 0.01
+
+    # Military confidence: strength -> hawkish
+    modifier += (faction.military_strength - 0.5) * 0.10
+
+    # War fatigue: low stability -> dovish
+    modifier += (faction.political_stability - 0.7) * 0.15
+
+    # Faction-specific pressures
+    if agent["faction"] == "novaris":
+        # Sanctions erode Novaris resolve
+        modifier -= state.sanctions_level * 0.10
+        # Military advantage emboldens (negative balance = Novaris dominant)
+        modifier -= state.military_balance * 0.05
+    else:  # tethys
+        # International support emboldens Tethys resistance
+        modifier += (state.international_support - 0.5) * 0.10
+        # Military advantage emboldens (positive balance = Tethys dominant)
+        modifier += state.military_balance * 0.05
+
+    return modifier
+
+
 def create_agents(
     scenario_config: dict,
     templates: list[dict] | None = None,

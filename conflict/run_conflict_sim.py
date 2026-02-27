@@ -27,7 +27,7 @@ from conflict.engine import (
     ConflictState, Action, ACTION_SPACE, initialize_state,
     aggregate_faction_action, run_period,
 )
-from conflict.agents_config import create_agents
+from conflict.agents_config import create_agents, compute_state_modifier
 from conflict.shocks import (
     generate_shock_sequence, apply_shocks, get_active_shocks,
     generate_scenario_configs, describe_shocks,
@@ -314,17 +314,19 @@ def _rule_based_recommendation(agent: dict, state: ConflictState) -> dict:
     Current escalation level also influences the choice.
     """
     hawk_score = agent["hawk_dove"]
+    state_mod = compute_state_modifier(agent, state)
+    effective_hawk = max(0.05, min(0.95, hawk_score + state_mod))
     ei = state.escalation_index
 
-    # Target escalation delta based on hawk/dove score
+    # Target escalation delta based on effective hawk/dove score
     # Hawks want positive delta, doves want negative
     # But at extremes, even hawks/doves moderate
     if ei > 8.0:
-        target_delta = (hawk_score - 0.5) * 1.0  # even hawks pull back slightly
+        target_delta = (effective_hawk - 0.5) * 1.0  # even hawks pull back slightly
     elif ei < 2.0:
-        target_delta = (hawk_score - 0.3) * 1.0  # even doves don't over-de-escalate
+        target_delta = (effective_hawk - 0.5) * 1.0  # even doves don't over-de-escalate
     else:
-        target_delta = (hawk_score - 0.5) * 3.0  # full range in middle
+        target_delta = (effective_hawk - 0.5) * 3.0  # full range in middle
 
     # Find affordable action closest to target delta
     own_faction = state.factions[agent["faction"]]
@@ -345,7 +347,7 @@ def _rule_based_recommendation(agent: dict, state: ConflictState) -> dict:
         "agent_role": agent["role"],
         "faction": agent["faction"],
         "action": action_name,
-        "reasoning": f"Rule-based (hawk={hawk_score:.2f}, target_delta={target_delta:.2f})",
+        "reasoning": f"Rule-based (hawk={hawk_score:.2f}, state_mod={state_mod:+.3f}, eff={effective_hawk:.2f}, target_delta={target_delta:.2f})",
     }
 
 

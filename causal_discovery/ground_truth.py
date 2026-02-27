@@ -177,6 +177,19 @@ def get_conflict_ground_truth() -> np.ndarray:
     M[idx["escalation_index"], idx["agent_recommendation"]] = 1
     # resources → agent_recommendation (affordability constraint)
     M[idx["resources"], idx["agent_recommendation"]] = 1
+    # State feedback via compute_state_modifier (agents_config.py):
+    # gdp → agent_recommendation (economic pressure: low GDP → dovish)
+    M[idx["gdp"], idx["agent_recommendation"]] = 1
+    # military_strength → agent_recommendation (military confidence → hawkish)
+    M[idx["military_strength"], idx["agent_recommendation"]] = 1
+    # political_stability → agent_recommendation (war fatigue: low stability → dovish)
+    M[idx["political_stability"], idx["agent_recommendation"]] = 1
+    # sanctions_level → agent_recommendation (sanctions erode Novaris resolve)
+    M[idx["sanctions_level"], idx["agent_recommendation"]] = 1
+    # international_support → agent_recommendation (emboldens Tethys resistance)
+    M[idx["international_support"], idx["agent_recommendation"]] = 1
+    # military_balance → agent_recommendation (faction-specific advantage → hawkish)
+    M[idx["military_balance"], idx["agent_recommendation"]] = 1
 
     # --- Aggregation ---
     # agent_recommendation → faction_action (weighted by role × action category)
@@ -191,8 +204,9 @@ def get_conflict_ground_truth() -> np.ndarray:
     M[idx["escalation_index"], idx["gdp"]] = 1
     # escalation_index → political_stability (high EI reduces stability)
     M[idx["escalation_index"], idx["political_stability"]] = 1
-    # escalation_index → sanctions_level (novaris escalation increases sanctions)
-    M[idx["escalation_index"], idx["sanctions_level"]] = 1
+    # NOTE: escalation_index does NOT directly update sanctions_level.
+    # Sanctions are driven by novaris_action.escalation_delta (engine.py:247-250),
+    # which is faction_action → sanctions_level (below).
     # escalation_index → international_support (high EI increases tethys support)
     M[idx["escalation_index"], idx["international_support"]] = 1
 
@@ -216,14 +230,13 @@ def get_conflict_ground_truth() -> np.ndarray:
     # military_balance → territory_controlled (advantage enables territory change)
     M[idx["military_balance"], idx["territory_controlled"]] = 1
 
-    # --- Feedback loops ---
-    # escalation_index → agent_recommendation (agents respond to EI) — CYCLE
-    # Already encoded: escalation_index → agent_recommendation (above)
-    # And: agent_recommendation → faction_action → escalation_index
-    # This creates: EI → rec → faction_action → EI (cycle)
-
-    # resources → agent_recommendation → faction_action → resources (cycle)
-    # Already encoded above
+    # --- Feedback loops (all edges already encoded above) ---
+    # Cycle 1: EI → rec → faction_action → EI (core escalation loop)
+    # Cycle 2: resources → rec → faction_action → resources (resource depletion loop)
+    # Cycle 3: EI → GDP → rec → faction_action → EI (economic pressure loop)
+    # Cycle 4: EI → political_stability → rec → faction_action → EI (war fatigue loop)
+    # Cycle 5: faction_action → sanctions → GDP → rec → faction_action (sanctions spiral)
+    # Cycle 6: faction_action → mil_strength → mil_balance → rec → faction_action (military confidence loop)
 
     return M
 

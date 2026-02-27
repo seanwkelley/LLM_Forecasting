@@ -700,11 +700,14 @@ def _run_conflict_rollout(
         ) if teth_deltas else 0
 
         # Add faction action escalation deltas (scalar proxy for faction_action)
+        # Use continuous delta when available (preserves weighted avg before snapping)
         result["novaris_action_delta"] = round(
-            ACTION_SPACE.get(novaris_action.action_name, {}).get("escalation_delta", 0), 4
+            novaris_action.continuous_delta if novaris_action.continuous_delta is not None
+            else ACTION_SPACE.get(novaris_action.action_name, {}).get("escalation_delta", 0), 4
         )
         result["tethys_action_delta"] = round(
-            ACTION_SPACE.get(tethys_action.action_name, {}).get("escalation_delta", 0), 4
+            tethys_action.continuous_delta if tethys_action.continuous_delta is not None
+            else ACTION_SPACE.get(tethys_action.action_name, {}).get("escalation_delta", 0), 4
         )
 
         # Add recommendation details
@@ -724,20 +727,23 @@ def _conflict_rule_based_recommendations(
 ) -> list[dict]:
     """Generate rule-based recommendations using hawk/dove scores."""
     from conflict.engine import ACTION_SPACE
+    from conflict.agents_config import compute_state_modifier
 
     recommendations = []
 
     for agent in agents_config:
         hawk_score = agent["hawk_dove"]
+        state_mod = compute_state_modifier(agent, state)
+        effective_hawk = max(0.05, min(0.95, hawk_score + state_mod))
         ei = state.escalation_index
 
-        # Target delta from hawk/dove score, modulated by EI
+        # Target delta from effective hawk/dove score, modulated by EI
         if ei > 8.0:
-            target_delta = (hawk_score - 0.5) * 1.0
+            target_delta = (effective_hawk - 0.5) * 1.0
         elif ei < 2.0:
-            target_delta = (hawk_score - 0.3) * 1.0
+            target_delta = (effective_hawk - 0.5) * 1.0
         else:
-            target_delta = (hawk_score - 0.5) * 3.0
+            target_delta = (effective_hawk - 0.5) * 3.0
 
         # Find affordable action closest to target delta
         own_faction = state.factions[agent["faction"]]
@@ -759,7 +765,7 @@ def _conflict_rule_based_recommendations(
             "agent_role": agent["role"],
             "faction": agent["faction"],
             "action": action_name,
-            "reasoning": f"Rule-based (hawk={hawk_score:.2f})",
+            "reasoning": f"Rule-based (hawk={hawk_score:.2f}, state_mod={state_mod:+.3f}, eff={effective_hawk:.2f})",
         })
 
     return recommendations

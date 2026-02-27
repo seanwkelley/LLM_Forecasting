@@ -340,6 +340,42 @@ Replaces flat reasons with a directed causal graph. Probes target structural ele
 
 6. **Edge reversal has minimal impact (5.26pp).** Reversing causal direction on critical-path edges produces less shift than negating them entirely, suggesting models are more sensitive to existence than directionality of causal links.
 
+### Statistical Significance (Welch t-tests, two-tailed)
+
+**One-way ANOVA**: F(9, 774) = 51.71, p << 0.001, η² = 0.376 — probe type explains 37.5% of the variance in probability shift.
+
+**Importance gradient (node negations):**
+
+| Comparison | Mean A | Mean B | t | p | sig | Cohen's d |
+|---|---|---|---|---|---|---|
+| High vs Low | 9.94pp | 6.40pp | 3.44 | 5.9e-4 | *** | 0.50 |
+| High vs Medium | 9.94pp | 7.74pp | 1.95 | 0.051 | ns | 0.30 |
+| Medium vs Low | 7.74pp | 6.40pp | 1.30 | 0.193 | ns | 0.26 |
+
+The full high-vs-low gradient is significant (p<0.001, medium effect), but adjacent tiers are not individually significant — the gradient exists but the steps are noisy.
+
+**Key significant differences:**
+
+| Comparison | Mean A | Mean B | t | p | sig | Cohen's d |
+|---|---|---|---|---|---|---|
+| Strengthen vs Negate (high) | 15.14pp | 9.94pp | 5.21 | 1.9e-7 | *** | 0.74 |
+| Spurious edge vs Irrelevant | 9.04pp | 1.46pp | 13.24 | ~0 | *** | 2.10 |
+| Missing node vs Irrelevant | 14.22pp | 1.46pp | 16.19 | ~0 | *** | 2.29 |
+| Low negation vs Irrelevant | 6.40pp | 1.46pp | 7.32 | 2.5e-13 | *** | 1.63 |
+| Spurious edge vs Critical edge negation | 9.04pp | 6.87pp | 3.31 | 9.3e-4 | *** | 0.50 |
+| Node negation (high) vs Edge negation (critical) | 9.94pp | 6.87pp | 3.50 | 4.7e-4 | *** | 0.49 |
+| Edge negation vs Edge reversal (critical) | 6.87pp | 5.26pp | 2.27 | 0.023 | * | 0.42 |
+
+**Not significant:**
+
+| Comparison | Mean A | Mean B | p | Interpretation |
+|---|---|---|---|---|
+| Strengthen vs Missing node | 15.14pp | 14.22pp | 0.345 | Both produce ~15pp shifts |
+| High vs Medium negation | 9.94pp | 7.74pp | 0.051 | Borderline |
+| Critical vs Peripheral edge | 6.87pp | 5.64pp | 0.083 | Edge importance gradient is weak |
+
+**Key takeaway:** Spurious edges cause significantly larger shifts than negating actual critical-path edges (9.04pp vs 6.87pp, p<0.001, d=0.50). The model is more responsive to invented causal structure than to challenges against its own reasoning. All probe types produce significantly larger shifts than irrelevant controls (even the weakest — peripheral edge negation at 5.64pp vs 1.46pp, p<1e-10).
+
 ### Status
 
 | Phase | Status | Details |
@@ -582,6 +618,125 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 5. **Debate agents converge.** In both domains, maximalist and minimalist agents declare identical graphs. Shared evidence dominates persona differences — the debate injection doesn't meaningfully differentiate their conclusions.
 
 6. **Budget fragmentation is the main bottleneck.** The gap between single (30 interventions) and independent (6 each) shows that intervention count drives accuracy more than diversity. Debate (15 each + shared evidence) partially mitigates this.
+
+### Single-Agent Per-Edge Breakdown
+
+Detailed per-edge analysis of the single-agent baseline (budget=30, Llama 3.3 70B, seed=42). Plots saved in `outputs/causal_discovery/multi_agent/plots/`.
+
+**Market — True Positives (15/23 recovered):**
+
+| Edge | Notes |
+|------|-------|
+| `production_cost → agent_orders` | Core mechanism |
+| `demand_value → agent_orders` | Core mechanism |
+| `demand_per_period → agent_orders` | Core mechanism |
+| `cash → agent_orders` | State constraint |
+| `inventory → agent_orders` | State constraint |
+| `agent_orders → clearing_price` | Clearing mechanism |
+| `agent_orders → volume` | Clearing mechanism |
+| `production_cost → cash` | Period costs |
+| `production_cost → inventory` | Period costs |
+| `production_cost → fundamental_price` | Diagnostic output |
+| `demand_value → cash` | Period costs |
+| `demand_value → fundamental_price` | Diagnostic output |
+| `demand_per_period → inventory` | Period costs |
+| `storage_cost → cash` | Period costs |
+| `shock → cash` | Shock effect |
+
+**Market — False Negatives (8/23 missed):**
+
+| Edge | Failure Mode |
+|------|-------------|
+| `shock → production_cost` | Agent tested shock but attributed effects directly to downstream variables |
+| `shock → demand_per_period` | Same — path collapse through shock |
+| `shock → storage_cost` | Same |
+| `storage_cost → agent_orders` | Never tested storage_cost's effect on orders |
+| `price_history → agent_orders` | Feedback loop — never probed |
+| `clearing_price → cash` | Feedback loop — never probed |
+| `clearing_price → inventory` | Feedback loop — never probed |
+| `clearing_price → price_history` | Feedback loop — never probed |
+
+All 4 feedback edges (`clearing_price → cash/inventory/price_history`, `price_history → agent_orders`) were missed — the agent never designed interventions to test the feedback loop.
+
+**Market — False Positives (20 spurious edges):**
+
+Path collapse is the dominant pattern. The agent observes end-to-end effects from interventions and declares direct edges:
+- `shock → agent_orders/clearing_price/volume/inventory/fundamental_price` (5 edges) — shock's effects are mediated through parameters, but declared as direct
+- `demand_per_period → clearing_price/volume/cash/fundamental_price` (4 edges) — mediated through agent_orders
+- `demand_value → clearing_price/volume/inventory` (3 edges) — mediated through agent_orders
+- `production_cost → clearing_price/volume` (2 edges) — mediated through agent_orders
+- `cash → clearing_price/volume/inventory` (3 edges) — cash constrains orders, not prices directly
+- `agent_orders → cash/inventory` (2 edges) — reversed feedback (clearing_price mediates)
+- `inventory → cash` (1 edge) — spurious
+
+**Conflict — True Positives (10/21 recovered):**
+
+| Edge | Notes |
+|------|-------|
+| `shock → escalation_index` | Direct shock effect |
+| `shock → resources` | Economic crisis effect |
+| `shock → military_balance` | Military incident effect |
+| `shock → sanctions_level` | International pressure effect |
+| `hawk_score → agent_recommendation` | Disposition → decision |
+| `agent_recommendation → faction_action` | Aggregation step |
+| `escalation_index → gdp` | State update |
+| `escalation_index → sanctions_level` | State update |
+| `faction_action → resources` | Action cost |
+| `faction_action → sanctions_level` | Escalatory actions increase sanctions |
+
+**Conflict — False Negatives (11/21 missed):**
+
+| Edge | Failure Mode |
+|------|-------------|
+| `faction_action → escalation_index` | Agent never tested faction_action's direct effect on EI |
+| `faction_action → military_strength` | Never probed |
+| `faction_action → territory_controlled` | Never probed |
+| `escalation_index → agent_recommendation` | Feedback loop — never tested |
+| `escalation_index → political_stability` | State update — never tested |
+| `escalation_index → international_support` | State update — never tested |
+| `resources → agent_recommendation` | Affordability constraint — never tested |
+| `gdp → resources` | Cross-variable state update |
+| `sanctions_level → gdp` | Cross-variable state update |
+| `military_strength → military_balance` | Cross-variable state update |
+| `military_balance → territory_controlled` | Cross-variable state update |
+
+The entire state-update and cross-variable chain is missed. The agent focused its budget on shock/hawk_score/agent_recommendation interventions and never tested EI or faction_action as causal *sources*.
+
+**Conflict — False Positives (14 spurious edges):**
+
+Path collapse from `hawk_score` is the worst offender (6 FP edges):
+- `hawk_score → escalation_index/resources/gdp/military_strength/political_stability/sanctions_level` — all mediated through `agent_recommendation → faction_action → ...` but declared direct
+
+`agent_recommendation` also shows path collapse (5 FP edges):
+- `agent_recommendation → escalation_index/military_strength/resources/sanctions_level/territory_controlled` — mediated through `faction_action`
+
+Other: `escalation_index → resources` (1), `faction_action → gdp` (1), `shock → gdp` (1).
+
+**Per-node summary:**
+
+| Market Node | TP | FP | FN | | Conflict Node | TP | FP | FN |
+|-------------|----|----|----|-|---------------|----|----|------|
+| orders | 6 | 4 | 2 | | escalation | 4 | 3 | 6 |
+| cash | 5 | 5 | 2 | | agent_rec | 2 | 5 | 3 |
+| clearing_price | 1 | 5 | 3 | | faction_act | 4 | 3 | 3 |
+| inventory | 3 | 4 | 2 | | resources | 2 | 4 | 3 |
+| shock | 1 | 5 | 3 | | hawk_score | 1 | 6 | 0 |
+| demand_qty | 2 | 4 | 1 | | sanctions | 4 | 2 | 2 |
+| prod_cost | 4 | 2 | 1 | | gdp | 1 | 3 | 2 |
+| volume | 1 | 4 | 0 | | shock | 4 | 1 | 0 |
+| demand_val | 3 | 3 | 0 | | mil_strength | 0 | 2 | 2 |
+| fund_price | 2 | 1 | 0 | | territory | 0 | 1 | 2 |
+| stor_cost | 1 | 0 | 2 | | mil_balance | 1 | 0 | 2 |
+| price_hist | 0 | 0 | 2 | | pol_stability | 0 | 1 | 1 |
+| | | | | | intl_support | 0 | 0 | 1 |
+
+Key patterns:
+- **Market `clearing_price`**: only 1 TP (orders → clearing_price) but 5 FP — the agent treats it as a sink for everything
+- **Conflict `hawk_score`**: 1 TP, 6 FP — worst precision of any node, all due to path collapse
+- **Market `price_history`**: 0 TP, 0 FP, 2 FN — completely invisible to the agent (feedback loop)
+- **Conflict `intl_support`, `pol_stability`, `territory`**: mostly missed, the agent never reached these peripheral state variables
+
+See network plots: `outputs/causal_discovery/multi_agent/plots/single_agent_networks.png` and per-node bar chart: `outputs/causal_discovery/multi_agent/plots/single_agent_node_breakdown.png`.
 
 **Aggregation method comparison (market independent):**
 

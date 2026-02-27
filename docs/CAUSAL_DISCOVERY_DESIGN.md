@@ -165,7 +165,7 @@ ESCALATION (deterministic):
       both escalate  → ×1.2 (amplification)
       both de-escalate → ×1.3 (peace momentum)
       mixed         → ×0.8 (dampening)
-    momentum: -0.05 × (EI - 5.0) (mean reversion)
+    momentum: -0.06 × (EI - 5.0) (mean reversion)
 
 STATE UPDATES (deterministic, multiple):
   escalation_index_t → military_balance_t+1
@@ -181,9 +181,10 @@ FEEDBACK (cyclic):
   resources_t → action_choice_t → costs → resources_{t+1}
 
 SHOCKS (exogenous):
-  border_incident (12%/period) → escalation_index (+0.5 to +1.5)
-  diplomatic_crisis (10%) → escalation_index (+0.3 to +0.8)
-  peace_initiative (8%) → escalation_index (-1.0 to -0.3)
+  border_incident (11%/period) → escalation_index (+0.5 to +1.5)
+  diplomatic_crisis (8%) → escalation_index (+0.3 to +0.8)
+  peace_initiative (12%) → escalation_index (-1.0 to -0.3)
+  ceasefire_pressure (6%) → escalation_index (-0.8 to -0.2)
   economic_crisis (10%) → novaris_resources (×0.6–0.8)
   military_incident (10%) → military_balance (±0.15)
   international_pressure (8%) → sanctions_level (+0.1 to +0.3)
@@ -195,6 +196,30 @@ SHOCKS (exogenous):
 - **Interaction modifier creates nonlinearity**: Two actions with delta=0.5 each produce 1.2 EI increase (mutual escalation) vs. 0.0 (mixed signals). This means `action_A → EI` depends on `action_B` — the effect is not separable.
 - **16 actions** (not 15 as originally noted): ranging from troop_withdrawal (-1.0) to full_scale_attack (+2.5), each with a resource cost.
 - **Mean reversion**: System pushes toward EI=5.0 with force proportional to deviation. This makes extreme states self-correcting, which modelers need to distinguish from agent de-escalation behavior.
+
+#### Attractor dynamics and per-scenario hawk/dove shift
+
+The escalation index converges to a **scenario-specific attractor** determined by the balance of three forces:
+
+**1. Agent pressure.** Each agent's desired escalation change is `(hawk_dove - 0.5) * multiplier`, where multiplier=3.0 in mid-range EI (2–8) and drops to 1.0 at extremes (EI<2 or EI>8). Agents above hawk_dove=0.5 push EI up; agents below push it down. The per-faction deltas are weighted-averaged (role × action category weights), producing one continuous delta per faction per period.
+
+**2. Mean reversion.** `momentum = -0.06 * (EI - 5.0)` — a weak restoring force centered at EI=5.0. At EI=8.0 this contributes -0.18/period; at EI=2.0 it contributes +0.18/period. Weak enough that agent pressure dominates in mid-range.
+
+**3. Interaction modifier.** Both factions escalating → 1.2× amplification. Both de-escalating → 1.3× amplification. Mixed → 0.8× dampening. This positive feedback means consensus compounds: when agents agree, the effect overshoots the linear sum.
+
+The attractor is the EI where these forces balance (net delta ≈ 0). With the base agent templates (hawk_dove scores: 0.85, 0.55, 0.25, 0.50, 0.45, 0.75, 0.30; weighted average ≈ 0.52), the net pressure is mildly escalatory (+0.445/period in mid-range). EI drifts up until the extreme-EI multiplier reduction (3.0→1.0) and mean reversion counterbalance it, stabilizing around EI ≈ 8.0.
+
+**Per-scenario hawk_dove_shift** breaks this single-attractor degeneracy. Each scenario config includes a `hawk_dove_shift` drawn from U(-0.25, +0.10), applied to all agents in `create_agents()` with clamping to [0.05, 0.95]. This shifts the break-even point:
+
+| hawk_dove_shift | Net agent pressure | Attractor EI |
+|-----------------|-------------------|-------------|
+| +0.10 | strongly escalatory | ~9–10 |
+| 0.00 | mildly escalatory | ~8.0 |
+| -0.05 | near break-even | ~4–5 |
+| -0.10 | mildly de-escalatory | ~3–4 |
+| -0.20 | strongly de-escalatory | ~0–2 |
+
+The asymmetric range [-0.25, +0.10] centers near -0.075 (the approximate break-even shift), yielding roughly equal numbers of escalating and de-escalating scenarios. Cross-scenario EI standard deviation increases from ~0.20 (no shift) to ~2.7 (with shift).
 
 #### Key differences from market for causal discovery
 

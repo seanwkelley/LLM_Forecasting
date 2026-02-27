@@ -412,6 +412,8 @@ def create_agents(
 
     for tmpl in templates:
         agent = dict(tmpl)  # shallow copy
+        shift = scenario_config.get("hawk_dove_shift", 0.0)
+        agent["hawk_dove"] = max(0.05, min(0.95, agent["hawk_dove"] + shift))
         agents.append(agent)
         faction_agents[agent["faction"]].append(agent)
 

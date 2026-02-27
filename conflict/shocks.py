@@ -38,7 +38,7 @@ SHOCK_TYPES = {
         "mode": "add",
         "magnitude_range": (0.5, 1.5),
         "duration_range": (1, 1),
-        "probability": 0.12,
+        "probability": 0.11,
         "target_faction": None,
     },
     "diplomatic_crisis": {
@@ -47,7 +47,7 @@ SHOCK_TYPES = {
         "mode": "add",
         "magnitude_range": (0.3, 0.8),
         "duration_range": (1, 2),
-        "probability": 0.10,
+        "probability": 0.08,
         "target_faction": None,
     },
     "peace_initiative": {
@@ -56,7 +56,16 @@ SHOCK_TYPES = {
         "mode": "add",
         "magnitude_range": (-1.0, -0.3),
         "duration_range": (1, 2),
-        "probability": 0.08,
+        "probability": 0.12,
+        "target_faction": None,
+    },
+    "ceasefire_pressure": {
+        "description": "International community pushes for ceasefire, reducing tensions",
+        "param": "escalation_index",
+        "mode": "add",
+        "magnitude_range": (-0.8, -0.2),
+        "duration_range": (1, 2),
+        "probability": 0.06,
         "target_faction": None,
     },
     "economic_crisis": {
@@ -219,7 +228,7 @@ def generate_scenario_configs(
     for i in range(n_scenarios):
         scenario_id = f"scenario_{i+1:03d}"
 
-        starting_escalation = round(float(rng.uniform(3.0, 7.0)), 2)
+        starting_escalation = round(float(rng.uniform(1.0, 9.0)), 2)
         military_balance = round(float(rng.uniform(-0.3, 0.3)), 3)
         starting_territory = round(float(rng.uniform(0.0, 0.15)), 3)
         novaris_resources = round(float(rng.uniform(7.0, 13.0)), 1)
@@ -229,6 +238,7 @@ def generate_scenario_configs(
         sanctions_level = round(float(rng.uniform(0.0, 0.2)), 3)
 
         shocks = generate_shock_sequence(n_periods, scenario_id, seed)
+        hawk_dove_shift = round(float(rng.uniform(-0.25, 0.10)), 3)
 
         configs.append({
             "scenario_id": scenario_id,
@@ -248,6 +258,7 @@ def generate_scenario_configs(
             "international_support": round(float(rng.uniform(0.3, 0.7)), 2),
             "n_shocks": len(shocks),
             "shocks": shocks,
+            "hawk_dove_shift": hawk_dove_shift,
         })
 
     return configs

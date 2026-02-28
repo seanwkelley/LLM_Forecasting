@@ -538,7 +538,7 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 | 5. Single-agent pilot (conflict) | **Complete** | 3 replicates @ budget=30, F1=0.235±0.130 |
 | 6. Recall improvement | **Complete** | Expanded return vars, evidence summary, truncated context -> Market F1=0.508, Conflict F1=0.293 |
 | 7. Multi-agent conditions | **Complete** | 4 structures x 2 domains, dry-run + live (Llama 3.3 70B) |
-| 8. Causal forecasting test | **Complete** | 3 conditions (discovered/GT/no_graph) + adaptive, both domains |
+| 8. Causal forecasting test | **In progress** | Rolling window, 4 conditions (discovered/GT/no_graph/adaptive), market live done, conflict pending |
 | 9. PID analysis | **Next** | Edge-level epistemic coordination |
 
 ### Files
@@ -549,7 +549,7 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 - `causal_discovery/prompts_tests.py` — Shared prompts for supplementary tests (forecast, graph revision, Oracle QA, hidden variable)
 - `causal_discovery/ground_truth.py` — Ground truth adjacency matrices + scoring
 - `causal_discovery/test_intervention.py` — Smoke tests for intervention interface
-- `causal_discovery/causal_forecast.py` — Causal forecasting test: discovered/GT/no_graph conditions + adaptive
+- `causal_discovery/causal_forecast.py` — Causal forecasting test: rolling window, 4 conditions + per-step adaptive revision
 - `causal_discovery/multi_agent/` — Multi-agent causal discovery package (Feb 24):
   - `agent.py` — Extracted single-agent pipeline (AgentResult dataclass, setup_domain, run_single_agent)
   - `aggregation.py` — Graph merging: majority_vote, confidence_weighted_vote, union_merge, intersection_merge
@@ -858,32 +858,34 @@ Qwen 3.5 397B is a thinking model — required max_tokens increase from 2000 to 
 
 ### Causal Forecasting Test (Feb 28)
 
-**Motivation:** The causal discovery pipeline recovers graph structure, but does that structure have practical predictive value? The causal forecasting test answers this directly: give an LLM a causal graph + warmup history from a new scenario and ask it to forecast the next N periods. Compare discovered graph vs ground truth vs no graph.
+**Motivation:** The causal discovery pipeline recovers graph structure, but does that structure have practical predictive value? The causal forecasting test answers this directly: give an LLM a causal graph + warmup history from a new scenario and ask it to forecast. Compare discovered graph vs ground truth vs no graph.
+
+**Method: Rolling-window forecasting.** Predict 1 period at a time, reveal the actual, update history, predict the next. Each step is 1 LLM call. N=10 gives 10 individually-scored predictions per condition per scenario. The graph (system prompt) is fixed for standard conditions; for adaptive, the graph is revised at each step.
 
 **Conditions (3 standard + 1 adaptive):**
 
 | Condition | Graph provided | What it tests |
 |---|---|---|
-| **discovered** | Agent's recovered graph from pilot run | Does the agent's own graph help? |
-| **ground_truth** | Full GT adjacency matrix | Ceiling — perfect causal knowledge |
-| **no_graph** | None (variable descriptions only) | Ablation — time-series only |
-| **adaptive** | Discovered → revised from errors | Can prediction errors improve graph quality? |
+| **discovered** | Agent's recovered graph from pilot run (fixed) | Does the agent's own graph help? |
+| **ground_truth** | Full GT adjacency matrix (fixed) | Ceiling — perfect causal knowledge |
+| **no_graph** | None, variable descriptions only (fixed) | Ablation — time-series only |
+| **adaptive** | Discovered, revised at each step from errors | Can per-step graph revision improve forecasts? |
 
-**Adaptive condition (predictive coding on causal models):**
-The adaptive condition extends the discovered condition with a graph revision loop: forecast → observe errors → revise graph → re-forecast. Round 2 is a fresh LLM call with the revised graph in the system prompt and warmup-only in the user prompt (no actuals — the model can't memorize). The revised graph is also scored against GT to measure whether structural improvement occurred.
+**Adaptive condition (online predictive coding on causal models):**
+Rolling forecast with per-step graph revision. After each prediction, the model sees its cumulative errors (predicted vs actual table) and can revise its causal graph before the next prediction. N forecast calls + (N-1) revision calls = 2N-1 total LLM calls per scenario (default 19). Both original and final graphs are scored against GT.
 
-**Scoring:** MAE, directional accuracy, Spearman rho. Naive baselines: last-value (repeat final warmup) and linear trend (extrapolate from last 3 points). 5 scenarios per domain (different seeds).
+**Scoring:** MAE, directional accuracy, Spearman rho. 5 scenarios per domain (different seeds).
 
 **Implementation files:**
-- `causal_discovery/causal_forecast.py` — Main pipeline, conditions, adaptive loop, CLI
+- `causal_discovery/causal_forecast.py` — Main pipeline, rolling window, per-step revision, CLI
 - `causal_discovery/prompts_tests.py` — Forecast + graph revision prompt builders
 
 ```bash
-# Standard (3 conditions)
+# Standard (3 conditions, rolling window)
 python -m causal_discovery.causal_forecast --domain market \
     --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json
 
-# With adaptive condition
+# With adaptive condition (per-step graph revision)
 python -m causal_discovery.causal_forecast --domain market --adaptive \
     --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json
 
@@ -894,7 +896,9 @@ python -m causal_discovery.causal_forecast --domain market --dry-run --adaptive 
 
 **Output:** `outputs/causal_discovery/causal_forecast/{domain}_{model}/results.json` with per-scenario detail in `per_scenario/`.
 
-**Results (Feb 28, 5 scenarios × 10-period horizon):**
+**Results (Feb 28, single-shot, 5 scenarios × 10-period horizon):**
+
+These used the old single-shot approach (predict all 10 periods in one LLM call). Archived to `outputs/causal_discovery/causal_forecast/archive_single_shot/`.
 
 *Market (MAE, lower = better):*
 
@@ -903,39 +907,50 @@ python -m causal_discovery.causal_forecast --domain market --dry-run --adaptive 
 | **adaptive** | 8.20 | **7.91** |
 | discovered | 10.12 | 8.25 |
 | no_graph | **6.79** | 8.50 |
-| last_value baseline | 8.81 | 8.81 |
 | ground_truth | 7.78 | 10.15 |
-| trend baseline | 42.24 | 42.24 |
 
 *Conflict (MAE, lower = better):*
 
 | Condition | Llama 8B | Llama 70B |
 |---|---|---|
-| last_value baseline | 0.765 | 0.765 |
 | discovered | **0.758** | 0.863 |
 | no_graph | 0.789 | **0.808** |
 | ground_truth | 1.100 | 0.836 |
 | adaptive | 1.013 | 0.991 |
-| trend baseline | 1.184 | 1.184 |
 
-*Adaptive graph revision quality (SHD, lower = better):*
+**Results (Feb 28, rolling window, Llama 70B, 5 scenarios × 10 steps):**
 
-| Domain | Model | Original SHD | Revised SHD | Edges +/- |
-|---|---|---|---|---|
-| Market | 8B | 25.0 | 25.6 | +4.2 / -2.4 |
-| Market | 70B | 22.0 | 23.2 | +3.0 / -4.2 |
-| Conflict | 8B | 25.0 | 26.0 | +4.6 / -2.2 |
-| Conflict | 70B | 29.0 | 30.6 | +3.8 / -2.4 |
+Rolling window: predict 1 period at a time, reveal actual, update history, repeat. Adaptive uses per-step graph revision (revise causal graph after each prediction error).
+
+*Market (rolling window, Llama 70B):*
+
+| Condition | Mean MAE | DirAcc | Spearman |
+|---|---|---|---|
+| **no_graph** | **6.13** | 0.267 | 0.084 |
+| discovered | 6.29 | 0.244 | -0.077 |
+| ground_truth | 6.37 | 0.289 | 0.139 |
+| adaptive | 6.37 | 0.267 | 0.139 |
+
+*Adaptive per-step graph revision quality (SHD, lower = better):*
+
+| Metric | Value |
+|---|---|
+| Original SHD | 10.0 |
+| Final SHD | 17.4 |
+| Edges added (mean) | 10.2 |
+| Edges removed (mean) | 2.8 |
 
 **Key findings:**
 
-1. **Adaptive helps market, hurts conflict — consistent across model sizes.** Market adaptive is the best 70B condition (MAE 7.91), beating discovered (8.25), GT (10.15), and no_graph (8.50). Conflict adaptive is the worst condition at both scales. Market has shorter causal chains (2-hop through `agent_orders`) whose error patterns are diagnosable; conflict's 3+ hop chains with nonlinear interaction modifiers are beyond error-to-structure reasoning.
+1. **All conditions within ~0.25 MAE.** With rolling window, the graph barely matters — the model mostly extrapolates from revealed history. The causal structure provides negligible predictive lift.
 
-2. **"More info hurts" reproduces, with a 70B exception.** At 8B, no_graph beats everything in market (6.79). At 70B, discovered (8.25) beats no_graph (8.50) — the larger model can leverage imperfect causal knowledge. But GT (10.15) is worst at both scales — perfect knowledge induces overthinking.
+2. **No_graph wins.** Providing causal structure doesn't help and slightly hurts (6.13 vs 6.29-6.37). Consistent with single-shot results. The model may overthink causal pathways instead of following time-series momentum.
 
-3. **Graph revision makes structure worse.** SHD increases in all 4 model×domain combos. The models add more false-positive edges than they recover true positives. 70B is more surgical (net -1.2 edges in market) vs 8B (net +1.8), but still doesn't improve structural quality.
+3. **Per-step adaptive revision doesn't help.** Adaptive ties with ground_truth (6.37) despite 9 revision calls per scenario. The model interprets every prediction error as evidence for a missing edge, inflating SHD from 10 to 17.4. Precision drops from 0.81 to ~0.60 while recall barely moves.
 
-4. **70B is far more reliable.** Zero `nan` scores vs multiple unparseable JSON responses from 8B.
+4. **Rolling window improves all conditions vs single-shot.** Single-shot 70B discovered: MAE 8.25. Rolling 70B discovered: MAE 6.29. The ~24% improvement comes from seeing revealed actuals, not from better causal reasoning.
+
+5. **Occasional parse failures.** 2 of 50 condition runs produced `nan` MAE from unparseable LLM responses on individual steps.
 
 ---
 

@@ -614,23 +614,21 @@ general knowledge to make forecasts.
 
 
 def build_forecast_prompt(
-    domain: str, history_summary: str, n_forecast: int, key_dv: str,
+    domain: str, history_summary: str, key_dv: str,
 ) -> str:
-    """Ask LLM to forecast next N periods.
+    """Ask LLM to forecast the next single period.
 
     Expected JSON response format:
-    {"forecasts": [{"period": N, "<key_dv>": float, "reasoning": str}, ...],
-     "overall_reasoning": str}
+    {"<key_dv>": float, "reasoning": str}
     """
     return f"""\
-Based on the simulation history below, forecast the next {n_forecast} periods \
+Based on the simulation history below, forecast the next period's value \
 for {key_dv}.
 
 SIMULATION HISTORY:
 {history_summary}
 
-Forecast the next {n_forecast} periods. For each period, predict the value of \
-{key_dv} and explain your reasoning. Consider:
+Predict the value of {key_dv} for the next period. Consider:
 1. Recent trends and momentum
 2. Mean-reversion tendencies
 3. Causal pathways (if a causal graph was provided)
@@ -639,12 +637,8 @@ Forecast the next {n_forecast} periods. For each period, predict the value of \
 Respond in JSON format:
 ```json
 {{
-    "forecasts": [
-        {{"period": 1, "{key_dv}": <predicted_value>, "reasoning": "..."}},
-        {{"period": 2, "{key_dv}": <predicted_value>, "reasoning": "..."}},
-        ...
-    ],
-    "overall_reasoning": "High-level explanation of your forecast trajectory"
+    "{key_dv}": <predicted_value>,
+    "reasoning": "Your explanation"
 }}
 ```"""
 
@@ -785,9 +779,9 @@ def mock_graph_revision_response(
 
 
 def mock_forecast_response(
-    domain: str, n_forecast: int, history_data: dict,
+    domain: str, history_data: dict,
 ) -> str:
-    """Dry-run mock: flat forecast repeating last observed value."""
+    """Dry-run mock: predict last observed value for the next period."""
     if domain == "market":
         prices = history_data.get("price_history", [100.0])
         last_val = prices[-1]
@@ -797,16 +791,8 @@ def mock_forecast_response(
         last_val = ei[-1]
         key_dv = "escalation_index"
 
-    forecasts = []
-    for i in range(n_forecast):
-        forecasts.append({
-            "period": i + 1,
-            key_dv: round(last_val, 4),
-            "reasoning": "Flat forecast (dry-run mock)",
-        })
-
     result = {
-        "forecasts": forecasts,
-        "overall_reasoning": "Dry-run mock: repeating last observed value.",
+        key_dv: round(last_val, 4),
+        "reasoning": "Flat forecast (dry-run mock): repeating last observed value.",
     }
     return json.dumps(result)

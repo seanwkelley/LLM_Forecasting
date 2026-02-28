@@ -1,22 +1,21 @@
 """
 Causal Forecasting Test — Can causal knowledge improve time-series prediction?
 
-The agent receives a previously-discovered causal graph + warmup time-series
-from a new scenario (same ground truth structure, different seed) and forecasts
-the next N periods for the key DV (clearing_price / escalation_index).
+Uses rolling-window forecasting: predict 1 period at a time, reveal the actual,
+update history, predict the next. Each step is 1 LLM call. N=10 gives 10
+individually-scored predictions per condition per scenario.
 
 Three conditions per run:
-- discovered: model's own graph from a prior causal discovery run
-- ground_truth: actual GT adjacency matrix (performance ceiling)
+- discovered: model's own graph from a prior causal discovery run (fixed graph)
+- ground_truth: actual GT adjacency matrix (performance ceiling, fixed graph)
 - no_graph: no causal structure, just history (ablation)
 
 Optional 4th condition (--adaptive):
-- adaptive: revise the discovered graph based on prediction errors, then re-forecast.
-  Reports round_1 (same as discovered) and round_2 (with revised graph) scores,
-  plus graph revision quality (SHD/precision/recall before and after revision).
+- adaptive: rolling forecast with per-step causal graph revision. After each
+  prediction, the model sees its cumulative errors and can revise its causal
+  graph before the next step. N forecast calls + (N-1) revision calls per scenario.
 
 Scoring: MAE, directional accuracy, Spearman rho.
-Naive baselines: last-value and linear trend (programmatic, no LLM).
 
 Usage:
     # Dry run
@@ -27,7 +26,7 @@ Usage:
         --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json \\
         --include-baselines
 
-    # With adaptive condition
+    # With adaptive condition (per-step graph revision)
     python -m causal_discovery.causal_forecast --domain market --adaptive \\
         --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json
 
@@ -114,8 +113,8 @@ def _format_graph_for_prompt(edges: list[tuple[str, str]]) -> str:
 # Actual trajectory generation
 # =============================================================================
 
-def _generate_actual_trajectory(domain_setup: dict, n_periods: int) -> list[float]:
-    """Run simulation forward from post-warmup snapshot, return key DV series."""
+def _generate_actual_trajectory(domain_setup: dict, n_periods: int) -> list[dict]:
+    """Run simulation forward from post-warmup snapshot, return full per-period dicts."""
     domain = domain_setup["domain"]
 
     if domain == "market":
@@ -124,15 +123,15 @@ def _generate_actual_trajectory(domain_setup: dict, n_periods: int) -> list[floa
         return _generate_conflict_trajectory(domain_setup, n_periods)
 
 
-def _generate_market_trajectory(domain_setup: dict, n_periods: int) -> list[float]:
-    """Run market sim forward, extract clearing_price series."""
+def _generate_market_trajectory(domain_setup: dict, n_periods: int) -> list[dict]:
+    """Run market sim forward, return full trajectory dicts."""
     from causal_discovery.intervention import _run_market_rollout
 
     state = copy.deepcopy(domain_setup["state_snapshot"])
     agents = copy.deepcopy(domain_setup["agents_snapshot"])
     base_params = copy.deepcopy(domain_setup["base_params"])
 
-    trajectory = _run_market_rollout(
+    return _run_market_rollout(
         state=state,
         agents=agents,
         base_params=base_params,
@@ -145,17 +144,15 @@ def _generate_market_trajectory(domain_setup: dict, n_periods: int) -> list[floa
         scenario_config=domain_setup["config"],
     )
 
-    return [period["clearing_price"] for period in trajectory]
 
-
-def _generate_conflict_trajectory(domain_setup: dict, n_periods: int) -> list[float]:
-    """Run conflict sim forward, extract escalation_index series."""
+def _generate_conflict_trajectory(domain_setup: dict, n_periods: int) -> list[dict]:
+    """Run conflict sim forward, return full trajectory dicts."""
     from causal_discovery.intervention import _run_conflict_rollout
 
     state = copy.deepcopy(domain_setup["state_snapshot"])
     agents_config = copy.deepcopy(domain_setup["agents_snapshot"])
 
-    trajectory = _run_conflict_rollout(
+    return _run_conflict_rollout(
         state=state,
         agents_config=agents_config,
         shocks=domain_setup["shocks"],
@@ -166,7 +163,29 @@ def _generate_conflict_trajectory(domain_setup: dict, n_periods: int) -> list[fl
         llm_pool=None,
     )
 
-    return [period["escalation_index"] for period in trajectory]
+
+# =============================================================================
+# History update helper
+# =============================================================================
+
+def _append_actual_to_history(domain: str, history_data: dict, period_dict: dict) -> None:
+    """Append one actual period's values to the growing history_data (in-place).
+
+    Market: price_history, volume_history, fundamental_history
+    Conflict: escalation_history, actions_log
+    """
+    if domain == "market":
+        history_data["price_history"].append(period_dict["clearing_price"])
+        history_data["volume_history"].append(period_dict["volume"])
+        history_data["fundamental_history"].append(period_dict["fundamental_price"])
+    else:
+        history_data["escalation_history"].append(period_dict["escalation_index"])
+        # Build an actions_log entry from the trajectory dict
+        actions_entry = {
+            "novaris_action": f"delta={period_dict.get('novaris_action_delta', 0):.2f}",
+            "tethys_action": f"delta={period_dict.get('tethys_action_delta', 0):.2f}",
+        }
+        history_data["actions_log"].append(actions_entry)
 
 
 # =============================================================================
@@ -214,46 +233,6 @@ def score_forecast(predicted: list[float], actual: list[float]) -> dict:
     }
 
 
-def _compute_naive_baselines(
-    warmup_values: list[float], actual: list[float], n_forecast: int,
-) -> dict:
-    """Last-value and trend baselines scored against actual."""
-    if not warmup_values or not actual:
-        return {"last_value": {}, "trend": {}}
-
-    last_val = warmup_values[-1]
-    n = min(n_forecast, len(actual))
-
-    # Last-value baseline: repeat final warmup value
-    last_value_pred = [last_val] * n
-    last_value_scores = score_forecast(last_value_pred, actual[:n])
-
-    # Trend baseline: linear extrapolation from last 3 warmup points
-    n_trend = min(3, len(warmup_values))
-    recent = warmup_values[-n_trend:]
-    if n_trend >= 2:
-        # Fit linear trend
-        x = np.arange(n_trend)
-        slope = np.polyfit(x, recent, 1)[0]
-        trend_pred = [last_val + slope * (i + 1) for i in range(n)]
-    else:
-        trend_pred = last_value_pred  # fallback to flat
-
-    trend_scores = score_forecast(trend_pred, actual[:n])
-
-    return {
-        "last_value": {
-            "predictions": [round(v, 4) for v in last_value_pred],
-            **last_value_scores,
-        },
-        "trend": {
-            "predictions": [round(v, 4) for v in trend_pred],
-            "slope": round(float(slope), 6) if n_trend >= 2 else 0.0,
-            **trend_scores,
-        },
-    }
-
-
 # =============================================================================
 # Single condition x single scenario
 # =============================================================================
@@ -262,75 +241,88 @@ def _run_forecast_condition(
     domain_setup: dict,
     graph_edges: list[tuple[str, str]] | None,
     condition_name: str,
-    actual: list[float],
+    trajectory: list[dict],
     n_forecast: int,
     api_key: str,
     model: str,
     dry_run: bool,
     verbose: bool,
 ) -> dict:
-    """Run one forecast condition on one scenario.
+    """Run one forecast condition on one scenario using rolling window.
 
-    Returns dict with predicted values, scores, and raw response.
+    Predicts 1 period at a time, reveals actual, updates history, repeats.
+    Each step is 1 LLM call. N steps total.
+
+    Returns dict with predicted values, scores, and per-step details.
     """
     domain = domain_setup["domain"]
     variables = domain_setup["variables"]
-    history_data = domain_setup["history_data"]
     key_dv = "clearing_price" if domain == "market" else "escalation_index"
 
-    # Build system prompt
+    # Deep-copy history so we can grow it without affecting other conditions
+    history_data = copy.deepcopy(domain_setup["history_data"])
+
+    # Build system prompt once (graph is fixed for non-adaptive conditions)
     system_prompt = build_forecast_system_prompt(domain, variables, graph_edges)
 
-    # Build history summary
-    if domain == "market":
-        history_summary = format_market_history(history_data)
-    else:
-        history_summary = format_conflict_history(history_data)
-
-    # Build forecast prompt
-    user_prompt = build_forecast_prompt(domain, history_summary, n_forecast, key_dv)
-
-    # Call LLM or mock
-    if dry_run:
-        response_text = mock_forecast_response(domain, n_forecast, history_data)
-    else:
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ]
-        response_text = call_llm(messages, api_key, model, max_tokens=4000)
-
-    # Parse response
-    parsed = parse_json_response(response_text)
-    forecasts = parsed.get("forecasts", [])
-
-    # Extract predicted values
     predicted = []
-    for f in forecasts:
-        if not isinstance(f, dict):
-            continue
-        val = f.get(key_dv)
+    actual_values = []
+    n_steps = min(n_forecast, len(trajectory))
+
+    for step in range(n_steps):
+        # Format current history (grows each step)
+        if domain == "market":
+            history_summary = format_market_history(history_data)
+        else:
+            history_summary = format_conflict_history(history_data)
+
+        # Build 1-step forecast prompt
+        user_prompt = build_forecast_prompt(domain, history_summary, key_dv)
+
+        # Call LLM or mock
+        if dry_run:
+            response_text = mock_forecast_response(domain, history_data)
+        else:
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ]
+            response_text = call_llm(messages, api_key, model, max_tokens=2000)
+
+        # Parse single-value response
+        parsed = parse_json_response(response_text)
+        val = parsed.get(key_dv)
         if val is not None:
             try:
                 predicted.append(float(val))
             except (ValueError, TypeError):
-                pass
+                predicted.append(float("nan"))
+        else:
+            predicted.append(float("nan"))
+
+        # Record actual
+        actual_val = trajectory[step][key_dv]
+        actual_values.append(actual_val)
+
+        # Append actual to history for next step
+        _append_actual_to_history(domain, history_data, trajectory[step])
 
     # Score
-    scores = score_forecast(predicted, actual)
+    scores = score_forecast(predicted, actual_values)
 
     if verbose:
         print(f"      [{condition_name}] MAE={scores['mae']:.4f}, "
               f"DirAcc={scores.get('directional_accuracy', 'N/A')}, "
-              f"Spearman={scores.get('spearman_rho', 'N/A')}")
+              f"Spearman={scores.get('spearman_rho', 'N/A')} "
+              f"({n_steps} rolling steps)")
 
     return {
         "condition": condition_name,
         "predicted": [round(v, 4) for v in predicted],
-        "actual": [round(v, 4) for v in actual[:len(predicted)]],
+        "actual": [round(v, 4) for v in actual_values],
         "scores": scores,
         "graph_edges": len(graph_edges) if graph_edges is not None else 0,
-        "overall_reasoning": parsed.get("overall_reasoning", ""),
+        "n_steps": n_steps,
     }
 
 
@@ -341,75 +333,134 @@ def _run_forecast_condition(
 def _run_adaptive_condition(
     domain_setup: dict,
     discovered_edges: list[tuple[str, str]],
-    round1_result: dict,
-    actual: list[float],
+    trajectory: list[dict],
     n_forecast: int,
     api_key: str,
     model: str,
     dry_run: bool,
     verbose: bool,
 ) -> dict:
-    """Adaptive condition: revise graph from prediction errors, then re-forecast.
+    """Adaptive condition: rolling forecast with per-step graph revision.
 
-    Flow:
-    1. Round 1 = reuse discovered condition result (no extra LLM call)
-    2. Graph revision: show errors, ask model to revise graph (1 LLM call)
-    3. Round 2: forecast with revised graph (1 LLM call)
+    Each step:
+    1. Forecast next period using current graph (1 LLM call)
+    2. Reveal actual, record prediction error
+    3. Revise graph based on cumulative errors (1 LLM call) — except after last step
 
-    Returns dict with round_1, graph_revision, round_2, and revision_quality.
+    Total: N forecast calls + (N-1) revision calls.
+
+    Returns dict with predictions, scores, per-step graph snapshots, and
+    final revision quality vs ground truth.
     """
     domain = domain_setup["domain"]
     variables = domain_setup["variables"]
-    history_data = domain_setup["history_data"]
     key_dv = "clearing_price" if domain == "market" else "escalation_index"
 
-    # Round 1: reuse discovered condition result
-    round1_predicted = round1_result["predicted"]
-    round1_scores = round1_result["scores"]
+    # Deep-copy history so we can grow it
+    history_data = copy.deepcopy(domain_setup["history_data"])
 
-    # --- Graph revision (1 LLM call) ---
-    revision_prompt = build_graph_revision_prompt(
-        domain=domain,
-        key_dv=key_dv,
-        graph_edges=discovered_edges,
-        predicted=round1_predicted,
-        actual=actual[:len(round1_predicted)],
-        forecast_scores=round1_scores,
-        variables=variables,
-    )
+    # Start with discovered graph — will be revised each step
+    current_edges = list(discovered_edges)
 
-    if dry_run:
-        revision_text = mock_graph_revision_response(domain, discovered_edges, variables)
-    else:
-        revision_system = build_forecast_system_prompt(domain, variables, discovered_edges)
-        messages = [
-            {"role": "system", "content": revision_system},
-            {"role": "user", "content": revision_prompt},
-        ]
-        revision_text = call_llm(messages, api_key, model, max_tokens=4000)
+    predicted = []
+    actual_values = []
+    graph_snapshots = []  # track graph at each step
+    n_steps = min(n_forecast, len(trajectory))
 
-    revision_parsed = parse_json_response(revision_text)
+    for step in range(n_steps):
+        # Build system prompt with current graph
+        system_prompt = build_forecast_system_prompt(domain, variables, current_edges)
 
-    # Extract revised graph edges
-    revised_graph_raw = revision_parsed.get("revised_graph", [])
-    revised_edges = []
-    for e in revised_graph_raw:
-        src = e.get("from", "")
-        dst = e.get("to", "")
-        if src and dst:
-            revised_edges.append((src, dst))
+        # Format current history
+        if domain == "market":
+            history_summary = format_market_history(history_data)
+        else:
+            history_summary = format_conflict_history(history_data)
 
-    # Determine edges added/removed
-    original_set = {(s, d) for s, d in discovered_edges}
-    revised_set = {(s, d) for s, d in revised_edges}
-    edges_added = sorted(revised_set - original_set)
-    edges_removed = sorted(original_set - revised_set)
+        # 1-step forecast
+        user_prompt = build_forecast_prompt(domain, history_summary, key_dv)
 
-    if verbose:
-        print(f"      [adaptive] Graph revision: {len(discovered_edges)} -> {len(revised_edges)} edges "
-              f"(+{len(edges_added)}, -{len(edges_removed)})")
+        if dry_run:
+            response_text = mock_forecast_response(domain, history_data)
+        else:
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ]
+            response_text = call_llm(messages, api_key, model, max_tokens=2000)
 
-    # --- Revision quality scoring against GT ---
+        parsed = parse_json_response(response_text)
+        val = parsed.get(key_dv)
+        if val is not None:
+            try:
+                predicted.append(float(val))
+            except (ValueError, TypeError):
+                predicted.append(float("nan"))
+        else:
+            predicted.append(float("nan"))
+
+        # Record actual
+        actual_val = trajectory[step][key_dv]
+        actual_values.append(actual_val)
+
+        # Append actual to history for next step
+        _append_actual_to_history(domain, history_data, trajectory[step])
+
+        # Record graph snapshot
+        graph_snapshots.append({
+            "step": step,
+            "n_edges": len(current_edges),
+            "edges": list(current_edges),
+        })
+
+        # --- Per-step graph revision (skip after last step) ---
+        if step < n_steps - 1:
+            # Build cumulative error data for revision prompt
+            interim_scores = score_forecast(predicted, actual_values)
+
+            revision_prompt = build_graph_revision_prompt(
+                domain=domain,
+                key_dv=key_dv,
+                graph_edges=current_edges,
+                predicted=predicted,
+                actual=actual_values,
+                forecast_scores=interim_scores,
+                variables=variables,
+            )
+
+            if dry_run:
+                revision_text = mock_graph_revision_response(
+                    domain, current_edges, variables,
+                )
+            else:
+                messages = [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": revision_prompt},
+                ]
+                revision_text = call_llm(messages, api_key, model, max_tokens=4000)
+
+            revision_parsed = parse_json_response(revision_text)
+            revised_graph_raw = revision_parsed.get("revised_graph", [])
+            revised_edges = []
+            for e in revised_graph_raw:
+                src = e.get("from", "")
+                dst = e.get("to", "")
+                if src and dst:
+                    revised_edges.append((src, dst))
+
+            if revised_edges:
+                current_edges = revised_edges
+
+            if verbose and step < 3:
+                # Show first few revisions to avoid wall of text
+                print(f"      [adaptive] step {step}: "
+                      f"pred={predicted[-1]:.2f} actual={actual_val:.2f} "
+                      f"-> {len(current_edges)} edges")
+
+    # Final scoring
+    scores = score_forecast(predicted, actual_values)
+
+    # --- Revision quality: original vs final graph against GT ---
     from causal_discovery.ground_truth import (
         edges_to_matrix, precision_recall,
         get_market_ground_truth, get_conflict_ground_truth,
@@ -423,38 +474,41 @@ def _run_adaptive_condition(
         gt_variables = CONFLICT_VARIABLES
 
     original_matrix = edges_to_matrix(discovered_edges, gt_variables)
-    revised_matrix = edges_to_matrix(revised_edges, gt_variables)
+    final_matrix = edges_to_matrix(current_edges, gt_variables)
     original_quality = precision_recall(original_matrix, gt_matrix)
-    revised_quality = precision_recall(revised_matrix, gt_matrix)
+    final_quality = precision_recall(final_matrix, gt_matrix)
+
+    # Compute edge changes from original to final
+    original_set = {(s, d) for s, d in discovered_edges}
+    final_set = {(s, d) for s, d in current_edges}
+    edges_added = sorted(final_set - original_set)
+    edges_removed = sorted(original_set - final_set)
 
     if verbose:
-        print(f"      [adaptive] Graph quality: SHD {original_quality['shd']} -> {revised_quality['shd']}, "
-              f"P {original_quality['precision']:.2f}->{revised_quality['precision']:.2f}, "
-              f"R {original_quality['recall']:.2f}->{revised_quality['recall']:.2f}")
-
-    # --- Round 2: forecast with revised graph (1 LLM call) ---
-    round2_result = _run_forecast_condition(
-        domain_setup=domain_setup,
-        graph_edges=revised_edges,
-        condition_name="adaptive",
-        actual=actual,
-        n_forecast=n_forecast,
-        api_key=api_key,
-        model=model,
-        dry_run=dry_run,
-        verbose=verbose,
-    )
+        print(f"      [adaptive] MAE={scores['mae']:.4f}, "
+              f"DirAcc={scores.get('directional_accuracy', 'N/A')}, "
+              f"Spearman={scores.get('spearman_rho', 'N/A')} "
+              f"({n_steps} rolling steps, {n_steps - 1} revisions)")
+        print(f"      [adaptive] Graph: {len(discovered_edges)} -> {len(current_edges)} edges "
+              f"(+{len(edges_added)}, -{len(edges_removed)})")
+        print(f"      [adaptive] Quality: SHD {original_quality['shd']} -> {final_quality['shd']}, "
+              f"P {original_quality['precision']:.2f}->{final_quality['precision']:.2f}, "
+              f"R {original_quality['recall']:.2f}->{final_quality['recall']:.2f}")
 
     return {
         "condition": "adaptive",
+        "predicted": [round(v, 4) for v in predicted],
+        "actual": [round(v, 4) for v in actual_values],
+        "scores": scores,
+        "n_steps": n_steps,
+        "n_revisions": n_steps - 1,
         "graph_revision": {
             "original_edges": len(discovered_edges),
-            "revised_edges": len(revised_edges),
+            "final_edges": len(current_edges),
             "edges_added": edges_added,
             "edges_removed": edges_removed,
-            "revision_reasoning": revision_parsed.get("revision_reasoning", ""),
-            "error_analysis": revision_parsed.get("error_analysis", ""),
         },
+        "graph_snapshots": graph_snapshots,
         "revision_quality": {
             "original": {
                 "precision": original_quality["precision"],
@@ -462,16 +516,12 @@ def _run_adaptive_condition(
                 "f1": original_quality["f1"],
                 "shd": original_quality["shd"],
             },
-            "revised": {
-                "precision": revised_quality["precision"],
-                "recall": revised_quality["recall"],
-                "f1": revised_quality["f1"],
-                "shd": revised_quality["shd"],
+            "final": {
+                "precision": final_quality["precision"],
+                "recall": final_quality["recall"],
+                "f1": final_quality["f1"],
+                "shd": final_quality["shd"],
             },
-        },
-        "round_2": {
-            "predicted": round2_result["predicted"],
-            "scores": round2_result["scores"],
         },
     }
 
@@ -489,7 +539,7 @@ def run_causal_forecast(
     api_key: str = "",
     model: str = "meta-llama/llama-3.3-70b-instruct",
     graph_source: str = "",
-    include_baselines: bool = True,
+    all_conditions: bool = True,
     adaptive: bool = False,
     dry_run: bool = False,
     output_dir: str = "",
@@ -515,9 +565,9 @@ def run_causal_forecast(
         Model identifier.
     graph_source : str
         Path to pilot_results.json, "ground_truth", or "none".
-        If empty and include_baselines=True, runs only GT + no_graph.
-    include_baselines : bool
-        If True, run all applicable conditions (discovered + GT + no_graph).
+        If empty and all_conditions=True, runs only GT + no_graph.
+    all_conditions : bool
+        If True, run all 3 conditions (discovered + GT + no_graph).
     adaptive : bool
         If True, run adaptive condition (revise graph from errors, re-forecast).
         Only active when graph_source is a file path (discovered graph).
@@ -564,7 +614,7 @@ def run_causal_forecast(
             print("  [WARNING] --adaptive requires --graph-source file path; skipping adaptive.")
 
     # Ground truth condition
-    if graph_source == "ground_truth" or include_baselines:
+    if graph_source == "ground_truth" or all_conditions:
         if domain == "market":
             gt_matrix = get_market_ground_truth()
             gt_edges = _gt_to_edge_list(gt_matrix, MARKET_VARIABLES)
@@ -576,7 +626,7 @@ def run_causal_forecast(
             print(f"  Ground truth graph: {len(gt_edges)} edges")
 
     # No-graph ablation
-    if graph_source == "none" or include_baselines:
+    if graph_source == "none" or all_conditions:
         conditions["no_graph"] = None
 
     if not conditions:
@@ -587,7 +637,6 @@ def run_causal_forecast(
     if run_adaptive:
         all_results["adaptive"] = []
     all_adaptive = []
-    all_baselines = []
 
     for scenario_idx in range(n_scenarios):
         seed = forecast_seed_start + scenario_idx
@@ -597,36 +646,22 @@ def run_causal_forecast(
         # Setup domain with this seed
         domain_setup = setup_domain(domain, n_warmup=n_warmup, seed=seed)
 
-        # Generate actual trajectory
-        actual = _generate_actual_trajectory(domain_setup, n_forecast)
-        if verbose:
-            key_dv = "clearing_price" if domain == "market" else "escalation_index"
-            print(f"  Actual {key_dv}: [{actual[0]:.2f}, ..., {actual[-1]:.2f}]")
-
-        # Get warmup values for naive baselines
-        if domain == "market":
-            warmup_values = domain_setup["history_data"].get("price_history", [])
-        else:
-            warmup_values = domain_setup["history_data"].get("escalation_history", [])
-
-        # Naive baselines (programmatic)
-        baselines = _compute_naive_baselines(warmup_values, actual, n_forecast)
-        baselines["seed"] = seed
-        all_baselines.append(baselines)
+        # Generate actual trajectory (full dicts)
+        trajectory = _generate_actual_trajectory(domain_setup, n_forecast)
+        key_dv = "clearing_price" if domain == "market" else "escalation_index"
+        actual_values = [p[key_dv] for p in trajectory]
 
         if verbose:
-            print(f"  Naive baselines:")
-            print(f"    Last-value MAE={baselines['last_value'].get('mae', 'N/A')}")
-            print(f"    Trend MAE={baselines['trend'].get('mae', 'N/A')}")
+            print(f"  Actual {key_dv}: [{actual_values[0]:.2f}, ..., {actual_values[-1]:.2f}]")
 
-        # Run each condition
+        # Run each condition (rolling window)
         scenario_results = {}
         for cond_name, graph_edges in conditions.items():
             result = _run_forecast_condition(
                 domain_setup=domain_setup,
                 graph_edges=graph_edges,
                 condition_name=cond_name,
-                actual=actual,
+                trajectory=trajectory,
                 n_forecast=n_forecast,
                 api_key=api_key,
                 model=model,
@@ -637,13 +672,12 @@ def run_causal_forecast(
             all_results[cond_name].append(result)
             scenario_results[cond_name] = result
 
-        # Adaptive condition (after discovered)
-        if run_adaptive and "discovered" in scenario_results:
+        # Adaptive condition (per-step graph revision)
+        if run_adaptive:
             adaptive_result = _run_adaptive_condition(
                 domain_setup=domain_setup,
                 discovered_edges=discovered_edges,
-                round1_result=scenario_results["discovered"],
-                actual=actual,
+                trajectory=trajectory,
                 n_forecast=n_forecast,
                 api_key=api_key,
                 model=model,
@@ -654,12 +688,11 @@ def run_causal_forecast(
             all_adaptive.append(adaptive_result)
             scenario_results["adaptive"] = adaptive_result
 
-            # Add round 2 scores for aggregation (round 1 == discovered)
             all_results["adaptive"].append({
                 "seed": seed,
                 "condition": "adaptive",
-                "predicted": adaptive_result["round_2"]["predicted"],
-                "scores": adaptive_result["round_2"]["scores"],
+                "predicted": adaptive_result["predicted"],
+                "scores": adaptive_result["scores"],
             })
 
         # Save per-scenario results
@@ -669,17 +702,15 @@ def run_causal_forecast(
             with open(scenario_dir / f"scenario_{seed}.json", "w") as f:
                 json.dump({
                     "seed": seed,
-                    "actual": [round(v, 4) for v in actual],
-                    "warmup_values": [round(v, 4) for v in warmup_values],
+                    "actual": [round(v, 4) for v in actual_values],
                     "conditions": scenario_results,
-                    "naive_baselines": baselines,
                 }, f, indent=2, default=str)
 
     # Aggregate results
     all_cond_keys = dict(conditions)
     if run_adaptive:
         all_cond_keys["adaptive"] = None
-    summary = _aggregate_results(all_results, all_baselines, all_cond_keys)
+    summary = _aggregate_results(all_results, all_cond_keys)
 
     # Aggregate adaptive graph revision stats
     if run_adaptive and all_adaptive:
@@ -695,13 +726,11 @@ def run_causal_forecast(
                 print(f"  {cond_name:15s}: MAE={s['mean_mae']:.4f}, "
                       f"DirAcc={s.get('mean_dir_acc', 'N/A')}, "
                       f"Spearman={s.get('mean_spearman', 'N/A')}")
-        print(f"  {'last_value':15s}: MAE={summary['naive_baselines']['last_value']['mean_mae']:.4f}")
-        print(f"  {'trend':15s}: MAE={summary['naive_baselines']['trend']['mean_mae']:.4f}")
 
         if run_adaptive and "adaptive_graph_revision" in summary:
             rev = summary["adaptive_graph_revision"]
-            print(f"\n  Adaptive graph revision:")
-            print(f"    SHD: {rev['mean_original_shd']:.1f} -> {rev['mean_revised_shd']:.1f}")
+            print(f"\n  Adaptive graph revision (per-step):")
+            print(f"    SHD: {rev['mean_original_shd']:.1f} -> {rev['mean_final_shd']:.1f}")
             print(f"    Edges added: {rev['mean_edges_added']:.1f}, removed: {rev['mean_edges_removed']:.1f}")
 
     # Save aggregate results
@@ -729,11 +758,10 @@ def run_causal_forecast(
 
 def _aggregate_results(
     all_results: dict[str, list[dict]],
-    all_baselines: list[dict],
     conditions: dict,
 ) -> dict:
     """Aggregate per-scenario results into condition-level means."""
-    summary = {"conditions": {}, "naive_baselines": {}}
+    summary = {"conditions": {}}
 
     for cond_name in conditions:
         results = all_results[cond_name]
@@ -757,38 +785,25 @@ def _aggregate_results(
             ],
         }
 
-    # Aggregate naive baselines
-    for baseline_type in ("last_value", "trend"):
-        baseline_maes = [
-            b[baseline_type].get("mae")
-            for b in all_baselines
-            if b[baseline_type].get("mae") is not None
-            and not np.isnan(b[baseline_type]["mae"])
-        ]
-        summary["naive_baselines"][baseline_type] = {
-            "mean_mae": round(float(np.mean(baseline_maes)), 6) if baseline_maes else None,
-            "std_mae": round(float(np.std(baseline_maes)), 6) if baseline_maes else None,
-        }
-
     return summary
 
 
 def _aggregate_adaptive_revisions(all_adaptive: list[dict]) -> dict:
     """Aggregate adaptive graph revision statistics across scenarios."""
     original_shds = []
-    revised_shds = []
+    final_shds = []
     edges_added = []
     edges_removed = []
 
     for ar in all_adaptive:
         rq = ar.get("revision_quality", {})
         orig = rq.get("original", {})
-        rev = rq.get("revised", {})
+        final = rq.get("final", {})
 
         if "shd" in orig:
             original_shds.append(orig["shd"])
-        if "shd" in rev:
-            revised_shds.append(rev["shd"])
+        if "shd" in final:
+            final_shds.append(final["shd"])
 
         gr = ar.get("graph_revision", {})
         edges_added.append(len(gr.get("edges_added", [])))
@@ -796,14 +811,15 @@ def _aggregate_adaptive_revisions(all_adaptive: list[dict]) -> dict:
 
     return {
         "mean_original_shd": round(float(np.mean(original_shds)), 2) if original_shds else None,
-        "mean_revised_shd": round(float(np.mean(revised_shds)), 2) if revised_shds else None,
+        "mean_final_shd": round(float(np.mean(final_shds)), 2) if final_shds else None,
         "mean_edges_added": round(float(np.mean(edges_added)), 2) if edges_added else None,
         "mean_edges_removed": round(float(np.mean(edges_removed)), 2) if edges_removed else None,
         "per_scenario": [
             {
                 "seed": ar.get("seed"),
+                "n_revisions": ar.get("n_revisions", 0),
                 "original_shd": ar.get("revision_quality", {}).get("original", {}).get("shd"),
-                "revised_shd": ar.get("revision_quality", {}).get("revised", {}).get("shd"),
+                "final_shd": ar.get("revision_quality", {}).get("final", {}).get("shd"),
                 "edges_added": len(ar.get("graph_revision", {}).get("edges_added", [])),
                 "edges_removed": len(ar.get("graph_revision", {}).get("edges_removed", [])),
             }
@@ -851,9 +867,9 @@ def main():
     parser.add_argument("--model", default="meta-llama/llama-3.3-70b-instruct")
     parser.add_argument("--graph-source", default="",
                         help="Path to pilot_results.json, 'ground_truth', or 'none'")
-    parser.add_argument("--include-baselines", action="store_true", default=True,
+    parser.add_argument("--all-conditions", action="store_true", default=True,
                         help="Run all 3 conditions (discovered + GT + no_graph)")
-    parser.add_argument("--no-baselines", action="store_true",
+    parser.add_argument("--only-source", action="store_true",
                         help="Only run the specified graph-source condition")
     parser.add_argument("--adaptive", action="store_true",
                         help="Run adaptive condition (revise graph from errors, re-forecast)")
@@ -865,7 +881,7 @@ def main():
 
     args = parser.parse_args()
 
-    include_baselines = not args.no_baselines
+    all_conditions = not args.only_source
 
     # Auto-generate output dir
     output_dir = args.output_dir
@@ -890,7 +906,7 @@ def main():
         api_key=api_key,
         model=args.model,
         graph_source=args.graph_source,
-        include_baselines=include_baselines,
+        all_conditions=all_conditions,
         adaptive=args.adaptive,
         dry_run=args.dry_run,
         output_dir=output_dir,

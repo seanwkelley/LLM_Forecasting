@@ -739,11 +739,11 @@ python -m causal_discovery.hidden_variables --domain market --model meta-llama/l
 
 ## Causal Forecasting Test
 
-Tests whether causal knowledge improves time-series prediction — the practical downstream value of graph recovery. The agent receives a discovered causal graph + warmup history from a new scenario (same ground truth structure, different seed) and forecasts the next N periods for the key DV (clearing_price / escalation_index).
+Tests whether causal knowledge improves time-series prediction — the practical downstream value of graph recovery. Uses **rolling-window forecasting**: predict 1 period at a time, reveal the actual, update history, predict the next. Each step is 1 LLM call. N=10 gives 10 individually-scored predictions per condition per scenario.
 
 ### 3. Standard Forecasting (`causal_discovery/causal_forecast.py`)
 
-**Method.** Three conditions per scenario, each a single LLM call with different system prompts:
+**Method.** Three conditions per scenario, each using a rolling window with a fixed causal graph:
 
 | Condition | System prompt contains | Tests |
 |---|---|---|
@@ -751,7 +751,9 @@ Tests whether causal knowledge improves time-series prediction — the practical
 | **ground_truth** | Full GT adjacency matrix | Performance ceiling — perfect causal knowledge |
 | **no_graph** | No causal structure, just variable descriptions | Ablation — time-series patterns only |
 
-Each condition receives the same warmup history (10 periods) and forecasts N periods ahead (default 10). Two programmatic baselines (no LLM) provide sanity checks: last-value (repeat final warmup value) and linear trend (extrapolate from last 3 points).
+Each condition starts with the same warmup history (10 periods) and rolls forward N steps (default 10). At each step the LLM predicts 1 period, the actual is revealed and appended to history, then the next prediction uses the extended history. The causal graph (system prompt) is fixed throughout.
+
+**LLM calls per condition per scenario:** N (default 10).
 
 **Scoring:** MAE, directional accuracy (fraction of period-to-period direction matches), Spearman rank correlation. Multiple scenarios (default 5, different seeds) for variance estimation.
 
@@ -763,19 +765,20 @@ python -m causal_discovery.causal_forecast --domain market \
 
 **Output:** `outputs/causal_discovery/causal_forecast/{domain}_{model}/results.json` with per-scenario detail in `per_scenario/scenario_{seed}.json`.
 
-### 4. Adaptive Condition — Predictive Coding on Causal Graphs (`--adaptive`)
+### 4. Adaptive Condition — Per-Step Graph Revision (`--adaptive`)
 
-**Motivation.** The standard forecasting test treats the discovered graph as fixed. But prediction errors contain information about graph quality — systematic biases or direction misses may indicate missing or spurious edges. The adaptive condition tests whether an LLM can use prediction errors to revise its causal graph and improve subsequent forecasts. This is predictive coding applied to causal models: forecast → observe errors → revise graph → re-forecast.
+**Motivation.** The standard conditions treat the causal graph as fixed. But prediction errors contain information about graph quality — systematic biases or direction misses may indicate missing or spurious edges. The adaptive condition tests whether an LLM can use prediction errors to **revise its causal graph at each time step** and improve subsequent forecasts. This is online predictive coding applied to causal models.
 
-**Method.** Per scenario, 3 steps (2 LLM calls beyond the discovered condition):
+**Method.** Per scenario, a single rolling-window pass with per-step graph revision:
 
-1. **Round 1 forecast** — Reuse the discovered condition result (no extra LLM call)
-2. **Graph revision** — Show the model a formatted error table (per-period predicted vs actual, MAE, bias, direction accuracy) alongside its current graph. Ask it to diagnose which causal edges explain the errors and output a revised edge list. (1 LLM call)
-3. **Round 2 forecast** — Forecast the same scenario with the revised graph. Fresh LLM call with a new system prompt (revised graph) and the same user prompt (warmup history only — no actuals). The model cannot benefit by memorizing numbers; it can only benefit through genuinely improving the graph structure. (1 LLM call)
+1. **Forecast step t** — Predict the next period using the current graph (1 LLM call)
+2. **Reveal actual** — Append actual values to history, record prediction error
+3. **Graph revision** — Show the model a cumulative error table (all steps so far: predicted vs actual, MAE, bias, direction accuracy) alongside its current graph. Ask it to diagnose which causal edges explain the errors and output a revised edge list. (1 LLM call)
+4. **Repeat** from step 1 with the revised graph and extended history
 
-**Anti-memorization design.** Round 2 is a separate `call_llm()` invocation. The system prompt contains the revised graph; the user prompt contains only warmup history. The actuals appeared only in the revision prompt, never in the forecast prompt. We separately score the revised graph against GT (SHD, precision, recall) to detect whether structural improvement happened vs number fitting.
+The graph revision happens after every step except the last (no point revising after the final prediction). **Total LLM calls per scenario:** N forecast + (N-1) revision = 2N-1 (default 19).
 
-**Graph revision quality.** The revised graph is scored against GT using `edges_to_matrix()` + `precision_recall()` from `ground_truth.py`. This answers: do prediction errors actually improve graph quality? The output reports both original and revised graph metrics.
+**Graph revision quality.** Both the original and final graphs are scored against GT using `edges_to_matrix()` + `precision_recall()` from `ground_truth.py`. Per-step graph snapshots are recorded to track how the graph evolves over the rolling window.
 
 **Constraint.** Adaptive only runs when `--graph-source` points to a file (discovered graph). It doesn't apply to ground_truth (already perfect) or no_graph (nothing to revise). Running `--adaptive` without a file path produces a warning and skips.
 
@@ -786,4 +789,4 @@ python -m causal_discovery.causal_forecast --domain conflict --adaptive \
     --graph-source outputs/causal_discovery/single_agent/conflict_single/pilot_results.json
 ```
 
-**Output format.** Per-scenario adaptive result includes round 2 forecast scores, graph revision details (edges added/removed, reasoning), and revision quality (original vs revised SHD/precision/recall). Aggregate results report `adaptive` as a condition (compare against `discovered` for the before/after) plus `adaptive_graph_revision` summary statistics.
+**Output format.** Per-scenario adaptive result includes forecast scores, per-step graph snapshots, graph revision details (edges added/removed from original to final), and revision quality (original vs final SHD/precision/recall). Aggregate results report `adaptive` as a condition plus `adaptive_graph_revision` summary statistics.

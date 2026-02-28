@@ -1,6 +1,6 @@
 # Experiment Notes
 
-**Last Updated:** February 27, 2026
+**Last Updated:** February 28, 2026
 
 ## Multi-Agent Forecasting Framework (Feb 23) — ACTIVE
 
@@ -538,15 +538,18 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 | 5. Single-agent pilot (conflict) | **Complete** | 3 replicates @ budget=30, F1=0.235±0.130 |
 | 6. Recall improvement | **Complete** | Expanded return vars, evidence summary, truncated context -> Market F1=0.508, Conflict F1=0.293 |
 | 7. Multi-agent conditions | **Complete** | 4 structures x 2 domains, dry-run + live (Llama 3.3 70B) |
-| 8. PID analysis | **Next** | Edge-level epistemic coordination |
+| 8. Causal forecasting test | **Complete** | 3 conditions (discovered/GT/no_graph) + adaptive, both domains |
+| 9. PID analysis | **Next** | Edge-level epistemic coordination |
 
 ### Files
 
 - `causal_discovery/intervention.py` — Clamp-and-react rollouts (action, trait, event), expanded return vars
 - `causal_discovery/run_pilot.py` — Single-agent pilot runner (market + conflict, multi-turn, truncated declaration)
 - `causal_discovery/prompts.py` — Causal modeler agent prompts, evidence summary builder
+- `causal_discovery/prompts_tests.py` — Shared prompts for supplementary tests (forecast, graph revision, Oracle QA, hidden variable)
 - `causal_discovery/ground_truth.py` — Ground truth adjacency matrices + scoring
 - `causal_discovery/test_intervention.py` — Smoke tests for intervention interface
+- `causal_discovery/causal_forecast.py` — Causal forecasting test: discovered/GT/no_graph conditions + adaptive
 - `causal_discovery/multi_agent/` — Multi-agent causal discovery package (Feb 24):
   - `agent.py` — Extracted single-agent pipeline (AgentResult dataclass, setup_domain, run_single_agent)
   - `aggregation.py` — Graph merging: majority_vote, confidence_weighted_vote, union_merge, intersection_merge
@@ -562,6 +565,7 @@ Market recall jumped 17% → 65% (F1 nearly doubled). Conflict recall improved 1
 - Baseline results: `outputs/causal_discovery/conflict_pilot_runs/run_{1,2,3}_seed{42,43,44}/`
 - Post-fix results: `outputs/causal_discovery/pilot_runs/recall_fix_test/` (market, DeepSeek V3)
 - Post-fix results: `outputs/causal_discovery/conflict_pilot_runs/recall_fix_test/` (conflict, DeepSeek V3)
+- Forecast results: `outputs/causal_discovery/causal_forecast/{domain}_{model}/`
 
 ### Multi-Agent Implementation (Feb 24)
 
@@ -851,6 +855,46 @@ Qwen 3.5 397B is a thinking model — required max_tokens increase from 2000 to 
 - **Qwen 397B best F1 on both domains**: Thinking/reasoning model produces better intervention designs (more systematic, fewer duplicates on market — 0 skipped vs Llama's duplicates). Market recall of 0.783 is highest seen, but at the cost of many false positives (44 declared vs 23 true).
 - **Conflict remains much harder**: Best conflict F1 (0.304) is still well below best market F1 (0.537). All models miss the 6 state-feedback edges (`gdp/military_strength/political_stability/sanctions/international_support/military_balance → agent_recommendation`) — these operate through subtle modifier adjustments that 3-period rollouts don't amplify enough.
 - **Consistent FP pattern**: All models falsely attribute direct effects to `shock → clearing_price/volume/GDP` (indirect through mediators) and `hawk_score → escalation_index` (indirect through recommendation → action → EI).
+
+### Causal Forecasting Test (Feb 28)
+
+**Motivation:** The causal discovery pipeline recovers graph structure, but does that structure have practical predictive value? The causal forecasting test answers this directly: give an LLM a causal graph + warmup history from a new scenario and ask it to forecast the next N periods. Compare discovered graph vs ground truth vs no graph.
+
+**Conditions (3 standard + 1 adaptive):**
+
+| Condition | Graph provided | What it tests |
+|---|---|---|
+| **discovered** | Agent's recovered graph from pilot run | Does the agent's own graph help? |
+| **ground_truth** | Full GT adjacency matrix | Ceiling — perfect causal knowledge |
+| **no_graph** | None (variable descriptions only) | Ablation — time-series only |
+| **adaptive** | Discovered → revised from errors | Can prediction errors improve graph quality? |
+
+**Adaptive condition (predictive coding on causal models):**
+The adaptive condition extends the discovered condition with a graph revision loop: forecast → observe errors → revise graph → re-forecast. Round 2 is a fresh LLM call with the revised graph in the system prompt and warmup-only in the user prompt (no actuals — the model can't memorize). The revised graph is also scored against GT to measure whether structural improvement occurred.
+
+**Scoring:** MAE, directional accuracy, Spearman rho. Naive baselines: last-value (repeat final warmup) and linear trend (extrapolate from last 3 points). 5 scenarios per domain (different seeds).
+
+**Implementation files:**
+- `causal_discovery/causal_forecast.py` — Main pipeline, conditions, adaptive loop, CLI
+- `causal_discovery/prompts_tests.py` — Forecast + graph revision prompt builders
+
+```bash
+# Standard (3 conditions)
+python -m causal_discovery.causal_forecast --domain market \
+    --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json
+
+# With adaptive condition
+python -m causal_discovery.causal_forecast --domain market --adaptive \
+    --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json
+
+# Dry-run
+python -m causal_discovery.causal_forecast --domain market --dry-run --adaptive \
+    --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json
+```
+
+**Output:** `outputs/causal_discovery/causal_forecast/{domain}_{model}/results.json` with per-scenario detail in `per_scenario/`.
+
+**Status:** Implementation complete. Dry-run verified on both domains. Live runs pending.
 
 ---
 

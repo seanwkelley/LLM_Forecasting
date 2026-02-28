@@ -10,6 +10,11 @@ Three conditions per run:
 - ground_truth: actual GT adjacency matrix (performance ceiling)
 - no_graph: no causal structure, just history (ablation)
 
+Optional 4th condition (--adaptive):
+- adaptive: revise the discovered graph based on prediction errors, then re-forecast.
+  Reports round_1 (same as discovered) and round_2 (with revised graph) scores,
+  plus graph revision quality (SHD/precision/recall before and after revision).
+
 Scoring: MAE, directional accuracy, Spearman rho.
 Naive baselines: last-value and linear trend (programmatic, no LLM).
 
@@ -21,6 +26,10 @@ Usage:
     python -m causal_discovery.causal_forecast --domain market \\
         --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json \\
         --include-baselines
+
+    # With adaptive condition
+    python -m causal_discovery.causal_forecast --domain market --adaptive \\
+        --graph-source outputs/causal_discovery/single_agent/market_single/pilot_results.json
 
     # Ground truth only
     python -m causal_discovery.causal_forecast --domain market --graph-source ground_truth
@@ -56,6 +65,8 @@ from causal_discovery.prompts_tests import (
     build_forecast_system_prompt,
     build_forecast_prompt,
     mock_forecast_response,
+    build_graph_revision_prompt,
+    mock_graph_revision_response,
 )
 from causal_discovery.prompts import (
     format_market_history, format_conflict_history,
@@ -322,6 +333,152 @@ def _run_forecast_condition(
 
 
 # =============================================================================
+# Adaptive condition: revise graph from errors, re-forecast
+# =============================================================================
+
+def _run_adaptive_condition(
+    domain_setup: dict,
+    discovered_edges: list[tuple[str, str]],
+    round1_result: dict,
+    actual: list[float],
+    n_forecast: int,
+    api_key: str,
+    model: str,
+    dry_run: bool,
+    verbose: bool,
+) -> dict:
+    """Adaptive condition: revise graph from prediction errors, then re-forecast.
+
+    Flow:
+    1. Round 1 = reuse discovered condition result (no extra LLM call)
+    2. Graph revision: show errors, ask model to revise graph (1 LLM call)
+    3. Round 2: forecast with revised graph (1 LLM call)
+
+    Returns dict with round_1, graph_revision, round_2, and revision_quality.
+    """
+    domain = domain_setup["domain"]
+    variables = domain_setup["variables"]
+    history_data = domain_setup["history_data"]
+    key_dv = "clearing_price" if domain == "market" else "escalation_index"
+
+    # Round 1: reuse discovered condition result
+    round1_predicted = round1_result["predicted"]
+    round1_scores = round1_result["scores"]
+
+    # --- Graph revision (1 LLM call) ---
+    revision_prompt = build_graph_revision_prompt(
+        domain=domain,
+        key_dv=key_dv,
+        graph_edges=discovered_edges,
+        predicted=round1_predicted,
+        actual=actual[:len(round1_predicted)],
+        forecast_scores=round1_scores,
+        variables=variables,
+    )
+
+    if dry_run:
+        revision_text = mock_graph_revision_response(domain, discovered_edges, variables)
+    else:
+        revision_system = build_forecast_system_prompt(domain, variables, discovered_edges)
+        messages = [
+            {"role": "system", "content": revision_system},
+            {"role": "user", "content": revision_prompt},
+        ]
+        revision_text = call_llm(messages, api_key, model, max_tokens=4000)
+
+    revision_parsed = parse_json_response(revision_text)
+
+    # Extract revised graph edges
+    revised_graph_raw = revision_parsed.get("revised_graph", [])
+    revised_edges = []
+    for e in revised_graph_raw:
+        src = e.get("from", "")
+        dst = e.get("to", "")
+        if src and dst:
+            revised_edges.append((src, dst))
+
+    # Determine edges added/removed
+    original_set = {(s, d) for s, d in discovered_edges}
+    revised_set = {(s, d) for s, d in revised_edges}
+    edges_added = sorted(revised_set - original_set)
+    edges_removed = sorted(original_set - revised_set)
+
+    if verbose:
+        print(f"      [adaptive] Graph revision: {len(discovered_edges)} -> {len(revised_edges)} edges "
+              f"(+{len(edges_added)}, -{len(edges_removed)})")
+
+    # --- Revision quality scoring against GT ---
+    from causal_discovery.ground_truth import (
+        edges_to_matrix, precision_recall,
+        get_market_ground_truth, get_conflict_ground_truth,
+        MARKET_VARIABLES, CONFLICT_VARIABLES,
+    )
+    if domain == "market":
+        gt_matrix = get_market_ground_truth()
+        gt_variables = MARKET_VARIABLES
+    else:
+        gt_matrix = get_conflict_ground_truth()
+        gt_variables = CONFLICT_VARIABLES
+
+    original_matrix = edges_to_matrix(discovered_edges, gt_variables)
+    revised_matrix = edges_to_matrix(revised_edges, gt_variables)
+    original_quality = precision_recall(original_matrix, gt_matrix)
+    revised_quality = precision_recall(revised_matrix, gt_matrix)
+
+    if verbose:
+        print(f"      [adaptive] Graph quality: SHD {original_quality['shd']} -> {revised_quality['shd']}, "
+              f"P {original_quality['precision']:.2f}->{revised_quality['precision']:.2f}, "
+              f"R {original_quality['recall']:.2f}->{revised_quality['recall']:.2f}")
+
+    # --- Round 2: forecast with revised graph (1 LLM call) ---
+    round2_result = _run_forecast_condition(
+        domain_setup=domain_setup,
+        graph_edges=revised_edges,
+        condition_name="adaptive_r2",
+        actual=actual,
+        n_forecast=n_forecast,
+        api_key=api_key,
+        model=model,
+        dry_run=dry_run,
+        verbose=verbose,
+    )
+
+    return {
+        "condition": "adaptive",
+        "round_1": {
+            "predicted": round1_predicted,
+            "scores": round1_scores,
+        },
+        "graph_revision": {
+            "original_edges": len(discovered_edges),
+            "revised_edges": len(revised_edges),
+            "edges_added": edges_added,
+            "edges_removed": edges_removed,
+            "revision_reasoning": revision_parsed.get("revision_reasoning", ""),
+            "error_analysis": revision_parsed.get("error_analysis", ""),
+        },
+        "revision_quality": {
+            "original": {
+                "precision": original_quality["precision"],
+                "recall": original_quality["recall"],
+                "f1": original_quality["f1"],
+                "shd": original_quality["shd"],
+            },
+            "revised": {
+                "precision": revised_quality["precision"],
+                "recall": revised_quality["recall"],
+                "f1": revised_quality["f1"],
+                "shd": revised_quality["shd"],
+            },
+        },
+        "round_2": {
+            "predicted": round2_result["predicted"],
+            "scores": round2_result["scores"],
+        },
+    }
+
+
+# =============================================================================
 # Main pipeline
 # =============================================================================
 
@@ -335,6 +492,7 @@ def run_causal_forecast(
     model: str = "meta-llama/llama-3.3-70b-instruct",
     graph_source: str = "",
     include_baselines: bool = True,
+    adaptive: bool = False,
     dry_run: bool = False,
     output_dir: str = "",
     verbose: bool = True,
@@ -362,6 +520,9 @@ def run_causal_forecast(
         If empty and include_baselines=True, runs only GT + no_graph.
     include_baselines : bool
         If True, run all applicable conditions (discovered + GT + no_graph).
+    adaptive : bool
+        If True, run adaptive condition (revise graph from errors, re-forecast).
+        Only active when graph_source is a file path (discovered graph).
     dry_run : bool
         Use mock LLM responses.
     output_dir : str
@@ -378,10 +539,14 @@ def run_causal_forecast(
         print(f"CAUSAL FORECASTING TEST — {domain.upper()}")
         print(f"Forecast horizon: {n_forecast} periods | Scenarios: {n_scenarios}")
         print(f"Model: {'DRY RUN' if dry_run else model}")
+        if adaptive:
+            print("Adaptive condition: ENABLED")
         print("=" * 60)
 
     # Determine which conditions to run
     conditions = {}
+    discovered_edges = None
+    run_adaptive = False
 
     # Load discovered graph if provided
     if graph_source and graph_source not in ("ground_truth", "none"):
@@ -390,8 +555,15 @@ def run_causal_forecast(
             conditions["discovered"] = discovered_edges
             if verbose:
                 print(f"  Discovered graph: {len(discovered_edges)} edges from {graph_source}")
+            if adaptive:
+                run_adaptive = True
         else:
             print(f"  [WARNING] Graph source not found: {graph_source}")
+
+    # Adaptive requires discovered graph
+    if adaptive and not run_adaptive:
+        if verbose:
+            print("  [WARNING] --adaptive requires --graph-source file path; skipping adaptive.")
 
     # Ground truth condition
     if graph_source == "ground_truth" or include_baselines:
@@ -414,6 +586,10 @@ def run_causal_forecast(
 
     # Run across scenarios
     all_results = {cond: [] for cond in conditions}
+    if run_adaptive:
+        all_results["adaptive_r1"] = []
+        all_results["adaptive_r2"] = []
+    all_adaptive = []
     all_baselines = []
 
     for scenario_idx in range(n_scenarios):
@@ -464,6 +640,37 @@ def run_causal_forecast(
             all_results[cond_name].append(result)
             scenario_results[cond_name] = result
 
+        # Adaptive condition (after discovered)
+        if run_adaptive and "discovered" in scenario_results:
+            adaptive_result = _run_adaptive_condition(
+                domain_setup=domain_setup,
+                discovered_edges=discovered_edges,
+                round1_result=scenario_results["discovered"],
+                actual=actual,
+                n_forecast=n_forecast,
+                api_key=api_key,
+                model=model,
+                dry_run=dry_run,
+                verbose=verbose,
+            )
+            adaptive_result["seed"] = seed
+            all_adaptive.append(adaptive_result)
+            scenario_results["adaptive"] = adaptive_result
+
+            # Also add r1/r2 as pseudo-conditions for aggregation
+            all_results["adaptive_r1"].append({
+                "seed": seed,
+                "condition": "adaptive_r1",
+                "predicted": adaptive_result["round_1"]["predicted"],
+                "scores": adaptive_result["round_1"]["scores"],
+            })
+            all_results["adaptive_r2"].append({
+                "seed": seed,
+                "condition": "adaptive_r2",
+                "predicted": adaptive_result["round_2"]["predicted"],
+                "scores": adaptive_result["round_2"]["scores"],
+            })
+
         # Save per-scenario results
         if output_dir:
             scenario_dir = Path(output_dir) / "per_scenario"
@@ -478,19 +685,34 @@ def run_causal_forecast(
                 }, f, indent=2, default=str)
 
     # Aggregate results
-    summary = _aggregate_results(all_results, all_baselines, conditions)
+    all_cond_keys = dict(conditions)
+    if run_adaptive:
+        all_cond_keys["adaptive_r1"] = None
+        all_cond_keys["adaptive_r2"] = None
+    summary = _aggregate_results(all_results, all_baselines, all_cond_keys)
+
+    # Aggregate adaptive graph revision stats
+    if run_adaptive and all_adaptive:
+        summary["adaptive_graph_revision"] = _aggregate_adaptive_revisions(all_adaptive)
 
     if verbose:
         print(f"\n{'=' * 60}")
         print("AGGREGATE RESULTS")
         print(f"{'=' * 60}")
-        for cond_name in conditions:
-            s = summary["conditions"][cond_name]
-            print(f"  {cond_name:15s}: MAE={s['mean_mae']:.4f}, "
-                  f"DirAcc={s.get('mean_dir_acc', 'N/A')}, "
-                  f"Spearman={s.get('mean_spearman', 'N/A')}")
+        for cond_name in all_cond_keys:
+            s = summary["conditions"].get(cond_name, {})
+            if s and s.get("mean_mae") is not None:
+                print(f"  {cond_name:15s}: MAE={s['mean_mae']:.4f}, "
+                      f"DirAcc={s.get('mean_dir_acc', 'N/A')}, "
+                      f"Spearman={s.get('mean_spearman', 'N/A')}")
         print(f"  {'last_value':15s}: MAE={summary['naive_baselines']['last_value']['mean_mae']:.4f}")
         print(f"  {'trend':15s}: MAE={summary['naive_baselines']['trend']['mean_mae']:.4f}")
+
+        if run_adaptive and "adaptive_graph_revision" in summary:
+            rev = summary["adaptive_graph_revision"]
+            print(f"\n  Adaptive graph revision:")
+            print(f"    SHD: {rev['mean_original_shd']:.1f} -> {rev['mean_revised_shd']:.1f}")
+            print(f"    Edges added: {rev['mean_edges_added']:.1f}, removed: {rev['mean_edges_removed']:.1f}")
 
     # Save aggregate results
     if output_dir:
@@ -561,6 +783,45 @@ def _aggregate_results(
     return summary
 
 
+def _aggregate_adaptive_revisions(all_adaptive: list[dict]) -> dict:
+    """Aggregate adaptive graph revision statistics across scenarios."""
+    original_shds = []
+    revised_shds = []
+    edges_added = []
+    edges_removed = []
+
+    for ar in all_adaptive:
+        rq = ar.get("revision_quality", {})
+        orig = rq.get("original", {})
+        rev = rq.get("revised", {})
+
+        if "shd" in orig:
+            original_shds.append(orig["shd"])
+        if "shd" in rev:
+            revised_shds.append(rev["shd"])
+
+        gr = ar.get("graph_revision", {})
+        edges_added.append(len(gr.get("edges_added", [])))
+        edges_removed.append(len(gr.get("edges_removed", [])))
+
+    return {
+        "mean_original_shd": round(float(np.mean(original_shds)), 2) if original_shds else None,
+        "mean_revised_shd": round(float(np.mean(revised_shds)), 2) if revised_shds else None,
+        "mean_edges_added": round(float(np.mean(edges_added)), 2) if edges_added else None,
+        "mean_edges_removed": round(float(np.mean(edges_removed)), 2) if edges_removed else None,
+        "per_scenario": [
+            {
+                "seed": ar.get("seed"),
+                "original_shd": ar.get("revision_quality", {}).get("original", {}).get("shd"),
+                "revised_shd": ar.get("revision_quality", {}).get("revised", {}).get("shd"),
+                "edges_added": len(ar.get("graph_revision", {}).get("edges_added", [])),
+                "edges_removed": len(ar.get("graph_revision", {}).get("edges_removed", [])),
+            }
+            for ar in all_adaptive
+        ],
+    }
+
+
 # =============================================================================
 # CLI
 # =============================================================================
@@ -604,6 +865,8 @@ def main():
                         help="Run all 3 conditions (discovered + GT + no_graph)")
     parser.add_argument("--no-baselines", action="store_true",
                         help="Only run the specified graph-source condition")
+    parser.add_argument("--adaptive", action="store_true",
+                        help="Run adaptive condition (revise graph from errors, re-forecast)")
     parser.add_argument("--dry-run", action="store_true",
                         help="Use mock LLM responses")
     parser.add_argument("--output-dir", default="",
@@ -638,6 +901,7 @@ def main():
         model=args.model,
         graph_source=args.graph_source,
         include_baselines=include_baselines,
+        adaptive=args.adaptive,
         dry_run=args.dry_run,
         output_dir=output_dir,
         verbose=not args.quiet,

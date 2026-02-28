@@ -649,6 +649,141 @@ Respond in JSON format:
 ```"""
 
 
+def build_graph_revision_prompt(
+    domain: str,
+    key_dv: str,
+    graph_edges: list[tuple],
+    predicted: list[float],
+    actual: list[float],
+    forecast_scores: dict,
+    variables: list[str],
+) -> str:
+    """Show prediction errors and ask model to revise its causal graph.
+
+    Includes:
+    - Current graph as edge list
+    - Per-period table: period | predicted | actual | error | direction match
+    - Summary stats (MAE, direction accuracy, bias)
+    - Ask: which edges explain the errors? Output revised edge list.
+
+    Expected JSON response:
+    {
+        "error_analysis": "What patterns in the errors suggest about causal structure",
+        "edges_to_add": [{"from": ..., "to": ..., "reasoning": ...}],
+        "edges_to_remove": [{"from": ..., "to": ..., "reasoning": ...}],
+        "revised_graph": [{"from": ..., "to": ...}, ...],
+        "revision_reasoning": "Overall rationale for changes"
+    }
+    """
+    # Format current graph
+    edge_lines = "\n".join(f"  {src} -> {dst}" for src, dst in graph_edges)
+
+    # Build per-period error table
+    n = min(len(predicted), len(actual))
+    table_lines = ["  Period | Predicted | Actual   | Error    | Direction"]
+    table_lines.append("  " + "-" * 55)
+    errors = []
+    for i in range(n):
+        err = predicted[i] - actual[i]
+        errors.append(err)
+        if i > 0:
+            pred_dir = "UP" if predicted[i] > predicted[i - 1] else "DOWN"
+            act_dir = "UP" if actual[i] > actual[i - 1] else "DOWN"
+            dir_match = "MATCH" if pred_dir == act_dir else "MISS"
+        else:
+            dir_match = "-"
+        table_lines.append(
+            f"  {i+1:6d} | {predicted[i]:9.4f} | {actual[i]:8.4f} | "
+            f"{err:+8.4f} | {dir_match}"
+        )
+
+    # Summary stats
+    errors_arr = np.array(errors)
+    bias = float(np.mean(errors_arr))
+    mae = forecast_scores.get("mae", float(np.mean(np.abs(errors_arr))))
+    dir_acc = forecast_scores.get("directional_accuracy", "N/A")
+
+    summary = (
+        f"  MAE: {mae:.4f}\n"
+        f"  Bias (mean error): {bias:+.4f}\n"
+        f"  Direction accuracy: {dir_acc}"
+    )
+
+    # Variable list for reference
+    var_list = ", ".join(variables)
+
+    return f"""\
+You previously forecasted {key_dv} for a {domain} simulation using the causal \
+graph below, but your predictions had errors. Analyze the error patterns to \
+diagnose potential problems in the causal graph, then output a revised graph.
+
+CURRENT CAUSAL GRAPH ({len(graph_edges)} edges):
+{edge_lines}
+
+PREDICTION ERRORS:
+{chr(10).join(table_lines)}
+
+SUMMARY STATISTICS:
+{summary}
+
+ALL VARIABLES: {var_list}
+
+TASK:
+1. Analyze the error patterns — what do systematic biases or direction misses \
+suggest about missing or incorrect causal edges?
+2. Identify edges to add (missing causal pathways) or remove (spurious edges).
+3. Output a complete revised graph.
+
+Respond in JSON format:
+```json
+{{
+    "error_analysis": "What patterns in the errors suggest about causal structure",
+    "edges_to_add": [{{"from": "var1", "to": "var2", "reasoning": "why"}}],
+    "edges_to_remove": [{{"from": "var1", "to": "var2", "reasoning": "why"}}],
+    "revised_graph": [{{"from": "var1", "to": "var2"}}, ...],
+    "revision_reasoning": "Overall rationale for changes"
+}}
+```"""
+
+
+def mock_graph_revision_response(
+    domain: str, graph_edges: list[tuple], variables: list[str],
+) -> str:
+    """Dry-run mock: return graph with 1 edge added, 1 removed."""
+    # Build revised edges: remove last edge, add a new one
+    revised = list(graph_edges)
+
+    # Remove one edge (last one)
+    removed_edge = revised.pop() if revised else None
+
+    # Add one edge: find a pair not already in the graph
+    edge_set = {(s, d) for s, d in revised}
+    added_edge = None
+    for i, v1 in enumerate(variables):
+        for v2 in variables[i + 1:]:
+            if (v1, v2) not in edge_set:
+                added_edge = (v1, v2)
+                revised.append(added_edge)
+                break
+        if added_edge:
+            break
+
+    result = {
+        "error_analysis": "Mock analysis: systematic bias suggests missing causal pathway.",
+        "edges_to_add": [
+            {"from": added_edge[0], "to": added_edge[1],
+             "reasoning": "Mock: potential missing pathway"} if added_edge else {}
+        ],
+        "edges_to_remove": [
+            {"from": removed_edge[0], "to": removed_edge[1],
+             "reasoning": "Mock: edge may be spurious"} if removed_edge else {}
+        ],
+        "revised_graph": [{"from": s, "to": d} for s, d in revised],
+        "revision_reasoning": "Dry-run mock: removed 1 edge, added 1 edge.",
+    }
+    return json.dumps(result)
+
+
 def mock_forecast_response(
     domain: str, n_forecast: int, history_data: dict,
 ) -> str:

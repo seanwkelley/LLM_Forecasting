@@ -348,6 +348,14 @@ PID is most meaningful in the **independent** condition, where synergy is emerge
 
 ## Agent Design
 
+### Problem framing: known-node, unknown-edge discovery
+
+The causal discovery task is formulated as a **known-node, unknown-edge** problem. Agents receive the complete list of variable names (13 market, 14 conflict) upfront — they are told exactly which nodes exist in the causal graph. Their task is purely to determine which directed edges exist between those nodes, using observational data and interventional queries.
+
+This is a deliberate design choice, not a limitation. The variable sets are derived from the engine's state representation and are fixed across all conditions, models, and domains. The observation prompt lists all variables (`VARIABLES: {', '.join(variables)}`), the intervention prompt repeats them (`AVAILABLE VARIABLES: ...`), and the declaration prompt asks the agent to enumerate parents and children for each variable by name. Node discovery is never required.
+
+This framing isolates the edge-discovery reasoning capacity from the separate (and easier) task of identifying which quantities exist in a system. It also enables clean scoring via adjacency matrix comparison — the estimated and ground truth matrices share the same row/column ordering by construction.
+
 ### Causal hypothesis representation
 
 Agents maintain a **confidence matrix** over possible directed edges. For N variables, this is an N×N matrix where each cell is a confidence level (absent / uncertain / present) for the directed edge row→col.
@@ -625,3 +633,64 @@ Conflict recall improved **16% → 29%** (1.8× increase). Smaller improvement b
 6. **Model comparison** — DeepSeek V3 and Llama 3.3 70B produced identical results on the original (limited) return vars, confirming data observability as the bottleneck rather than model quality. Systematic model comparison on the improved pipeline is still needed.
 
 7. **Conflict nonlinearity** — The interaction modifier (mutual escalation ×1.2, mixed ×0.8) means `action_A → EI` depends on `action_B`. Single-variable interventions cannot fully capture this. May need multi-variable interventions or factorial designs.
+
+---
+
+## Supplementary Tests: Oracle QA & Hidden Variable Detection
+
+Two standalone evaluation scripts that probe causal *understanding* beyond edge recovery.
+
+### 1. Oracle QA (`causal_discovery/oracle_qa.py`)
+
+A programmatic oracle generates causal questions deterministically from the ground truth adjacency matrix. The agent receives one question at a time with a small intervention budget (default 3), runs experiments, and answers. Each question is a standalone mini-test with a distinct pipeline (question → interventions → answer) rather than the full graph-recovery pipeline.
+
+**Question types** (3 each, 12 total by default):
+
+| Type | Example | Scoring |
+|---|---|---|
+| **Counterfactual** | "If production_cost were fixed at 0, would clearing_price change?" | Binary: correct yes/no |
+| **Mechanism** | "What mediates the effect of shock on clearing_price?" | Partial: 0.5 mediator + 0.5 direct/indirect |
+| **Robustness** | "Would the effect of production_cost on volume vanish if agent_orders were held constant?" | Binary: correct vanishes/persists |
+| **Direction** | "Does cash cause agent_orders, or does agent_orders cause cash?" | Binary: correct direction |
+
+Questions are generated from graph structure (edges, 2-hop paths, path-finding) using a deterministic seed. Question generators sample from available edges/paths to avoid bias toward specific subgraphs.
+
+```bash
+python -m causal_discovery.oracle_qa --domain market --budget 3 --dry-run
+python -m causal_discovery.oracle_qa --domain conflict --n-per-type 4
+```
+
+**Output:** `outputs/causal_discovery/oracle_qa/{domain}_{model}/results.json`
+
+### 2. Hidden Variable Detection (`causal_discovery/hidden_variables.py`)
+
+Runs the full graph recovery pipeline (`run_single_agent`) but with k variables removed from the agent's view. The simulation still runs with all variables internally — only the agent's variable list and system prompt are modified (rebuilt from a template, not string-replaced).
+
+**Variable selection:** k variables are drawn uniformly at random (not hand-picked) to avoid experimenter bias. Degenerate draws (where the reduced GT has 0 edges) are filtered out. Each condition records structural metadata for post-hoc analysis:
+- `n_collapsed_candidates`: how many A→[hidden]→C paths exist (false-positive traps)
+- `hidden_in_degree` / `hidden_out_degree`: centrality of hidden nodes
+
+**Scoring** uses strict submatrix comparison (NOT transitive closure):
+- **Standard scores**: precision, recall, F1, SHD against the reduced GT (only edges where both endpoints are visible)
+- **Collapsed-edge analysis**: when A→H→C exists but A→C does not, does the agent declare A→C? Tracked as collapsed-edge false positives with a collapsed rate metric
+- **Hidden variable awareness**: keyword scan of agent conversation for mentions of "hidden", "latent", "unobserved", "missing variable", etc.
+
+```bash
+python -m causal_discovery.hidden_variables --domain market --k 3 --n-draws 5 --dry-run
+python -m causal_discovery.hidden_variables --domain conflict --k 3 --n-draws 5
+```
+
+**Output:** `outputs/causal_discovery/hidden_variables/{domain}_{model}/results.json`
+
+### Llama 3.1 8B results
+
+**Oracle QA** (budget=3 per question, 12 questions):
+
+| Domain | Overall | Counterfactual | Mechanism | Robustness | Direction |
+|--------|:---:|:---:|:---:|:---:|:---:|
+| Market | 16.7% (2/12) | 0/3 | 1/3 | 0/3 | 1/3 |
+| Conflict | 25.0% (3/12) | 0/3 | 1/3 | 1/3 | 1/3 |
+
+8B fails all counterfactuals (answers "no" to real causal edges) and most direction questions (reverses causality). Mechanism questions earn partial credit for naming mediators but miss direct/indirect classification.
+
+**Hidden Variable Detection** (k=3, budget=30, 5 random draws per domain): *results pending re-run with random sampling*

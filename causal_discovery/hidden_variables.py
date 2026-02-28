@@ -5,6 +5,14 @@ Runs the full graph recovery pipeline (run_single_agent) but with some variables
 removed from the agent's view. The simulation still runs with all variables
 internally — only the agent's variable list and system prompt are modified.
 
+Which variables are hidden is determined by random sampling: k variables are
+drawn uniformly at random from the full variable set, repeated for n_draws
+independent conditions. This avoids experimenter bias in selecting which
+variables to hide. Degenerate draws (where the reduced GT has 0 edges) are
+filtered out. Each condition records structural metadata (number of collapsed-
+edge candidates, in/out-degree of hidden nodes) for post-hoc analysis of which
+structural roles predict performance degradation.
+
 Scoring: strict subset (NOT transitive closure). When A→B→C and B is hidden,
 A→C is INCORRECT. The reduced GT is the submatrix of the full GT restricted to
 visible variable indices. Agent declaring A→C is a collapsed-edge false positive.
@@ -12,18 +20,15 @@ visible variable indices. Agent declaring A→C is a collapsed-edge false positi
 Usage:
     python -m causal_discovery.hidden_variables --domain market --dry-run
     python -m causal_discovery.hidden_variables --domain conflict --dry-run
-    python -m causal_discovery.hidden_variables --domain market --condition hide_agent_orders
+    python -m causal_discovery.hidden_variables --domain market --k 3 --n-draws 5
     python -m causal_discovery.hidden_variables --domain conflict --budget 15
 """
 
 from __future__ import annotations
 
 import argparse
-import copy
 import json
-import os
 import sys
-import time
 from pathlib import Path
 
 import numpy as np
@@ -43,26 +48,69 @@ from causal_discovery.prompts_tests import build_hidden_variable_system_prompt
 
 
 # =============================================================================
-# Hidden variable conditions
+# Random hidden variable condition generation
 # =============================================================================
 
-MARKET_HIDDEN_CONDITIONS = [
-    {"name": "hide_agent_orders",     "hidden": ["agent_orders"]},
-    {"name": "hide_price_history",    "hidden": ["price_history"]},
-    {"name": "hide_clearing_price",   "hidden": ["clearing_price"]},
-    {"name": "hide_shock",            "hidden": ["shock"]},
-    {"name": "hide_orders_and_hist",  "hidden": ["agent_orders", "price_history"]},
-    {"name": "hide_3_intermediates",  "hidden": ["agent_orders", "price_history", "fundamental_price"]},
-]
+def generate_hidden_conditions(
+    domain: str,
+    k: int = 3,
+    n_draws: int = 5,
+    seed: int = 42,
+) -> list[dict]:
+    """Generate random hidden variable conditions by sampling k variables to hide.
 
-CONFLICT_HIDDEN_CONDITIONS = [
-    {"name": "hide_faction_action",   "hidden": ["faction_action"]},
-    {"name": "hide_agent_rec",        "hidden": ["agent_recommendation"]},
-    {"name": "hide_shock",            "hidden": ["shock"]},
-    {"name": "hide_gdp",             "hidden": ["gdp"]},
-    {"name": "hide_faction_and_rec",  "hidden": ["faction_action", "agent_recommendation"]},
-    {"name": "hide_3_state_vars",     "hidden": ["gdp", "political_stability", "military_balance"]},
-]
+    Filters out degenerate draws where the reduced ground truth has 0 edges.
+    Each condition includes structural metadata (n_collapsed_candidates,
+    hidden_in_degree, hidden_out_degree) for post-hoc analysis.
+    """
+    if domain == "market":
+        full_gt = get_market_ground_truth()
+        full_variables = MARKET_VARIABLES
+    else:
+        full_gt = get_conflict_ground_truth()
+        full_variables = CONFLICT_VARIABLES
+
+    rng = np.random.default_rng(seed)
+    conditions = []
+    attempts = 0
+    max_attempts = n_draws * 20
+
+    while len(conditions) < n_draws and attempts < max_attempts:
+        attempts += 1
+        hidden = [str(v) for v in rng.choice(full_variables, size=k, replace=False)]
+
+        # Filter degenerate: reduced GT must have at least 1 edge
+        reduced_gt, visible_vars = compute_reduced_ground_truth(
+            full_gt, full_variables, hidden,
+        )
+        n_edges = int(np.sum(reduced_gt))
+        if n_edges == 0:
+            continue
+
+        # Check for duplicate draws
+        hidden_sorted = tuple(sorted(hidden))
+        if any(tuple(sorted(c["hidden"])) == hidden_sorted for c in conditions):
+            continue
+
+        # Compute structural metadata
+        collapsed = find_collapsed_edges(full_gt, full_variables, hidden)
+        var_idx = {v: i for i, v in enumerate(full_variables)}
+        hidden_in = sum(int(np.sum(full_gt[:, var_idx[h]])) for h in hidden)
+        hidden_out = sum(int(np.sum(full_gt[var_idx[h], :])) for h in hidden)
+
+        name = "hide_" + "_".join(sorted(hidden))
+        conditions.append({
+            "name": name,
+            "hidden": hidden,
+            "metadata": {
+                "reduced_gt_edges": n_edges,
+                "n_collapsed_candidates": len(collapsed),
+                "hidden_in_degree": hidden_in,
+                "hidden_out_degree": hidden_out,
+            },
+        })
+
+    return conditions
 
 
 # =============================================================================
@@ -283,6 +331,8 @@ def score_hidden_condition(
 def run_hidden_variables(
     domain: str = "market",
     conditions: list[dict] | None = None,
+    k: int = 3,
+    n_draws: int = 5,
     budget: int = 30,
     n_warmup: int = 10,
     seed: int = 42,
@@ -295,12 +345,13 @@ def run_hidden_variables(
     """Run hidden variable detection across multiple conditions.
 
     For each condition: setup_hidden_domain → run_single_agent → score → save.
+
+    If conditions is None, generates n_draws random conditions hiding k variables.
     """
     if conditions is None:
-        if domain == "market":
-            conditions = MARKET_HIDDEN_CONDITIONS
-        else:
-            conditions = CONFLICT_HIDDEN_CONDITIONS
+        conditions = generate_hidden_conditions(
+            domain, k=k, n_draws=n_draws, seed=seed,
+        )
 
     if domain == "market":
         full_gt = get_market_ground_truth()
@@ -379,6 +430,9 @@ def run_hidden_variables(
             "agent_hypothesized_hidden": awareness["agent_hypothesized_hidden"],
             "llm_calls": agent_result.llm_calls,
         }
+        # Include structural metadata if present
+        if "metadata" in cond:
+            row["metadata"] = cond["metadata"]
         summary_rows.append(row)
 
         if verbose:
@@ -414,6 +468,8 @@ def run_hidden_variables(
     summary = {
         "domain": domain,
         "model": model,
+        "k_hidden": k,
+        "n_draws": n_draws,
         "budget": budget,
         "n_warmup": n_warmup,
         "seed": seed,
@@ -467,8 +523,10 @@ def main():
         description="Hidden Variable Detection for Causal Discovery",
     )
     parser.add_argument("--domain", default="market", choices=["market", "conflict"])
-    parser.add_argument("--condition", default=None,
-                       help="Run a single condition by name (e.g. hide_agent_orders)")
+    parser.add_argument("--k", type=int, default=3,
+                       help="Number of variables to hide per condition")
+    parser.add_argument("--n-draws", type=int, default=5,
+                       help="Number of random conditions to generate")
     parser.add_argument("--budget", type=int, default=30)
     parser.add_argument("--n-warmup", type=int, default=10)
     parser.add_argument("--seed", type=int, default=42)
@@ -482,22 +540,10 @@ def main():
     from causal_discovery.multi_agent.runner import _load_api_key
     api_key = args.dry_run and "dry-run" or _load_api_key()
 
-    # Filter to single condition if specified
-    conditions = None
-    if args.condition:
-        if args.domain == "market":
-            all_conds = MARKET_HIDDEN_CONDITIONS
-        else:
-            all_conds = CONFLICT_HIDDEN_CONDITIONS
-        conditions = [c for c in all_conds if c["name"] == args.condition]
-        if not conditions:
-            names = [c["name"] for c in all_conds]
-            print(f"Unknown condition '{args.condition}'. Available: {names}")
-            sys.exit(1)
-
     run_hidden_variables(
         domain=args.domain,
-        conditions=conditions,
+        k=args.k,
+        n_draws=args.n_draws,
         budget=args.budget,
         n_warmup=args.n_warmup,
         seed=args.seed,

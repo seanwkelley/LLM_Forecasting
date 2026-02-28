@@ -638,59 +638,99 @@ Conflict recall improved **16% → 29%** (1.8× increase). Smaller improvement b
 
 ## Supplementary Tests: Oracle QA & Hidden Variable Detection
 
-Two standalone evaluation scripts that probe causal *understanding* beyond edge recovery.
+Two standalone evaluation scripts that probe causal *understanding* beyond edge recovery. The main graph recovery test measures structural knowledge (can the agent enumerate edges?), but these tests ask whether the agent can *reason* about causal relationships — answer targeted questions and recognize when its world model is incomplete.
 
 ### 1. Oracle QA (`causal_discovery/oracle_qa.py`)
 
-A programmatic oracle generates causal questions deterministically from the ground truth adjacency matrix. The agent receives one question at a time with a small intervention budget (default 3), runs experiments, and answers. Each question is a standalone mini-test with a distinct pipeline (question → interventions → answer) rather than the full graph-recovery pipeline.
+**Motivation.** Graph recovery conflates two distinct capabilities: (1) designing informative interventions and (2) interpreting results to answer causal questions. An agent might recover edges poorly but still reason correctly about specific causal claims, or vice versa. Oracle QA isolates the reasoning capability by posing targeted questions that can be answered with a small number of well-chosen experiments.
+
+**Method.** A programmatic oracle generates causal questions deterministically from the ground truth adjacency matrix (no LLM involved in question generation). The agent receives one question at a time with a small intervention budget (default 3), runs experiments against the simulation engine, and answers. Each question is a standalone mini-test with a distinct pipeline (question → interventions → answer) rather than the full 3-phase graph-recovery pipeline.
 
 **Question types** (3 each, 12 total by default):
 
-| Type | Example | Scoring |
-|---|---|---|
-| **Counterfactual** | "If production_cost were fixed at 0, would clearing_price change?" | Binary: correct yes/no |
-| **Mechanism** | "What mediates the effect of shock on clearing_price?" | Partial: 0.5 mediator + 0.5 direct/indirect |
-| **Robustness** | "Would the effect of production_cost on volume vanish if agent_orders were held constant?" | Binary: correct vanishes/persists |
-| **Direction** | "Does cash cause agent_orders, or does agent_orders cause cash?" | Binary: correct direction |
+| Type | What it tests | Example | Scoring |
+|---|---|---|---|
+| **Counterfactual** | Effect existence | "If production_cost were fixed at 0, would clearing_price change?" | Binary: correct yes/no |
+| **Mechanism** | Path identification | "What mediates the effect of shock on clearing_price?" | Partial: 0.5 for naming mediator + 0.5 for direct/indirect |
+| **Robustness** | Conditional independence | "Would the effect of production_cost on volume vanish if agent_orders were held constant?" | Binary: correct vanishes/persists |
+| **Direction** | Causal orientation | "Does cash cause agent_orders, or does agent_orders cause cash?" | Binary: correct direction |
 
-Questions are generated from graph structure (edges, 2-hop paths, path-finding) using a deterministic seed. Question generators sample from available edges/paths to avoid bias toward specific subgraphs.
+Question generators sample from edges, 2-hop paths, and path-finding on the adjacency matrix using a deterministic seed. Questions are filtered to ensure they reference valid structural features (e.g., robustness questions require a path A→M→C with no direct A→C edge).
 
 ```bash
 python -m causal_discovery.oracle_qa --domain market --budget 3 --dry-run
 python -m causal_discovery.oracle_qa --domain conflict --n-per-type 4
+python -m causal_discovery.oracle_qa --domain market --model meta-llama/llama-3.3-70b-instruct
 ```
 
-**Output:** `outputs/causal_discovery/oracle_qa/{domain}_{model}/results.json`
+**Output:** `outputs/causal_discovery/oracle_qa/{domain}_{model}/results.json` with per-question detail in `per_question/q01.json`.
 
 ### 2. Hidden Variable Detection (`causal_discovery/hidden_variables.py`)
 
-Runs the full graph recovery pipeline (`run_single_agent`) but with k variables removed from the agent's view. The simulation still runs with all variables internally — only the agent's variable list and system prompt are modified (rebuilt from a template, not string-replaced).
+**Motivation.** Real-world causal discovery always operates with incomplete variable sets. The main graph recovery test gives the agent a complete variable list, but in practice there are always unmeasured confounders, mediators, and common causes. This test measures (a) how robust graph recovery is when variables are missing, (b) whether the agent introduces spurious direct edges to "explain" effects that actually flow through hidden mediators, and (c) whether the agent recognizes that its variable set may be incomplete.
 
-**Variable selection:** k variables are drawn uniformly at random (not hand-picked) to avoid experimenter bias. Degenerate draws (where the reduced GT has 0 edges) are filtered out. Each condition records structural metadata for post-hoc analysis:
-- `n_collapsed_candidates`: how many A→[hidden]→C paths exist (false-positive traps)
-- `hidden_in_degree` / `hidden_out_degree`: centrality of hidden nodes
+**Method.** Runs the full graph recovery pipeline (`run_single_agent`) unchanged, but with k variables removed from the agent's view. The simulation still runs with all variables internally — only the agent's variable list and system prompt are modified. The system prompt is rebuilt from a template using per-variable description dicts (not string-replaced from the original prompt), and does not hint that any variables have been removed.
 
-**Scoring** uses strict submatrix comparison (NOT transitive closure):
-- **Standard scores**: precision, recall, F1, SHD against the reduced GT (only edges where both endpoints are visible)
-- **Collapsed-edge analysis**: when A→H→C exists but A→C does not, does the agent declare A→C? Tracked as collapsed-edge false positives with a collapsed rate metric
-- **Hidden variable awareness**: keyword scan of agent conversation for mentions of "hidden", "latent", "unobserved", "missing variable", etc.
+**Variable selection.** k variables are drawn uniformly at random (not hand-picked) to avoid experimenter bias. Degenerate draws where the reduced ground truth has 0 edges are filtered out and redrawn. Each condition records structural metadata for post-hoc analysis:
+- `n_collapsed_candidates`: how many A→[hidden]→C paths exist where A→C is not a direct edge (false-positive traps)
+- `hidden_in_degree` / `hidden_out_degree`: centrality of hidden nodes in the full graph
+- `reduced_gt_edges`: number of true edges in the reduced ground truth
+
+**Scoring** uses strict submatrix comparison (NOT transitive closure). When A→B→C exists and B is hidden, the reduced ground truth does NOT include A→C — only direct edges in the full GT where both endpoints are visible count as true positives:
+- **Standard scores**: precision, recall, F1, SHD against the reduced GT
+- **Collapsed-edge analysis**: when A→H→C exists but A→C does not in the full GT, does the agent declare A→C? Tracked as collapsed-edge false positives with a per-condition collapsed rate
+- **Hidden variable awareness**: keyword scan of agent conversation for mentions of "hidden", "latent", "unobserved", "missing variable", "confound", "unmeasured", "omitted", etc. Distinguishes between flagging unexplained effects (awareness) and explicitly hypothesizing a hidden variable (hypothesis)
 
 ```bash
 python -m causal_discovery.hidden_variables --domain market --k 3 --n-draws 5 --dry-run
 python -m causal_discovery.hidden_variables --domain conflict --k 3 --n-draws 5
+python -m causal_discovery.hidden_variables --domain market --model meta-llama/llama-3.3-70b-instruct
 ```
 
-**Output:** `outputs/causal_discovery/hidden_variables/{domain}_{model}/results.json`
+**Output:** `outputs/causal_discovery/hidden_variables/{domain}_{model}/results.json` with per-condition detail in `per_condition/` and conversation logs in `conversation_logs/`.
 
-### Llama 3.1 8B results
+### Results
 
-**Oracle QA** (budget=3 per question, 12 questions):
+#### Oracle QA (budget=3 per question, 12 questions per domain)
 
-| Domain | Overall | Counterfactual | Mechanism | Robustness | Direction |
-|--------|:---:|:---:|:---:|:---:|:---:|
-| Market | 16.7% (2/12) | 0/3 | 1/3 | 0/3 | 1/3 |
-| Conflict | 25.0% (3/12) | 0/3 | 1/3 | 1/3 | 1/3 |
+| Model | Domain | Overall | Counterfactual | Mechanism | Robustness | Direction |
+|-------|--------|:---:|:---:|:---:|:---:|:---:|
+| Llama 8B | Market | 16.7% (2/12) | 0/3 | 1/3 | 0/3 | 1/3 |
+| Llama 8B | Conflict | 25.0% (3/12) | 0/3 | 1/3 | 1/3 | 1/3 |
+| Llama 70B | Market | 33.3% (4/12) | 0/3 | 1/3 | 1/3 | 2/3 |
+| Llama 70B | Conflict | 8.3% (1/12) | 0/3 | 0/3 | 1/3 | 0/3 |
 
-8B fails all counterfactuals (answers "no" to real causal edges) and most direction questions (reverses causality). Mechanism questions earn partial credit for naming mediators but miss direct/indirect classification.
+**Partial credit (mechanism questions):**
 
-**Hidden Variable Detection** (k=3, budget=30, 5 random draws per domain): *results pending re-run with random sampling*
+| Model | Domain | Mean partial credit |
+|-------|--------|:---:|
+| Llama 8B | Market | 0.50 |
+| Llama 8B | Conflict | 0.50 |
+| Llama 70B | Market | 0.67 |
+| Llama 70B | Conflict | 0.50 |
+
+**Failure modes:**
+- **Counterfactual (0/12 across all runs):** Both models systematically answer "no" — denying that fixing upstream variables affects downstream ones, even when the causal link is direct. This is the most consistent failure: neither model can interpret intervention results to detect effect existence.
+- **Direction:** 70B improves in market (2/3 vs 1/3) but collapses in conflict (0/3 vs 1/3). Both models tend to reverse causality along intuitive lines (e.g., `price_history → clearing_price` instead of the reverse).
+- **Mechanism:** Both models earn partial credit (~0.50–0.67) for identifying that mediation exists, but struggle to name the correct mediator or classify direct vs indirect. 70B shows higher partial credit in market (0.67) suggesting better path reasoning in the simpler domain.
+- **Robustness:** Both models get 1/3 in each domain — performance is at chance level (questions are binary yes/no).
+- **70B conflict regression:** 70B scores worse than 8B on conflict (8.3% vs 25.0%), driven by 0/3 on both direction and mechanism. The longer causal chains in the conflict domain (3+ hops) appear to confuse 70B more than 8B, possibly because 70B attempts more sophisticated reasoning that goes wrong on complex paths.
+
+#### Hidden Variable Detection (k=3, budget=30, 5 random draws per domain)
+
+| Model | Domain | Mean F1 | Mean SHD | Mean Collapsed Rate | Awareness Rate | Hypothesis Rate |
+|-------|--------|:-------:|:--------:|:-------------------:|:--------------:|:---------------:|
+| Llama 8B | Market | 0.407 | 14.2 | 52.6% | 20% (1/5) | 0% |
+| Llama 8B | Conflict | 0.270 | 15.2 | 19.5% | 0% (0/5) | 0% |
+| Llama 70B | Market | 0.414 | 15.0 | 69.8% | 0% (0/5) | 0% |
+| Llama 70B | Conflict | 0.322 | 17.2 | 28.8% | 20% (1/5) | 0% |
+
+**Key findings:**
+
+1. **Scaling does not help with collapsed edges.** 70B achieves marginally better F1 than 8B (+0.007 market, +0.052 conflict) but has substantially *higher* collapsed-edge rates (69.8% vs 52.6% in market, 28.8% vs 19.5% in conflict). The larger model declares more total edges per condition (mean ~30 vs ~17 in market), which improves recall but also captures more spurious collapsed paths.
+
+2. **Market is more susceptible than conflict.** Collapsed rates are 2–3× higher in the market domain across both models, likely because the market graph has denser short mediating paths (many 2-hop chains through `agent_orders`, `clearing_price`, `price_history`).
+
+3. **No hidden variable reasoning.** Neither model ever hypothesizes a hidden variable (hypothesis rate = 0% everywhere). Awareness — flagging unexplained effects without attributing them to a missing variable — occurs in only 1/5 conditions for a single model-domain pair. LLMs at this scale appear to lack the metacognitive capacity to question the completeness of their variable set.
+
+4. **Structural metadata correlations.** Conditions with more collapsed candidates (higher `n_collapsed_candidates`) tend to produce higher collapsed rates, but the relationship is noisy. High hidden-node centrality (in-degree + out-degree) does not reliably predict worse F1, suggesting the impact depends more on *which* variables are hidden than how connected they are.

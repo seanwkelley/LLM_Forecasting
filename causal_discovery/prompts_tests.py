@@ -555,3 +555,123 @@ def mock_qa_response(
             }
 
     return {}
+
+
+# =============================================================================
+# Forecast prompts (causal_forecast.py)
+# =============================================================================
+
+def build_forecast_system_prompt(
+    domain: str, variables: list[str], graph_edges: list[tuple] | None,
+) -> str:
+    """Domain description + causal graph (if provided) for forecasting.
+
+    If graph_edges is None (no_graph condition), omit causal structure.
+    If provided, format as readable edge list.
+    """
+    if domain == "market":
+        descriptions = MARKET_VARIABLE_DESCRIPTIONS
+        domain_desc = (
+            "You are analyzing a simulated commodity market with producers, "
+            "consumers, and speculators. The key outcome variable is "
+            "clearing_price — the market-clearing price each period."
+        )
+    else:
+        descriptions = CONFLICT_VARIABLE_DESCRIPTIONS
+        domain_desc = (
+            "You are analyzing a simulated geopolitical conflict between two "
+            "factions (Novaris and Tethys). The key outcome variable is "
+            "escalation_index — the overall conflict intensity (0-10 scale)."
+        )
+
+    var_lines = "\n".join(
+        f"- {v}: {descriptions.get(v, v)}" for v in variables
+    )
+
+    prompt = f"""{domain_desc}
+
+VARIABLES:
+{var_lines}
+"""
+
+    if graph_edges is not None:
+        edge_lines = "\n".join(f"  {src} -> {dst}" for src, dst in graph_edges)
+        prompt += f"""
+CAUSAL STRUCTURE (discovered edges):
+{edge_lines}
+
+Use this causal graph to reason about how variables influence each other \
+over time. When forecasting, trace causal pathways forward: how will \
+upstream changes propagate through the graph to affect downstream variables?
+"""
+    else:
+        prompt += """
+No causal structure is provided. Use the time-series patterns and your \
+general knowledge to make forecasts.
+"""
+
+    return prompt
+
+
+def build_forecast_prompt(
+    domain: str, history_summary: str, n_forecast: int, key_dv: str,
+) -> str:
+    """Ask LLM to forecast next N periods.
+
+    Expected JSON response format:
+    {"forecasts": [{"period": N, "<key_dv>": float, "reasoning": str}, ...],
+     "overall_reasoning": str}
+    """
+    return f"""\
+Based on the simulation history below, forecast the next {n_forecast} periods \
+for {key_dv}.
+
+SIMULATION HISTORY:
+{history_summary}
+
+Forecast the next {n_forecast} periods. For each period, predict the value of \
+{key_dv} and explain your reasoning. Consider:
+1. Recent trends and momentum
+2. Mean-reversion tendencies
+3. Causal pathways (if a causal graph was provided)
+4. Any cyclical patterns
+
+Respond in JSON format:
+```json
+{{
+    "forecasts": [
+        {{"period": 1, "{key_dv}": <predicted_value>, "reasoning": "..."}},
+        {{"period": 2, "{key_dv}": <predicted_value>, "reasoning": "..."}},
+        ...
+    ],
+    "overall_reasoning": "High-level explanation of your forecast trajectory"
+}}
+```"""
+
+
+def mock_forecast_response(
+    domain: str, n_forecast: int, history_data: dict,
+) -> str:
+    """Dry-run mock: flat forecast repeating last observed value."""
+    if domain == "market":
+        prices = history_data.get("price_history", [100.0])
+        last_val = prices[-1]
+        key_dv = "clearing_price"
+    else:
+        ei = history_data.get("escalation_history", [5.0])
+        last_val = ei[-1]
+        key_dv = "escalation_index"
+
+    forecasts = []
+    for i in range(n_forecast):
+        forecasts.append({
+            "period": i + 1,
+            key_dv: round(last_val, 4),
+            "reasoning": "Flat forecast (dry-run mock)",
+        })
+
+    result = {
+        "forecasts": forecasts,
+        "overall_reasoning": "Dry-run mock: repeating last observed value.",
+    }
+    return json.dumps(result)

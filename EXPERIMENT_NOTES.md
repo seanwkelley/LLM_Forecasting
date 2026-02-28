@@ -900,8 +900,8 @@ python -m causal_discovery.causal_forecast --domain market --dry-run --adaptive 
 
 | Condition | Llama 8B | Llama 70B |
 |---|---|---|
-| **adaptive_r2** | 8.20 | **7.91** |
-| discovered / adaptive_r1 | 10.12 | 8.25 |
+| **adaptive** | 8.20 | **7.91** |
+| discovered | 10.12 | 8.25 |
 | no_graph | **6.79** | 8.50 |
 | last_value baseline | 8.81 | 8.81 |
 | ground_truth | 7.78 | 10.15 |
@@ -912,10 +912,10 @@ python -m causal_discovery.causal_forecast --domain market --dry-run --adaptive 
 | Condition | Llama 8B | Llama 70B |
 |---|---|---|
 | last_value baseline | 0.765 | 0.765 |
-| discovered / adaptive_r1 | **0.758** | 0.863 |
+| discovered | **0.758** | 0.863 |
 | no_graph | 0.789 | **0.808** |
 | ground_truth | 1.100 | 0.836 |
-| adaptive_r2 | 1.013 | 0.991 |
+| adaptive | 1.013 | 0.991 |
 | trend baseline | 1.184 | 1.184 |
 
 *Adaptive graph revision quality (SHD, lower = better):*
@@ -929,7 +929,7 @@ python -m causal_discovery.causal_forecast --domain market --dry-run --adaptive 
 
 **Key findings:**
 
-1. **Adaptive helps market, hurts conflict — consistent across model sizes.** Market adaptive_r2 is the best 70B condition (MAE 7.91), beating discovered (8.25), GT (10.15), and no_graph (8.50). Conflict adaptive_r2 is the worst condition at both scales. Market has shorter causal chains (2-hop through `agent_orders`) whose error patterns are diagnosable; conflict's 3+ hop chains with nonlinear interaction modifiers are beyond error-to-structure reasoning.
+1. **Adaptive helps market, hurts conflict — consistent across model sizes.** Market adaptive is the best 70B condition (MAE 7.91), beating discovered (8.25), GT (10.15), and no_graph (8.50). Conflict adaptive is the worst condition at both scales. Market has shorter causal chains (2-hop through `agent_orders`) whose error patterns are diagnosable; conflict's 3+ hop chains with nonlinear interaction modifiers are beyond error-to-structure reasoning.
 
 2. **"More info hurts" reproduces, with a 70B exception.** At 8B, no_graph beats everything in market (6.79). At 70B, discovered (8.25) beats no_graph (8.50) — the larger model can leverage imperfect causal knowledge. But GT (10.15) is worst at both scales — perfect knowledge induces overthinking.
 

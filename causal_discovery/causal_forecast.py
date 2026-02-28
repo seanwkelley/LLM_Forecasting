@@ -436,7 +436,7 @@ def _run_adaptive_condition(
     round2_result = _run_forecast_condition(
         domain_setup=domain_setup,
         graph_edges=revised_edges,
-        condition_name="adaptive_r2",
+        condition_name="adaptive",
         actual=actual,
         n_forecast=n_forecast,
         api_key=api_key,
@@ -447,10 +447,6 @@ def _run_adaptive_condition(
 
     return {
         "condition": "adaptive",
-        "round_1": {
-            "predicted": round1_predicted,
-            "scores": round1_scores,
-        },
         "graph_revision": {
             "original_edges": len(discovered_edges),
             "revised_edges": len(revised_edges),
@@ -589,8 +585,7 @@ def run_causal_forecast(
     # Run across scenarios
     all_results = {cond: [] for cond in conditions}
     if run_adaptive:
-        all_results["adaptive_r1"] = []
-        all_results["adaptive_r2"] = []
+        all_results["adaptive"] = []
     all_adaptive = []
     all_baselines = []
 
@@ -659,16 +654,10 @@ def run_causal_forecast(
             all_adaptive.append(adaptive_result)
             scenario_results["adaptive"] = adaptive_result
 
-            # Also add r1/r2 as pseudo-conditions for aggregation
-            all_results["adaptive_r1"].append({
+            # Add round 2 scores for aggregation (round 1 == discovered)
+            all_results["adaptive"].append({
                 "seed": seed,
-                "condition": "adaptive_r1",
-                "predicted": adaptive_result["round_1"]["predicted"],
-                "scores": adaptive_result["round_1"]["scores"],
-            })
-            all_results["adaptive_r2"].append({
-                "seed": seed,
-                "condition": "adaptive_r2",
+                "condition": "adaptive",
                 "predicted": adaptive_result["round_2"]["predicted"],
                 "scores": adaptive_result["round_2"]["scores"],
             })
@@ -689,8 +678,7 @@ def run_causal_forecast(
     # Aggregate results
     all_cond_keys = dict(conditions)
     if run_adaptive:
-        all_cond_keys["adaptive_r1"] = None
-        all_cond_keys["adaptive_r2"] = None
+        all_cond_keys["adaptive"] = None
     summary = _aggregate_results(all_results, all_baselines, all_cond_keys)
 
     # Aggregate adaptive graph revision stats

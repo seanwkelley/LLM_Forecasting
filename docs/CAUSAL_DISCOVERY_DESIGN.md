@@ -786,4 +786,4 @@ python -m causal_discovery.causal_forecast --domain conflict --adaptive \
     --graph-source outputs/causal_discovery/single_agent/conflict_single/pilot_results.json
 ```
 
-**Output format.** Per-scenario adaptive result includes round_1/round_2 scores, graph revision details (edges added/removed, reasoning), and revision quality (original vs revised SHD/precision/recall). Aggregate results report `adaptive_r1` and `adaptive_r2` as separate conditions plus `adaptive_graph_revision` summary statistics.
+**Output format.** Per-scenario adaptive result includes round 2 forecast scores, graph revision details (edges added/removed, reasoning), and revision quality (original vs revised SHD/precision/recall). Aggregate results report `adaptive` as a condition (compare against `discovered` for the before/after) plus `adaptive_graph_revision` summary statistics.

@@ -307,6 +307,8 @@ def _run_forecast_condition(
     # Extract predicted values
     predicted = []
     for f in forecasts:
+        if not isinstance(f, dict):
+            continue
         val = f.get(key_dv)
         if val is not None:
             try:

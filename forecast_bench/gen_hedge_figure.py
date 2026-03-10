@@ -24,8 +24,9 @@ MODEL_DIRS = {
     "Llama-3.1-8B":  ("llama-8b",  CAUSAL / "llama_one_turn"),
     "Llama-3.3-70B": ("llama-70b", CAUSAL / "70b_one_turn"),
     "DeepSeek-V3":   ("deepseek",  CAUSAL / "deepseek_one_turn"),
+    "Qwen3-235B":    ("qwen",      CAUSAL / "qwen_one_turn"),
 }
-MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION}
+MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN}
 
 
 def main():

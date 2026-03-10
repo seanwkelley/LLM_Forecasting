@@ -26,8 +26,9 @@ MODEL_DIRS = {
     "Llama-3.1-8B":  CAUSAL / "llama_one_turn",
     "Llama-3.3-70B": CAUSAL / "70b_one_turn",
     "DeepSeek-V3":   CAUSAL / "deepseek_one_turn",
+    "Qwen3-235B":    CAUSAL / "qwen_one_turn",
 }
-MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION}
+MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN}
 
 
 def jaccard(set_a, set_b):
@@ -136,7 +137,7 @@ def main():
     ]
     pair_labels = [p["pair_short"] for p in pairs]
 
-    fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+    fig, axes = plt.subplots(1, 3, figsize=(16, max(5, len(pairs) * 1.2 + 1)))
     fig.patch.set_facecolor("white")
     panel_labels = ["(a)", "(b)", "(c)"]
 
@@ -219,7 +220,8 @@ def main():
     edge_labels = ["Negate\nCritical", "Negate\nPeripheral", "Reverse\nEdge", "Spurious\nEdge"]
 
     x2 = np.arange(len(edge_types))
-    bar_w = 0.25
+    n_models = len(runs)
+    bar_w = 0.8 / n_models
 
     for i, (name, (rows, q_data)) in enumerate(runs.items()):
         successful = [r for r in rows
@@ -231,7 +233,8 @@ def main():
             means.append(np.mean(vals) if vals else 0)
             sems.append(np.std(vals)/np.sqrt(len(vals)) if len(vals) > 1 else 0)
 
-        ax2.bar(x2 + (i - 1) * bar_w, means, bar_w, yerr=sems,
+        offset = (i - (n_models - 1) / 2) * bar_w
+        ax2.bar(x2 + offset, means, bar_w, yerr=sems,
                 color=MODEL_COLORS[name], alpha=0.7, label=name, capsize=3)
 
     ax2.set_xticks(x2)

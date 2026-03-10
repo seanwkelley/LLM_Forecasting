@@ -52,6 +52,7 @@ MODEL_DIRS = {
     "Llama-3.1-8B": CAUSAL_DIR / "llama_one_turn",
     "Llama-3.3-70B": CAUSAL_DIR / "70b_one_turn",
     "DeepSeek-V3-0324": CAUSAL_DIR / "deepseek_one_turn",
+    "Qwen3-235B": CAUSAL_DIR / "qwen_one_turn",
 }
 
 # Colorblind-safe palette (Wong 2011 / IBM Design)
@@ -59,7 +60,8 @@ MODEL_DIRS = {
 COLORS = {
     "Llama-3.1-8B": "#E69F00",        # orange
     "Llama-3.3-70B": "#0072B2",       # blue
-    "DeepSeek-V3-0324": "#D55E00",  # vermillion
+    "DeepSeek-V3-0324": "#D55E00",    # vermillion
+    "Qwen3-235B": "#009E73",          # green
 }
 
 # Category palette for probe types (colorblind-safe)
@@ -525,7 +527,7 @@ def fig_reasoning_coherence(runs: dict):
 
     # Map judge model keys to figure model names
     judge_model_map = {"llama-8b": "Llama-3.1-8B", "llama-70b": "Llama-3.3-70B",
-                       "deepseek": "DeepSeek-V3-0324"}
+                       "deepseek": "DeepSeek-V3-0324", "qwen": "Qwen3-235B"}
 
     # Collect shifts by rating, pooled across all models
     rating_shifts = {r: [] for r in range(1, 6)}
@@ -888,7 +890,7 @@ def fig_superforecasting_analysis(runs: dict):
     # ── (a) Uncertainty rating (LLM judge) vs shift — pooled boxplot ──
     judge_rating_path = CAUSAL_DIR / "uncertainty_judge_ratings.json"
     judge_key_map = {"Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
-                     "DeepSeek-V3-0324": "deepseek"}
+                     "DeepSeek-V3-0324": "deepseek", "Qwen3-235B": "qwen"}
 
     if judge_rating_path.exists():
         judge_ratings = _json.loads(judge_rating_path.read_text(encoding="utf-8"))

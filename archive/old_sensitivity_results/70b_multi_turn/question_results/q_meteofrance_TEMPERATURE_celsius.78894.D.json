@@ -1,0 +1,952 @@
+{
+  "question_id": "meteofrance_TEMPERATURE_celsius.78894.D",
+  "question_text": "What is the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+  "source": "dbnomics",
+  "initial_probability": 0.67,
+  "nodes": [
+    {
+      "id": "solar_radiation",
+      "description": "Amount of solar energy the Earth receives",
+      "role": "factor"
+    },
+    {
+      "id": "atmospheric_conditions",
+      "description": "State of the atmosphere, including cloud cover and humidity",
+      "role": "factor"
+    },
+    {
+      "id": "ocean_temperatures",
+      "description": "Temperature of the ocean surrounding Saint Barth\u00e9lemy",
+      "role": "factor"
+    },
+    {
+      "id": "weather_patterns",
+      "description": "Prevailing weather patterns, including high and low pressure systems",
+      "role": "factor"
+    },
+    {
+      "id": "seasonal_variations",
+      "description": "Temperature fluctuations due to the time of year",
+      "role": "factor"
+    },
+    {
+      "id": "temperature_trends",
+      "description": "Long-term temperature trends in the region",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Daily average temperature at Saint Barth\u00e9lemy on 2025-12-28 being higher than on 2025-12-21",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "solar_radiation",
+      "to": "atmospheric_conditions",
+      "mechanism": "Solar radiation influences atmospheric conditions, including cloud formation and temperature"
+    },
+    {
+      "from": "atmospheric_conditions",
+      "to": "weather_patterns",
+      "mechanism": "Atmospheric conditions shape prevailing weather patterns"
+    },
+    {
+      "from": "ocean_temperatures",
+      "to": "weather_patterns",
+      "mechanism": "Ocean temperatures impact weather patterns, including the formation of high and low pressure systems"
+    },
+    {
+      "from": "weather_patterns",
+      "to": "temperature_trends",
+      "mechanism": "Weather patterns contribute to long-term temperature trends"
+    },
+    {
+      "from": "seasonal_variations",
+      "to": "temperature_trends",
+      "mechanism": "Seasonal variations influence temperature trends, with warmer temperatures typically occurring in summer months"
+    },
+    {
+      "from": "temperature_trends",
+      "to": "outcome",
+      "mechanism": "Long-term temperature trends affect the likelihood of higher temperatures on a given day"
+    },
+    {
+      "from": "solar_radiation",
+      "to": "outcome",
+      "mechanism": "Solar radiation directly impacts daily temperatures, with more radiation leading to warmer temperatures"
+    }
+  ],
+  "reasoning": "The probability of the daily average temperature at Saint Barth\u00e9lemy being higher on 2025-12-28 than on 2025-12-21 is influenced by a complex array of factors, including solar radiation, atmospheric conditions, ocean temperatures, weather patterns, seasonal variations, and long-term temperature trends. As the days progress from December 21 to December 28, the Earth's axial tilt results in increased solar radiation in the Northern Hemisphere, which can lead to warmer temperatures. However, this effect is moderated by other factors, such as atmospheric conditions and ocean temperatures, which can either amplify or mitigate the warming trend. Given the interplay of these factors, I estimate the probability of higher temperatures on December 28 to be 0.67, reflecting a moderate likelihood of warmer temperatures due to the underlying causal mechanisms.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "solar_radiation",
+        "description": "Amount of solar energy the Earth receives",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0583,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2117
+      },
+      {
+        "node_id": "atmospheric_conditions",
+        "description": "State of the atmosphere, including cloud cover and humidity",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0667,
+        "closeness": 0.1667,
+        "pagerank": 0.0831,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1366
+      },
+      {
+        "node_id": "ocean_temperatures",
+        "description": "Temperature of the ocean surrounding Saint Barth\u00e9lemy",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0583,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1117
+      },
+      {
+        "node_id": "weather_patterns",
+        "description": "Prevailing weather patterns, including high and low pressure systems",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.1667,
+        "closeness": 0.375,
+        "pagerank": 0.1785,
+        "path_relevance": 0.3333,
+        "composite_importance": 0.2857
+      },
+      {
+        "node_id": "seasonal_variations",
+        "description": "Temperature fluctuations due to the time of year",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0583,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1117
+      },
+      {
+        "node_id": "temperature_trends",
+        "description": "Long-term temperature trends in the region",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.1333,
+        "closeness": 0.463,
+        "pagerank": 0.2596,
+        "path_relevance": 0.6667,
+        "composite_importance": 0.3919
+      },
+      {
+        "node_id": "outcome",
+        "description": "Daily average temperature at Saint Barth\u00e9lemy on 2025-12-28 being higher than on 2025-12-21",
+        "role": "outcome",
+        "in_degree": 2,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.5,
+        "pagerank": 0.3038,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0608
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "solar_radiation",
+        "target": "atmospheric_conditions",
+        "mechanism": "Solar radiation influences atmospheric conditions, including cloud formation and temperature",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": false
+      },
+      {
+        "source": "solar_radiation",
+        "target": "outcome",
+        "mechanism": "Solar radiation directly impacts daily temperatures, with more radiation leading to warmer temperatures",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "atmospheric_conditions",
+        "target": "weather_patterns",
+        "mechanism": "Atmospheric conditions shape prevailing weather patterns",
+        "edge_betweenness": 0.119,
+        "on_critical_path": true
+      },
+      {
+        "source": "ocean_temperatures",
+        "target": "weather_patterns",
+        "mechanism": "Ocean temperatures impact weather patterns, including the formation of high and low pressure systems",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "weather_patterns",
+        "target": "temperature_trends",
+        "mechanism": "Weather patterns contribute to long-term temperature trends",
+        "edge_betweenness": 0.1667,
+        "on_critical_path": true
+      },
+      {
+        "source": "seasonal_variations",
+        "target": "temperature_trends",
+        "mechanism": "Seasonal variations influence temperature trends, with warmer temperatures typically occurring in summer months",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "temperature_trends",
+        "target": "outcome",
+        "mechanism": "Long-term temperature trends affect the likelihood of higher temperatures on a given day",
+        "edge_betweenness": 0.119,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "temperature_trends",
+        "description": "Long-term temperature trends in the region",
+        "importance": 0.3919,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "weather_patterns",
+        "description": "Prevailing weather patterns, including high and low pressure systems",
+        "importance": 0.2857,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "atmospheric_conditions",
+        "description": "State of the atmosphere, including cloud cover and humidity",
+        "importance": 0.1366,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "seasonal_variations",
+        "description": "Temperature fluctuations due to the time of year",
+        "importance": 0.1117,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "temperature_trends",
+        "description": "Long-term temperature trends in the region",
+        "importance": 0.3919,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "weather_patterns",
+        "description": "Prevailing weather patterns, including high and low pressure systems",
+        "importance": 0.2857,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "weather_patterns->temperature_trends",
+        "description": "Weather patterns contribute to long-term temperature trends",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "atmospheric_conditions->weather_patterns",
+        "description": "Atmospheric conditions shape prevailing weather patterns",
+        "importance": 0.119,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "solar_radiation->atmospheric_conditions",
+        "description": "Solar radiation influences atmospheric conditions, including cloud formation and temperature",
+        "importance": 0.0714,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "weather_patterns->temperature_trends",
+        "description": "Weather patterns contribute to long-term temperature trends",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "temperature_trends->solar_radiation",
+        "description": "Potential link: Long-term temperature trends in the region -> Amount of solar energy the Earth receives",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "temperature_trends",
+      "description": "Long-term temperature trends in the region",
+      "importance": 0.3919,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "weather_patterns",
+      "description": "Prevailing weather patterns, including high and low pressure systems",
+      "importance": 0.2857,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "atmospheric_conditions",
+      "description": "State of the atmosphere, including cloud cover and humidity",
+      "importance": 0.1366,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "seasonal_variations",
+      "description": "Temperature fluctuations due to the time of year",
+      "importance": 0.1117,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "temperature_trends",
+      "description": "Long-term temperature trends in the region",
+      "importance": 0.3919,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "weather_patterns",
+      "description": "Prevailing weather patterns, including high and low pressure systems",
+      "importance": 0.2857,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "weather_patterns->temperature_trends",
+      "description": "Weather patterns contribute to long-term temperature trends",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "atmospheric_conditions->weather_patterns",
+      "description": "Atmospheric conditions shape prevailing weather patterns",
+      "importance": 0.119,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "solar_radiation->atmospheric_conditions",
+      "description": "Solar radiation influences atmospheric conditions, including cloud formation and temperature",
+      "importance": 0.0714,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "weather_patterns->temperature_trends",
+      "description": "Weather patterns contribute to long-term temperature trends",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "temperature_trends->solar_radiation",
+      "description": "Potential link: Long-term temperature trends in the region -> Amount of solar energy the Earth receives",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if recent studies have shown that long-term temperature trends in the region are actually driven by localized microclimates, making regional temperature trends irrelevant to daily temperature fluctuations at Saint Barth\u00e9lemy? In this scenario, the temperature trends factor might not be a significant contributor to the outcome. Instead, daily temperatures could be more strongly influenced by immediate weather patterns and ocean temperatures. This would render the temperature_trends factor incorrect or irrelevant in predicting the daily average temperature.",
+      "probe_type": "node_negate_high",
+      "target_id": "temperature_trends",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3919,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Long-term temperature trends in the region"
+    },
+    {
+      "probe_text": "Recent research suggests that the impact of prevailing weather patterns on temperature trends may be overstated, and that other factors such as ocean currents and volcanic activity may play a more significant role in shaping regional temperature fluctuations. In fact, some studies indicate that high and low pressure systems may have a negligible effect on daily average temperatures in the Caribbean region. What if the prevailing weather patterns, including high and low pressure systems, have no significant influence on the temperature trends at Saint Barth\u00e9lemy? This could be due to the island's unique geography and location, which might render it less susceptible to the typical effects of weather patterns.",
+      "probe_type": "node_negate_high",
+      "target_id": "weather_patterns",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2857,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Prevailing weather patterns, including high and low pressure systems"
+    },
+    {
+      "probe_text": "Recent research suggests that the impact of atmospheric conditions on temperature fluctuations at Saint Barth\u00e9lemy may be overestimated due to the island's unique geography, which creates microclimates that are more influenced by ocean temperatures than cloud cover or humidity. In fact, studies have shown that atmospheric conditions account for less than 10% of the variability in daily temperatures on the island. Furthermore, the introduction of a new, more accurate atmospheric modeling system has led to revised forecasts that downplay the role of atmospheric conditions in shaping local weather patterns. This raises questions about the significance of atmospheric conditions in predicting temperature trends at Saint Barth\u00e9lemy.",
+      "probe_type": "node_negate_medium",
+      "target_id": "atmospheric_conditions",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1366,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "State of the atmosphere, including cloud cover and humidity"
+    },
+    {
+      "probe_text": "New research suggests that the traditional notion of seasonal variations may not be as relevant in the Caribbean region, where Saint Barth\u00e9lemy is located, due to the relatively stable tropical climate. In fact, some studies have shown that the temperature fluctuations in this region are more influenced by ocean currents and atmospheric conditions than by the time of year. Given this information, it's possible that the expected temperature difference between December 21 and December 28 may not be as significant as previously thought. Could the forecaster's estimate of a 0.67 probability be overstating the impact of seasonal variations?",
+      "probe_type": "node_negate_low",
+      "target_id": "seasonal_variations",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1117,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Temperature fluctuations due to the time of year"
+    },
+    {
+      "probe_text": "A recent study published by the Intergovernmental Panel on Climate Change (IPCC) found that the Caribbean region, including Saint Barth\u00e9lemy, is experiencing a significant increase in temperatures due to long-term climate trends. The study analyzed decades of climate data and concluded that the warming trend in the region is accelerating, with an expected increase of 1.5\u00b0C by 2050. This finding is consistent with the observed temperature increases over the past few years, further supporting the role of long-term temperature trends in shaping local weather patterns. As a result, local meteorologists are revising their forecasts to account for the increased likelihood of warmer temperatures in the coming years.",
+      "probe_type": "node_strengthen",
+      "target_id": "temperature_trends",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3919,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Long-term temperature trends in the region"
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Meteorology found a strong correlation between the presence of high-pressure systems in the region and increased temperatures at Saint Barth\u00e9lemy during the winter months. Furthermore, a team of meteorologists from the French National Meteorological Service has endorsed the study's findings, stating that prevailing weather patterns play a crucial role in shaping the island's temperature trends. This new research suggests that the impact of weather patterns on temperature trends may be even more significant than previously thought, with high-pressure systems contributing to warmer temperatures through the reduction of cloud cover and increased solar radiation.",
+      "probe_type": "node_strengthen",
+      "target_id": "weather_patterns",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2857,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Prevailing weather patterns, including high and low pressure systems"
+    },
+    {
+      "probe_text": "Research has shown that long-term temperature trends in the Caribbean are more strongly influenced by global climate patterns, such as El Ni\u00f1o events, than by local weather patterns. Furthermore, studies have found that the relationship between weather patterns and temperature trends is often confounded by other factors, such as volcanic eruptions and changes in ocean currents. For instance, the 1998 El Ni\u00f1o event led to a significant increase in temperatures in the region, despite local weather patterns remaining relatively stable. This suggests that the causal link between weather patterns and temperature trends may be much weaker than assumed.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "weather_patterns->temperature_trends",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Weather patterns contribute to long-term temperature trends"
+    },
+    {
+      "probe_text": "Recent research suggests that the relationship between atmospheric conditions and weather patterns may be overstated, as other factors such as wind patterns and topography play a more significant role in shaping prevailing weather patterns at Saint Barth\u00e9lemy. Furthermore, a new study reveals that the island's unique geography, with its surrounding mountains and valleys, can disrupt and alter atmospheric conditions, rendering their impact on weather patterns less direct. This challenges the assumption that atmospheric conditions are a primary driver of weather patterns. Does this new information update your estimate of the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+      "probe_type": "edge_negate_critical",
+      "target_id": "atmospheric_conditions->weather_patterns",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.119,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Atmospheric conditions shape prevailing weather patterns"
+    },
+    {
+      "probe_text": "Recent research suggests that the impact of solar radiation on atmospheric conditions at Saint Barth\u00e9lemy may be mitigated by the island's unique geography, with its mountainous terrain disrupting typical cloud formation patterns. Furthermore, the presence of trade winds in the region could also diminish the effect of solar radiation on atmospheric conditions. If this is the case, then the influence of solar radiation on atmospheric conditions might be less significant than previously thought. How does this new information affect your estimate of the probability that the daily average temperature at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "solar_radiation->atmospheric_conditions",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "Solar radiation influences atmospheric conditions, including cloud formation and temperature"
+    },
+    {
+      "probe_text": "Researchers have found that long-term temperature trends in the region are actually influencing the formation of high and low pressure systems, with warmer temperatures leading to more persistent and intense weather patterns. For example, a warming trend can lead to more stable atmospheric conditions, which in turn favor the development of certain weather patterns. This suggests that temperature trends may be driving weather patterns, rather than the other way around. If this is the case, the forecaster's estimate of a 0.67 probability may need to be revised.",
+      "probe_type": "edge_reverse",
+      "target_id": "weather_patterns->temperature_trends",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Weather patterns contribute to long-term temperature trends"
+    },
+    {
+      "probe_text": "Researchers have found that rising global temperatures are altering the Earth's axial tilt, which in turn affects the distribution of solar radiation the planet receives. This shift is particularly noticeable in regions like Saint Barth\u00e9lemy, where even slight changes in solar radiation can have a significant impact on local temperature trends. As the region's long-term temperature trends continue to rise, it's possible that this feedback loop will amplify, leading to increased solar radiation. How might this relationship influence your estimate of the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+      "probe_type": "edge_fabricate",
+      "target_id": "temperature_trends->solar_radiation",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Long-term temperature trends in the region -> Amount of solar energy the Earth receives"
+    },
+    {
+      "probe_text": "Consider the potential impact of volcanic eruptions in the region on the daily average temperature at Saint Barth\u00e9lemy. Volcanic ash and aerosols can reflect sunlight, reducing solar radiation and subsequently lowering temperatures. The absence of a node representing volcanic activity in the causal network may overlook a crucial factor influencing temperature fluctuations. How would the forecaster's probability estimate change if a significant volcanic eruption occurred in the Caribbean in late December 2025?",
+      "probe_type": "missing_node",
+      "target_id": "volcanic_eruptions",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if a strong El Ni\u00f1o event is occurring in the Pacific Ocean during the winter of 2025, potentially altering atmospheric circulation patterns and, in turn, influencing temperature trends in the region around Saint Barth\u00e9lemy? This could be a significant factor given the known impacts of El Ni\u00f1o on global climate patterns. The forecaster's current model does not account for such large-scale climate phenomena. Would this new information cause you to update your probability estimate?",
+      "probe_type": "missing_node",
+      "target_id": "el_nino_event",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "Researchers have recently discovered a new species of seaweed that is thriving in the waters around Saint Barth\u00e9lemy. This seaweed has been found to have a unique property that allows it to absorb and store large amounts of carbon dioxide from the atmosphere. While this discovery has sparked interest in the scientific community, it is not yet clear what impact it may have on the local ecosystem. The seaweed's growth patterns appear to be influenced by the island's geological features.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "A recent study found that the local wildlife in Saint Barth\u00e9lemy, such as sea turtles and tropical birds, has been adapting to the changing environmental conditions over the past few decades. This adaptation has led to a noticeable shift in the migratory patterns of these species. The study suggests that this shift could have significant implications for the local ecosystem. However, it is unclear how this might affect the daily average temperature at the French weather station.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if recent studies have shown that long-term temperature trends in the region are actually driven by localized microclimates, making regional temperature trends irrelevant to daily temperature fluctuations at Saint Barth\u00e9lemy? In this scenario, the temperature trends factor might not be a significant contributor to the outcome. Instead, daily temperatures could be more strongly influenced by immediate weather patterns and ocean temperatures. This would render the temperature_trends factor incorrect or irrelevant in predicting the daily average temperature.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.09000000000000008,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'temperature_trends' factor reduces its influence on the outcome, as localized microclimates and immediate weather patterns become more significant contributors to daily temperature fluctuations. This alteration affects the causal paths from 'weather_patterns' and 'seasonal_variations' to 'temperature_trends', and subsequently to the 'outcome'. With 'temperature_trends' being less relevant, the direct impact of 'solar_radiation', 'atmospheric_conditions', and 'ocean_temperatures' on the 'outcome' becomes more pronounced. However, the reduced importance of 'temperature_trends' introduces greater uncertainty, as daily temperatures become more sensitive to immediate and localized factors, leading to a decreased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'temperature_trends' factor reduces its influence on the outcome, as localized microclimates and immediate weather patterns become more significant contributors to daily temperature fluctuations. This alteration affects the causal paths from 'weather_patterns' and 'seasonal_variations' to 'temperature_trends', and subsequently to the 'outcome'. With 'temperature_trends' being less relevant, the direct impact of 'solar_radiation', 'atmospheric_conditions', and 'ocean_temperatures' on the 'outcome' becomes more pronounced. However, the reduced importance of 'temperature_trends' introduces greater uncertainty, as daily temperatures become more sensitive to immediate and localized factors, leading to a decreased probability estimate.\"}",
+      "target_id": "temperature_trends",
+      "target_type": "node",
+      "target_importance": 0.3919,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent research suggests that the impact of prevailing weather patterns on temperature trends may be overstated, and that other factors such as ocean currents and volcanic activity may play a more significant role in shaping regional temperature fluctuations. In fact, some studies indicate that high and low pressure systems may have a negligible effect on daily average temperatures in the Caribbean region. What if the prevailing weather patterns, including high and low pressure systems, have no significant influence on the temperature trends at Saint Barth\u00e9lemy? This could be due to the island's unique geography and location, which might render it less susceptible to the typical effects of weather patterns.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'weather_patterns' factor significantly alters the causal network, as the influence of 'atmospheric_conditions' and 'ocean_temperatures' on the 'outcome' is reduced due to the diminished role of 'weather_patterns'. The edges from 'atmospheric_conditions' to 'weather_patterns' and from 'ocean_temperatures' to 'weather_patterns' are weakened, reducing the indirect impact of these factors on the 'outcome'. With 'weather_patterns' having a negligible effect, the 'outcome' becomes more directly influenced by 'olar_radiation', 'easonal_variations', and other localized factors not explicitly modeled. The decreased importance of 'weather_patterns' introduces additional uncertainty, as the relationship between the remaining factors and the 'outcome' becomes less clear, leading to a decreased probability estimate. The network's reliance on 'olar_radiation' and 'easonal_variations' increases, but the overall predictability of the 'outcome' is reduced due to the removal of a key mediating factor.",
+      "raw_response": "{\"updated_probability\": 0.51, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'weather_patterns' factor significantly alters the causal network, as the influence of 'atmospheric_conditions' and 'ocean_temperatures' on the 'outcome' is reduced due to the diminished role of 'weather_patterns'. The edges from 'atmospheric_conditions' to 'weather_patterns' and from 'ocean_temperatures' to 'weather_patterns' are weakened, reducing the indirect impact of these factors on the 'outcome'. With 'weather_patterns' having a negligible effect, the 'outcome' becomes more directly influenced by 'olar_radiation', 'easonal_variations', and other localized factors not explicitly modeled. The decreased importance of 'weather_patterns' introduces additional uncertainty, as the relationship between the remaining factors and the 'outcome' becomes less clear, leading to a decreased probability estimate. The network's reliance on 'olar_radiation' and 'easonal_variations' increases, but the overall predictability of the 'outcome' is reduced due to the removal of a key mediating factor.\"}",
+      "target_id": "weather_patterns",
+      "target_type": "node",
+      "target_importance": 0.2857,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent research suggests that the impact of atmospheric conditions on temperature fluctuations at Saint Barth\u00e9lemy may be overestimated due to the island's unique geography, which creates microclimates that are more influenced by ocean temperatures than cloud cover or humidity. In fact, studies have shown that atmospheric conditions account for less than 10% of the variability in daily temperatures on the island. Furthermore, the introduction of a new, more accurate atmospheric modeling system has led to revised forecasts that downplay the role of atmospheric conditions in shaping local weather patterns. This raises questions about the significance of atmospheric conditions in predicting temperature trends at Saint Barth\u00e9lemy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.49,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'atmospheric_conditions' factor further reduces the complexity of the causal network, as the influence of 'solar_radiation' on 'atmospheric_conditions' is diminished due to the decreased importance of 'atmospheric_conditions'. The edge from 'solar_radiation' to 'atmospheric_conditions' is weakened, and the indirect impact of 'solar_radiation' on the 'outcome' through 'atmospheric_conditions' is reduced. With 'atmospheric_conditions' accounting for less than 10% of the variability in daily temperatures, its role in the network is significantly diminished. The 'outcome' becomes more directly influenced by 'solar_radiation', 'ocean_temperatures', and 'seasonal_variations', with 'ocean_temperatures' potentially becoming a more dominant factor due to the island's unique geography. The reduction in importance of 'atmospheric_conditions' introduces some uncertainty, but the overall impact on the probability estimate is relatively small, as 'atmospheric_conditions' was not a primary driver of the 'outcome' to begin with. The decrease in probability estimate is modest, reflecting the peripheral role of 'atmospheric_conditions' in the revised causal network.",
+      "raw_response": "{\"updated_probability\": 0.49, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'atmospheric_conditions' factor further reduces the complexity of the causal network, as the influence of 'solar_radiation' on 'atmospheric_conditions' is diminished due to the decreased importance of 'atmospheric_conditions'. The edge from 'solar_radiation' to 'atmospheric_conditions' is weakened, and the indirect impact of 'solar_radiation' on the 'outcome' through 'atmospheric_conditions' is reduced. With 'atmospheric_conditions' accounting for less than 10% of the variability in daily temperatures, its role in the network is significantly diminished. The 'outcome' becomes more directly influenced by 'solar_radiation', 'ocean_temperatures', and 'seasonal_variations', with 'ocean_temperatures' potentially becoming a more dominant factor due to the island's unique geography. The reduction in importance of 'atmospheric_conditions' introduces some uncertainty, but the overall impact on the probability estimate is relatively small, as 'atmospheric_conditions' was not a primary driver of the 'outcome' to begin with. The decrease in probability estimate is modest, reflecting the peripheral role of 'atmospheric_conditions' in the revised causal network.\"}",
+      "target_id": "atmospheric_conditions",
+      "target_type": "node",
+      "target_importance": 0.1366,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "New research suggests that the traditional notion of seasonal variations may not be as relevant in the Caribbean region, where Saint Barth\u00e9lemy is located, due to the relatively stable tropical climate. In fact, some studies have shown that the temperature fluctuations in this region are more influenced by ocean currents and atmospheric conditions than by the time of year. Given this information, it's possible that the expected temperature difference between December 21 and December 28 may not be as significant as previously thought. Could the forecaster's estimate of a 0.67 probability be overstating the impact of seasonal variations?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.03999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'seasonal_variations' factor significantly impacts the causal network, as the influence of 'seasonal_variations' on the 'outcome' is reduced due to the relatively stable tropical climate in the Caribbean region. The edge from 'seasonal_variations' to the 'outcome' is weakened, and the indirect impact of 'solar_radiation' and other factors on the 'outcome' through 'seasonal_variations' is diminished. With ocean currents and other localized factors potentially becoming more dominant drivers of temperature fluctuations, the 'outcome' becomes less predictable based on traditional seasonal patterns. The reduction in importance of 'seasonal_variations' introduces uncertainty, as the relationship between the remaining factors and the 'outcome' becomes less clear. Given that 'seasonal_variations' was a key factor in the initial forecast, its diminished role leads to a decrease in the probability estimate. The new information suggests that the temperature difference between December 21 and December 28 may be less significant than initially thought, leading to a lower probability estimate that the temperature will be higher on December 28.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'seasonal_variations' factor significantly impacts the causal network, as the influence of 'seasonal_variations' on the 'outcome' is reduced due to the relatively stable tropical climate in the Caribbean region. The edge from 'seasonal_variations' to the 'outcome' is weakened, and the indirect impact of 'solar_radiation' and other factors on the 'outcome' through 'seasonal_variations' is diminished. With ocean currents and other localized factors potentially becoming more dominant drivers of temperature fluctuations, the 'outcome' becomes less predictable based on traditional seasonal patterns. The reduction in importance of 'seasonal_variations' introduces uncertainty, as the relationship between the remaining factors and the 'outcome' becomes less clear. Given that 'seasonal_variations' was a key factor in the initial forecast, its diminished role leads to a decrease in the probability estimate. The new information suggests that the temperature difference between December 21 and December 28 may be less significant than initially thought, leading to a lower probability estimate that the temperature will be higher on December 28.\"}",
+      "target_id": "seasonal_variations",
+      "target_type": "node",
+      "target_importance": 0.1117,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent study published by the Intergovernmental Panel on Climate Change (IPCC) found that the Caribbean region, including Saint Barth\u00e9lemy, is experiencing a significant increase in temperatures due to long-term climate trends. The study analyzed decades of climate data and concluded that the warming trend in the region is accelerating, with an expected increase of 1.5\u00b0C by 2050. This finding is consistent with the observed temperature increases over the past few years, further supporting the role of long-term temperature trends in shaping local weather patterns. As a result, local meteorologists are revising their forecasts to account for the increased likelihood of warmer temperatures in the coming years.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenging the 'temperature_trends' factor significantly alters the causal network, as it reinstates the importance of long-term temperature trends in shaping local weather patterns. The edge from 'temperature_trends' to the 'outcome' is strengthened, and the indirect impact of 'solar_radiation', 'ocean_temperatures', and other factors on the 'outcome' through 'temperature_trends' is increased. The IPCC study's findings, combined with the observed temperature increases, provide strong evidence for the role of long-term climate trends in driving temperature fluctuations in the region. As a result, the probability estimate increases, reflecting the renewed importance of 'temperature_trends' in predicting warmer temperatures. The updated forecast from local meteorologists further supports this revision, indicating a higher likelihood of warmer temperatures in the coming years. The increase in probability estimate is substantial, as the new information reverses the previous diminishment of 'temperature_trends' and restores its role as a key driver of the 'outcome'.",
+      "raw_response": "{\"updated_probability\": 0.62, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenging the 'temperature_trends' factor significantly alters the causal network, as it reinstates the importance of long-term temperature trends in shaping local weather patterns. The edge from 'temperature_trends' to the 'outcome' is strengthened, and the indirect impact of 'solar_radiation', 'ocean_temperatures', and other factors on the 'outcome' through 'temperature_trends' is increased. The IPCC study's findings, combined with the observed temperature increases, provide strong evidence for the role of long-term climate trends in driving temperature fluctuations in the region. As a result, the probability estimate increases, reflecting the renewed importance of 'temperature_trends' in predicting warmer temperatures. The updated forecast from local meteorologists further supports this revision, indicating a higher likelihood of warmer temperatures in the coming years. The increase in probability estimate is substantial, as the new information reverses the previous diminishment of 'temperature_trends' and restores its role as a key driver of the 'outcome'.\"}",
+      "target_id": "temperature_trends",
+      "target_type": "node",
+      "target_importance": 0.3919,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent study published in the Journal of Meteorology found a strong correlation between the presence of high-pressure systems in the region and increased temperatures at Saint Barth\u00e9lemy during the winter months. Furthermore, a team of meteorologists from the French National Meteorological Service has endorsed the study's findings, stating that prevailing weather patterns play a crucial role in shaping the island's temperature trends. This new research suggests that the impact of weather patterns on temperature trends may be even more significant than previously thought, with high-pressure systems contributing to warmer temperatures through the reduction of cloud cover and increased solar radiation.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.72,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenging the 'weather_patterns' factor substantially revises the causal network, as it reinforces the importance of prevailing weather patterns in shaping temperature trends at Saint Barth\u00e9lemy. The edge from 'weather_patterns' to the 'outcome' is strengthened, and the indirect impact of 'atmospheric_conditions' and 'ocean_temperatures' on the 'outcome' through 'weather_patterns' is increased. The study's findings, combined with the endorsement from the French National Meteorological Service, provide strong evidence for the significant role of high-pressure systems in contributing to warmer temperatures during the winter months. The reduction of cloud cover and increased solar radiation associated with high-pressure systems further support the increased probability estimate. The renewed importance of 'weather_patterns' adds to the already strengthened 'temperature_trends' factor, leading to a substantial increase in the probability estimate. The causal network now suggests that both long-term temperature trends and prevailing weather patterns are key drivers of the 'outcome', resulting in a higher likelihood of warmer temperatures on December 28 compared to December 21.",
+      "raw_response": "{\"updated_probability\": 0.72, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenging the 'weather_patterns' factor substantially revises the causal network, as it reinforces the importance of prevailing weather patterns in shaping temperature trends at Saint Barth\u00e9lemy. The edge from 'weather_patterns' to the 'outcome' is strengthened, and the indirect impact of 'atmospheric_conditions' and 'ocean_temperatures' on the 'outcome' through 'weather_patterns' is increased. The study's findings, combined with the endorsement from the French National Meteorological Service, provide strong evidence for the significant role of high-pressure systems in contributing to warmer temperatures during the winter months. The reduction of cloud cover and increased solar radiation associated with high-pressure systems further support the increased probability estimate. The renewed importance of 'weather_patterns' adds to the already strengthened 'temperature_trends' factor, leading to a substantial increase in the probability estimate. The causal network now suggests that both long-term temperature trends and prevailing weather patterns are key drivers of the 'outcome', resulting in a higher likelihood of warmer temperatures on December 28 compared to December 21.\"}",
+      "target_id": "weather_patterns",
+      "target_type": "node",
+      "target_importance": 0.2857,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Research has shown that long-term temperature trends in the Caribbean are more strongly influenced by global climate patterns, such as El Ni\u00f1o events, than by local weather patterns. Furthermore, studies have found that the relationship between weather patterns and temperature trends is often confounded by other factors, such as volcanic eruptions and changes in ocean currents. For instance, the 1998 El Ni\u00f1o event led to a significant increase in temperatures in the region, despite local weather patterns remaining relatively stable. This suggests that the causal link between weather patterns and temperature trends may be much weaker than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.14,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenging the causal link 'weather_patterns->temperature_trends' significantly revises the causal network, as it weakens the relationship between prevailing weather patterns and long-term temperature trends. The edge from 'weather_patterns' to 'temperature_trends' is diminished, reducing the indirect impact of 'atmospheric_conditions' and 'ocean_temperatures' on 'temperature_trends' through 'weather_patterns'. The research findings suggest that global climate patterns, such as El Ni\u00f1o events, are more influential in shaping long-term temperature trends, while local weather patterns play a lesser role. The confounding factors, including volcanic eruptions and changes in ocean currents, further support the notion that the relationship between 'weather_patterns' and 'temperature_trends' is more complex and weaker than initially assumed. As a result, the probability estimate decreases, reflecting the reduced importance of 'weather_patterns' in driving 'temperature_trends'. The 'temperature_trends' factor, which was previously strengthened, remains a key driver of the 'outcome', but its connection to 'weather_patterns' is now more tenuous, leading to a decreased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenging the causal link 'weather_patterns->temperature_trends' significantly revises the causal network, as it weakens the relationship between prevailing weather patterns and long-term temperature trends. The edge from 'weather_patterns' to 'temperature_trends' is diminished, reducing the indirect impact of 'atmospheric_conditions' and 'ocean_temperatures' on 'temperature_trends' through 'weather_patterns'. The research findings suggest that global climate patterns, such as El Ni\u00f1o events, are more influential in shaping long-term temperature trends, while local weather patterns play a lesser role. The confounding factors, including volcanic eruptions and changes in ocean currents, further support the notion that the relationship between 'weather_patterns' and 'temperature_trends' is more complex and weaker than initially assumed. As a result, the probability estimate decreases, reflecting the reduced importance of 'weather_patterns' in driving 'temperature_trends'. The 'temperature_trends' factor, which was previously strengthened, remains a key driver of the 'outcome', but its connection to 'weather_patterns' is now more tenuous, leading to a decreased probability estimate.\"}",
+      "target_id": "weather_patterns->temperature_trends",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent research suggests that the relationship between atmospheric conditions and weather patterns may be overstated, as other factors such as wind patterns and topography play a more significant role in shaping prevailing weather patterns at Saint Barth\u00e9lemy. Furthermore, a new study reveals that the island's unique geography, with its surrounding mountains and valleys, can disrupt and alter atmospheric conditions, rendering their impact on weather patterns less direct. This challenges the assumption that atmospheric conditions are a primary driver of weather patterns. Does this new information update your estimate of the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.56,
+      "absolute_shift": 0.019999999999999907,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenging the causal link 'atmospheric_conditions->weather_patterns' slightly revises the causal network, as it weakens the relationship between atmospheric conditions and prevailing weather patterns. The edge from 'atmospheric_conditions' to 'weather_patterns' is diminished, reducing the indirect impact of 'solar_radiation' on 'weather_patterns' through 'atmospheric_conditions'. However, since 'atmospheric_conditions' was already a relatively minor factor in the network, the impact of this update is modest. The research findings suggest that other factors, such as wind patterns and topography, play a more significant role in shaping weather patterns, and the island's unique geography disrupts the direct impact of atmospheric conditions. As a result, the probability estimate decreases slightly, reflecting the reduced importance of 'atmospheric_conditions' in driving 'weather_patterns'. The decrease is small, as the 'temperature_trends' factor and other drivers of the 'outcome' remain relatively unchanged, and the 'atmospheric_conditions' factor was not a primary driver of the 'outcome' to begin with.",
+      "raw_response": "{\"updated_probability\": 0.56, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenging the causal link 'atmospheric_conditions->weather_patterns' slightly revises the causal network, as it weakens the relationship between atmospheric conditions and prevailing weather patterns. The edge from 'atmospheric_conditions' to 'weather_patterns' is diminished, reducing the indirect impact of 'solar_radiation' on 'weather_patterns' through 'atmospheric_conditions'. However, since 'atmospheric_conditions' was already a relatively minor factor in the network, the impact of this update is modest. The research findings suggest that other factors, such as wind patterns and topography, play a more significant role in shaping weather patterns, and the island's unique geography disrupts the direct impact of atmospheric conditions. As a result, the probability estimate decreases slightly, reflecting the reduced importance of 'atmospheric_conditions' in driving 'weather_patterns'. The decrease is small, as the 'temperature_trends' factor and other drivers of the 'outcome' remain relatively unchanged, and the 'atmospheric_conditions' factor was not a primary driver of the 'outcome' to begin with.\"}",
+      "target_id": "atmospheric_conditions->weather_patterns",
+      "target_type": "edge",
+      "target_importance": 0.119,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent research suggests that the impact of solar radiation on atmospheric conditions at Saint Barth\u00e9lemy may be mitigated by the island's unique geography, with its mountainous terrain disrupting typical cloud formation patterns. Furthermore, the presence of trade winds in the region could also diminish the effect of solar radiation on atmospheric conditions. If this is the case, then the influence of solar radiation on atmospheric conditions might be less significant than previously thought. How does this new information affect your estimate of the probability that the daily average temperature at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.010000000000000009,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenging the causal link 'solar_radiation->atmospheric_conditions' has a minimal impact on the causal network, as the influence of 'solar_radiation' on 'atmospheric_conditions' was already a relatively weak link. The edge from 'solar_radiation' to 'atmospheric_conditions' is further diminished, but since 'atmospheric_conditions' is not a primary driver of the 'outcome', the effect on the overall probability estimate is small. The research findings suggest that the island's unique geography and trade winds mitigate the impact of solar radiation on atmospheric conditions, but this does not significantly alter the relationships between other factors in the network. The 'temperature_trends' factor, 'weather_patterns', and other drivers of the 'outcome' remain relatively unchanged, and the decrease in the probability estimate is negligible. The updated probability estimate reflects the minor adjustment to the network, with the overall forecast remaining largely unchanged.",
+      "raw_response": "{\"updated_probability\": 0.55, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenging the causal link 'solar_radiation->atmospheric_conditions' has a minimal impact on the causal network, as the influence of 'solar_radiation' on 'atmospheric_conditions' was already a relatively weak link. The edge from 'solar_radiation' to 'atmospheric_conditions' is further diminished, but since 'atmospheric_conditions' is not a primary driver of the 'outcome', the effect on the overall probability estimate is small. The research findings suggest that the island's unique geography and trade winds mitigate the impact of solar radiation on atmospheric conditions, but this does not significantly alter the relationships between other factors in the network. The 'temperature_trends' factor, 'weather_patterns', and other drivers of the 'outcome' remain relatively unchanged, and the decrease in the probability estimate is negligible. The updated probability estimate reflects the minor adjustment to the network, with the overall forecast remaining largely unchanged.\"}",
+      "target_id": "solar_radiation->atmospheric_conditions",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Researchers have found that long-term temperature trends in the region are actually influencing the formation of high and low pressure systems, with warmer temperatures leading to more persistent and intense weather patterns. For example, a warming trend can lead to more stable atmospheric conditions, which in turn favor the development of certain weather patterns. This suggests that temperature trends may be driving weather patterns, rather than the other way around. If this is the case, the forecaster's estimate of a 0.67 probability may need to be revised.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.61,
+      "absolute_shift": 0.05999999999999994,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenging the causal link 'weather_patterns->temperature_trends' significantly revises the causal network, as it suggests that the relationship between 'weather_patterns' and 'temperature_trends' is reversed. Instead of 'weather_patterns' driving 'temperature_trends', the research findings indicate that 'temperature_trends' are influencing the formation of 'weather_patterns'. This reversal strengthens the 'temperature_trends' factor, as it becomes a more primary driver of the 'outcome'. The edge from 'temperature_trends' to 'weather_patterns' is introduced, and the indirect impact of 'olar_radiation', 'ocean_temperatures', and other factors on the 'outcome' through 'temperature_trends' is increased. The revised causal network suggests that the warming trend in the region is leading to more persistent and intense weather patterns, which in turn contribute to higher temperatures. As a result, the probability estimate increases, reflecting the strengthened 'temperature_trends' factor and its increased influence on the 'outcome'.",
+      "raw_response": "{\"updated_probability\": 0.61, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenging the causal link 'weather_patterns->temperature_trends' significantly revises the causal network, as it suggests that the relationship between 'weather_patterns' and 'temperature_trends' is reversed. Instead of 'weather_patterns' driving 'temperature_trends', the research findings indicate that 'temperature_trends' are influencing the formation of 'weather_patterns'. This reversal strengthens the 'temperature_trends' factor, as it becomes a more primary driver of the 'outcome'. The edge from 'temperature_trends' to 'weather_patterns' is introduced, and the indirect impact of 'olar_radiation', 'ocean_temperatures', and other factors on the 'outcome' through 'temperature_trends' is increased. The revised causal network suggests that the warming trend in the region is leading to more persistent and intense weather patterns, which in turn contribute to higher temperatures. As a result, the probability estimate increases, reflecting the strengthened 'temperature_trends' factor and its increased influence on the 'outcome'.\"}",
+      "target_id": "weather_patterns->temperature_trends",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Researchers have found that rising global temperatures are altering the Earth's axial tilt, which in turn affects the distribution of solar radiation the planet receives. This shift is particularly noticeable in regions like Saint Barth\u00e9lemy, where even slight changes in solar radiation can have a significant impact on local temperature trends. As the region's long-term temperature trends continue to rise, it's possible that this feedback loop will amplify, leading to increased solar radiation. How might this relationship influence your estimate of the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenging the causal link 'temperature_trends->solar_radiation' introduces a positive feedback loop to the causal network, where rising 'temperature_trends' lead to increased 'solar_radiation', which in turn amplifies the 'temperature_trends'. This feedback loop strengthens the relationship between 'temperature_trends' and 'solar_radiation', creating a self-reinforcing cycle that contributes to higher temperatures. The edge from 'temperature_trends' to 'solar_radiation' is introduced, and the indirect impact of 'ocean_temperatures', 'weather_patterns', and other factors on the 'outcome' through 'temperature_trends' and 'solar_radiation' is increased. The research findings suggest that this feedback loop will amplify as the region's long-term temperature trends continue to rise, leading to increased solar radiation and higher temperatures. As a result, the probability estimate increases, reflecting the strengthened positive feedback loop and its increased influence on the 'outcome'. The revised causal network suggests that the relationship between 'temperature_trends' and 'solar_radiation' is more complex and interconnected than previously thought, leading to a higher likelihood of warmer temperatures on December 28 compared to December 21.",
+      "raw_response": "{\"updated_probability\": 0.65, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenging the causal link 'temperature_trends->solar_radiation' introduces a positive feedback loop to the causal network, where rising 'temperature_trends' lead to increased 'solar_radiation', which in turn amplifies the 'temperature_trends'. This feedback loop strengthens the relationship between 'temperature_trends' and 'solar_radiation', creating a self-reinforcing cycle that contributes to higher temperatures. The edge from 'temperature_trends' to 'solar_radiation' is introduced, and the indirect impact of 'ocean_temperatures', 'weather_patterns', and other factors on the 'outcome' through 'temperature_trends' and 'solar_radiation' is increased. The research findings suggest that this feedback loop will amplify as the region's long-term temperature trends continue to rise, leading to increased solar radiation and higher temperatures. As a result, the probability estimate increases, reflecting the strengthened positive feedback loop and its increased influence on the 'outcome'. The revised causal network suggests that the relationship between 'temperature_trends' and 'solar_radiation' is more complex and interconnected than previously thought, leading to a higher likelihood of warmer temperatures on December 28 compared to December 21.\"}",
+      "target_id": "temperature_trends->solar_radiation",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the potential impact of volcanic eruptions in the region on the daily average temperature at Saint Barth\u00e9lemy. Volcanic ash and aerosols can reflect sunlight, reducing solar radiation and subsequently lowering temperatures. The absence of a node representing volcanic activity in the causal network may overlook a crucial factor influencing temperature fluctuations. How would the forecaster's probability estimate change if a significant volcanic eruption occurred in the Caribbean in late December 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new information presenting a structural challenge to the causal model introduces a significant volcanic eruption as a potential factor influencing temperature fluctuations at Saint Barth\u00e9lemy. The absence of a node representing volcanic activity in the original causal network means that this factor was not previously considered. The introduction of volcanic activity as a new node would add a new edge from 'volcanic_activity' to 'solar_radiation', representing the reduction in solar radiation due to volcanic ash and aerosols. This new edge would also indirectly affect the 'outcome' through its impact on 'solar_radiation' and subsequently 'temperature_trends'. The significant volcanic eruption in the Caribbean would likely reduce solar radiation, leading to lower temperatures, and thus decrease the probability that the daily average temperature at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21. The updated probability estimate reflects the potential cooling effect of the volcanic eruption, which would counteract the warming trends previously considered. The introduction of this new factor highlights the importance of considering external factors that may influence the causal network and the need for ongoing model revision and updating.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information presenting a structural challenge to the causal model introduces a significant volcanic eruption as a potential factor influencing temperature fluctuations at Saint Barth\u00e9lemy. The absence of a node representing volcanic activity in the original causal network means that this factor was not previously considered. The introduction of volcanic activity as a new node would add a new edge from 'volcanic_activity' to 'solar_radiation', representing the reduction in solar radiation due to volcanic ash and aerosols. This new edge would also indirectly affect the 'outcome' through its impact on 'solar_radiation' and subsequently 'temperature_trends'. The significant volcanic eruption in the Caribbean would likely reduce solar radiation, leading to lower temperatures, and thus decrease the probability that the daily average temperature at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21. The updated probability estimate reflects the potential cooling effect of the volcanic eruption, which would counteract the warming trends previously considered. The introduction of this new factor highlights the importance of considering external factors that may influence the causal network and the need for ongoing model revision and updating.\"}",
+      "target_id": "volcanic_eruptions",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a strong El Ni\u00f1o event is occurring in the Pacific Ocean during the winter of 2025, potentially altering atmospheric circulation patterns and, in turn, influencing temperature trends in the region around Saint Barth\u00e9lemy? This could be a significant factor given the known impacts of El Ni\u00f1o on global climate patterns. The forecaster's current model does not account for such large-scale climate phenomena. Would this new information cause you to update your probability estimate?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.07,
+      "shift_direction": "decreased",
+      "reasoning": "The new information presenting a structural challenge to the causal model introduces a strong El Ni\u00f1o event as a significant factor influencing temperature trends in the region around Saint Barth\u00e9lemy. The absence of a node representing large-scale climate phenomena like El Ni\u00f1o in the original causal network means that this factor was not previously considered. The introduction of El Ni\u00f1o as a new node would add new edges to the network, representing the impact of El Ni\u00f1o on 'atmospheric_conditions', 'weather_patterns', and 'temperature_trends'. El Ni\u00f1o is known to alter atmospheric circulation patterns, which can lead to cooler and drier conditions in the Caribbean region during the winter months. Given the occurrence of a strong El Ni\u00f1o event, it is likely that temperature trends in the region would be negatively impacted, leading to a decrease in the probability that the daily average temperature at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21. The updated probability estimate reflects the potential cooling effect of the El Ni\u00f1o event, which would counteract the warming trends previously considered. The introduction of this new factor highlights the importance of considering large-scale climate phenomena in the causal model and the need for ongoing model revision and updating to capture the complexities of global climate patterns.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information presenting a structural challenge to the causal model introduces a strong El Ni\u00f1o event as a significant factor influencing temperature trends in the region around Saint Barth\u00e9lemy. The absence of a node representing large-scale climate phenomena like El Ni\u00f1o in the original causal network means that this factor was not previously considered. The introduction of El Ni\u00f1o as a new node would add new edges to the network, representing the impact of El Ni\u00f1o on 'atmospheric_conditions', 'weather_patterns', and 'temperature_trends'. El Ni\u00f1o is known to alter atmospheric circulation patterns, which can lead to cooler and drier conditions in the Caribbean region during the winter months. Given the occurrence of a strong El Ni\u00f1o event, it is likely that temperature trends in the region would be negatively impacted, leading to a decrease in the probability that the daily average temperature at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21. The updated probability estimate reflects the potential cooling effect of the El Ni\u00f1o event, which would counteract the warming trends previously considered. The introduction of this new factor highlights the importance of considering large-scale climate phenomena in the causal model and the need for ongoing model revision and updating to capture the complexities of global climate patterns.\"}",
+      "target_id": "el_nino_event",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Researchers have recently discovered a new species of seaweed that is thriving in the waters around Saint Barth\u00e9lemy. This seaweed has been found to have a unique property that allows it to absorb and store large amounts of carbon dioxide from the atmosphere. While this discovery has sparked interest in the scientific community, it is not yet clear what impact it may have on the local ecosystem. The seaweed's growth patterns appear to be influenced by the island's geological features.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presenting a structural challenge to the causal model introduces a new species of seaweed with a unique property that allows it to absorb and store carbon dioxide from the atmosphere. However, the impact of this discovery on the local ecosystem and temperature trends is currently unclear. While the seaweed's growth patterns may be influenced by the island's geological features, there is no clear evidence to suggest that it would have a significant effect on the daily average temperature at Saint Barth\u00e9lemy. The causal network does not currently include a node for 'seaweed' or its potential impact on 'ocean_temperatures', 'atmospheric_conditions', or 'temperature_trends'. Without further research or evidence on the seaweed's effects, it is not possible to determine whether its presence would increase or decrease the probability of higher temperatures on December 28. Therefore, the probability estimate remains unchanged, reflecting the uncertainty and lack of clear evidence regarding the seaweed's impact on the local climate.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information presenting a structural challenge to the causal model introduces a new species of seaweed with a unique property that allows it to absorb and store carbon dioxide from the atmosphere. However, the impact of this discovery on the local ecosystem and temperature trends is currently unclear. While the seaweed's growth patterns may be influenced by the island's geological features, there is no clear evidence to suggest that it would have a significant effect on the daily average temperature at Saint Barth\u00e9lemy. The causal network does not currently include a node for 'seaweed' or its potential impact on 'ocean_temperatures', 'atmospheric_conditions', or 'temperature_trends'. Without further research or evidence on the seaweed's effects, it is not possible to determine whether its presence would increase or decrease the probability of higher temperatures on December 28. Therefore, the probability estimate remains unchanged, reflecting the uncertainty and lack of clear evidence regarding the seaweed's impact on the local climate.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent study found that the local wildlife in Saint Barth\u00e9lemy, such as sea turtles and tropical birds, has been adapting to the changing environmental conditions over the past few decades. This adaptation has led to a noticeable shift in the migratory patterns of these species. The study suggests that this shift could have significant implications for the local ecosystem. However, it is unclear how this might affect the daily average temperature at the French weather station.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presenting a structural challenge to the causal model introduces the adaptation of local wildlife to changing environmental conditions as a potential factor. However, the study's findings do not provide a clear link between the shift in migratory patterns of sea turtles and tropical birds and the daily average temperature at the French weather station. The causal network does not currently include nodes for 'local wildlife' or 'migratory patterns', and the relationship between these factors and 'temperature_trends' or 'atmospheric_conditions' is unclear. Without further research or evidence on the potential impact of the wildlife adaptation on the local climate, it is not possible to determine whether this factor would increase or decrease the probability of higher temperatures on December 28. The probability estimate remains unchanged, reflecting the uncertainty and lack of clear evidence regarding the impact of the wildlife adaptation on the daily average temperature. The introduction of this new information highlights the complexity of the local ecosystem, but does not provide sufficient evidence to revise the current probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information presenting a structural challenge to the causal model introduces the adaptation of local wildlife to changing environmental conditions as a potential factor. However, the study's findings do not provide a clear link between the shift in migratory patterns of sea turtles and tropical birds and the daily average temperature at the French weather station. The causal network does not currently include nodes for 'local wildlife' or 'migratory patterns', and the relationship between these factors and 'temperature_trends' or 'atmospheric_conditions' is unclear. Without further research or evidence on the potential impact of the wildlife adaptation on the local climate, it is not possible to determine whether this factor would increase or decrease the probability of higher temperatures on December 28. The probability estimate remains unchanged, reflecting the uncertainty and lack of clear evidence regarding the impact of the wildlife adaptation on the daily average temperature. The introduction of this new information highlights the complexity of the local ecosystem, but does not provide sufficient evidence to revise the current probability estimate.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "meteofrance_TEMPERATURE_celsius.78894.D",
+    "question_text": "What is the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+    "source": "dbnomics",
+    "condition": "multi-turn",
+    "initial_probability": 0.67,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.06866666666666665,
+    "max_absolute_shift": 0.2
+  }
+}

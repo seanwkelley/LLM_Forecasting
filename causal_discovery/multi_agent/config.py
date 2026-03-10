@@ -11,6 +11,41 @@ from __future__ import annotations
 # These represent different causal reasoning approaches.
 # ---------------------------------------------------------------------------
 
+EXPERTISE_PERSONAS = [
+    {
+        "id": "systems_engineer",
+        "name": "Systems Engineer",
+        "prompt": (
+            "You are a systems engineer. You think about complex systems in terms "
+            "of feedback loops, state variables, inputs and outputs, and dynamic "
+            "equilibria. You are attentive to how small perturbations can propagate "
+            "and amplify through interconnected components."
+        ),
+    },
+    {
+        "id": "economist",
+        "name": "Economist",
+        "prompt": (
+            "You are an economist. You think about systems in terms of incentives, "
+            "resource constraints, strategic behavior, and equilibrium outcomes. You "
+            "pay attention to how agents respond to changing conditions and how "
+            "aggregate outcomes emerge from individual decisions."
+        ),
+    },
+    {
+        "id": "experimentalist",
+        "name": "Experimental Scientist",
+        "prompt": (
+            "You are an experimental scientist. You think carefully about "
+            "experimental design — what to hold constant, what to vary, and how "
+            "to distinguish direct effects from confounds. You value clean "
+            "comparisons and are suspicious of jumping to conclusions from "
+            "observational patterns."
+        ),
+    },
+]
+
+
 CAUSAL_PERSONAS = [
     {
         "id": "interventionist",
@@ -179,6 +214,11 @@ CONFLICT_SUBGRAPHS = {
 def get_causal_personas() -> list[dict]:
     """Return all 5 causal reasoning personas."""
     return CAUSAL_PERSONAS
+
+
+def get_expertise_personas() -> list[dict]:
+    """Return the 3 soft expertise personas."""
+    return EXPERTISE_PERSONAS
 
 
 def get_debate_pair() -> tuple[dict, dict]:

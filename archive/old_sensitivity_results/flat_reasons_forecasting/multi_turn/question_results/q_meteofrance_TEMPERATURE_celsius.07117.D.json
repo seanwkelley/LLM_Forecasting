@@ -1,0 +1,310 @@
+{
+  "question_id": "meteofrance_TEMPERATURE_celsius.07117.D",
+  "question_text": "What is the probability that the daily average temperature at the French weather station at Ploumanac'h will be higher on 2025-12-28 than on 2025-12-21?",
+  "source": "dbnomics",
+  "initial_probability": 0.62,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "Historical data suggests that the daily average temperature at Ploumanac'h tends to increase by about 2\u00b0C from mid-December to late-December.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The North Atlantic Oscillation index has been in a positive phase since mid-November, which is likely to contribute to warmer temperatures in Western Europe during the winter season.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "However, a strong low-pressure system is forecasted to move into the region around December 28, which could potentially bring cooler air and disrupt any warming trend.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Based on historical temperature trends and the current state of the North Atlantic Oscillation, it is reasonable to expect that the daily average temperature at Ploumanac'h on December 28 will be higher than on December 21. The potential for a strong low-pressure system to impact the region on the 28th is a consideration, but its influence is expected to be relatively minor compared to the overall warming trend.",
+  "probes": [
+    {
+      "probe_text": "Historical data suggests that the daily average temperature at Ploumanac'h actually tends to decrease by about 1\u00b0C from mid-December to late-December, due to a high-pressure system forming over the region, resulting in cooler and clearer conditions.",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Climate Research found that Ploumanac'h experienced a statistically significant cooling trend in the latter half of December over the past 20 years, with a decrease in daily average temperature of approximately 1.5\u00b0C on average. According to the study's lead author, Dr. Sophie Dubois, this cooling trend may be attributed to changes in ocean currents around the Brittany coast.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "However, this year, the North Atlantic Oscillation (NAO) has been in a persistent negative phase, which has led to cooler-than-average temperatures in Western Europe during the past few weeks. If this trend were to continue through late December, would you reassess the likelihood of warmer temperatures at Ploumanac'h from mid-December to the end of the month?",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A study published in the Journal of Climate Studies found that the mean daily temperature anomaly at Ploumanac'h during the 20 years preceding 2025 was positively correlated with solar irradiance levels, which peak in late December, and that this relationship was particularly pronounced in coastal regions such as Ploumanac'h.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "The French government has recently announced plans to renovate the nearby Ploumanac'h lighthouse and the construction work is expected to be completed by the end of 2025.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "However, what if the North Atlantic Oscillation index being in a positive phase actually leads to colder temperatures in Western Europe during the winter season due to changes in atmospheric circulation patterns, such as a stronger-than-expected polar vortex that pushes cold air masses towards the region?",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A new study published in the Journal of Atmospheric Science reveals that the North Atlantic Oscillation's positive phase has a statistically significant correlation with colder temperatures in Western Europe during the winter season, contradicting previous assumptions. The study's lead author, Dr. Maria Rodriguez, notes that the increased blocking of the polar vortex is the primary mechanism behind this counterintuitive effect.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A sudden and intense low-pressure system forms over the eastern coast of the Iberian Peninsula on 2025-12-24, bringing a large mass of cold air from the Arctic towards Western Europe. The resulting pressure gradient leads to a strong and persisting southwesterly wind flow across the Bay of Biscay, potentially counteracting the warming influence of the North Atlantic Oscillation.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "According to the latest forecast from the European Centre for Medium-Range Weather Forecasts (ECMWF), the North Atlantic Oscillation index is expected to remain in a positive phase throughout the next two weeks, with a predicted anomaly of +2.5 standard deviations by December 28.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The City of Paris has announced plans to increase the number of pedestrian zones in the city center starting from 2026, as part of a broader effort to reduce traffic congestion and improve air quality.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "However, suppose that this low-pressure system, instead of bringing cooler air, intensifies the maritime influence of the Gulf Stream, leading to a temporary warming of the region due to increased moisture and heat transfer from the warmer waters.",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that the low-pressure system forecasted to move into the region around December 28 is actually expected to enhance the meridional flow, bringing warmer air from the Mediterranean region and potentially leading to a significant warming trend during the period.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "However, the latest weather model ensemble suggests that the low-pressure system forecasted to move into the region around December 28 has a 30% chance of instead moving eastward, potentially avoiding the French weather station at Ploumanac'h and thus reducing the likelihood of cooler air being brought into the area.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that low-pressure systems of a similar strength and trajectory to the one forecasted for December 28 have a 75% chance of bringing temperatures 2-3\u00b0C below average in the Ploumanac'h region.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A new public art installation is scheduled to be unveiled in the city of Saint-Brieuc, located approximately 30 kilometers east of the Ploumanac'h weather station, on the morning of December 28, 2025.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "Historical data suggests that the daily average temperature at Ploumanac'h actually tends to decrease by about 1\u00b0C from mid-December to late-December, due to a high-pressure system forming over the region, resulting in cooler and clearer conditions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new information contradicts my initial assumption that the daily average temperature tends to increase from mid-December to late-December. In fact, the historical data suggests that it tends to decrease. Given this new information, I have decreased my probability estimate, as the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21 is now lower.",
+      "raw_response": "{\"updated_probability\": 0.42, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information contradicts my initial assumption that the daily average temperature tends to increase from mid-December to late-December. In fact, the historical data suggests that it tends to decrease. Given this new information, I have decreased my probability estimate, as the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21 is now lower.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Climate Research found that Ploumanac'h experienced a statistically significant cooling trend in the latter half of December over the past 20 years, with a decrease in daily average temperature of approximately 1.5\u00b0C on average. According to the study's lead author, Dr. Sophie Dubois, this cooling trend may be attributed to changes in ocean currents around the Brittany coast.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "This new information further strengthens the evidence that the daily average temperature at Ploumanac'h tends to decrease in the latter half of December, and that this trend is statistically significant. The study's findings, coupled with the previous correction to my initial assumption, have significantly reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.25, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information further strengthens the evidence that the daily average temperature at Ploumanac'h tends to decrease in the latter half of December, and that this trend is statistically significant. The study's findings, coupled with the previous correction to my initial assumption, have significantly reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "However, this year, the North Atlantic Oscillation (NAO) has been in a persistent negative phase, which has led to cooler-than-average temperatures in Western Europe during the past few weeks. If this trend were to continue through late December, would you reassess the likelihood of warmer temperatures at Ploumanac'h from mid-December to the end of the month?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The persistence of the negative NAO phase and its impact on cooler temperatures in Western Europe suggests that the cooling trend in the latter half of December might be more pronounced than initially thought. This new information partially mitigates the effect of the cooling trend in the historical data, leading me to slightly increase my probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"increased\", \"reasoning\": \"The persistence of the negative NAO phase and its impact on cooler temperatures in Western Europe suggests that the cooling trend in the latter half of December might be more pronounced than initially thought. This new information partially mitigates the effect of the cooling trend in the historical data, leading me to slightly increase my probability estimate.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A study published in the Journal of Climate Studies found that the mean daily temperature anomaly at Ploumanac'h during the 20 years preceding 2025 was positively correlated with solar irradiance levels, which peak in late December, and that this relationship was particularly pronounced in coastal regions such as Ploumanac'h.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.47,
+      "absolute_shift": 0.08999999999999997,
+      "shift_direction": "increased",
+      "reasoning": "This new information suggests that the increased solar irradiance in late December might lead to a warmer-than-average temperature at Ploumanac'h, which partially contradicts the historical cooling trend and the negative NAO phase. This relationship adds a new factor to consider, increasing my confidence that the temperature might be higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.47, \"shift_direction\": \"increased\", \"reasoning\": \"This new information suggests that the increased solar irradiance in late December might lead to a warmer-than-average temperature at Ploumanac'h, which partially contradicts the historical cooling trend and the negative NAO phase. This relationship adds a new factor to consider, increasing my confidence that the temperature might be higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "The French government has recently announced plans to renovate the nearby Ploumanac'h lighthouse and the construction work is expected to be completed by the end of 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.47,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information is unrelated to the weather patterns or temperature trends at Ploumanac'h, and therefore does not impact my probability estimate. The construction work at the lighthouse is a local event that is unlikely to have a significant effect on the daily average temperature at the weather station.",
+      "raw_response": "{\"updated_probability\": 0.47, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information is unrelated to the weather patterns or temperature trends at Ploumanac'h, and therefore does not impact my probability estimate. The construction work at the lighthouse is a local event that is unlikely to have a significant effect on the daily average temperature at the weather station.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "However, what if the North Atlantic Oscillation index being in a positive phase actually leads to colder temperatures in Western Europe during the winter season due to changes in atmospheric circulation patterns, such as a stronger-than-expected polar vortex that pushes cold air masses towards the region?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.39,
+      "absolute_shift": 0.07999999999999996,
+      "shift_direction": "decreased",
+      "reasoning": "This new information challenges my initial assumption about the positive NAO phase leading to warmer temperatures in Western Europe. If the NAO phase actually contributes to colder temperatures due to a stronger polar vortex, then my initial reasoning about the temperature being higher on 2025-12-28 than on 2025-12-21 is less likely to hold true. This new information decreases my probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.39, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information challenges my initial assumption about the positive NAO phase leading to warmer temperatures in Western Europe. If the NAO phase actually contributes to colder temperatures due to a stronger polar vortex, then my initial reasoning about the temperature being higher on 2025-12-28 than on 2025-12-21 is less likely to hold true. This new information decreases my probability estimate.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "A new study published in the Journal of Atmospheric Science reveals that the North Atlantic Oscillation's positive phase has a statistically significant correlation with colder temperatures in Western Europe during the winter season, contradicting previous assumptions. The study's lead author, Dr. Maria Rodriguez, notes that the increased blocking of the polar vortex is the primary mechanism behind this counterintuitive effect.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.33,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "This new information further supports the idea that the positive NAO phase leads to colder temperatures in Western Europe, contradicting my initial assumption and the previous correction. The study's findings, which are statistically significant, have significantly reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21. The probability of this event is further decreased.",
+      "raw_response": "{\"updated_probability\": 0.33, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information further supports the idea that the positive NAO phase leads to colder temperatures in Western Europe, contradicting my initial assumption and the previous correction. The study's findings, which are statistically significant, have significantly reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21. The probability of this event is further decreased.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "A sudden and intense low-pressure system forms over the eastern coast of the Iberian Peninsula on 2025-12-24, bringing a large mass of cold air from the Arctic towards Western Europe. The resulting pressure gradient leads to a strong and persisting southwesterly wind flow across the Bay of Biscay, potentially counteracting the warming influence of the North Atlantic Oscillation.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.41,
+      "absolute_shift": 0.07999999999999996,
+      "shift_direction": "increased",
+      "reasoning": "This new information introduces a new factor that could mitigate the warming influence of the positive NAO phase. The strong southwesterly wind flow across the Bay of Biscay could potentially counteract the warming effects, making the temperature being higher on 2025-12-28 than on 2025-12-21 slightly more plausible. This new development has increased my probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.41, \"shift_direction\": \"increased\", \"reasoning\": \"This new information introduces a new factor that could mitigate the warming influence of the positive NAO phase. The strong southwesterly wind flow across the Bay of Biscay could potentially counteract the warming effects, making the temperature being higher on 2025-12-28 than on 2025-12-21 slightly more plausible. This new development has increased my probability estimate.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "According to the latest forecast from the European Centre for Medium-Range Weather Forecasts (ECMWF), the North Atlantic Oscillation index is expected to remain in a positive phase throughout the next two weeks, with a predicted anomaly of +2.5 standard deviations by December 28.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.34,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "This new information is consistent with the previous study suggesting that the positive NAO phase leads to colder temperatures in Western Europe. The ECMWF forecast's predicted anomaly of +2.5 standard deviations by December 28 implies a significant warming, but in the context of the counterintuitive effect of the NAO phase, it may actually contribute to colder temperatures. This new information, combined with the previous study's findings, has reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.34, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information is consistent with the previous study suggesting that the positive NAO phase leads to colder temperatures in Western Europe. The ECMWF forecast's predicted anomaly of +2.5 standard deviations by December 28 implies a significant warming, but in the context of the counterintuitive effect of the NAO phase, it may actually contribute to colder temperatures. This new information, combined with the previous study's findings, has reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "The City of Paris has announced plans to increase the number of pedestrian zones in the city center starting from 2026, as part of a broader effort to reduce traffic congestion and improve air quality.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.34,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information is unrelated to the weather patterns or temperature trends at Ploumanac'h, and therefore does not impact my probability estimate. The announcement by the City of Paris regarding pedestrian zones has no bearing on the temperature or atmospheric conditions in the region.",
+      "raw_response": "{\"updated_probability\": 0.34, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information is unrelated to the weather patterns or temperature trends at Ploumanac'h, and therefore does not impact my probability estimate. The announcement by the City of Paris regarding pedestrian zones has no bearing on the temperature or atmospheric conditions in the region.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "However, suppose that this low-pressure system, instead of bringing cooler air, intensifies the maritime influence of the Gulf Stream, leading to a temporary warming of the region due to increased moisture and heat transfer from the warmer waters.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.41,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "increased",
+      "reasoning": "This new information introduces a new possibility that the low-pressure system could bring a temporary warming of the region due to increased moisture and heat transfer from the warmer waters of the Gulf Stream. This scenario would counteract the cooling effects of the negative NAO phase and the strong polar vortex, making the temperature being higher on 2025-12-28 than on 2025-12-21 more plausible. This new development has increased my probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.41, \"shift_direction\": \"increased\", \"reasoning\": \"This new information introduces a new possibility that the low-pressure system could bring a temporary warming of the region due to increased moisture and heat transfer from the warmer waters of the Gulf Stream. This scenario would counteract the cooling effects of the negative NAO phase and the strong polar vortex, making the temperature being higher on 2025-12-28 than on 2025-12-21 more plausible. This new development has increased my probability estimate.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that the low-pressure system forecasted to move into the region around December 28 is actually expected to enhance the meridional flow, bringing warmer air from the Mediterranean region and potentially leading to a significant warming trend during the period.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.11000000000000004,
+      "shift_direction": "increased",
+      "reasoning": "This new information suggests that the low-pressure system could bring a significant warming trend to the region, potentially leading to a substantial increase in temperature. The study's findings, which suggest that the system will enhance the meridional flow and bring warmer air from the Mediterranean region, have increased my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21. This new information has significantly increased my probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.52, \"shift_direction\": \"increased\", \"reasoning\": \"This new information suggests that the low-pressure system could bring a significant warming trend to the region, potentially leading to a substantial increase in temperature. The study's findings, which suggest that the system will enhance the meridional flow and bring warmer air from the Mediterranean region, have increased my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21. This new information has significantly increased my probability estimate.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "However, the latest weather model ensemble suggests that the low-pressure system forecasted to move into the region around December 28 has a 30% chance of instead moving eastward, potentially avoiding the French weather station at Ploumanac'h and thus reducing the likelihood of cooler air being brought into the area.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.53,
+      "absolute_shift": 0.010000000000000009,
+      "shift_direction": "increased",
+      "reasoning": "This new information introduces a new uncertainty regarding the path of the low-pressure system, which could potentially reduce the likelihood of cooler air being brought into the area. The 30% chance of the system moving eastward has a small but non-negligible impact on my probability estimate, as it slightly increases the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.53, \"shift_direction\": \"increased\", \"reasoning\": \"This new information introduces a new uncertainty regarding the path of the low-pressure system, which could potentially reduce the likelihood of cooler air being brought into the area. The 30% chance of the system moving eastward has a small but non-negligible impact on my probability estimate, as it slightly increases the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that low-pressure systems of a similar strength and trajectory to the one forecasted for December 28 have a 75% chance of bringing temperatures 2-3\u00b0C below average in the Ploumanac'h region.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "decreased",
+      "reasoning": "This new information contradicts the previous studies suggesting that the low-pressure system could bring a significant warming trend or potentially avoid the region. The study's findings, which indicate a high likelihood of the system bringing temperatures 2-3\u00b0C below average, have significantly reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21. This new information has decreased my probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.43, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information contradicts the previous studies suggesting that the low-pressure system could bring a significant warming trend or potentially avoid the region. The study's findings, which indicate a high likelihood of the system bringing temperatures 2-3\u00b0C below average, have significantly reduced my confidence in the temperature being higher on 2025-12-28 than on 2025-12-21. This new information has decreased my probability estimate.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "A new public art installation is scheduled to be unveiled in the city of Saint-Brieuc, located approximately 30 kilometers east of the Ploumanac'h weather station, on the morning of December 28, 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information is unrelated to the weather patterns or temperature trends at Ploumanac'h, and therefore does not impact my probability estimate. The unveiling of a public art installation in Saint-Brieuc has no bearing on the temperature or atmospheric conditions in the region.",
+      "raw_response": "{\"updated_probability\": 0.43, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information is unrelated to the weather patterns or temperature trends at Ploumanac'h, and therefore does not impact my probability estimate. The unveiling of a public art installation in Saint-Brieuc has no bearing on the temperature or atmospheric conditions in the region.\"}"
+    }
+  ],
+  "summary": {
+    "question_id": "meteofrance_TEMPERATURE_celsius.07117.D",
+    "question_text": "What is the probability that the daily average temperature at the French weather station at Ploumanac'h will be higher on 2025-12-28 than on 2025-12-21?",
+    "source": "dbnomics",
+    "condition": "multi-turn",
+    "initial_probability": 0.62,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.078,
+    "max_absolute_shift": 0.2
+  }
+}

@@ -1,0 +1,970 @@
+{
+  "question_id": "38671",
+  "question_text": "Will Ali Khamenei cease to be supreme leader of Iran in 2025?",
+  "source": "metaculus",
+  "initial_probability": 0.23,
+  "nodes": [
+    {
+      "id": "health_issues",
+      "description": "Ali Khamenei's health problems",
+      "role": "factor"
+    },
+    {
+      "id": "iran_economy",
+      "description": "State of the Iranian economy",
+      "role": "factor"
+    },
+    {
+      "id": "regime_stability",
+      "description": "Stability of the Iranian regime",
+      "role": "factor"
+    },
+    {
+      "id": "succession_plans",
+      "description": "Existence and clarity of succession plans",
+      "role": "factor"
+    },
+    {
+      "id": "internal_power_struggles",
+      "description": "Intensity of internal power struggles within the regime",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Ali Khamenei ceasing to be supreme leader of Iran in 2025",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "health_issues",
+      "to": "outcome",
+      "mechanism": "Poor health could lead to Khamenei's incapacitation or death"
+    },
+    {
+      "from": "iran_economy",
+      "to": "regime_stability",
+      "mechanism": "Economic hardship can destabilize the regime"
+    },
+    {
+      "from": "regime_stability",
+      "to": "internal_power_struggles",
+      "mechanism": "Regime instability can lead to increased power struggles"
+    },
+    {
+      "from": "internal_power_struggles",
+      "to": "outcome",
+      "mechanism": "Power struggles could lead to Khamenei's removal"
+    },
+    {
+      "from": "succession_plans",
+      "to": "outcome",
+      "mechanism": "Clear succession plans could facilitate a smooth transition"
+    },
+    {
+      "from": "health_issues",
+      "to": "succession_plans",
+      "mechanism": "Khamenei's health issues could prompt the regime to clarify succession plans"
+    }
+  ],
+  "reasoning": "The forecast considers multiple factors influencing Ali Khamenei's tenure, including his health, the state of the Iranian economy, regime stability, succession plans, and internal power struggles. These factors interact in complex ways, with economic hardship potentially destabilizing the regime and leading to power struggles, which in turn could result in Khamenei's removal. Meanwhile, Khamenei's health issues could either directly lead to his incapacitation or prompt the regime to clarify succession plans, potentially leading to a smoother transition. The assigned probability reflects the uncertainty and complexity of these interactions.",
+  "network_analysis": {
+    "n_nodes": 6,
+    "n_edges": 6,
+    "density": 0.2,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 6,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "health_issues",
+        "description": "Ali Khamenei's health problems",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0789,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2158
+      },
+      {
+        "node_id": "iran_economy",
+        "description": "State of the Iranian economy",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0789,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1158
+      },
+      {
+        "node_id": "regime_stability",
+        "description": "Stability of the Iranian regime",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.2,
+        "pagerank": 0.146,
+        "path_relevance": 0.2,
+        "composite_importance": 0.2192
+      },
+      {
+        "node_id": "succession_plans",
+        "description": "Existence and clarity of succession plans",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.2,
+        "pagerank": 0.1125,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1225
+      },
+      {
+        "node_id": "internal_power_struggles",
+        "description": "Intensity of internal power struggles within the regime",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.2667,
+        "pagerank": 0.203,
+        "path_relevance": 0.4,
+        "composite_importance": 0.2906
+      },
+      {
+        "node_id": "outcome",
+        "description": "Ali Khamenei ceasing to be supreme leader of Iran in 2025",
+        "role": "outcome",
+        "in_degree": 3,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.625,
+        "pagerank": 0.3806,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0761
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "health_issues",
+        "target": "outcome",
+        "mechanism": "Poor health could lead to Khamenei's incapacitation or death",
+        "edge_betweenness": 0.0333,
+        "on_critical_path": true
+      },
+      {
+        "source": "health_issues",
+        "target": "succession_plans",
+        "mechanism": "Khamenei's health issues could prompt the regime to clarify succession plans",
+        "edge_betweenness": 0.0333,
+        "on_critical_path": false
+      },
+      {
+        "source": "iran_economy",
+        "target": "regime_stability",
+        "mechanism": "Economic hardship can destabilize the regime",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      },
+      {
+        "source": "regime_stability",
+        "target": "internal_power_struggles",
+        "mechanism": "Regime instability can lead to increased power struggles",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      },
+      {
+        "source": "succession_plans",
+        "target": "outcome",
+        "mechanism": "Clear succession plans could facilitate a smooth transition",
+        "edge_betweenness": 0.0333,
+        "on_critical_path": true
+      },
+      {
+        "source": "internal_power_struggles",
+        "target": "outcome",
+        "mechanism": "Power struggles could lead to Khamenei's removal",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "internal_power_struggles",
+        "description": "Intensity of internal power struggles within the regime",
+        "importance": 0.2906,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "regime_stability",
+        "description": "Stability of the Iranian regime",
+        "importance": 0.2192,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "health_issues",
+        "description": "Ali Khamenei's health problems",
+        "importance": 0.2158,
+        "centrality_rank": 3,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "iran_economy",
+        "description": "State of the Iranian economy",
+        "importance": 0.1158,
+        "centrality_rank": 5,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "internal_power_struggles",
+        "description": "Intensity of internal power struggles within the regime",
+        "importance": 0.2906,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "regime_stability",
+        "description": "Stability of the Iranian regime",
+        "importance": 0.2192,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "regime_stability->internal_power_struggles",
+        "description": "Regime instability can lead to increased power struggles",
+        "importance": 0.1333,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "iran_economy->regime_stability",
+        "description": "Economic hardship can destabilize the regime",
+        "importance": 0.1,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "health_issues->succession_plans",
+        "description": "Khamenei's health issues could prompt the regime to clarify succession plans",
+        "importance": 0.0333,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "regime_stability->internal_power_struggles",
+        "description": "Regime instability can lead to increased power struggles",
+        "importance": 0.1333,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "internal_power_struggles->succession_plans",
+        "description": "Potential link: Intensity of internal power struggles within the regime -> Existence and clarity of succession plans",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "internal_power_struggles->health_issues",
+        "description": "Potential link: Intensity of internal power struggles within the regime -> Ali Khamenei's health problems",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "internal_power_struggles",
+      "description": "Intensity of internal power struggles within the regime",
+      "importance": 0.2906,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "regime_stability",
+      "description": "Stability of the Iranian regime",
+      "importance": 0.2192,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "health_issues",
+      "description": "Ali Khamenei's health problems",
+      "importance": 0.2158,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "iran_economy",
+      "description": "State of the Iranian economy",
+      "importance": 0.1158,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "internal_power_struggles",
+      "description": "Intensity of internal power struggles within the regime",
+      "importance": 0.2906,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "regime_stability",
+      "description": "Stability of the Iranian regime",
+      "importance": 0.2192,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "regime_stability->internal_power_struggles",
+      "description": "Regime instability can lead to increased power struggles",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "iran_economy->regime_stability",
+      "description": "Economic hardship can destabilize the regime",
+      "importance": 0.1,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "health_issues->succession_plans",
+      "description": "Khamenei's health issues could prompt the regime to clarify succession plans",
+      "importance": 0.0333,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "regime_stability->internal_power_struggles",
+      "description": "Regime instability can lead to increased power struggles",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "internal_power_struggles->succession_plans",
+      "description": "Potential link: Intensity of internal power struggles within the regime -> Existence and clarity of succession plans",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "internal_power_struggles->health_issues",
+      "description": "Potential link: Intensity of internal power struggles within the regime -> Ali Khamenei's health problems",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if the Iranian regime's internal power dynamics are actually more resilient than expected, with key stakeholders having a vested interest in maintaining stability under Khamenei's leadership, thereby rendering internal power struggles irrelevant to his tenure? Recent behind-the-scenes negotiations among high-ranking officials suggest a unified front, potentially neutralizing the impact of power struggles on Khamenei's position. This unexpected cohesion could be due to the regime's fear of external interference or the economic costs of internal conflict. As a result, the intensity of internal power struggles might not be a significant factor in determining Khamenei's continuation as supreme leader.",
+      "probe_type": "node_negate_high",
+      "target_id": "internal_power_struggles",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2906,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Intensity of internal power struggles within the regime"
+    },
+    {
+      "probe_text": "What if the Iranian regime's stability is actually irrelevant to Ali Khamenei's position as supreme leader, given the regime's history of maintaining power through repression and external support, regardless of economic conditions? Recent data suggests that the Iranian people's economic dissatisfaction has been effectively managed through targeted subsidies and propaganda, rendering regime stability less dependent on economic factors. Furthermore, the regime's power structures are designed to withstand internal strife, making regime stability less of a concern for Khamenei's tenure. This could mean that the state of the economy has little to no impact on the stability of the regime and, by extension, Khamenei's leadership.",
+      "probe_type": "node_negate_high",
+      "target_id": "regime_stability",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2192,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Stability of the Iranian regime"
+    },
+    {
+      "probe_text": "Recent reports indicate that Ali Khamenei has been receiving advanced medical treatment, significantly improving his health outlook. Moreover, the Iranian regime has a history of keeping the supreme leader's health issues private, making it unlikely that his health would be a public factor in his removal. This suggests that health issues may not be as significant a factor in Khamenei's potential removal as initially thought. In fact, his health may be more stable than anticipated, reducing the likelihood of his incapacitation or death affecting his leadership status.",
+      "probe_type": "node_negate_medium",
+      "target_id": "health_issues",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2158,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "description": "Ali Khamenei's health problems"
+    },
+    {
+      "probe_text": "Newly discovered oil reserves in Iran are expected to significantly boost the country's economy, leading to increased stability and reduced reliance on other industries. This development could mitigate the impact of economic sanctions and improve the overall state of the Iranian economy. As a result, the economy may no longer be a significant factor in determining the stability of the regime. Given this information, how does this affect your estimate of Ali Khamenei ceasing to be supreme leader in 2025?",
+      "probe_type": "node_negate_low",
+      "target_id": "iran_economy",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1158,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "description": "State of the Iranian economy"
+    },
+    {
+      "probe_text": "A recent leak of internal regime documents has revealed a deepening rift between hardline and moderate factions within the Iranian government, with several high-ranking officials openly questioning Khamenei's ability to lead. This division has sparked a surge in behind-the-scenes maneuvering, as various factions jockey for position and influence. Experts warn that this increased infighting could ultimately threaten Khamenei's hold on power. The leak has been authenticated by multiple sources, including a former Iranian diplomat.",
+      "probe_type": "node_strengthen",
+      "target_id": "internal_power_struggles",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2906,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Intensity of internal power struggles within the regime"
+    },
+    {
+      "probe_text": "A recent report by the International Crisis Group notes that despite economic sanctions, Iran's regime has managed to maintain control and stability through a combination of repression and strategic concessions to key stakeholders. Furthermore, the Iranian government has successfully implemented policies to reduce the country's dependence on oil exports, thereby mitigating the impact of economic fluctuations on regime stability. This development suggests that the regime's stability is more robust than initially thought, potentially reducing the likelihood of internal power struggles and Ali Khamenei's removal. The report's findings have been endorsed by several regional experts, lending credence to the assessment.",
+      "probe_type": "node_strengthen",
+      "target_id": "regime_stability",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2192,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Stability of the Iranian regime"
+    },
+    {
+      "probe_text": "Recent studies have shown that the Iranian regime's power structures are more resilient to economic shocks than previously thought, with key factions often rallying around the supreme leader in times of crisis, potentially reducing the likelihood of internal power struggles. Furthermore, the regime's experience in managing past instability may have led to the development of more effective mechanisms for suppressing dissent and maintaining control. This could mean that regime instability does not necessarily lead to increased internal power struggles. In fact, the regime's stability might be less tied to economic performance than assumed.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "regime_stability->internal_power_struggles",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Regime instability can lead to increased power struggles"
+    },
+    {
+      "probe_text": "Recent reports indicate that Iran has diversified its economy and implemented policies to reduce its dependence on oil exports, potentially making it more resilient to economic shocks. Additionally, the regime has shown an ability to maintain control through repression and strategic subsidies, even in times of economic hardship. This suggests that the link between economic hardship and regime instability may be weaker than assumed. In fact, the Iranian regime has historically used economic difficulties as a pretext to consolidate power and suppress dissent.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "iran_economy->regime_stability",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Economic hardship can destabilize the regime"
+    },
+    {
+      "probe_text": "Recent reports suggest that despite Khamenei's health issues, the regime has been focused on maintaining an image of stability and continuity, potentially discouraging open discussions about succession. This might indicate that the regime is more concerned with projecting strength than with preparing for a transition. As a result, Khamenei's health problems may not necessarily prompt the regime to clarify succession plans. Could this change your assessment of how health issues influence the outcome?",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "health_issues->succession_plans",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0333,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Khamenei's health issues could prompt the regime to clarify succession plans"
+    },
+    {
+      "probe_text": "Recent reports suggest that internal power struggles within the Iranian regime have been escalating, with various factions vying for influence. This increased infighting has led to a decline in the regime's ability to effectively govern and maintain control, thereby destabilizing the regime. Could it be that the direction of causality is reversed, where internal power struggles actually contribute to regime instability, rather than the other way around? This might imply that the original causal link needs reevaluation.",
+      "probe_type": "edge_reverse",
+      "target_id": "regime_stability->internal_power_struggles",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Regime instability can lead to increased power struggles"
+    },
+    {
+      "probe_text": "Recent reports suggest that the increasing intensity of internal power struggles within the Iranian regime has prompted key factions to accelerate the development of clear succession plans, potentially to secure their interests and influence the transition process. This raises questions about whether the forecaster's model adequately captures the complex interplay between power struggles and succession planning. As internal power struggles escalate, regime insiders may see the clarification of succession plans as a means to consolidate power and mitigate potential instability. How might this new information impact the forecaster's estimate of Ali Khamenei ceasing to be supreme leader in 2025?",
+      "probe_type": "edge_fabricate",
+      "target_id": "internal_power_struggles->succession_plans",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Intensity of internal power struggles within the regime -> Existence and clarity of succession plans"
+    },
+    {
+      "probe_text": "Recent reports suggest that the intense power struggles within the Iranian regime have taken a significant toll on Ali Khamenei's mental and physical well-being, with sources close to the supreme leader indicating that the stress of navigating these internal conflicts has exacerbated his existing health issues. As the regime's internal power dynamics continue to shift, it is possible that Khamenei's health could deteriorate further. This raises questions about the potential for internal power struggles to directly impact Khamenei's health, potentially accelerating his incapacitation or removal. How might this new information affect your estimate of Khamenei ceasing to be supreme leader in 2025?",
+      "probe_type": "edge_fabricate",
+      "target_id": "internal_power_struggles->health_issues",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Intensity of internal power struggles within the regime -> Ali Khamenei's health problems"
+    },
+    {
+      "probe_text": "What if there is a significant increase in international diplomatic pressure on Iran, particularly from Western countries, leading to potential sanctions or other forms of economic coercion that could destabilize the regime and prompt a re-evaluation of Khamenei's leadership? This could be due to heightened tensions over Iran's nuclear program or human rights issues. Such external pressures could interact with the existing nodes, particularly 'iran_economy' and 'regime_stability', to influence the outcome. How would this external factor affect your estimate of Ali Khamenei ceasing to be supreme leader of Iran in 2025?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "Recent reports suggest that Iran is facing increased international pressure and potential sanctions due to its nuclear program, which could further exacerbate economic hardship and destabilize the regime. How would this development affect your estimate of Ali Khamenei ceasing to be supreme leader in 2025? The international community's actions could lead to increased economic hardship, impacting the stability of the Iranian regime and potentially influencing internal power struggles. This factor, 'international_pressure', could be a crucial addition to the causal network.",
+      "probe_type": "missing_node",
+      "target_id": "international_pressure",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "A recent archaeological discovery in Iran has shed new light on the ancient Persian Empire's agricultural practices, revealing a sophisticated system of irrigation that allowed for widespread cultivation of crops. This finding has sparked interest among historians and scholars, who are eager to learn more about the daily lives of ancient Persians. The discovery has been hailed as a major breakthrough in the field of archaeology, but its implications are largely limited to the academic community. The Iranian government has announced plans to fund further excavations and research into the ancient civilization.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "Recently, the Iranian government has announced plans to invest heavily in the restoration of several historic mosques and cultural landmarks across the country, with a particular focus on the city of Qom. This initiative is expected to create new jobs and stimulate local economies. While this development is seen as a positive step for Iran's cultural heritage, it is unclear how it will impact the country's overall trajectory. The project is set to begin in early 2025.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the Iranian regime's internal power dynamics are actually more resilient than expected, with key stakeholders having a vested interest in maintaining stability under Khamenei's leadership, thereby rendering internal power struggles irrelevant to his tenure? Recent behind-the-scenes negotiations among high-ranking officials suggest a unified front, potentially neutralizing the impact of power struggles on Khamenei's position. This unexpected cohesion could be due to the regime's fear of external interference or the economic costs of internal conflict. As a result, the intensity of internal power struggles might not be a significant factor in determining Khamenei's continuation as supreme leader.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.05000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the importance of internal power struggles in determining Khamenei's tenure, suggesting that the Iranian regime's internal dynamics are more stable than initially thought. This reduces the likelihood of Khamenei's removal due to internal conflicts, thereby decreasing the probability of him ceasing to be supreme leader in 2025. The causal path from 'internal_power_struggles' to 'outcome' is weakened, and the overall network suggests that Khamenei's position is more secure than initially estimated.",
+      "raw_response": "{\"updated_probability\": 0.18, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the importance of internal power struggles in determining Khamenei's tenure, suggesting that the Iranian regime's internal dynamics are more stable than initially thought. This reduces the likelihood of Khamenei's removal due to internal conflicts, thereby decreasing the probability of him ceasing to be supreme leader in 2025. The causal path from 'internal_power_struggles' to 'outcome' is weakened, and the overall network suggests that Khamenei's position is more secure than initially estimated.\"}",
+      "target_id": "internal_power_struggles",
+      "target_type": "node",
+      "target_importance": 0.2906,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the Iranian regime's stability is actually irrelevant to Ali Khamenei's position as supreme leader, given the regime's history of maintaining power through repression and external support, regardless of economic conditions? Recent data suggests that the Iranian people's economic dissatisfaction has been effectively managed through targeted subsidies and propaganda, rendering regime stability less dependent on economic factors. Furthermore, the regime's power structures are designed to withstand internal strife, making regime stability less of a concern for Khamenei's tenure. This could mean that the state of the economy has little to no impact on the stability of the regime and, by extension, Khamenei's leadership.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.15,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the relevance of regime stability to Khamenei's position, suggesting that the regime's stability is less dependent on economic factors and more resilient to internal strife. This reduces the impact of the 'iran_economy' node on the 'regime_stability' node, and subsequently, the impact of 'regime_stability' on the 'outcome'. As a result, the causal paths from 'iran_economy' to 'regime_stability' to 'internal_power_struggles' to 'outcome' are weakened, making Khamenei's removal due to economic instability or regime instability less likely. The updated probability reflects a decreased likelihood of Khamenei ceasing to be supreme leader in 2025, as the regime's ability to maintain power regardless of economic conditions reduces the overall uncertainty surrounding his tenure.",
+      "raw_response": "{\"updated_probability\": 0.15, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the relevance of regime stability to Khamenei's position, suggesting that the regime's stability is less dependent on economic factors and more resilient to internal strife. This reduces the impact of the 'iran_economy' node on the 'regime_stability' node, and subsequently, the impact of 'regime_stability' on the 'outcome'. As a result, the causal paths from 'iran_economy' to 'regime_stability' to 'internal_power_struggles' to 'outcome' are weakened, making Khamenei's removal due to economic instability or regime instability less likely. The updated probability reflects a decreased likelihood of Khamenei ceasing to be supreme leader in 2025, as the regime's ability to maintain power regardless of economic conditions reduces the overall uncertainty surrounding his tenure.\"}",
+      "target_id": "regime_stability",
+      "target_type": "node",
+      "target_importance": 0.2192,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that Ali Khamenei has been receiving advanced medical treatment, significantly improving his health outlook. Moreover, the Iranian regime has a history of keeping the supreme leader's health issues private, making it unlikely that his health would be a public factor in his removal. This suggests that health issues may not be as significant a factor in Khamenei's potential removal as initially thought. In fact, his health may be more stable than anticipated, reducing the likelihood of his incapacitation or death affecting his leadership status.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.1,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the significance of health issues in determining Khamenei's tenure, suggesting that his health outlook has improved and that the regime's secrecy surrounding his health makes it unlikely to be a public factor in his removal. This reduces the impact of the 'health_issues' node on the 'outcome', as well as its indirect effect on 'succession_plans'. With health issues being a less significant factor, the likelihood of Khamenei's removal due to health reasons decreases, leading to a decrease in the overall probability of him ceasing to be supreme leader in 2025. The causal path from 'health_issues' to 'outcome' is significantly weakened, making Khamenei's continued leadership more likely.",
+      "raw_response": "{\"updated_probability\": 0.10, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the significance of health issues in determining Khamenei's tenure, suggesting that his health outlook has improved and that the regime's secrecy surrounding his health makes it unlikely to be a public factor in his removal. This reduces the impact of the 'health_issues' node on the 'outcome', as well as its indirect effect on 'succession_plans'. With health issues being a less significant factor, the likelihood of Khamenei's removal due to health reasons decreases, leading to a decrease in the overall probability of him ceasing to be supreme leader in 2025. The causal path from 'health_issues' to 'outcome' is significantly weakened, making Khamenei's continued leadership more likely.\"}",
+      "target_id": "health_issues",
+      "target_type": "node",
+      "target_importance": 0.2158,
+      "target_centrality_rank": 3,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Newly discovered oil reserves in Iran are expected to significantly boost the country's economy, leading to increased stability and reduced reliance on other industries. This development could mitigate the impact of economic sanctions and improve the overall state of the Iranian economy. As a result, the economy may no longer be a significant factor in determining the stability of the regime. Given this information, how does this affect your estimate of Ali Khamenei ceasing to be supreme leader in 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.020000000000000004,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that the discovery of new oil reserves will improve the Iranian economy, leading to increased stability and reduced reliance on other industries. However, given the previous updates to the network, the impact of the economy on the regime's stability and Khamenei's tenure has already been diminished. The causal path from 'iran_economy' to 'regime_stability' to 'internal_power_struggles' to 'outcome' has been weakened in previous updates, making the economy a less significant factor in determining Khamenei's removal. While the improved economy may still have some indirect effects, the overall impact on Khamenei's tenure is minimal. The updated probability reflects a slight decrease in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the improved economy further reduces the already limited potential for economic instability to affect his leadership.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information suggests that the discovery of new oil reserves will improve the Iranian economy, leading to increased stability and reduced reliance on other industries. However, given the previous updates to the network, the impact of the economy on the regime's stability and Khamenei's tenure has already been diminished. The causal path from 'iran_economy' to 'regime_stability' to 'internal_power_struggles' to 'outcome' has been weakened in previous updates, making the economy a less significant factor in determining Khamenei's removal. While the improved economy may still have some indirect effects, the overall impact on Khamenei's tenure is minimal. The updated probability reflects a slight decrease in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the improved economy further reduces the already limited potential for economic instability to affect his leadership.\"}",
+      "target_id": "iran_economy",
+      "target_type": "node",
+      "target_importance": 0.1158,
+      "target_centrality_rank": 5,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent leak of internal regime documents has revealed a deepening rift between hardline and moderate factions within the Iranian government, with several high-ranking officials openly questioning Khamenei's ability to lead. This division has sparked a surge in behind-the-scenes maneuvering, as various factions jockey for position and influence. Experts warn that this increased infighting could ultimately threaten Khamenei's hold on power. The leak has been authenticated by multiple sources, including a former Iranian diplomat.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.2,
+      "absolute_shift": 0.12000000000000001,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the previous assessment that internal power struggles were no longer a significant factor in determining Khamenei's tenure. The revelation of a deepening rift between hardline and moderate factions, along with the authentication of the leak by multiple sources, suggests that internal power struggles have actually intensified. This increased infighting could potentially threaten Khamenei's hold on power, as various factions jockey for position and influence. The causal path from 'internal_power_struggles' to 'outcome' is re-strengthened, as the increased divisions within the regime could lead to a challenge to Khamenei's leadership. This new information overrides the previous update that downplayed the importance of internal power struggles, leading to a significant increase in the probability of Khamenei ceasing to be supreme leader in 2025.",
+      "raw_response": "{\"updated_probability\": 0.20, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenges the previous assessment that internal power struggles were no longer a significant factor in determining Khamenei's tenure. The revelation of a deepening rift between hardline and moderate factions, along with the authentication of the leak by multiple sources, suggests that internal power struggles have actually intensified. This increased infighting could potentially threaten Khamenei's hold on power, as various factions jockey for position and influence. The causal path from 'internal_power_struggles' to 'outcome' is re-strengthened, as the increased divisions within the regime could lead to a challenge to Khamenei's leadership. This new information overrides the previous update that downplayed the importance of internal power struggles, leading to a significant increase in the probability of Khamenei ceasing to be supreme leader in 2025.\"}",
+      "target_id": "internal_power_struggles",
+      "target_type": "node",
+      "target_importance": 0.2906,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent report by the International Crisis Group notes that despite economic sanctions, Iran's regime has managed to maintain control and stability through a combination of repression and strategic concessions to key stakeholders. Furthermore, the Iranian government has successfully implemented policies to reduce the country's dependence on oil exports, thereby mitigating the impact of economic fluctuations on regime stability. This development suggests that the regime's stability is more robust than initially thought, potentially reducing the likelihood of internal power struggles and Ali Khamenei's removal. The report's findings have been endorsed by several regional experts, lending credence to the assessment.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.08000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information reinforces the notion that the Iranian regime's stability is more robust than initially thought, due to its ability to maintain control through repression and strategic concessions, as well as its efforts to reduce dependence on oil exports. This challenges the recent increase in probability driven by the revelation of internal power struggles, as a more stable regime would be better equipped to manage and mitigate the effects of such struggles. The causal path from 'regime_stability' to 'internal_power_struggles' to 'outcome' is affected, as increased regime stability would likely reduce the intensity of internal power struggles and, by extension, the likelihood of Khamenei's removal. The updated probability reflects a decrease in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the regime's stability and resilience to internal challenges are re-emphasized.",
+      "raw_response": "{\n  \"updated_probability\": 0.12,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The new information reinforces the notion that the Iranian regime's stability is more robust than initially thought, due to its ability to maintain control through repression and strategic concessions, as well as its efforts to reduce dependence on oil exports. This challenges the recent increase in probability driven by the revelation of internal power struggles, as a more stable regime would be better equipped to manage and mitigate the effects of such struggles. The causal path from 'regime_stability' to 'internal_power_struggles' to 'outcome' is affected, as increased regime stability would likely reduce the intensity of internal power struggles and, by extension, the likelihood of Khamenei's removal. The updated probability reflects a decrease in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the regime's stability and resilience to internal challenges are re-emphasized.\"\n}",
+      "target_id": "regime_stability",
+      "target_type": "node",
+      "target_importance": 0.2192,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the Iranian regime's power structures are more resilient to economic shocks than previously thought, with key factions often rallying around the supreme leader in times of crisis, potentially reducing the likelihood of internal power struggles. Furthermore, the regime's experience in managing past instability may have led to the development of more effective mechanisms for suppressing dissent and maintaining control. This could mean that regime instability does not necessarily lead to increased internal power struggles. In fact, the regime's stability might be less tied to economic performance than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.09,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'regime_stability' and 'internal_power_struggles', suggesting that the regime's power structures are more resilient to economic shocks and that key factions may rally around the supreme leader in times of crisis. This reduces the likelihood that regime instability would lead to increased internal power struggles, which in turn could lead to Khamenei's removal. The causal path from 'regime_stability' to 'internal_power_struggles' to 'outcome' is weakened, as the regime's stability is less likely to be a determining factor in the intensity of internal power struggles. Given that the previous update already emphasized the regime's stability, this new information further reinforces the notion that Khamenei's position is more secure, leading to a decrease in the probability of him ceasing to be supreme leader in 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.09,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'regime_stability' and 'internal_power_struggles', suggesting that the regime's power structures are more resilient to economic shocks and that key factions may rally around the supreme leader in times of crisis. This reduces the likelihood that regime instability would lead to increased internal power struggles, which in turn could lead to Khamenei's removal. The causal path from 'regime_stability' to 'internal_power_struggles' to 'outcome' is weakened, as the regime's stability is less likely to be a determining factor in the intensity of internal power struggles. Given that the previous update already emphasized the regime's stability, this new information further reinforces the notion that Khamenei's position is more secure, leading to a decrease in the probability of him ceasing to be supreme leader in 2025.\"\n}",
+      "target_id": "regime_stability->internal_power_struggles",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that Iran has diversified its economy and implemented policies to reduce its dependence on oil exports, potentially making it more resilient to economic shocks. Additionally, the regime has shown an ability to maintain control through repression and strategic subsidies, even in times of economic hardship. This suggests that the link between economic hardship and regime instability may be weaker than assumed. In fact, the Iranian regime has historically used economic difficulties as a pretext to consolidate power and suppress dissent.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.06,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'iran_economy' and 'regime_stability', suggesting that the regime's diversification efforts and ability to maintain control through repression and strategic subsidies have reduced the impact of economic hardship on regime stability. This means that economic shocks are less likely to lead to regime instability, which in turn reduces the likelihood of internal power struggles and Khamenei's removal. The causal path from 'iran_economy' to 'regime_stability' to 'internal_power_struggles' to 'outcome' is further weakened, as the regime's stability is less dependent on economic performance. Given the already low probability of Khamenei's removal, this new information reinforces the notion that his position is secure, leading to a decrease in the probability of him ceasing to be supreme leader in 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.06,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'iran_economy' and 'regime_stability', suggesting that the regime's diversification efforts and ability to maintain control through repression and strategic subsidies have reduced the impact of economic hardship on regime stability. This means that economic shocks are less likely to lead to regime instability, which in turn reduces the likelihood of internal power struggles and Khamenei's removal. The causal path from 'iran_economy' to 'regime_stability' to 'internal_power_struggles' to 'outcome' is further weakened, as the regime's stability is less dependent on economic performance. Given the already low probability of Khamenei's removal, this new information reinforces the notion that his position is secure, leading to a decrease in the probability of him ceasing to be supreme leader in 2025.\"\n}",
+      "target_id": "iran_economy->regime_stability",
+      "target_type": "edge",
+      "target_importance": 0.1,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent reports suggest that despite Khamenei's health issues, the regime has been focused on maintaining an image of stability and continuity, potentially discouraging open discussions about succession. This might indicate that the regime is more concerned with projecting strength than with preparing for a transition. As a result, Khamenei's health problems may not necessarily prompt the regime to clarify succession plans. Could this change your assessment of how health issues influence the outcome?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.05,
+      "absolute_shift": 0.009999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'health_issues' and 'succession_plans', suggesting that the regime's focus on maintaining an image of stability and continuity may discourage open discussions about succession, even in the face of Khamenei's health problems. This means that Khamenei's health issues may not necessarily lead to a clarification of succession plans, which could have potentially increased the likelihood of his removal. The causal path from 'health_issues' to 'succession_plans' to 'outcome' is weakened, as the regime's priorities lie elsewhere. Given the already low probability of Khamenei's removal, this new information further reduces the likelihood of his health issues leading to a transition, resulting in a slight decrease in the probability of him ceasing to be supreme leader in 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.05,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'health_issues' and 'succession_plans', suggesting that the regime's focus on maintaining an image of stability and continuity may discourage open discussions about succession, even in the face of Khamenei's health problems. This means that Khamenei's health issues may not necessarily lead to a clarification of succession plans, which could have potentially increased the likelihood of his removal. The causal path from 'health_issues' to 'succession_plans' to 'outcome' is weakened, as the regime's priorities lie elsewhere. Given the already low probability of Khamenei's removal, this new information further reduces the likelihood of his health issues leading to a transition, resulting in a slight decrease in the probability of him ceasing to be supreme leader in 2025.\"\n}",
+      "target_id": "health_issues->succession_plans",
+      "target_type": "edge",
+      "target_importance": 0.0333,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent reports suggest that internal power struggles within the Iranian regime have been escalating, with various factions vying for influence. This increased infighting has led to a decline in the regime's ability to effectively govern and maintain control, thereby destabilizing the regime. Could it be that the direction of causality is reversed, where internal power struggles actually contribute to regime instability, rather than the other way around? This might imply that the original causal link needs reevaluation.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.03,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the causal link between 'regime_stability' and 'internal_power_struggles', suggesting that the direction of causality may be reversed. Instead of regime stability influencing internal power struggles, it appears that internal power struggles may actually contribute to regime instability. This reversal of causality strengthens the link between 'internal_power_struggles' and 'outcome', as increased infighting and instability within the regime could lead to a decline in Khamenei's control and potentially his removal. The updated probability reflects an increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the regime's internal power struggles and resulting instability may pose a more significant threat to his leadership than previously thought.",
+      "raw_response": "{\n  \"updated_probability\": 0.08,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information challenges the causal link between 'regime_stability' and 'internal_power_struggles', suggesting that the direction of causality may be reversed. Instead of regime stability influencing internal power struggles, it appears that internal power struggles may actually contribute to regime instability. This reversal of causality strengthens the link between 'internal_power_struggles' and 'outcome', as increased infighting and instability within the regime could lead to a decline in Khamenei's control and potentially his removal. The updated probability reflects an increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the regime's internal power struggles and resulting instability may pose a more significant threat to his leadership than previously thought.\"\n}",
+      "target_id": "regime_stability->internal_power_struggles",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent reports suggest that the increasing intensity of internal power struggles within the Iranian regime has prompted key factions to accelerate the development of clear succession plans, potentially to secure their interests and influence the transition process. This raises questions about whether the forecaster's model adequately captures the complex interplay between power struggles and succession planning. As internal power struggles escalate, regime insiders may see the clarification of succession plans as a means to consolidate power and mitigate potential instability. How might this new information impact the forecaster's estimate of Ali Khamenei ceasing to be supreme leader in 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.039999999999999994,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the causal link between 'internal_power_struggles' and 'succession_plans', suggesting that the increasing intensity of internal power struggles has actually prompted key factions to accelerate the development of clear succession plans. This means that internal power struggles may now contribute to a more orderly transition process, rather than simply increasing the likelihood of Khamenei's removal. The causal path from 'internal_power_struggles' to 'succession_plans' to 'outcome' is strengthened, as the clarification of succession plans could lead to a more predictable and stable transition. However, this also increases the likelihood of Khamenei's removal, as a clear succession plan could facilitate a transition and reduce the costs of removing him. The updated probability reflects an increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the interplay between internal power struggles and succession planning becomes more complex and potentially more conducive to a transition.",
+      "raw_response": "{\n  \"updated_probability\": 0.12,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information challenges the causal link between 'internal_power_struggles' and 'succession_plans', suggesting that the increasing intensity of internal power struggles has actually prompted key factions to accelerate the development of clear succession plans. This means that internal power struggles may now contribute to a more orderly transition process, rather than simply increasing the likelihood of Khamenei's removal. The causal path from 'internal_power_struggles' to 'succession_plans' to 'outcome' is strengthened, as the clarification of succession plans could lead to a more predictable and stable transition. However, this also increases the likelihood of Khamenei's removal, as a clear succession plan could facilitate a transition and reduce the costs of removing him. The updated probability reflects an increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the interplay between internal power struggles and succession planning becomes more complex and potentially more conducive to a transition.\"\n}",
+      "target_id": "internal_power_struggles->succession_plans",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent reports suggest that the intense power struggles within the Iranian regime have taken a significant toll on Ali Khamenei's mental and physical well-being, with sources close to the supreme leader indicating that the stress of navigating these internal conflicts has exacerbated his existing health issues. As the regime's internal power dynamics continue to shift, it is possible that Khamenei's health could deteriorate further. This raises questions about the potential for internal power struggles to directly impact Khamenei's health, potentially accelerating his incapacitation or removal. How might this new information affect your estimate of Khamenei ceasing to be supreme leader in 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.06,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a new causal link between 'internal_power_struggles' and 'health_issues', suggesting that the intense power struggles within the regime have taken a toll on Khamenei's mental and physical well-being, potentially exacerbating his existing health issues. This means that internal power struggles may now have a direct impact on Khamenei's health, accelerating his incapacitation or removal. The causal path from 'internal_power_struggles' to 'health_issues' to 'outcome' is strengthened, as the deterioration of Khamenei's health could lead to his removal. Furthermore, this new link also reinforces the existing causal paths from 'internal_power_struggles' to 'succession_plans' and 'outcome', as the increased pressure on Khamenei's health could create an opportunity for factions to push for a transition. The updated probability reflects a significant increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the interplay between internal power struggles, health issues, and succession planning becomes more complex and potentially more conducive to a transition.",
+      "raw_response": "{\n  \"updated_probability\": 0.18,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information introduces a new causal link between 'internal_power_struggles' and 'health_issues', suggesting that the intense power struggles within the regime have taken a toll on Khamenei's mental and physical well-being, potentially exacerbating his existing health issues. This means that internal power struggles may now have a direct impact on Khamenei's health, accelerating his incapacitation or removal. The causal path from 'internal_power_struggles' to 'health_issues' to 'outcome' is strengthened, as the deterioration of Khamenei's health could lead to his removal. Furthermore, this new link also reinforces the existing causal paths from 'internal_power_struggles' to 'succession_plans' and 'outcome', as the increased pressure on Khamenei's health could create an opportunity for factions to push for a transition. The updated probability reflects a significant increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the interplay between internal power struggles, health issues, and succession planning becomes more complex and potentially more conducive to a transition.\"\n}",
+      "target_id": "internal_power_struggles->health_issues",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if there is a significant increase in international diplomatic pressure on Iran, particularly from Western countries, leading to potential sanctions or other forms of economic coercion that could destabilize the regime and prompt a re-evaluation of Khamenei's leadership? This could be due to heightened tensions over Iran's nuclear program or human rights issues. Such external pressures could interact with the existing nodes, particularly 'iran_economy' and 'regime_stability', to influence the outcome. How would this external factor affect your estimate of Ali Khamenei ceasing to be supreme leader of Iran in 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.07,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a structural challenge to the causal model, highlighting the potential impact of external diplomatic pressure on the Iranian regime. The increased international pressure could lead to economic coercion, such as sanctions, which would affect the 'iran_economy' node and potentially destabilize the regime, influencing the 'regime_stability' node. This, in turn, could create an environment conducive to internal power struggles, succession planning, and ultimately, Khamenei's removal. The introduction of this external factor adds a new layer of complexity to the model, interacting with existing nodes and causal paths. The updated probability reflects an increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the external pressure could exacerbate existing internal tensions and create new opportunities for regime insiders to challenge Khamenei's leadership. The causal model needs to be revised to incorporate this new external factor, which could have a significant impact on the outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information introduces a structural challenge to the causal model, highlighting the potential impact of external diplomatic pressure on the Iranian regime. The increased international pressure could lead to economic coercion, such as sanctions, which would affect the 'iran_economy' node and potentially destabilize the regime, influencing the 'regime_stability' node. This, in turn, could create an environment conducive to internal power struggles, succession planning, and ultimately, Khamenei's removal. The introduction of this external factor adds a new layer of complexity to the model, interacting with existing nodes and causal paths. The updated probability reflects an increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the external pressure could exacerbate existing internal tensions and create new opportunities for regime insiders to challenge Khamenei's leadership. The causal model needs to be revised to incorporate this new external factor, which could have a significant impact on the outcome.\"\n}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Recent reports suggest that Iran is facing increased international pressure and potential sanctions due to its nuclear program, which could further exacerbate economic hardship and destabilize the regime. How would this development affect your estimate of Ali Khamenei ceasing to be supreme leader in 2025? The international community's actions could lead to increased economic hardship, impacting the stability of the Iranian regime and potentially influencing internal power struggles. This factor, 'international_pressure', could be a crucial addition to the causal network.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a structural challenge to the causal model, highlighting the potential impact of increased international pressure on the Iranian regime. The addition of the 'international_pressure' factor creates new causal paths, including 'international_pressure' to 'iran_economy', 'international_pressure' to 'regime_stability', and potentially 'international_pressure' to 'internal_power_struggles'. The increased economic hardship and regime destabilization resulting from international pressure could lead to a decline in Khamenei's control, creating an opportunity for internal power struggles and succession planning. The updated probability reflects a significant increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the external pressure could have a profound impact on the regime's stability and internal dynamics. The introduction of 'international_pressure' as a new node in the causal network necessitates a re-evaluation of the existing relationships and causal paths, leading to a revised estimate that accounts for the potential consequences of increased international pressure.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information introduces a structural challenge to the causal model, highlighting the potential impact of increased international pressure on the Iranian regime. The addition of the 'international_pressure' factor creates new causal paths, including 'international_pressure' to 'iran_economy', 'international_pressure' to 'regime_stability', and potentially 'international_pressure' to 'internal_power_struggles'. The increased economic hardship and regime destabilization resulting from international pressure could lead to a decline in Khamenei's control, creating an opportunity for internal power struggles and succession planning. The updated probability reflects a significant increase in the likelihood of Khamenei ceasing to be supreme leader in 2025, as the external pressure could have a profound impact on the regime's stability and internal dynamics. The introduction of 'international_pressure' as a new node in the causal network necessitates a re-evaluation of the existing relationships and causal paths, leading to a revised estimate that accounts for the potential consequences of increased international pressure.\"\n}",
+      "target_id": "international_pressure",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent archaeological discovery in Iran has shed new light on the ancient Persian Empire's agricultural practices, revealing a sophisticated system of irrigation that allowed for widespread cultivation of crops. This finding has sparked interest among historians and scholars, who are eager to learn more about the daily lives of ancient Persians. The discovery has been hailed as a major breakthrough in the field of archaeology, but its implications are largely limited to the academic community. The Iranian government has announced plans to fund further excavations and research into the ancient civilization.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information regarding the archaeological discovery in Iran is largely unrelated to the causal factors influencing Ali Khamenei's tenure as supreme leader. The discovery's implications are mostly limited to the academic community, and its potential impact on the Iranian government's policies or decisions is minimal. The announcement of funding for further excavations and research may have some minor domestic implications, but it is unlikely to affect the internal power struggles, regime stability, or economic factors that are more directly relevant to Khamenei's leadership. As a result, the updated probability remains unchanged, as the archaeological discovery does not introduce any new causal paths or significantly alter the existing relationships between the nodes in the causal network.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information regarding the archaeological discovery in Iran is largely unrelated to the causal factors influencing Ali Khamenei's tenure as supreme leader. The discovery's implications are mostly limited to the academic community, and its potential impact on the Iranian government's policies or decisions is minimal. The announcement of funding for further excavations and research may have some minor domestic implications, but it is unlikely to affect the internal power struggles, regime stability, or economic factors that are more directly relevant to Khamenei's leadership. As a result, the updated probability remains unchanged, as the archaeological discovery does not introduce any new causal paths or significantly alter the existing relationships between the nodes in the causal network.\"\n}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Recently, the Iranian government has announced plans to invest heavily in the restoration of several historic mosques and cultural landmarks across the country, with a particular focus on the city of Qom. This initiative is expected to create new jobs and stimulate local economies. While this development is seen as a positive step for Iran's cultural heritage, it is unclear how it will impact the country's overall trajectory. The project is set to begin in early 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information regarding the Iranian government's plans to invest in the restoration of historic mosques and cultural landmarks is unlikely to have a significant impact on the causal factors influencing Ali Khamenei's tenure as supreme leader. While the project may have some positive effects on local economies and job creation, its scope and scale are relatively limited, and it is unlikely to address the deeper structural issues affecting the Iranian economy or regime stability. The project's focus on cultural heritage and tourism may also be seen as a way for the government to bolster its legitimacy and distract from more pressing issues, but it is unlikely to fundamentally alter the dynamics of internal power struggles or succession planning. As a result, the updated probability remains unchanged, as the new information does not introduce any significant new causal paths or alter the existing relationships between the nodes in the causal network.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information regarding the Iranian government's plans to invest in the restoration of historic mosques and cultural landmarks is unlikely to have a significant impact on the causal factors influencing Ali Khamenei's tenure as supreme leader. While the project may have some positive effects on local economies and job creation, its scope and scale are relatively limited, and it is unlikely to address the deeper structural issues affecting the Iranian economy or regime stability. The project's focus on cultural heritage and tourism may also be seen as a way for the government to bolster its legitimacy and distract from more pressing issues, but it is unlikely to fundamentally alter the dynamics of internal power struggles or succession planning. As a result, the updated probability remains unchanged, as the new information does not introduce any significant new causal paths or alter the existing relationships between the nodes in the causal network.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "38671",
+    "question_text": "Will Ali Khamenei cease to be supreme leader of Iran in 2025?",
+    "source": "metaculus",
+    "condition": "multi-turn",
+    "initial_probability": 0.23,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.045,
+    "max_absolute_shift": 0.12000000000000001
+  }
+}

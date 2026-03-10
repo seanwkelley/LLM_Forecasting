@@ -56,10 +56,15 @@ def run_condition(
     dry_run: bool = False,
     output_dir: str = "",
     verbose: bool = True,
+    persona_set: str = "reasoning",
+    sequential: bool = False,
 ) -> dict:
     """Run a single condition and return results."""
     if not output_dir:
-        output_dir = f"outputs/causal_discovery/multi_agent/{domain}_{communication}"
+        if communication == "single":
+            output_dir = f"outputs/causal_discovery/single_agent/{domain}_{communication}"
+        else:
+            output_dir = f"outputs/causal_discovery/multi_agent/{domain}_{communication}"
 
     if communication == "single":
         from causal_discovery.run_pilot import run_pilot, run_conflict_pilot
@@ -87,6 +92,8 @@ def run_condition(
             dry_run=dry_run,
             output_dir=output_dir,
             verbose=verbose,
+            persona_set=persona_set,
+            sequential=sequential,
         )
 
     elif communication == "debate":
@@ -143,6 +150,11 @@ def main():
     parser.add_argument("--output-dir", type=str, default="",
                         help="Output directory")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--persona-set", type=str, default="reasoning",
+                        choices=["reasoning", "expertise"],
+                        help="Persona set: 'reasoning' (5 causal) or 'expertise' (3 soft)")
+    parser.add_argument("--sequential", action="store_true",
+                        help="Sequential mode: each agent sees prior agents' results")
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
 
@@ -164,6 +176,8 @@ def main():
         dry_run=args.dry_run,
         output_dir=args.output_dir,
         verbose=not args.quiet,
+        persona_set=args.persona_set,
+        sequential=args.sequential,
     )
 
 

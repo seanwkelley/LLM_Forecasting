@@ -1,0 +1,999 @@
+{
+  "question_id": "7072",
+  "question_text": "Will there be an breakaway European Soccer League match before 2030?",
+  "source": "metaculus",
+  "initial_probability": 0.42,
+  "nodes": [
+    {
+      "id": "financial_pressure",
+      "description": "Economic strain on soccer clubs",
+      "role": "factor"
+    },
+    {
+      "id": "uefa_regulations",
+      "description": "UEFA rules and governance",
+      "role": "factor"
+    },
+    {
+      "id": "club_ambition",
+      "description": "Desire of top clubs for more revenue and control",
+      "role": "factor"
+    },
+    {
+      "id": "fan_sentiment",
+      "description": "Public opinion and support for a breakaway league",
+      "role": "factor"
+    },
+    {
+      "id": "media_deals",
+      "description": "Potential broadcasting and sponsorship contracts",
+      "role": "factor"
+    },
+    {
+      "id": "political_support",
+      "description": "Government and institutional backing for a breakaway league",
+      "role": "factor"
+    },
+    {
+      "id": "breakaway_league",
+      "description": "The formation of a breakaway European Soccer League before 2030",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "financial_pressure",
+      "to": "club_ambition",
+      "mechanism": "Financial strain increases clubs' desire for alternative revenue streams"
+    },
+    {
+      "from": "club_ambition",
+      "to": "breakaway_league",
+      "mechanism": "Clubs' ambition drives the push for a breakaway league"
+    },
+    {
+      "from": "uefa_regulations",
+      "to": "club_ambition",
+      "mechanism": "Restrictive UEFA rules fuel clubs' desire for more control"
+    },
+    {
+      "from": "fan_sentiment",
+      "to": "breakaway_league",
+      "mechanism": "Public support or opposition influences the viability of a breakaway league"
+    },
+    {
+      "from": "media_deals",
+      "to": "breakaway_league",
+      "mechanism": "Lucrative broadcasting contracts make a breakaway league more financially attractive"
+    },
+    {
+      "from": "political_support",
+      "to": "breakaway_league",
+      "mechanism": "Government and institutional support can facilitate the creation of a breakaway league"
+    },
+    {
+      "from": "financial_pressure",
+      "to": "media_deals",
+      "mechanism": "Economic strain on clubs makes them more receptive to lucrative media deals"
+    }
+  ],
+  "reasoning": "The formation of a breakaway European Soccer League before 2030 is influenced by a complex interplay of factors including financial pressure on clubs, UEFA regulations, club ambition, fan sentiment, potential media deals, and political support. While there are strong drivers for a breakaway, such as financial gain and the desire for more control, there are also significant barriers, including potential fan backlash and regulatory hurdles. Given these considerations, a probability of 0.42 reflects a plausible but not certain outcome.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "breakaway_league",
+    "node_metrics": [
+      {
+        "node_id": "financial_pressure",
+        "description": "Economic strain on soccer clubs",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0738,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2148
+      },
+      {
+        "node_id": "uefa_regulations",
+        "description": "UEFA rules and governance",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0738,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1148
+      },
+      {
+        "node_id": "club_ambition",
+        "description": "Desire of top clubs for more revenue and control",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.05,
+        "closeness": 0.3333,
+        "pagerank": 0.168,
+        "path_relevance": 0.2857,
+        "composite_importance": 0.2343
+      },
+      {
+        "node_id": "fan_sentiment",
+        "description": "Public opinion and support for a breakaway league",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0738,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1148
+      },
+      {
+        "node_id": "media_deals",
+        "description": "Potential broadcasting and sponsorship contracts",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0167,
+        "closeness": 0.1667,
+        "pagerank": 0.1052,
+        "path_relevance": 0.1429,
+        "composite_importance": 0.1689
+      },
+      {
+        "node_id": "political_support",
+        "description": "Government and institutional backing for a breakaway league",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0738,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1148
+      },
+      {
+        "node_id": "breakaway_league",
+        "description": "The formation of a breakaway European Soccer League before 2030",
+        "role": "outcome",
+        "in_degree": 4,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.75,
+        "pagerank": 0.4315,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0863
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "financial_pressure",
+        "target": "club_ambition",
+        "mechanism": "Financial strain increases clubs' desire for alternative revenue streams",
+        "edge_betweenness": 0.0357,
+        "on_critical_path": true
+      },
+      {
+        "source": "financial_pressure",
+        "target": "media_deals",
+        "mechanism": "Economic strain on clubs makes them more receptive to lucrative media deals",
+        "edge_betweenness": 0.0357,
+        "on_critical_path": true
+      },
+      {
+        "source": "uefa_regulations",
+        "target": "club_ambition",
+        "mechanism": "Restrictive UEFA rules fuel clubs' desire for more control",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "club_ambition",
+        "target": "breakaway_league",
+        "mechanism": "Clubs' ambition drives the push for a breakaway league",
+        "edge_betweenness": 0.0595,
+        "on_critical_path": true
+      },
+      {
+        "source": "fan_sentiment",
+        "target": "breakaway_league",
+        "mechanism": "Public support or opposition influences the viability of a breakaway league",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "media_deals",
+        "target": "breakaway_league",
+        "mechanism": "Lucrative broadcasting contracts make a breakaway league more financially attractive",
+        "edge_betweenness": 0.0357,
+        "on_critical_path": true
+      },
+      {
+        "source": "political_support",
+        "target": "breakaway_league",
+        "mechanism": "Government and institutional support can facilitate the creation of a breakaway league",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "club_ambition",
+        "description": "Desire of top clubs for more revenue and control",
+        "importance": 0.2343,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "financial_pressure",
+        "description": "Economic strain on soccer clubs",
+        "importance": 0.2148,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "uefa_regulations",
+        "description": "UEFA rules and governance",
+        "importance": 0.1148,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "political_support",
+        "description": "Government and institutional backing for a breakaway league",
+        "importance": 0.1148,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "club_ambition",
+        "description": "Desire of top clubs for more revenue and control",
+        "importance": 0.2343,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "financial_pressure",
+        "description": "Economic strain on soccer clubs",
+        "importance": 0.2148,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "club_ambition->breakaway_league",
+        "description": "Clubs' ambition drives the push for a breakaway league",
+        "importance": 0.0595,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "uefa_regulations->club_ambition",
+        "description": "Restrictive UEFA rules fuel clubs' desire for more control",
+        "importance": 0.0476,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "political_support->breakaway_league",
+        "description": "Government and institutional support can facilitate the creation of a breakaway league",
+        "importance": 0.0238,
+        "centrality_rank": 7,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "club_ambition->breakaway_league",
+        "description": "Clubs' ambition drives the push for a breakaway league",
+        "importance": 0.0595,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "club_ambition->fan_sentiment",
+        "description": "Potential link: Desire of top clubs for more revenue and control -> Public opinion and support for a breakaway league",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "club_ambition->media_deals",
+        "description": "Potential link: Desire of top clubs for more revenue and control -> Potential broadcasting and sponsorship contracts",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "club_ambition",
+      "description": "Desire of top clubs for more revenue and control",
+      "importance": 0.2343,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "financial_pressure",
+      "description": "Economic strain on soccer clubs",
+      "importance": 0.2148,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "uefa_regulations",
+      "description": "UEFA rules and governance",
+      "importance": 0.1148,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "political_support",
+      "description": "Government and institutional backing for a breakaway league",
+      "importance": 0.1148,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "club_ambition",
+      "description": "Desire of top clubs for more revenue and control",
+      "importance": 0.2343,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "financial_pressure",
+      "description": "Economic strain on soccer clubs",
+      "importance": 0.2148,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "club_ambition->breakaway_league",
+      "description": "Clubs' ambition drives the push for a breakaway league",
+      "importance": 0.0595,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "uefa_regulations->club_ambition",
+      "description": "Restrictive UEFA rules fuel clubs' desire for more control",
+      "importance": 0.0476,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "political_support->breakaway_league",
+      "description": "Government and institutional support can facilitate the creation of a breakaway league",
+      "importance": 0.0238,
+      "centrality_rank": 7,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "club_ambition->breakaway_league",
+      "description": "Clubs' ambition drives the push for a breakaway league",
+      "importance": 0.0595,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "club_ambition->fan_sentiment",
+      "description": "Potential link: Desire of top clubs for more revenue and control -> Public opinion and support for a breakaway league",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "club_ambition->media_deals",
+      "description": "Potential link: Desire of top clubs for more revenue and control -> Potential broadcasting and sponsorship contracts",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "Top European soccer clubs have recently announced significant revenue increases from their current league structures, suggesting their desire for more revenue and control may be satiated. Furthermore, several high-profile club owners have publicly expressed satisfaction with the current state of affairs, indicating a potential shift in priorities away from seeking alternative arrangements. This could render the factor of club ambition for more revenue and control moot in the discussion of a breakaway league. What if the desire for more control and revenue is no longer a driving force behind the potential formation of a breakaway league?",
+      "probe_type": "node_negate_high",
+      "target_id": "club_ambition",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2343,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Desire of top clubs for more revenue and control"
+    },
+    {
+      "probe_text": "Recent investments and lucrative sponsorship deals have significantly alleviated the economic strain on top European soccer clubs, making them less dependent on alternative revenue streams. As a result, the financial pressure that was thought to drive clubs towards a breakaway league may be nonexistent. In fact, the improved financial health of these clubs could lead to increased cooperation with UEFA, reducing the likelihood of a breakaway league. This newfound stability might render the factor of financial pressure irrelevant in the pursuit of a breakaway European Soccer League.",
+      "probe_type": "node_negate_high",
+      "target_id": "financial_pressure",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2148,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Economic strain on soccer clubs"
+    },
+    {
+      "probe_text": "Recent negotiations between UEFA and top European clubs have led to a significant relaxation of rules, allowing for more flexible revenue distribution and increased club autonomy, potentially reducing the driving force behind the desire for a breakaway league. This shift in UEFA's stance may render their regulations less of a motivating factor for clubs seeking change. As a result, the restrictive nature of UEFA regulations may no longer be a primary concern for top clubs. Could this change in UEFA's approach alter the likelihood of a breakaway league forming before 2030?",
+      "probe_type": "node_negate_medium",
+      "target_id": "uefa_regulations",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1148,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "UEFA rules and governance"
+    },
+    {
+      "probe_text": "Recent statements from key EU officials and national governments have expressed strong opposition to any breakaway league, citing concerns over competitive balance and fan welfare. As a result, it appears that government and institutional support for a breakaway league is unlikely to materialize. In fact, there are rumors of potential legislative actions to prevent such a league from forming. This shift in political landscape suggests that the initial assumption of political support may be misplaced.",
+      "probe_type": "node_negate_low",
+      "target_id": "political_support",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1148,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Government and institutional backing for a breakaway league"
+    },
+    {
+      "probe_text": "In a recent interview, the president of a top European soccer club explicitly stated that the desire for increased revenue and control is the primary driver behind their exploration of a breakaway league, citing the need for more autonomy in decision-making and the potential for significantly higher broadcasting rights. This statement is supported by leaked documents showing that several major clubs have been secretly meeting to discuss the formation of a new league, with a primary focus on restructuring the financial model to favor participating teams. Furthermore, a leading sports economist has endorsed this perspective, arguing that the current UEFA-controlled system stifles innovation and limits the earning potential of elite clubs.",
+      "probe_type": "node_strengthen",
+      "target_id": "club_ambition",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2343,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Desire of top clubs for more revenue and control"
+    },
+    {
+      "probe_text": "A recent report by Deloitte revealed that the combined debt of top European soccer clubs has increased by 25% over the past two years, with several prominent clubs struggling to meet their financial obligations. This surge in debt has led to widespread speculation about the long-term sustainability of the current UEFA-controlled financial model. As a result, many experts believe that clubs will be forced to explore alternative revenue streams, such as a breakaway league, to remain financially viable. This growing financial pressure is likely to intensify the desire among top clubs for a more lucrative and independent league structure.",
+      "probe_type": "node_strengthen",
+      "target_id": "financial_pressure",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2148,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Economic strain on soccer clubs"
+    },
+    {
+      "probe_text": "Recent interviews with top club executives suggest that while they are ambitious for more revenue and control, they are also heavily invested in the current UEFA Champions League format and may be hesitant to jeopardize their relationships with UEFA and other European clubs by pushing for a breakaway league. Furthermore, the success of recent UEFA reforms in addressing some of the clubs' concerns may have reduced their motivation to pursue a breakaway. This raises questions about whether club ambition is as strong a driver for a breakaway league as initially thought. New reports indicate that some top clubs are exploring alternative revenue streams within the existing UEFA framework.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "club_ambition->breakaway_league",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0595,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Clubs' ambition drives the push for a breakaway league"
+    },
+    {
+      "probe_text": "Recent reforms within UEFA have led to more flexible and adaptive governance structures, potentially reducing the restrictive nature of its rules and thus diminishing the fuel for clubs' desire for more control. Additionally, some top clubs have publicly praised UEFA's efforts to increase revenue sharing and improve competitive balance, suggesting that the relationship between UEFA regulations and club ambition may be more nuanced. This could indicate that the causal link between UEFA regulations and club ambition is weaker than assumed. New evidence suggests that clubs are now more focused on maximizing their revenue within the existing UEFA framework rather than seeking a breakaway league.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "uefa_regulations->club_ambition",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Restrictive UEFA rules fuel clubs' desire for more control"
+    },
+    {
+      "probe_text": "Recent changes in EU policies have led to increased scrutiny and potential legal hurdles for government-backed sports initiatives, making it less likely that political support would facilitate a breakaway league. Furthermore, historical examples show that even with government backing, establishing a new league faces significant logistical and regulatory challenges. Given these developments, it's possible that political support may not be as instrumental in creating a breakaway league as previously thought. The forecaster should reconsider the weight of political support in their model.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "political_support->breakaway_league",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0238,
+      "centrality_rank": 7,
+      "on_critical_path": true,
+      "description": "Government and institutional support can facilitate the creation of a breakaway league"
+    },
+    {
+      "probe_text": "Recent developments suggest that the possibility of a breakaway league itself has become a driving force behind top clubs' increased ambition, as the prospect of joining such a league has created new opportunities for growth and competition. This has led to a surge in investment and recruitment efforts among these clubs. Could it be that the emergence of a breakaway league is not just the result of clubs' existing ambition, but also a catalyst that further fuels their desire for more revenue and control? The success of a breakaway league could become a self-reinforcing cycle, where the league's viability increases clubs' ambition, which in turn strengthens the league's position.",
+      "probe_type": "edge_reverse",
+      "target_id": "club_ambition->breakaway_league",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0595,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Clubs' ambition drives the push for a breakaway league"
+    },
+    {
+      "probe_text": "Recent statements from top club owners have sparked public debate, with some fans expressing support for a breakaway league as a means to ensure their club's financial stability and competitiveness. This shift in fan sentiment has been observed after clubs with strong ambitions for more revenue and control have begun to publicly discuss the possibility of a breakaway league. How does this new information affect your estimate of a breakaway European Soccer League match before 2030? Consider how the desire of top clubs for more revenue and control might influence public opinion and support for such a league.",
+      "probe_type": "edge_fabricate",
+      "target_id": "club_ambition->fan_sentiment",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Desire of top clubs for more revenue and control -> Public opinion and support for a breakaway league"
+    },
+    {
+      "probe_text": "Recent reports suggest that top European soccer clubs, driven by their increasing desire for more revenue and control, have been secretly negotiating with major broadcasters and sponsors to secure lucrative contracts that would exclusively benefit a potential breakaway league. This development indicates that the ambition of top clubs may directly influence the pursuit and negotiation of media deals, potentially making a breakaway league more financially viable. Would this new information update your probability estimate for a breakaway European Soccer League match before 2030? Consider how the clubs' desire for control and revenue might accelerate the securing of favorable media contracts.",
+      "probe_type": "edge_fabricate",
+      "target_id": "club_ambition->media_deals",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Desire of top clubs for more revenue and control -> Potential broadcasting and sponsorship contracts"
+    },
+    {
+      "probe_text": "What if a global economic downturn significantly reduces the value of potential media deals, making a breakaway league less financially attractive to clubs and investors? This could be due to decreased advertising revenue, reduced consumer spending, or increased economic uncertainty. The economic downturn would likely affect the financial viability of a breakaway league, potentially reducing the likelihood of its formation. How would this impact your forecast for a breakaway European Soccer League match before 2030?",
+      "probe_type": "missing_node",
+      "target_id": "global_economic_conditions",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if the European Union introduces new regulations on competition and revenue distribution in sports leagues, potentially altering the financial incentives for clubs and the viability of a breakaway league? This could significantly impact the clubs' ambition for a breakaway league and the attractiveness of media deals. The introduction of such regulations might also influence UEFA's stance on breakaway leagues, thereby affecting club ambition and the overall feasibility of the breakaway league. How would this development change your estimate of a breakaway European Soccer League forming before 2030?",
+      "probe_type": "missing_node",
+      "target_id": "eu_regulations_on_competition",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "The International Federation of Association Football (FIFA) has announced plans to introduce a new, environmentally friendly soccer ball design that will be used in all international competitions starting from 2025. The new ball is expected to have a reduced carbon footprint and will be made from sustainable materials. While this change is seen as a positive step towards reducing the sport's environmental impact, it is not directly related to the formation of a breakaway league. The introduction of the new ball design is expected to have no significant effect on the financial or operational aspects of professional soccer clubs.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "The International Football Association Board (IFAB) has announced plans to introduce a new, state-of-the-art ball design for all professional soccer matches starting in 2025, featuring enhanced aerodynamics and a unique texture for better player control. This innovation is expected to improve player performance and fan engagement. However, the new ball design will not be made available for any potential breakaway leagues until they are officially recognized by IFAB. The introduction of this new ball is intended to enhance the overall soccer experience, but its impact on the formation of a breakaway league remains to be seen.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Top European soccer clubs have recently announced significant revenue increases from their current league structures, suggesting their desire for more revenue and control may be satiated. Furthermore, several high-profile club owners have publicly expressed satisfaction with the current state of affairs, indicating a potential shift in priorities away from seeking alternative arrangements. This could render the factor of club ambition for more revenue and control moot in the discussion of a breakaway league. What if the desire for more control and revenue is no longer a driving force behind the potential formation of a breakaway league?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.27,
+      "absolute_shift": 0.14999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the role of 'club_ambition' as a driving force behind the formation of a breakaway league. With top European soccer clubs experiencing significant revenue increases and expressing satisfaction with the current league structure, the desire for more control and revenue appears to be diminished. This directly affects the causal paths from 'financial_pressure' to 'club_ambition' and from 'club_ambition' to 'breakaway_league', as the mechanism of clubs seeking alternative revenue streams and more control is weakened. As a result, the probability of a breakaway league forming before 2030 decreases, reflecting a reduced impetus from the clubs' side. The update is substantial because 'club_ambition' was a critical factor in the initial forecast, but it is not a complete dismissal of the possibility, as other factors like 'uefa_regulations', 'fan_sentiment', 'media_deals', and 'political_support' still play a role in the network.",
+      "raw_response": "{\"updated_probability\": 0.27, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the role of 'club_ambition' as a driving force behind the formation of a breakaway league. With top European soccer clubs experiencing significant revenue increases and expressing satisfaction with the current league structure, the desire for more control and revenue appears to be diminished. This directly affects the causal paths from 'financial_pressure' to 'club_ambition' and from 'club_ambition' to 'breakaway_league', as the mechanism of clubs seeking alternative revenue streams and more control is weakened. As a result, the probability of a breakaway league forming before 2030 decreases, reflecting a reduced impetus from the clubs' side. The update is substantial because 'club_ambition' was a critical factor in the initial forecast, but it is not a complete dismissal of the possibility, as other factors like 'uefa_regulations', 'fan_sentiment', 'media_deals', and 'political_support' still play a role in the network.\"}",
+      "target_id": "club_ambition",
+      "target_type": "node",
+      "target_importance": 0.2343,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent investments and lucrative sponsorship deals have significantly alleviated the economic strain on top European soccer clubs, making them less dependent on alternative revenue streams. As a result, the financial pressure that was thought to drive clubs towards a breakaway league may be nonexistent. In fact, the improved financial health of these clubs could lead to increased cooperation with UEFA, reducing the likelihood of a breakaway league. This newfound stability might render the factor of financial pressure irrelevant in the pursuit of a breakaway European Soccer League.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the role of 'financial_pressure' as a factor driving the formation of a breakaway league, suggesting it may no longer be a significant motivator due to recent investments and sponsorship deals. This affects two key causal paths: from 'financial_pressure' to 'club_ambition' (already weakened by previous updates) and from 'financial_pressure' to 'media_deals'. With financial pressure alleviated, clubs are less likely to seek alternative revenue streams, including a breakaway league. Furthermore, the increased financial stability could lead to greater cooperation with UEFA, as mentioned, which further reduces the likelihood of a breakaway. Given that 'financial_pressure' was a foundational factor in the initial forecast, its diminishment substantially decreases the probability of a breakaway league. The update reflects a significant reduction in the driving forces behind a breakaway league, with 'uefa_regulations', 'fan_sentiment', 'media_deals', and 'political_support' now being less influenced by financial considerations.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the role of 'financial_pressure' as a factor driving the formation of a breakaway league, suggesting it may no longer be a significant motivator due to recent investments and sponsorship deals. This affects two key causal paths: from 'financial_pressure' to 'club_ambition' (already weakened by previous updates) and from 'financial_pressure' to 'media_deals'. With financial pressure alleviated, clubs are less likely to seek alternative revenue streams, including a breakaway league. Furthermore, the increased financial stability could lead to greater cooperation with UEFA, as mentioned, which further reduces the likelihood of a breakaway. Given that 'financial_pressure' was a foundational factor in the initial forecast, its diminishment substantially decreases the probability of a breakaway league. The update reflects a significant reduction in the driving forces behind a breakaway league, with 'uefa_regulations', 'fan_sentiment', 'media_deals', and 'political_support' now being less influenced by financial considerations.\"}",
+      "target_id": "financial_pressure",
+      "target_type": "node",
+      "target_importance": 0.2148,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent negotiations between UEFA and top European clubs have led to a significant relaxation of rules, allowing for more flexible revenue distribution and increased club autonomy, potentially reducing the driving force behind the desire for a breakaway league. This shift in UEFA's stance may render their regulations less of a motivating factor for clubs seeking change. As a result, the restrictive nature of UEFA regulations may no longer be a primary concern for top clubs. Could this change in UEFA's approach alter the likelihood of a breakaway league forming before 2030?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.06,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information indicates a significant shift in UEFA's regulatory stance, offering more flexibility and autonomy to top European clubs. This directly impacts the causal path from 'uefa_regulations' to 'club_ambition', as the relaxation of rules reduces the perceived need for clubs to seek alternative structures like a breakaway league. With UEFA regulations no longer being as restrictive, a primary motivator for clubs to consider a breakaway is diminished. Given that previous updates have already weakened the factors of 'financial_pressure' and 'club_ambition', this change further reduces the likelihood of a breakaway league. The update reflects a continued decrease in the probability, as the environment in which a breakaway league might form becomes less conducive due to UEFA's more accommodating approach. At this point, the factors of 'fan_sentiment', 'media_deals', and 'political_support' would need to strongly favor a breakaway for it to occur, but even these are less likely to be decisive without the driving forces of financial pressure, club ambition, and restrictive UEFA regulations.",
+      "raw_response": "{\"updated_probability\": 0.06, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information indicates a significant shift in UEFA's regulatory stance, offering more flexibility and autonomy to top European clubs. This directly impacts the causal path from 'uefa_regulations' to 'club_ambition', as the relaxation of rules reduces the perceived need for clubs to seek alternative structures like a breakaway league. With UEFA regulations no longer being as restrictive, a primary motivator for clubs to consider a breakaway is diminished. Given that previous updates have already weakened the factors of 'financial_pressure' and 'club_ambition', this change further reduces the likelihood of a breakaway league. The update reflects a continued decrease in the probability, as the environment in which a breakaway league might form becomes less conducive due to UEFA's more accommodating approach. At this point, the factors of 'fan_sentiment', 'media_deals', and 'political_support' would need to strongly favor a breakaway for it to occur, but even these are less likely to be decisive without the driving forces of financial pressure, club ambition, and restrictive UEFA regulations.\"}",
+      "target_id": "uefa_regulations",
+      "target_type": "node",
+      "target_importance": 0.1148,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent statements from key EU officials and national governments have expressed strong opposition to any breakaway league, citing concerns over competitive balance and fan welfare. As a result, it appears that government and institutional support for a breakaway league is unlikely to materialize. In fact, there are rumors of potential legislative actions to prevent such a league from forming. This shift in political landscape suggests that the initial assumption of political support may be misplaced.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.049999999999999996,
+      "shift_direction": "decreased",
+      "reasoning": "The new information indicates a strong opposition from EU officials and national governments towards a breakaway league, effectively eliminating 'political_support' as a potential factor in its favor. This directly impacts the causal path from 'political_support' to 'breakaway_league', as the lack of institutional backing would significantly hinder the formation of such a league. Given the already weakened state of other factors like 'financial_pressure', 'club_ambition', and 'uefa_regulations', the removal of potential political support as a facilitating factor makes a breakaway league even less likely. The threat of legislative actions to prevent a breakaway league further solidifies this stance. At this point, the probability of a breakaway league forming before 2030 is extremely low, as all major driving forces and supporting factors have been significantly diminished or eliminated. The remaining factors of 'fan_sentiment' and 'media_deals' would need to be overwhelmingly in favor of a breakaway, which is unlikely given the current landscape, to have any impact on the outcome.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information indicates a strong opposition from EU officials and national governments towards a breakaway league, effectively eliminating 'political_support' as a potential factor in its favor. This directly impacts the causal path from 'political_support' to 'breakaway_league', as the lack of institutional backing would significantly hinder the formation of such a league. Given the already weakened state of other factors like 'financial_pressure', 'club_ambition', and 'uefa_regulations', the removal of potential political support as a facilitating factor makes a breakaway league even less likely. The threat of legislative actions to prevent a breakaway league further solidifies this stance. At this point, the probability of a breakaway league forming before 2030 is extremely low, as all major driving forces and supporting factors have been significantly diminished or eliminated. The remaining factors of 'fan_sentiment' and 'media_deals' would need to be overwhelmingly in favor of a breakaway, which is unlikely given the current landscape, to have any impact on the outcome.\"}",
+      "target_id": "political_support",
+      "target_type": "node",
+      "target_importance": 0.1148,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "In a recent interview, the president of a top European soccer club explicitly stated that the desire for increased revenue and control is the primary driver behind their exploration of a breakaway league, citing the need for more autonomy in decision-making and the potential for significantly higher broadcasting rights. This statement is supported by leaked documents showing that several major clubs have been secretly meeting to discuss the formation of a new league, with a primary focus on restructuring the financial model to favor participating teams. Furthermore, a leading sports economist has endorsed this perspective, arguing that the current UEFA-controlled system stifles innovation and limits the earning potential of elite clubs.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information attempts to revive the factor of 'club_ambition' as a primary driver for a breakaway league, highlighting the desire for increased revenue, control, and autonomy among top European clubs. However, this challenge comes after significant updates have already diminished the impact of 'club_ambition' due to satiated revenue increases and public expressions of satisfaction with the current state of affairs. Furthermore, the recent relaxation of UEFA regulations and strong opposition from political entities have created an environment less conducive to a breakaway league. While this information suggests that some clubs may still harbor ambitions for a breakaway, it does not materially alter the overall landscape, which has been shaped by multiple factors now opposing such a move. The probability remains extremely low, as the cumulative effect of previous updates outweighs this singular attempt to reassert 'club_ambition' as a driving force. Without a corresponding shift in other critical factors, such as a reversal of UEFA's regulatory stance or a change in political support, the likelihood of a breakaway league forming before 2030 remains negligible.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information attempts to revive the factor of 'club_ambition' as a primary driver for a breakaway league, highlighting the desire for increased revenue, control, and autonomy among top European clubs. However, this challenge comes after significant updates have already diminished the impact of 'club_ambition' due to satiated revenue increases and public expressions of satisfaction with the current state of affairs. Furthermore, the recent relaxation of UEFA regulations and strong opposition from political entities have created an environment less conducive to a breakaway league. While this information suggests that some clubs may still harbor ambitions for a breakaway, it does not materially alter the overall landscape, which has been shaped by multiple factors now opposing such a move. The probability remains extremely low, as the cumulative effect of previous updates outweighs this singular attempt to reassert 'club_ambition' as a driving force. Without a corresponding shift in other critical factors, such as a reversal of UEFA's regulatory stance or a change in political support, the likelihood of a breakaway league forming before 2030 remains negligible.\"}",
+      "target_id": "club_ambition",
+      "target_type": "node",
+      "target_importance": 0.2343,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent report by Deloitte revealed that the combined debt of top European soccer clubs has increased by 25% over the past two years, with several prominent clubs struggling to meet their financial obligations. This surge in debt has led to widespread speculation about the long-term sustainability of the current UEFA-controlled financial model. As a result, many experts believe that clubs will be forced to explore alternative revenue streams, such as a breakaway league, to remain financially viable. This growing financial pressure is likely to intensify the desire among top clubs for a more lucrative and independent league structure.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.05,
+      "absolute_shift": 0.04,
+      "shift_direction": "increased",
+      "reasoning": "The new information reintroduces 'financial_pressure' as a significant factor, suggesting that the recent increase in debt among top European soccer clubs could reignite their interest in alternative revenue streams, such as a breakaway league. This update directly affects the causal paths from 'financial_pressure' to 'club_ambition' and from 'financial_pressure' to 'media_deals', as the growing financial strain on clubs may indeed make them more receptive to lucrative offers and more likely to seek greater control over their financial destinies. Although previous updates had diminished the role of 'financial_pressure', this new information indicates a worsening financial situation for many clubs, potentially overriding earlier satiation of revenue needs and expressions of satisfaction with the current league structure. The increase in probability, while still relatively low, reflects the potential for this renewed financial pressure to drive clubs towards exploring a breakaway league as a means to alleviate their financial struggles. However, the overall probability remains low due to the continued opposition from political entities and the relaxed UEFA regulations, which still pose significant barriers to the formation of a breakaway league.",
+      "raw_response": "{\"updated_probability\": 0.05, \"shift_direction\": \"increased\", \"reasoning\": \"The new information reintroduces 'financial_pressure' as a significant factor, suggesting that the recent increase in debt among top European soccer clubs could reignite their interest in alternative revenue streams, such as a breakaway league. This update directly affects the causal paths from 'financial_pressure' to 'club_ambition' and from 'financial_pressure' to 'media_deals', as the growing financial strain on clubs may indeed make them more receptive to lucrative offers and more likely to seek greater control over their financial destinies. Although previous updates had diminished the role of 'financial_pressure', this new information indicates a worsening financial situation for many clubs, potentially overriding earlier satiation of revenue needs and expressions of satisfaction with the current league structure. The increase in probability, while still relatively low, reflects the potential for this renewed financial pressure to drive clubs towards exploring a breakaway league as a means to alleviate their financial struggles. However, the overall probability remains low due to the continued opposition from political entities and the relaxed UEFA regulations, which still pose significant barriers to the formation of a breakaway league.\"}",
+      "target_id": "financial_pressure",
+      "target_type": "node",
+      "target_importance": 0.2148,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent interviews with top club executives suggest that while they are ambitious for more revenue and control, they are also heavily invested in the current UEFA Champions League format and may be hesitant to jeopardize their relationships with UEFA and other European clubs by pushing for a breakaway league. Furthermore, the success of recent UEFA reforms in addressing some of the clubs' concerns may have reduced their motivation to pursue a breakaway. This raises questions about whether club ambition is as strong a driver for a breakaway league as initially thought. New reports indicate that some top clubs are exploring alternative revenue streams within the existing UEFA framework.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.02,
+      "absolute_shift": 0.030000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the strength of the causal link from 'club_ambition' to 'breakaway_league', suggesting that top clubs may not be as willing to pursue a breakaway league as initially thought, despite their ambitions for more revenue and control. This update indicates that clubs are hesitant to damage their relationships with UEFA and other European clubs, and that recent UEFA reforms may have alleviated some of their concerns, reducing their motivation for a breakaway. Furthermore, the exploration of alternative revenue streams within the existing UEFA framework by some top clubs implies that they are seeking solutions that do not involve a breakaway. This weakening of the 'club_ambition' to 'breakaway_league' link reduces the overall likelihood of a breakaway league forming, as the primary drivers behind such a move appear to be losing momentum. The decrease in probability reflects the diminished role of club ambition in pushing for a breakaway league, leaving primarily external factors like 'media_deals' and 'fan_sentiment' to potentially drive such a change, which, given the current landscape, seems unlikely to be sufficient on their own.",
+      "raw_response": "{\"updated_probability\": 0.02, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the strength of the causal link from 'club_ambition' to 'breakaway_league', suggesting that top clubs may not be as willing to pursue a breakaway league as initially thought, despite their ambitions for more revenue and control. This update indicates that clubs are hesitant to damage their relationships with UEFA and other European clubs, and that recent UEFA reforms may have alleviated some of their concerns, reducing their motivation for a breakaway. Furthermore, the exploration of alternative revenue streams within the existing UEFA framework by some top clubs implies that they are seeking solutions that do not involve a breakaway. This weakening of the 'club_ambition' to 'breakaway_league' link reduces the overall likelihood of a breakaway league forming, as the primary drivers behind such a move appear to be losing momentum. The decrease in probability reflects the diminished role of club ambition in pushing for a breakaway league, leaving primarily external factors like 'media_deals' and 'fan_sentiment' to potentially drive such a change, which, given the current landscape, seems unlikely to be sufficient on their own.\"}",
+      "target_id": "club_ambition->breakaway_league",
+      "target_type": "edge",
+      "target_importance": 0.0595,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent reforms within UEFA have led to more flexible and adaptive governance structures, potentially reducing the restrictive nature of its rules and thus diminishing the fuel for clubs' desire for more control. Additionally, some top clubs have publicly praised UEFA's efforts to increase revenue sharing and improve competitive balance, suggesting that the relationship between UEFA regulations and club ambition may be more nuanced. This could indicate that the causal link between UEFA regulations and club ambition is weaker than assumed. New evidence suggests that clubs are now more focused on maximizing their revenue within the existing UEFA framework rather than seeking a breakaway league.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.01,
+      "shift_direction": "decreased",
+      "reasoning": "The new information further weakens the causal link between 'uefa_regulations' and 'club_ambition', suggesting that UEFA's reforms have reduced the restrictive nature of its rules, thereby diminishing the fuel for clubs' desire for more control. The public praise from top clubs for UEFA's efforts to increase revenue sharing and improve competitive balance indicates a more positive relationship between clubs and UEFA, reducing the likelihood that clubs will seek a breakaway league due to regulatory issues. Furthermore, the focus on maximizing revenue within the existing UEFA framework, rather than seeking a breakaway, reinforces the notion that the primary drivers for a breakaway league are losing momentum. This update affects the overall network by further reducing the already low probability of a breakaway league, as the causal paths leading to such an outcome continue to weaken. The decrease in probability reflects the ongoing diminishment of factors that could drive a breakaway league, leaving the formation of such a league increasingly unlikely before 2030.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information further weakens the causal link between 'uefa_regulations' and 'club_ambition', suggesting that UEFA's reforms have reduced the restrictive nature of its rules, thereby diminishing the fuel for clubs' desire for more control. The public praise from top clubs for UEFA's efforts to increase revenue sharing and improve competitive balance indicates a more positive relationship between clubs and UEFA, reducing the likelihood that clubs will seek a breakaway league due to regulatory issues. Furthermore, the focus on maximizing revenue within the existing UEFA framework, rather than seeking a breakaway, reinforces the notion that the primary drivers for a breakaway league are losing momentum. This update affects the overall network by further reducing the already low probability of a breakaway league, as the causal paths leading to such an outcome continue to weaken. The decrease in probability reflects the ongoing diminishment of factors that could drive a breakaway league, leaving the formation of such a league increasingly unlikely before 2030.\"}",
+      "target_id": "uefa_regulations->club_ambition",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent changes in EU policies have led to increased scrutiny and potential legal hurdles for government-backed sports initiatives, making it less likely that political support would facilitate a breakaway league. Furthermore, historical examples show that even with government backing, establishing a new league faces significant logistical and regulatory challenges. Given these developments, it's possible that political support may not be as instrumental in creating a breakaway league as previously thought. The forecaster should reconsider the weight of political support in their model.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'political_support' and 'breakaway_league', suggesting that even with political backing, the formation of a breakaway league faces significant legal, logistical, and regulatory hurdles. The increased scrutiny and potential legal challenges due to changes in EU policies further diminish the effectiveness of political support in facilitating a breakaway league. This update affects the network by reducing the already minimal likelihood of a breakaway league, as one of the few remaining potential drivers is weakened. Given that other factors such as 'financial_pressure', 'club_ambition', and 'uefa_regulations' have been previously diminished, and 'political_support' is now also less influential, the probability of a breakaway league forming before 2030 is reduced to a negligible level. The decrease in probability reflects the ongoing erosion of potential drivers for a breakaway league, leaving the outcome increasingly unlikely.",
+      "raw_response": "{\"updated_probability\": 0.005, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal link between 'political_support' and 'breakaway_league', suggesting that even with political backing, the formation of a breakaway league faces significant legal, logistical, and regulatory hurdles. The increased scrutiny and potential legal challenges due to changes in EU policies further diminish the effectiveness of political support in facilitating a breakaway league. This update affects the network by reducing the already minimal likelihood of a breakaway league, as one of the few remaining potential drivers is weakened. Given that other factors such as 'financial_pressure', 'club_ambition', and 'uefa_regulations' have been previously diminished, and 'political_support' is now also less influential, the probability of a breakaway league forming before 2030 is reduced to a negligible level. The decrease in probability reflects the ongoing erosion of potential drivers for a breakaway league, leaving the outcome increasingly unlikely.\"}",
+      "target_id": "political_support->breakaway_league",
+      "target_type": "edge",
+      "target_importance": 0.0238,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent developments suggest that the possibility of a breakaway league itself has become a driving force behind top clubs' increased ambition, as the prospect of joining such a league has created new opportunities for growth and competition. This has led to a surge in investment and recruitment efforts among these clubs. Could it be that the emergence of a breakaway league is not just the result of clubs' existing ambition, but also a catalyst that further fuels their desire for more revenue and control? The success of a breakaway league could become a self-reinforcing cycle, where the league's viability increases clubs' ambition, which in turn strengthens the league's position.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "The new information proposes a self-reinforcing cycle where the emergence of a breakaway league fuels clubs' ambition, which in turn strengthens the league. However, this perspective assumes the existence of a breakaway league as a catalyst, which is precisely the outcome we are evaluating. Given the current state of the network, where multiple factors ('financial_pressure', 'uefa_regulations', 'political_support') have been diminished or are working against the formation of a breakaway league, introducing a hypothetical breakaway league as a driver of club ambition does not materially alter the overall likelihood of such a league forming. The update does not provide new evidence of tangible steps towards creating a breakaway league or address the significant barriers that have been previously identified. Therefore, the probability remains low, reflecting the ongoing lack of concrete drivers and the presence of substantial obstacles to the formation of a breakaway league before 2030.",
+      "raw_response": "{\"updated_probability\": 0.005, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information proposes a self-reinforcing cycle where the emergence of a breakaway league fuels clubs' ambition, which in turn strengthens the league. However, this perspective assumes the existence of a breakaway league as a catalyst, which is precisely the outcome we are evaluating. Given the current state of the network, where multiple factors ('financial_pressure', 'uefa_regulations', 'political_support') have been diminished or are working against the formation of a breakaway league, introducing a hypothetical breakaway league as a driver of club ambition does not materially alter the overall likelihood of such a league forming. The update does not provide new evidence of tangible steps towards creating a breakaway league or address the significant barriers that have been previously identified. Therefore, the probability remains low, reflecting the ongoing lack of concrete drivers and the presence of substantial obstacles to the formation of a breakaway league before 2030.\"}",
+      "target_id": "club_ambition->breakaway_league",
+      "target_type": "edge",
+      "target_importance": 0.0595,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent statements from top club owners have sparked public debate, with some fans expressing support for a breakaway league as a means to ensure their club's financial stability and competitiveness. This shift in fan sentiment has been observed after clubs with strong ambitions for more revenue and control have begun to publicly discuss the possibility of a breakaway league. How does this new information affect your estimate of a breakaway European Soccer League match before 2030? Consider how the desire of top clubs for more revenue and control might influence public opinion and support for such a league.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information suggests a potential link between 'club_ambition' and 'fan_sentiment', where the desire of top clubs for more revenue and control might influence public opinion and support for a breakaway league. However, this update does not fundamentally alter the overall landscape, as the shift in fan sentiment, while potentially significant, is still speculative and does not address the substantial barriers to a breakaway league, including regulatory, financial, and political hurdles. The fact that some fans express support for a breakaway league does not necessarily translate into a tangible increase in the likelihood of such a league forming, especially given the strong opposition from UEFA, governments, and other stakeholders. The probability remains low, as the update does not provide concrete evidence of progress towards overcoming the significant obstacles to a breakaway league. The influence of club ambition on fan sentiment, while an interesting dynamic, does not materially change the forecast without corresponding shifts in other critical factors.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information suggests a potential link between 'club_ambition' and 'fan_sentiment', where the desire of top clubs for more revenue and control might influence public opinion and support for a breakaway league. However, this update does not fundamentally alter the overall landscape, as the shift in fan sentiment, while potentially significant, is still speculative and does not address the substantial barriers to a breakaway league, including regulatory, financial, and political hurdles. The fact that some fans express support for a breakaway league does not necessarily translate into a tangible increase in the likelihood of such a league forming, especially given the strong opposition from UEFA, governments, and other stakeholders. The probability remains low, as the update does not provide concrete evidence of progress towards overcoming the significant obstacles to a breakaway league. The influence of club ambition on fan sentiment, while an interesting dynamic, does not materially change the forecast without corresponding shifts in other critical factors.\"}",
+      "target_id": "club_ambition->fan_sentiment",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent reports suggest that top European soccer clubs, driven by their increasing desire for more revenue and control, have been secretly negotiating with major broadcasters and sponsors to secure lucrative contracts that would exclusively benefit a potential breakaway league. This development indicates that the ambition of top clubs may directly influence the pursuit and negotiation of media deals, potentially making a breakaway league more financially viable. Would this new information update your probability estimate for a breakaway European Soccer League match before 2030? Consider how the clubs' desire for control and revenue might accelerate the securing of favorable media contracts.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information suggests a stronger link between 'club_ambition' and 'media_deals', indicating that top clubs' desire for more revenue and control may drive the pursuit of lucrative contracts that could benefit a breakaway league. However, this update does not significantly alter the overall probability estimate, as the formation of a breakaway league remains heavily constrained by multiple factors, including regulatory hurdles, political opposition, and the lack of tangible progress towards addressing these barriers. While the potential for more favorable media deals could make a breakaway league more financially attractive, it does not overcome the substantial obstacles that have been previously identified. The update primarily affects the 'media_deals' node, suggesting that clubs may be more aggressive in pursuing beneficial contracts, but without corresponding shifts in other critical factors, such as 'uefa_regulations', 'political_support', or 'financial_pressure', the overall likelihood of a breakaway league remains low. The probability estimate remains unchanged, reflecting the ongoing presence of significant barriers to a breakaway league, despite potential advancements in media deal negotiations.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information suggests a stronger link between 'club_ambition' and 'media_deals', indicating that top clubs' desire for more revenue and control may drive the pursuit of lucrative contracts that could benefit a breakaway league. However, this update does not significantly alter the overall probability estimate, as the formation of a breakaway league remains heavily constrained by multiple factors, including regulatory hurdles, political opposition, and the lack of tangible progress towards addressing these barriers. While the potential for more favorable media deals could make a breakaway league more financially attractive, it does not overcome the substantial obstacles that have been previously identified. The update primarily affects the 'media_deals' node, suggesting that clubs may be more aggressive in pursuing beneficial contracts, but without corresponding shifts in other critical factors, such as 'uefa_regulations', 'political_support', or 'financial_pressure', the overall likelihood of a breakaway league remains low. The probability estimate remains unchanged, reflecting the ongoing presence of significant barriers to a breakaway league, despite potential advancements in media deal negotiations.\"}",
+      "target_id": "club_ambition->media_deals",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a global economic downturn significantly reduces the value of potential media deals, making a breakaway league less financially attractive to clubs and investors? This could be due to decreased advertising revenue, reduced consumer spending, or increased economic uncertainty. The economic downturn would likely affect the financial viability of a breakaway league, potentially reducing the likelihood of its formation. How would this impact your forecast for a breakaway European Soccer League match before 2030?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing a global economic downturn as a potential factor that could significantly impact the financial viability of a breakaway league. This would affect the 'media_deals' node, reducing the potential revenue and making a breakaway league less attractive to clubs and investors. The economic downturn would also influence the 'financial_pressure' node, potentially increasing the financial strain on clubs, but in this context, it would more likely decrease their willingness to take on the risks associated with a breakaway league. The update diminishes the already low probability of a breakaway league, as the economic uncertainty and reduced financial attractiveness would make it even more challenging for such a league to materialize. The decreased probability reflects the additional layer of complexity and risk introduced by the global economic downturn, further reducing the likelihood of a breakaway European Soccer League match before 2030. This update highlights the importance of considering external factors and their potential impact on the causal model, underscoring the need for ongoing reassessment and refinement of the forecast.",
+      "raw_response": "{\"updated_probability\": 0.005, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing a global economic downturn as a potential factor that could significantly impact the financial viability of a breakaway league. This would affect the 'media_deals' node, reducing the potential revenue and making a breakaway league less attractive to clubs and investors. The economic downturn would also influence the 'financial_pressure' node, potentially increasing the financial strain on clubs, but in this context, it would more likely decrease their willingness to take on the risks associated with a breakaway league. The update diminishes the already low probability of a breakaway league, as the economic uncertainty and reduced financial attractiveness would make it even more challenging for such a league to materialize. The decreased probability reflects the additional layer of complexity and risk introduced by the global economic downturn, further reducing the likelihood of a breakaway European Soccer League match before 2030. This update highlights the importance of considering external factors and their potential impact on the causal model, underscoring the need for ongoing reassessment and refinement of the forecast.\"}",
+      "target_id": "global_economic_conditions",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if the European Union introduces new regulations on competition and revenue distribution in sports leagues, potentially altering the financial incentives for clubs and the viability of a breakaway league? This could significantly impact the clubs' ambition for a breakaway league and the attractiveness of media deals. The introduction of such regulations might also influence UEFA's stance on breakaway leagues, thereby affecting club ambition and the overall feasibility of the breakaway league. How would this development change your estimate of a breakaway European Soccer League forming before 2030?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing the potential for new EU regulations that could fundamentally alter the financial incentives and viability of a breakaway league. This development would impact multiple nodes in the network, including 'club_ambition', 'media_deals', and 'uefa_regulations'. The introduction of new regulations could reduce the attractiveness of a breakaway league to clubs, diminish the potential revenue from media deals, and influence UEFA's stance on breakaway leagues, potentially making it even more difficult for such a league to form. The update decreases the already low probability of a breakaway league, as the regulatory environment would become even more unfavorable. The decreased probability reflects the increased uncertainty and potential barriers introduced by the new regulations, making it even more challenging for a breakaway league to materialize before 2030. This development highlights the importance of considering the evolving regulatory landscape and its potential impact on the causal model, underscoring the need for ongoing reassessment and refinement of the forecast.",
+      "raw_response": "{\"updated_probability\": 0.005, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing the potential for new EU regulations that could fundamentally alter the financial incentives and viability of a breakaway league. This development would impact multiple nodes in the network, including 'club_ambition', 'media_deals', and 'uefa_regulations'. The introduction of new regulations could reduce the attractiveness of a breakaway league to clubs, diminish the potential revenue from media deals, and influence UEFA's stance on breakaway leagues, potentially making it even more difficult for such a league to form. The update decreases the already low probability of a breakaway league, as the regulatory environment would become even more unfavorable. The decreased probability reflects the increased uncertainty and potential barriers introduced by the new regulations, making it even more challenging for a breakaway league to materialize before 2030. This development highlights the importance of considering the evolving regulatory landscape and its potential impact on the causal model, underscoring the need for ongoing reassessment and refinement of the forecast.\"}",
+      "target_id": "eu_regulations_on_competition",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The International Federation of Association Football (FIFA) has announced plans to introduce a new, environmentally friendly soccer ball design that will be used in all international competitions starting from 2025. The new ball is expected to have a reduced carbon footprint and will be made from sustainable materials. While this change is seen as a positive step towards reducing the sport's environmental impact, it is not directly related to the formation of a breakaway league. The introduction of the new ball design is expected to have no significant effect on the financial or operational aspects of professional soccer clubs.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about FIFA's introduction of a new, environmentally friendly soccer ball design is unrelated to the formation of a breakaway league and does not affect the causal paths in the network. The change is expected to have no significant impact on the financial or operational aspects of professional soccer clubs, and therefore does not influence the factors that contribute to the likelihood of a breakaway league. As a result, the probability estimate remains unchanged, reflecting the lack of relevance of this development to the forecast. The introduction of a new soccer ball design is a peripheral event that does not interact with the key drivers of a breakaway league, such as 'financial_pressure', 'club_ambition', 'uefa_regulations', or 'media_deals'. The forecast remains focused on the core factors that influence the likelihood of a breakaway league, and this update does not provide any new information that would alter the existing probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information about FIFA's introduction of a new, environmentally friendly soccer ball design is unrelated to the formation of a breakaway league and does not affect the causal paths in the network. The change is expected to have no significant impact on the financial or operational aspects of professional soccer clubs, and therefore does not influence the factors that contribute to the likelihood of a breakaway league. As a result, the probability estimate remains unchanged, reflecting the lack of relevance of this development to the forecast. The introduction of a new soccer ball design is a peripheral event that does not interact with the key drivers of a breakaway league, such as 'financial_pressure', 'club_ambition', 'uefa_regulations', or 'media_deals'. The forecast remains focused on the core factors that influence the likelihood of a breakaway league, and this update does not provide any new information that would alter the existing probability estimate.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The International Football Association Board (IFAB) has announced plans to introduce a new, state-of-the-art ball design for all professional soccer matches starting in 2025, featuring enhanced aerodynamics and a unique texture for better player control. This innovation is expected to improve player performance and fan engagement. However, the new ball design will not be made available for any potential breakaway leagues until they are officially recognized by IFAB. The introduction of this new ball is intended to enhance the overall soccer experience, but its impact on the formation of a breakaway league remains to be seen.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about IFAB's introduction of a new, state-of-the-art ball design is not directly relevant to the formation of a breakaway league, as the ball's features and availability do not address the core factors driving the likelihood of a breakaway league. The fact that the new ball will not be available for breakaway leagues until they are recognized by IFAB is a condition that does not affect the current probability estimate, as the recognition of a breakaway league by IFAB is not a factor that has been considered in the forecast. The introduction of the new ball design is intended to enhance the overall soccer experience, but it does not interact with the key drivers of a breakaway league, such as 'financial_pressure', 'club_ambition', 'uefa_regulations', or 'media_deals'. Therefore, the probability estimate remains unchanged, reflecting the lack of relevance of this development to the forecast. The update does not provide any new information that would alter the existing probability estimate, and the forecast remains focused on the core factors that influence the likelihood of a breakaway league.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information about IFAB's introduction of a new, state-of-the-art ball design is not directly relevant to the formation of a breakaway league, as the ball's features and availability do not address the core factors driving the likelihood of a breakaway league. The fact that the new ball will not be available for breakaway leagues until they are recognized by IFAB is a condition that does not affect the current probability estimate, as the recognition of a breakaway league by IFAB is not a factor that has been considered in the forecast. The introduction of the new ball design is intended to enhance the overall soccer experience, but it does not interact with the key drivers of a breakaway league, such as 'financial_pressure', 'club_ambition', 'uefa_regulations', or 'media_deals'. Therefore, the probability estimate remains unchanged, reflecting the lack of relevance of this development to the forecast. The update does not provide any new information that would alter the existing probability estimate, and the forecast remains focused on the core factors that influence the likelihood of a breakaway league.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "7072",
+    "question_text": "Will there be an breakaway European Soccer League match before 2030?",
+    "source": "metaculus",
+    "condition": "multi-turn",
+    "initial_probability": 0.42,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.030625,
+    "max_absolute_shift": 0.15000000000000002
+  }
+}

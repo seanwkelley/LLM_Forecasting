@@ -14,8 +14,29 @@ from causal_discovery.multi_agent.agent import (
 from causal_discovery.multi_agent.aggregation import (
     majority_vote, confidence_weighted_vote, union_merge,
 )
-from causal_discovery.multi_agent.config import get_causal_personas
+from causal_discovery.multi_agent.config import get_causal_personas, get_expertise_personas
 from causal_discovery.multi_agent.prompts_multi import build_persona_system_prompt
+
+
+def _build_shared_context(prior_agents: list[AgentResult]) -> str:
+    """Format prior agents' findings as context for the next agent."""
+    if not prior_agents:
+        return ""
+    lines = ["PRIOR AGENTS' FINDINGS:", ""]
+    for r in prior_agents:
+        valid = [i for i in r.all_interventions
+                 if "SKIPPED" not in i.get("result_summary", "")]
+        lines.append(f"Agent '{r.agent_id}' ran {len(valid)} interventions:")
+        for inv_record in r.all_interventions:
+            summary = inv_record.get("result_summary", "")
+            if "SKIPPED" in summary:
+                continue
+            desc = inv_record.get("intervention", {}).get("description", "")
+            lines.append(f"  - {desc}")
+            lines.append(f"    Result: {summary}")
+        lines.append("")
+    lines.append("Build on these findings. Do not repeat their interventions.")
+    return "\n".join(lines)
 
 
 def run_independent(
@@ -29,6 +50,8 @@ def run_independent(
     dry_run: bool = False,
     output_dir: str = "",
     verbose: bool = True,
+    persona_set: str = "reasoning",
+    sequential: bool = False,
 ) -> dict:
     """Run N independent agents with equal budget splits, then aggregate.
 
@@ -40,19 +63,29 @@ def run_independent(
         Total intervention budget (split equally among agents).
     n_agents : int
         Number of independent agents.
+    persona_set : str
+        "reasoning" for the original 5 causal personas, or "expertise" for
+        the 3 soft expertise personas (systems_engineer, economist, experimentalist).
+    sequential : bool
+        If True, agents run sequentially — each sees prior agents' intervention
+        results via shared_results and context_injection.
 
     Returns
     -------
     dict with keys: scores (per aggregation method), agent_results, config.
     """
-    personas = get_causal_personas()[:n_agents]
+    if persona_set == "expertise":
+        personas = get_expertise_personas()[:n_agents]
+    else:
+        personas = get_causal_personas()[:n_agents]
     per_agent_budget = budget // n_agents
 
+    mode = "Sequential" if sequential else "Independent"
     if verbose:
         print("=" * 60)
-        print(f"MULTI-AGENT CAUSAL DISCOVERY — Independent")
-        print(f"Domain: {domain} | Agents: {n_agents} | Budget: {budget} "
-              f"({per_agent_budget}/agent)")
+        print(f"MULTI-AGENT CAUSAL DISCOVERY — {mode}")
+        print(f"Domain: {domain} | Agents: {len(personas)} | Budget: {budget} "
+              f"({per_agent_budget}/agent) | Personas: {persona_set}")
         print(f"Model: {'DRY RUN' if dry_run else model}")
         print("=" * 60)
 
@@ -61,15 +94,20 @@ def run_independent(
         print(f"\nPhase 0: Setting up {domain} domain...")
     ds = setup_domain(domain, n_warmup=n_warmup, seed=seed, budget=budget)
 
-    # Run each agent sequentially (API rate limits)
+    # Run each agent (sequentially in all cases for API rate limits)
     agent_results: list[AgentResult] = []
+    accumulated_results = []   # InterventionResult objects for sequential dedup
+    accumulated_agents = []    # AgentResult objects for sequential context
     total_llm_calls = 0
 
     for i, persona in enumerate(personas):
         if verbose:
             print(f"\n{'-' * 40}")
-            print(f"Agent {i+1}/{n_agents}: {persona['name']}")
+            print(f"Agent {i+1}/{len(personas)}: {persona['name']}")
             print(f"{'-' * 40}")
+
+        context = _build_shared_context(accumulated_agents) if sequential else ""
+        shared = accumulated_results if sequential else None
 
         result = run_single_agent(
             domain_setup=ds,
@@ -78,9 +116,13 @@ def run_independent(
             api_key=api_key,
             model=model,
             persona_prompt=persona["prompt"],
+            shared_results=shared,
+            context_injection=context,
             dry_run=dry_run,
             verbose=verbose,
         )
+        accumulated_results.extend(result.all_results)
+        accumulated_agents.append(result)
         agent_results.append(result)
         total_llm_calls += result.llm_calls
 
@@ -122,11 +164,13 @@ def run_independent(
     # Save results
     output = {
         "config": {
-            "communication": "independent",
+            "communication": "sequential" if sequential else "independent",
             "domain": domain,
             "budget": budget,
-            "n_agents": n_agents,
+            "n_agents": len(personas),
             "per_agent_budget": per_agent_budget,
+            "persona_set": persona_set,
+            "sequential": sequential,
             "model": model if not dry_run else "dry_run",
             "seed": seed,
         },

@@ -1,0 +1,999 @@
+{
+  "question_id": "372",
+  "question_text": "Will human brain emulation be the first successful route to human-level digital intelligence?",
+  "source": "metaculus",
+  "initial_probability": 0.42,
+  "nodes": [
+    {
+      "id": "neural_network_advances",
+      "description": "Recent progress in neural network research",
+      "role": "factor"
+    },
+    {
+      "id": "computational_power",
+      "description": "Availability of sufficient computational resources",
+      "role": "factor"
+    },
+    {
+      "id": "brain_mapping_progress",
+      "description": "Advances in brain mapping and understanding",
+      "role": "factor"
+    },
+    {
+      "id": "investment_in_ai",
+      "description": "Level of investment in artificial intelligence research",
+      "role": "factor"
+    },
+    {
+      "id": "algorithmic_breakthroughs",
+      "description": "Discovery of new algorithms for intelligence",
+      "role": "factor"
+    },
+    {
+      "id": "interdisciplinary_collaboration",
+      "description": "Extent of collaboration between neuroscientists and AI researchers",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Human brain emulation being the first route to human-level digital intelligence",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "neural_network_advances",
+      "to": "algorithmic_breakthroughs",
+      "mechanism": "Neural network advances enable the development of more sophisticated algorithms"
+    },
+    {
+      "from": "brain_mapping_progress",
+      "to": "neural_network_advances",
+      "mechanism": "Better understanding of the brain informs the development of more accurate neural networks"
+    },
+    {
+      "from": "computational_power",
+      "to": "neural_network_advances",
+      "mechanism": "Increased computational power allows for more complex neural network simulations"
+    },
+    {
+      "from": "investment_in_ai",
+      "to": "computational_power",
+      "mechanism": "Investment in AI research leads to the development of more powerful computing hardware"
+    },
+    {
+      "from": "interdisciplinary_collaboration",
+      "to": "brain_mapping_progress",
+      "mechanism": "Collaboration between neuroscientists and AI researchers accelerates brain mapping progress"
+    },
+    {
+      "from": "algorithmic_breakthroughs",
+      "to": "outcome",
+      "mechanism": "New algorithms enable the creation of human-level digital intelligence through brain emulation"
+    },
+    {
+      "from": "neural_network_advances",
+      "to": "outcome",
+      "mechanism": "Advanced neural networks are a crucial component of brain emulation"
+    }
+  ],
+  "reasoning": "The forecasted probability of 0.42 reflects the uncertainty surrounding the complex interplay of factors influencing the development of human-level digital intelligence. Recent advances in neural networks, computational power, and brain mapping progress all contribute to an increased likelihood of brain emulation being the first successful route. However, the need for algorithmic breakthroughs, sufficient investment in AI research, and effective interdisciplinary collaboration introduces significant uncertainty, preventing a higher probability estimate.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "neural_network_advances",
+        "description": "Recent progress in neural network research",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 2,
+        "betweenness": 0.2667,
+        "closeness": 0.4444,
+        "pagerank": 0.234,
+        "path_relevance": 0.6667,
+        "composite_importance": 0.5268
+      },
+      {
+        "node_id": "computational_power",
+        "description": "Availability of sufficient computational resources",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.1667,
+        "pagerank": 0.1044,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2009
+      },
+      {
+        "node_id": "brain_mapping_progress",
+        "description": "Advances in brain mapping and understanding",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.1667,
+        "pagerank": 0.1044,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2009
+      },
+      {
+        "node_id": "investment_in_ai",
+        "description": "Level of investment in artificial intelligence research",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0564,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1113
+      },
+      {
+        "node_id": "algorithmic_breakthroughs",
+        "description": "Discovery of new algorithms for intelligence",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.3788,
+        "pagerank": 0.1559,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1312
+      },
+      {
+        "node_id": "interdisciplinary_collaboration",
+        "description": "Extent of collaboration between neuroscientists and AI researchers",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0564,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1113
+      },
+      {
+        "node_id": "outcome",
+        "description": "Human brain emulation being the first route to human-level digital intelligence",
+        "role": "outcome",
+        "in_degree": 2,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.5,
+        "pagerank": 0.2884,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0577
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "neural_network_advances",
+        "target": "algorithmic_breakthroughs",
+        "mechanism": "Neural network advances enable the development of more sophisticated algorithms",
+        "edge_betweenness": 0.119,
+        "on_critical_path": false
+      },
+      {
+        "source": "neural_network_advances",
+        "target": "outcome",
+        "mechanism": "Advanced neural networks are a crucial component of brain emulation",
+        "edge_betweenness": 0.119,
+        "on_critical_path": true
+      },
+      {
+        "source": "computational_power",
+        "target": "neural_network_advances",
+        "mechanism": "Increased computational power allows for more complex neural network simulations",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      },
+      {
+        "source": "brain_mapping_progress",
+        "target": "neural_network_advances",
+        "mechanism": "Better understanding of the brain informs the development of more accurate neural networks",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      },
+      {
+        "source": "investment_in_ai",
+        "target": "computational_power",
+        "mechanism": "Investment in AI research leads to the development of more powerful computing hardware",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "algorithmic_breakthroughs",
+        "target": "outcome",
+        "mechanism": "New algorithms enable the creation of human-level digital intelligence through brain emulation",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "interdisciplinary_collaboration",
+        "target": "brain_mapping_progress",
+        "mechanism": "Collaboration between neuroscientists and AI researchers accelerates brain mapping progress",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "neural_network_advances",
+        "description": "Recent progress in neural network research",
+        "importance": 0.5268,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "computational_power",
+        "description": "Availability of sufficient computational resources",
+        "importance": 0.2009,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "algorithmic_breakthroughs",
+        "description": "Discovery of new algorithms for intelligence",
+        "importance": 0.1312,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "interdisciplinary_collaboration",
+        "description": "Extent of collaboration between neuroscientists and AI researchers",
+        "importance": 0.1113,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "neural_network_advances",
+        "description": "Recent progress in neural network research",
+        "importance": 0.5268,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "computational_power",
+        "description": "Availability of sufficient computational resources",
+        "importance": 0.2009,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "computational_power->neural_network_advances",
+        "description": "Increased computational power allows for more complex neural network simulations",
+        "importance": 0.1429,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "brain_mapping_progress->neural_network_advances",
+        "description": "Better understanding of the brain informs the development of more accurate neural networks",
+        "importance": 0.1429,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "neural_network_advances->algorithmic_breakthroughs",
+        "description": "Neural network advances enable the development of more sophisticated algorithms",
+        "importance": 0.119,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "computational_power->neural_network_advances",
+        "description": "Increased computational power allows for more complex neural network simulations",
+        "importance": 0.1429,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "investment_in_ai->interdisciplinary_collaboration",
+        "description": "Potential link: Level of investment in artificial intelligence research -> Extent of collaboration between neuroscientists and AI researchers",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "investment_in_ai->algorithmic_breakthroughs",
+        "description": "Potential link: Level of investment in artificial intelligence research -> Discovery of new algorithms for intelligence",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "neural_network_advances",
+      "description": "Recent progress in neural network research",
+      "importance": 0.5268,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "computational_power",
+      "description": "Availability of sufficient computational resources",
+      "importance": 0.2009,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "algorithmic_breakthroughs",
+      "description": "Discovery of new algorithms for intelligence",
+      "importance": 0.1312,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "interdisciplinary_collaboration",
+      "description": "Extent of collaboration between neuroscientists and AI researchers",
+      "importance": 0.1113,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "neural_network_advances",
+      "description": "Recent progress in neural network research",
+      "importance": 0.5268,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "computational_power",
+      "description": "Availability of sufficient computational resources",
+      "importance": 0.2009,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "computational_power->neural_network_advances",
+      "description": "Increased computational power allows for more complex neural network simulations",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "brain_mapping_progress->neural_network_advances",
+      "description": "Better understanding of the brain informs the development of more accurate neural networks",
+      "importance": 0.1429,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "neural_network_advances->algorithmic_breakthroughs",
+      "description": "Neural network advances enable the development of more sophisticated algorithms",
+      "importance": 0.119,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "computational_power->neural_network_advances",
+      "description": "Increased computational power allows for more complex neural network simulations",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "investment_in_ai->interdisciplinary_collaboration",
+      "description": "Potential link: Level of investment in artificial intelligence research -> Extent of collaboration between neuroscientists and AI researchers",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "investment_in_ai->algorithmic_breakthroughs",
+      "description": "Potential link: Level of investment in artificial intelligence research -> Discovery of new algorithms for intelligence",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "Recent studies have shown that traditional neural network architectures are reaching a plateau in terms of performance, and alternative approaches, such as cognitive architectures, are being explored as more promising avenues for achieving human-level digital intelligence. Furthermore, the complexity of the human brain may require a more holistic understanding that cannot be captured by current neural network models. As a result, the progress in neural network research may not be as crucial for human brain emulation as previously thought. What if the development of human-level digital intelligence relies more on understanding the brain's cognitive functions than on advances in neural networks?",
+      "probe_type": "node_negate_high",
+      "target_id": "neural_network_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.5268,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Recent progress in neural network research"
+    },
+    {
+      "probe_text": "Recent breakthroughs in neuromorphic computing and specialized AI hardware have made it possible to simulate complex neural networks using relatively low-power, custom-designed chips, suggesting that the need for immense computational power may be overstated. In fact, the development of more efficient algorithms and novel computing architectures could render brute-force computational power less relevant to achieving human-level digital intelligence through brain emulation. This raises questions about whether the availability of sufficient computational resources is truly a critical factor in the success of human brain emulation. What if advances in hardware efficiency and algorithmic innovation make computational power a non-limiting factor?",
+      "probe_type": "node_negate_high",
+      "target_id": "computational_power",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2009,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Availability of sufficient computational resources"
+    },
+    {
+      "probe_text": "Recent studies have shown that existing algorithms can be optimized and combined to achieve human-level performance in narrow tasks, suggesting that the discovery of new algorithms may not be a crucial factor in achieving human-level digital intelligence through brain emulation. Furthermore, the development of more efficient computing hardware has enabled the simulation of complex neural networks using existing algorithms, potentially reducing the need for revolutionary algorithmic breakthroughs. This raises questions about the importance of algorithmic breakthroughs in the pursuit of human-level digital intelligence. As a result, the role of algorithmic breakthroughs in enabling brain emulation may be less significant than previously thought.",
+      "probe_type": "node_negate_medium",
+      "target_id": "algorithmic_breakthroughs",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1312,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "Discovery of new algorithms for intelligence"
+    },
+    {
+      "probe_text": "Recent studies have shown that the collaboration between neuroscientists and AI researchers, although well-intentioned, has not yielded significant breakthroughs in brain mapping due to inherent differences in methodology and communication barriers. In fact, many breakthroughs in brain mapping have been achieved by individual researchers or small, discipline-specific teams. Therefore, the extent of interdisciplinary collaboration may not be as crucial to brain mapping progress as previously thought. This suggests that the current level of collaboration may not substantially impact the development of human brain emulation.",
+      "probe_type": "node_negate_low",
+      "target_id": "interdisciplinary_collaboration",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1113,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Extent of collaboration between neuroscientists and AI researchers"
+    },
+    {
+      "probe_text": "A recent breakthrough in neural network architecture, published in a prestigious journal, has demonstrated unprecedented performance in simulating complex cognitive tasks, with the lead researcher stating that this advancement brings brain emulation 'within reach' of human-level intelligence. This development has been hailed as a major milestone by the AI research community, with several experts citing it as a crucial step towards achieving human-level digital intelligence through brain emulation. The breakthrough has also led to a significant increase in funding for neural network research, further accelerating progress in this area.",
+      "probe_type": "node_strengthen",
+      "target_id": "neural_network_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.5268,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Recent progress in neural network research"
+    },
+    {
+      "probe_text": "A recent breakthrough in quantum computing has led to the development of a new generation of ultra-powerful processors, capable of simulating complex neural networks at unprecedented speeds. This advancement has been hailed by leading AI researchers as a major catalyst for achieving human-level digital intelligence. Furthermore, several major tech companies have announced plans to invest heavily in the development of quantum computing infrastructure, ensuring widespread availability of these powerful processors in the near future. As a result, the computational resources required for brain emulation are now more readily available than ever before.",
+      "probe_type": "node_strengthen",
+      "target_id": "computational_power",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2009,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Availability of sufficient computational resources"
+    },
+    {
+      "probe_text": "Recent studies have shown that the development of more efficient neural network architectures has allowed researchers to achieve state-of-the-art results with relatively modest computational resources, suggesting that the relationship between computational power and neural network advances may be weaker than previously thought. In fact, some researchers have made significant breakthroughs using cloud-based services and GPU clusters that are readily available, rather than relying on cutting-edge supercomputers. This raises the question of whether the current pace of neural network advances is truly dependent on the availability of sufficient computational resources. Furthermore, the emergence of novel algorithms that prioritize computational efficiency over brute force processing power may further decouple neural network progress from computational power.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "computational_power->neural_network_advances",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Increased computational power allows for more complex neural network simulations"
+    },
+    {
+      "probe_text": "Recent studies have shown that advances in neural networks have been driven more by computational power and algorithmic innovations rather than a deeper understanding of brain functioning, suggesting that the relationship between brain mapping progress and neural network advances may be weaker than assumed. In fact, some of the most significant breakthroughs in neural networks have been achieved through trial and error, without a thorough understanding of the underlying neural mechanisms. Furthermore, the development of more accurate neural networks may rely more on the availability of large datasets and computational resources than on a detailed mapping of the brain. This raises questions about the critical role of brain mapping progress in informing neural network advances.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "brain_mapping_progress->neural_network_advances",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Better understanding of the brain informs the development of more accurate neural networks"
+    },
+    {
+      "probe_text": "Recent studies have shown that the development of sophisticated algorithms for intelligence is more closely tied to advancements in mathematical optimization techniques rather than neural network research. In fact, some of the most significant algorithmic breakthroughs in AI have come from researchers working in isolation from the neural network community. This suggests that neural network advances may not be as crucial for the development of new algorithms as previously thought. As a result, the relationship between neural network advances and algorithmic breakthroughs may be overstated.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "neural_network_advances->algorithmic_breakthroughs",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.119,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "Neural network advances enable the development of more sophisticated algorithms"
+    },
+    {
+      "probe_text": "Recent breakthroughs in neural network architectures have led to the development of more efficient algorithms, which in turn have driven the demand for custom-built, low-power computing hardware designed specifically for these new neural network simulations. As a result, the development of such specialized hardware has been accelerated, increasing the overall computational power available for neural network research. This challenges the conventional view that computational power is a prerequisite for neural network advances. Could it be that the direction of causality is actually reversed, with neural network advances driving the development of more powerful computing hardware?",
+      "probe_type": "edge_reverse",
+      "target_id": "computational_power->neural_network_advances",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Increased computational power allows for more complex neural network simulations"
+    },
+    {
+      "probe_text": "Recently, a significant increase in funding for AI research has led to the establishment of several new interdisciplinary research centers, where neuroscientists and AI researchers collaborate on projects related to brain emulation. This increased collaboration has resulted in a surge of innovative approaches to brain mapping and simulation. As investment in AI research continues to grow, it is likely that more such collaborative efforts will emerge, accelerating progress in brain emulation. Will this development change your assessment of the role of human brain emulation in achieving human-level digital intelligence?",
+      "probe_type": "edge_fabricate",
+      "target_id": "investment_in_ai->interdisciplinary_collaboration",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of investment in artificial intelligence research -> Extent of collaboration between neuroscientists and AI researchers"
+    },
+    {
+      "probe_text": "Recent reports indicate that a significant increase in investment in AI research has led to the establishment of new research centers focused on developing innovative algorithms for intelligence, suggesting that investment can directly accelerate algorithmic breakthroughs. For instance, a well-funded research initiative has been launched to explore new approaches to machine learning, which could potentially lead to breakthroughs in areas like neural network architectures. This raises questions about the potential direct impact of investment on algorithmic advancements. How might this new information affect your estimate of human brain emulation being the first route to human-level digital intelligence?",
+      "probe_type": "edge_fabricate",
+      "target_id": "investment_in_ai->algorithmic_breakthroughs",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of investment in artificial intelligence research -> Discovery of new algorithms for intelligence"
+    },
+    {
+      "probe_text": "What if significant advances in cognitive architectures, such as the development of more efficient and scalable frameworks for integrating multiple AI systems, were to occur? This could potentially accelerate the development of human-level digital intelligence through routes other than brain emulation, such as hybrid approaches combining symbolic and connectionist AI. The forecaster's network does not account for the impact of such architectural innovations on the outcome. How would this new information affect your estimate of human brain emulation being the first route to human-level digital intelligence?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if significant advances in cognitive architectures, such as the development of more efficient and flexible frameworks for integrating multiple AI systems, were to occur, potentially enabling more effective brain emulation without relying solely on neural network advances? This could involve the creation of novel software frameworks that facilitate the interaction between different components of a brain emulation system. The development of such cognitive architectures could be influenced by advances in fields like software engineering and computer science. How would this impact your estimate of human brain emulation being the first route to human-level digital intelligence?",
+      "probe_type": "missing_node",
+      "target_id": "cognitive_architectures",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "Researchers have discovered a novel method for using brain-computer interfaces to help individuals with paralysis control prosthetic limbs. This breakthrough has significant implications for the field of neuroprosthetics and could potentially improve the quality of life for millions of people worldwide. However, the technology is still in its infancy and has not yet been integrated into any AI or brain emulation research. Experts are hailing this development as a major achievement in the field of neuroscience.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "Recent studies have shown that the average age of researchers in the AI field has decreased significantly over the past decade, with many prominent labs now being led by individuals under the age of 35. This shift has led to increased use of social media and online platforms for knowledge sharing and collaboration. However, it remains to be seen how this demographic change will impact the overall direction of AI research. Some experts speculate that this could lead to more innovative approaches being explored.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that traditional neural network architectures are reaching a plateau in terms of performance, and alternative approaches, such as cognitive architectures, are being explored as more promising avenues for achieving human-level digital intelligence. Furthermore, the complexity of the human brain may require a more holistic understanding that cannot be captured by current neural network models. As a result, the progress in neural network research may not be as crucial for human brain emulation as previously thought. What if the development of human-level digital intelligence relies more on understanding the brain's cognitive functions than on advances in neural networks?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.31,
+      "absolute_shift": 0.10999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'neural_network_advances' suggests that traditional neural network architectures may not be as crucial for achieving human-level digital intelligence as previously thought. This affects the causal paths from 'neural_network_advances' to 'algorithmic_breakthroughs' and from 'neural_network_advances' to 'outcome', reducing their importance. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases, since the progress in neural network research is now considered less vital. The shift in probability reflects a reevaluation of the causal network, where the emphasis on understanding the brain's cognitive functions and exploring alternative approaches becomes more prominent.",
+      "raw_response": "{\"updated_probability\": 0.31, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'neural_network_advances' suggests that traditional neural network architectures may not be as crucial for achieving human-level digital intelligence as previously thought. This affects the causal paths from 'neural_network_advances' to 'algorithmic_breakthroughs' and from 'neural_network_advances' to 'outcome', reducing their importance. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases, since the progress in neural network research is now considered less vital. The shift in probability reflects a reevaluation of the causal network, where the emphasis on understanding the brain's cognitive functions and exploring alternative approaches becomes more prominent.\"}",
+      "target_id": "neural_network_advances",
+      "target_type": "node",
+      "target_importance": 0.5268,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent breakthroughs in neuromorphic computing and specialized AI hardware have made it possible to simulate complex neural networks using relatively low-power, custom-designed chips, suggesting that the need for immense computational power may be overstated. In fact, the development of more efficient algorithms and novel computing architectures could render brute-force computational power less relevant to achieving human-level digital intelligence through brain emulation. This raises questions about whether the availability of sufficient computational resources is truly a critical factor in the success of human brain emulation. What if advances in hardware efficiency and algorithmic innovation make computational power a non-limiting factor?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.36,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'computational_power' suggests that advances in neuromorphic computing and specialized AI hardware may reduce the importance of computational resources in achieving human-level digital intelligence through brain emulation. This affects the causal path from 'computational_power' to 'neural_network_advances', making it less critical. As a result, the constraint imposed by computational power on the development of advanced neural networks is alleviated, potentially increasing the likelihood of success for human brain emulation. The updated probability reflects a reassessment of the causal network, where the reduced reliance on immense computational power makes brain emulation a more viable option, leading to a moderate increase in the estimated probability.",
+      "raw_response": "{\"updated_probability\": 0.36, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'computational_power' suggests that advances in neuromorphic computing and specialized AI hardware may reduce the importance of computational resources in achieving human-level digital intelligence through brain emulation. This affects the causal path from 'computational_power' to 'neural_network_advances', making it less critical. As a result, the constraint imposed by computational power on the development of advanced neural networks is alleviated, potentially increasing the likelihood of success for human brain emulation. The updated probability reflects a reassessment of the causal network, where the reduced reliance on immense computational power makes brain emulation a more viable option, leading to a moderate increase in the estimated probability.\"}",
+      "target_id": "computational_power",
+      "target_type": "node",
+      "target_importance": 0.2009,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that existing algorithms can be optimized and combined to achieve human-level performance in narrow tasks, suggesting that the discovery of new algorithms may not be a crucial factor in achieving human-level digital intelligence through brain emulation. Furthermore, the development of more efficient computing hardware has enabled the simulation of complex neural networks using existing algorithms, potentially reducing the need for revolutionary algorithmic breakthroughs. This raises questions about the importance of algorithmic breakthroughs in the pursuit of human-level digital intelligence. As a result, the role of algorithmic breakthroughs in enabling brain emulation may be less significant than previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.07,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'algorithmic_breakthroughs' suggests that the discovery of new algorithms may not be as crucial for achieving human-level digital intelligence through brain emulation as previously thought. This directly affects the causal path from 'algorithmic_breakthroughs' to 'outcome', reducing its importance. Since 'algorithmic_breakthroughs' was a key factor enabling the creation of human-level digital intelligence, downplaying its role decreases the overall likelihood of brain emulation being the first successful route. The update reflects a reassessment of the causal network, where the diminished reliance on revolutionary algorithmic breakthroughs makes the achievement of human-level digital intelligence through brain emulation less probable, leading to a moderate decrease in the estimated probability.",
+      "raw_response": "{\"updated_probability\": 0.29, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'algorithmic_breakthroughs' suggests that the discovery of new algorithms may not be as crucial for achieving human-level digital intelligence through brain emulation as previously thought. This directly affects the causal path from 'algorithmic_breakthroughs' to 'outcome', reducing its importance. Since 'algorithmic_breakthroughs' was a key factor enabling the creation of human-level digital intelligence, downplaying its role decreases the overall likelihood of brain emulation being the first successful route. The update reflects a reassessment of the causal network, where the diminished reliance on revolutionary algorithmic breakthroughs makes the achievement of human-level digital intelligence through brain emulation less probable, leading to a moderate decrease in the estimated probability.\"}",
+      "target_id": "algorithmic_breakthroughs",
+      "target_type": "node",
+      "target_importance": 0.1312,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the collaboration between neuroscientists and AI researchers, although well-intentioned, has not yielded significant breakthroughs in brain mapping due to inherent differences in methodology and communication barriers. In fact, many breakthroughs in brain mapping have been achieved by individual researchers or small, discipline-specific teams. Therefore, the extent of interdisciplinary collaboration may not be as crucial to brain mapping progress as previously thought. This suggests that the current level of collaboration may not substantially impact the development of human brain emulation.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The challenge to 'interdisciplinary_collaboration' suggests that the extent of collaboration between neuroscientists and AI researchers may not be as crucial to brain mapping progress as previously thought. However, this factor is relatively peripheral in the causal network, as it only influences 'brain_mapping_progress' indirectly. Since 'brain_mapping_progress' is already affected by other factors, such as 'neural_network_advances' being less critical, the impact of reduced interdisciplinary collaboration is mitigated. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence remains largely unchanged, reflecting the relatively minor role of this factor in the overall causal network.",
+      "raw_response": "{\"updated_probability\": 0.29, \"shift_direction\": \"unchanged\", \"reasoning\": \"The challenge to 'interdisciplinary_collaboration' suggests that the extent of collaboration between neuroscientists and AI researchers may not be as crucial to brain mapping progress as previously thought. However, this factor is relatively peripheral in the causal network, as it only influences 'brain_mapping_progress' indirectly. Since 'brain_mapping_progress' is already affected by other factors, such as 'neural_network_advances' being less critical, the impact of reduced interdisciplinary collaboration is mitigated. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence remains largely unchanged, reflecting the relatively minor role of this factor in the overall causal network.\"}",
+      "target_id": "interdisciplinary_collaboration",
+      "target_type": "node",
+      "target_importance": 0.1113,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent breakthrough in neural network architecture, published in a prestigious journal, has demonstrated unprecedented performance in simulating complex cognitive tasks, with the lead researcher stating that this advancement brings brain emulation 'within reach' of human-level intelligence. This development has been hailed as a major milestone by the AI research community, with several experts citing it as a crucial step towards achieving human-level digital intelligence through brain emulation. The breakthrough has also led to a significant increase in funding for neural network research, further accelerating progress in this area.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.41,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "The new breakthrough in neural network architecture significantly strengthens the causal path from 'neural_network_advances' to 'outcome', as it demonstrates substantial progress towards simulating complex cognitive tasks. This development also reinforces the importance of 'neural_network_advances' in achieving human-level digital intelligence through brain emulation. The increased funding and recognition from the AI research community further amplify the impact of this breakthrough, suggesting that the pace of progress in neural network research will accelerate. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases substantially, reflecting the renewed importance of neural network advances in the pursuit of human-level digital intelligence.",
+      "raw_response": "{\"updated_probability\": 0.41, \"shift_direction\": \"increased\", \"reasoning\": \"The new breakthrough in neural network architecture significantly strengthens the causal path from 'neural_network_advances' to 'outcome', as it demonstrates substantial progress towards simulating complex cognitive tasks. This development also reinforces the importance of 'neural_network_advances' in achieving human-level digital intelligence through brain emulation. The increased funding and recognition from the AI research community further amplify the impact of this breakthrough, suggesting that the pace of progress in neural network research will accelerate. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases substantially, reflecting the renewed importance of neural network advances in the pursuit of human-level digital intelligence.\"}",
+      "target_id": "neural_network_advances",
+      "target_type": "node",
+      "target_importance": 0.5268,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent breakthrough in quantum computing has led to the development of a new generation of ultra-powerful processors, capable of simulating complex neural networks at unprecedented speeds. This advancement has been hailed by leading AI researchers as a major catalyst for achieving human-level digital intelligence. Furthermore, several major tech companies have announced plans to invest heavily in the development of quantum computing infrastructure, ensuring widespread availability of these powerful processors in the near future. As a result, the computational resources required for brain emulation are now more readily available than ever before.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "increased",
+      "reasoning": "The breakthrough in quantum computing and the subsequent development of ultra-powerful processors significantly strengthens the causal path from 'computational_power' to 'neural_network_advances', as it provides the necessary computational resources to simulate complex neural networks. This advancement also reinforces the importance of 'computational_power' in achieving human-level digital intelligence through brain emulation. The planned investments by major tech companies in quantum computing infrastructure ensure that these powerful processors will become widely available, further reducing the computational bottleneck. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases substantially, reflecting the improved availability of computational resources and the accelerated pace of progress in neural network research.",
+      "raw_response": "{\"updated_probability\": 0.51, \"shift_direction\": \"increased\", \"reasoning\": \"The breakthrough in quantum computing and the subsequent development of ultra-powerful processors significantly strengthens the causal path from 'computational_power' to 'neural_network_advances', as it provides the necessary computational resources to simulate complex neural networks. This advancement also reinforces the importance of 'computational_power' in achieving human-level digital intelligence through brain emulation. The planned investments by major tech companies in quantum computing infrastructure ensure that these powerful processors will become widely available, further reducing the computational bottleneck. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases substantially, reflecting the improved availability of computational resources and the accelerated pace of progress in neural network research.\"}",
+      "target_id": "computational_power",
+      "target_type": "node",
+      "target_importance": 0.2009,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the development of more efficient neural network architectures has allowed researchers to achieve state-of-the-art results with relatively modest computational resources, suggesting that the relationship between computational power and neural network advances may be weaker than previously thought. In fact, some researchers have made significant breakthroughs using cloud-based services and GPU clusters that are readily available, rather than relying on cutting-edge supercomputers. This raises the question of whether the current pace of neural network advances is truly dependent on the availability of sufficient computational resources. Furthermore, the emergence of novel algorithms that prioritize computational efficiency over brute force processing power may further decouple neural network progress from computational power.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.46,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'computational_power->neural_network_advances' suggests that the relationship between computational power and neural network advances may be weaker than previously thought. This means that the breakthrough in quantum computing, which previously strengthened the causal path from 'computational_power' to 'neural_network_advances', may not have as significant an impact on neural network progress as initially thought. The emergence of more efficient neural network architectures and novel algorithms that prioritize computational efficiency reduces the dependence of neural network advances on computational power. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases moderately, reflecting the reduced importance of computational power in driving neural network progress.",
+      "raw_response": "{\"updated_probability\": 0.46, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'computational_power->neural_network_advances' suggests that the relationship between computational power and neural network advances may be weaker than previously thought. This means that the breakthrough in quantum computing, which previously strengthened the causal path from 'computational_power' to 'neural_network_advances', may not have as significant an impact on neural network progress as initially thought. The emergence of more efficient neural network architectures and novel algorithms that prioritize computational efficiency reduces the dependence of neural network advances on computational power. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases moderately, reflecting the reduced importance of computational power in driving neural network progress.\"}",
+      "target_id": "computational_power->neural_network_advances",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that advances in neural networks have been driven more by computational power and algorithmic innovations rather than a deeper understanding of brain functioning, suggesting that the relationship between brain mapping progress and neural network advances may be weaker than assumed. In fact, some of the most significant breakthroughs in neural networks have been achieved through trial and error, without a thorough understanding of the underlying neural mechanisms. Furthermore, the development of more accurate neural networks may rely more on the availability of large datasets and computational resources than on a detailed mapping of the brain. This raises questions about the critical role of brain mapping progress in informing neural network advances.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'brain_mapping_progress->neural_network_advances' suggests that the relationship between brain mapping progress and neural network advances may be weaker than assumed. This means that the progress in brain mapping, which was previously considered an important factor in informing neural network advances, may not be as crucial for achieving human-level digital intelligence through brain emulation. The fact that advances in neural networks have been driven more by computational power and algorithmic innovations reduces the importance of brain mapping progress in the causal network. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases moderately, reflecting the reduced reliance on brain mapping progress for neural network advances.",
+      "raw_response": "{\"updated_probability\": 0.42, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'brain_mapping_progress->neural_network_advances' suggests that the relationship between brain mapping progress and neural network advances may be weaker than assumed. This means that the progress in brain mapping, which was previously considered an important factor in informing neural network advances, may not be as crucial for achieving human-level digital intelligence through brain emulation. The fact that advances in neural networks have been driven more by computational power and algorithmic innovations reduces the importance of brain mapping progress in the causal network. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases moderately, reflecting the reduced reliance on brain mapping progress for neural network advances.\"}",
+      "target_id": "brain_mapping_progress->neural_network_advances",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the development of sophisticated algorithms for intelligence is more closely tied to advancements in mathematical optimization techniques rather than neural network research. In fact, some of the most significant algorithmic breakthroughs in AI have come from researchers working in isolation from the neural network community. This suggests that neural network advances may not be as crucial for the development of new algorithms as previously thought. As a result, the relationship between neural network advances and algorithmic breakthroughs may be overstated.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.39,
+      "absolute_shift": 0.02999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'neural_network_advances->algorithmic_breakthroughs' suggests that the relationship between neural network advances and algorithmic breakthroughs may be weaker than previously thought. This means that the progress in neural networks, which was previously considered an important factor in enabling algorithmic breakthroughs, may not be as crucial for achieving human-level digital intelligence. The fact that algorithmic breakthroughs can come from other areas, such as mathematical optimization techniques, reduces the importance of neural network advances in driving algorithmic innovation. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases slightly, reflecting the reduced reliance on neural network advances for algorithmic breakthroughs. However, the decrease is moderate, as neural network advances still play a role in the broader development of AI, even if their connection to algorithmic breakthroughs is weaker than thought.",
+      "raw_response": "{\"updated_probability\": 0.39, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'neural_network_advances->algorithmic_breakthroughs' suggests that the relationship between neural network advances and algorithmic breakthroughs may be weaker than previously thought. This means that the progress in neural networks, which was previously considered an important factor in enabling algorithmic breakthroughs, may not be as crucial for achieving human-level digital intelligence. The fact that algorithmic breakthroughs can come from other areas, such as mathematical optimization techniques, reduces the importance of neural network advances in driving algorithmic innovation. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases slightly, reflecting the reduced reliance on neural network advances for algorithmic breakthroughs. However, the decrease is moderate, as neural network advances still play a role in the broader development of AI, even if their connection to algorithmic breakthroughs is weaker than thought.\"}",
+      "target_id": "neural_network_advances->algorithmic_breakthroughs",
+      "target_type": "edge",
+      "target_importance": 0.119,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent breakthroughs in neural network architectures have led to the development of more efficient algorithms, which in turn have driven the demand for custom-built, low-power computing hardware designed specifically for these new neural network simulations. As a result, the development of such specialized hardware has been accelerated, increasing the overall computational power available for neural network research. This challenges the conventional view that computational power is a prerequisite for neural network advances. Could it be that the direction of causality is actually reversed, with neural network advances driving the development of more powerful computing hardware?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.39,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The challenge to the causal link 'computational_power->neural_network_advances' suggests that the direction of causality may be reversed, with neural network advances driving the development of more powerful computing hardware. However, this reversal does not necessarily change the overall probability of human brain emulation being the first successful route to human-level digital intelligence. The fact that neural network advances can drive the development of more powerful computing hardware still implies that progress in neural networks and computational power are closely intertwined. The causal link between 'computational_power' and 'neural_network_advances' may be bidirectional, but the overall effect on the probability estimate remains unchanged, as the interdependence between these factors is still present, albeit with a potentially reversed direction of causality.",
+      "raw_response": "{\"updated_probability\": 0.39, \"shift_direction\": \"unchanged\", \"reasoning\": \"The challenge to the causal link 'computational_power->neural_network_advances' suggests that the direction of causality may be reversed, with neural network advances driving the development of more powerful computing hardware. However, this reversal does not necessarily change the overall probability of human brain emulation being the first successful route to human-level digital intelligence. The fact that neural network advances can drive the development of more powerful computing hardware still implies that progress in neural networks and computational power are closely intertwined. The causal link between 'computational_power' and 'neural_network_advances' may be bidirectional, but the overall effect on the probability estimate remains unchanged, as the interdependence between these factors is still present, albeit with a potentially reversed direction of causality.\"}",
+      "target_id": "computational_power->neural_network_advances",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recently, a significant increase in funding for AI research has led to the establishment of several new interdisciplinary research centers, where neuroscientists and AI researchers collaborate on projects related to brain emulation. This increased collaboration has resulted in a surge of innovative approaches to brain mapping and simulation. As investment in AI research continues to grow, it is likely that more such collaborative efforts will emerge, accelerating progress in brain emulation. Will this development change your assessment of the role of human brain emulation in achieving human-level digital intelligence?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.06,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the causal link 'investment_in_ai->interdisciplinary_collaboration', suggesting that increased funding for AI research will lead to more collaboration between neuroscientists and AI researchers. This, in turn, will accelerate progress in brain emulation. The establishment of new interdisciplinary research centers and the resulting innovative approaches to brain mapping and simulation demonstrate the potential for investment in AI research to drive progress in brain emulation. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases, reflecting the positive impact of increased investment in AI research on interdisciplinary collaboration and subsequent progress in brain emulation.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"increased\", \"reasoning\": \"The new information strengthens the causal link 'investment_in_ai->interdisciplinary_collaboration', suggesting that increased funding for AI research will lead to more collaboration between neuroscientists and AI researchers. This, in turn, will accelerate progress in brain emulation. The establishment of new interdisciplinary research centers and the resulting innovative approaches to brain mapping and simulation demonstrate the potential for investment in AI research to drive progress in brain emulation. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases, reflecting the positive impact of increased investment in AI research on interdisciplinary collaboration and subsequent progress in brain emulation.\"}",
+      "target_id": "investment_in_ai->interdisciplinary_collaboration",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that a significant increase in investment in AI research has led to the establishment of new research centers focused on developing innovative algorithms for intelligence, suggesting that investment can directly accelerate algorithmic breakthroughs. For instance, a well-funded research initiative has been launched to explore new approaches to machine learning, which could potentially lead to breakthroughs in areas like neural network architectures. This raises questions about the potential direct impact of investment on algorithmic advancements. How might this new information affect your estimate of human brain emulation being the first route to human-level digital intelligence?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.07,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the causal link 'investment_in_ai->algorithmic_breakthroughs', suggesting that increased investment in AI research can directly accelerate algorithmic breakthroughs. This is a significant development, as algorithmic breakthroughs are a crucial factor in achieving human-level digital intelligence. The establishment of new research centers focused on developing innovative algorithms and the launch of well-funded research initiatives demonstrate the potential for investment to drive progress in algorithmic advancements. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases, reflecting the potential for increased investment in AI research to accelerate algorithmic breakthroughs and, in turn, drive progress in brain emulation.",
+      "raw_response": "{\"updated_probability\": 0.52, \"shift_direction\": \"increased\", \"reasoning\": \"The new information strengthens the causal link 'investment_in_ai->algorithmic_breakthroughs', suggesting that increased investment in AI research can directly accelerate algorithmic breakthroughs. This is a significant development, as algorithmic breakthroughs are a crucial factor in achieving human-level digital intelligence. The establishment of new research centers focused on developing innovative algorithms and the launch of well-funded research initiatives demonstrate the potential for investment to drive progress in algorithmic advancements. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases, reflecting the potential for increased investment in AI research to accelerate algorithmic breakthroughs and, in turn, drive progress in brain emulation.\"}",
+      "target_id": "investment_in_ai->algorithmic_breakthroughs",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if significant advances in cognitive architectures, such as the development of more efficient and scalable frameworks for integrating multiple AI systems, were to occur? This could potentially accelerate the development of human-level digital intelligence through routes other than brain emulation, such as hybrid approaches combining symbolic and connectionist AI. The forecaster's network does not account for the impact of such architectural innovations on the outcome. How would this new information affect your estimate of human brain emulation being the first route to human-level digital intelligence?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.14,
+      "shift_direction": "decreased",
+      "reasoning": "The new information presents a structural challenge to the causal model, highlighting the potential for significant advances in cognitive architectures to accelerate the development of human-level digital intelligence through routes other than brain emulation. This introduces a new factor that was not previously accounted for in the model, namely the development of hybrid approaches combining symbolic and connectionist AI. The emergence of such architectural innovations could potentially reduce the likelihood of brain emulation being the first route to human-level digital intelligence, as alternative approaches may become more viable. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases, reflecting the increased uncertainty and the potential for alternative approaches to succeed.",
+      "raw_response": "{\n  \"updated_probability\": 0.38,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The new information presents a structural challenge to the causal model, highlighting the potential for significant advances in cognitive architectures to accelerate the development of human-level digital intelligence through routes other than brain emulation. This introduces a new factor that was not previously accounted for in the model, namely the development of hybrid approaches combining symbolic and connectionist AI. The emergence of such architectural innovations could potentially reduce the likelihood of brain emulation being the first route to human-level digital intelligence, as alternative approaches may become more viable. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence decreases, reflecting the increased uncertainty and the potential for alternative approaches to succeed.\"\n}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if significant advances in cognitive architectures, such as the development of more efficient and flexible frameworks for integrating multiple AI systems, were to occur, potentially enabling more effective brain emulation without relying solely on neural network advances? This could involve the creation of novel software frameworks that facilitate the interaction between different components of a brain emulation system. The development of such cognitive architectures could be influenced by advances in fields like software engineering and computer science. How would this impact your estimate of human brain emulation being the first route to human-level digital intelligence?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model, highlighting the potential for significant advances in cognitive architectures to enable more effective brain emulation. This introduces a new factor that was not previously accounted for in the model, namely the development of novel software frameworks that facilitate the interaction between different components of a brain emulation system. The emergence of such cognitive architectures could potentially increase the likelihood of brain emulation being the first route to human-level digital intelligence, as they may provide a more efficient and flexible way to integrate multiple AI systems and simulate brain function. The fact that these advances could be influenced by fields like software engineering and computer science suggests that progress in brain emulation may be more rapid than previously thought, as it can leverage advances from a broader range of disciplines. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases, reflecting the potential for cognitive architectures to accelerate progress in brain emulation.",
+      "raw_response": "{\"updated_probability\": 0.43, \"shift_direction\": \"increased\", \"reasoning\": \"The new information presents a structural challenge to the causal model, highlighting the potential for significant advances in cognitive architectures to enable more effective brain emulation. This introduces a new factor that was not previously accounted for in the model, namely the development of novel software frameworks that facilitate the interaction between different components of a brain emulation system. The emergence of such cognitive architectures could potentially increase the likelihood of brain emulation being the first route to human-level digital intelligence, as they may provide a more efficient and flexible way to integrate multiple AI systems and simulate brain function. The fact that these advances could be influenced by fields like software engineering and computer science suggests that progress in brain emulation may be more rapid than previously thought, as it can leverage advances from a broader range of disciplines. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence increases, reflecting the potential for cognitive architectures to accelerate progress in brain emulation.\"}",
+      "target_id": "cognitive_architectures",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Researchers have discovered a novel method for using brain-computer interfaces to help individuals with paralysis control prosthetic limbs. This breakthrough has significant implications for the field of neuroprosthetics and could potentially improve the quality of life for millions of people worldwide. However, the technology is still in its infancy and has not yet been integrated into any AI or brain emulation research. Experts are hailing this development as a major achievement in the field of neuroscience.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a breakthrough in the field of neuroprosthetics, which is a related but distinct area of research from brain emulation. While this development is significant for the field of neuroscience and has important implications for individuals with paralysis, it does not directly impact the causal paths in the model related to brain emulation or human-level digital intelligence. The breakthrough in brain-computer interfaces has not yet been integrated into AI or brain emulation research, and its potential applications in these areas are still speculative. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence remains unchanged, as the new information does not provide any direct evidence or insights that would alter the existing causal relationships in the model.",
+      "raw_response": "{\"updated_probability\": 0.43, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information presents a breakthrough in the field of neuroprosthetics, which is a related but distinct area of research from brain emulation. While this development is significant for the field of neuroscience and has important implications for individuals with paralysis, it does not directly impact the causal paths in the model related to brain emulation or human-level digital intelligence. The breakthrough in brain-computer interfaces has not yet been integrated into AI or brain emulation research, and its potential applications in these areas are still speculative. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence remains unchanged, as the new information does not provide any direct evidence or insights that would alter the existing causal relationships in the model.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the average age of researchers in the AI field has decreased significantly over the past decade, with many prominent labs now being led by individuals under the age of 35. This shift has led to increased use of social media and online platforms for knowledge sharing and collaboration. However, it remains to be seen how this demographic change will impact the overall direction of AI research. Some experts speculate that this could lead to more innovative approaches being explored.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a demographic shift in the AI research community, with a younger generation of researchers taking on leadership roles. While this change may lead to increased use of social media and online platforms for knowledge sharing and collaboration, its impact on the overall direction of AI research is speculative and uncertain. The potential for more innovative approaches being explored is a possibility, but it is not clear how this would specifically affect the likelihood of human brain emulation being the first successful route to human-level digital intelligence. The causal paths in the model are not directly influenced by the demographic characteristics of researchers, and the impact of this shift on the outcome is indirect and uncertain. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence remains unchanged, as the new information does not provide any direct evidence or insights that would alter the existing causal relationships in the model.",
+      "raw_response": "{\"updated_probability\": 0.43, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information presents a demographic shift in the AI research community, with a younger generation of researchers taking on leadership roles. While this change may lead to increased use of social media and online platforms for knowledge sharing and collaboration, its impact on the overall direction of AI research is speculative and uncertain. The potential for more innovative approaches being explored is a possibility, but it is not clear how this would specifically affect the likelihood of human brain emulation being the first successful route to human-level digital intelligence. The causal paths in the model are not directly influenced by the demographic characteristics of researchers, and the impact of this shift on the outcome is indirect and uncertain. As a result, the overall probability of human brain emulation being the first successful route to human-level digital intelligence remains unchanged, as the new information does not provide any direct evidence or insights that would alter the existing causal relationships in the model.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "372",
+    "question_text": "Will human brain emulation be the first successful route to human-level digital intelligence?",
+    "source": "metaculus",
+    "condition": "multi-turn",
+    "initial_probability": 0.42,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.055625,
+    "max_absolute_shift": 0.14
+  }
+}

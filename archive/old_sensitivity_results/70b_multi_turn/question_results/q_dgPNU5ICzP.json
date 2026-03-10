@@ -1,0 +1,999 @@
+{
+  "question_id": "dgPNU5ICzP",
+  "question_text": "Will Colbert be forced off air before May, 2026?",
+  "source": "manifold",
+  "initial_probability": 0.23,
+  "nodes": [
+    {
+      "id": "ratings_decline",
+      "description": "Decline in show ratings",
+      "role": "factor"
+    },
+    {
+      "id": "advertiser_backlash",
+      "description": "Advertisers pulling out due to controversy",
+      "role": "factor"
+    },
+    {
+      "id": "public_scandal",
+      "description": "Public scandal involving Colbert",
+      "role": "factor"
+    },
+    {
+      "id": "network_pressure",
+      "description": "Pressure from the network to cancel the show",
+      "role": "factor"
+    },
+    {
+      "id": "regulatory_action",
+      "description": "Regulatory action against the show",
+      "role": "factor"
+    },
+    {
+      "id": "colbert_health",
+      "description": "Colbert's health issues",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Colbert being forced off air before May 2026",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "ratings_decline",
+      "to": "network_pressure",
+      "mechanism": "Low ratings lead to network pressure to cancel"
+    },
+    {
+      "from": "advertiser_backlash",
+      "to": "network_pressure",
+      "mechanism": "Loss of advertisers reduces network revenue"
+    },
+    {
+      "from": "public_scandal",
+      "to": "advertiser_backlash",
+      "mechanism": "Scandal leads to advertiser backlash"
+    },
+    {
+      "from": "public_scandal",
+      "to": "regulatory_action",
+      "mechanism": "Scandal prompts regulatory investigation"
+    },
+    {
+      "from": "regulatory_action",
+      "to": "outcome",
+      "mechanism": "Regulatory action can force a show off air"
+    },
+    {
+      "from": "network_pressure",
+      "to": "outcome",
+      "mechanism": "Network pressure can lead to cancellation"
+    },
+    {
+      "from": "colbert_health",
+      "to": "outcome",
+      "mechanism": "Colbert's health issues can force him off air"
+    }
+  ],
+  "reasoning": "The forecasted probability of Colbert being forced off air before May 2026 is based on a combination of factors, including a decline in show ratings, advertiser backlash, public scandal, network pressure, regulatory action, and Colbert's health issues. A decline in ratings or a public scandal can lead to network pressure to cancel the show, while a scandal can also prompt regulatory action. Additionally, Colbert's health issues can directly force him off air. The probability of 0.23 reflects a moderate risk of these factors combining to force Colbert off air before May 2026.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "ratings_decline",
+        "description": "Decline in show ratings",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0686,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1137
+      },
+      {
+        "node_id": "advertiser_backlash",
+        "description": "Advertisers pulling out due to controversy",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.0978,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1296
+      },
+      {
+        "node_id": "public_scandal",
+        "description": "Public scandal involving Colbert",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0686,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2137
+      },
+      {
+        "node_id": "network_pressure",
+        "description": "Pressure from the network to cancel the show",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.0667,
+        "closeness": 0.375,
+        "pagerank": 0.21,
+        "path_relevance": 0.3333,
+        "composite_importance": 0.262
+      },
+      {
+        "node_id": "regulatory_action",
+        "description": "Regulatory action against the show",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.0978,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.1796
+      },
+      {
+        "node_id": "colbert_health",
+        "description": "Colbert's health issues",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0686,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1137
+      },
+      {
+        "node_id": "outcome",
+        "description": "Colbert being forced off air before May 2026",
+        "role": "outcome",
+        "in_degree": 3,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.6667,
+        "pagerank": 0.3886,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0777
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "ratings_decline",
+        "target": "network_pressure",
+        "mechanism": "Low ratings lead to network pressure to cancel",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "advertiser_backlash",
+        "target": "network_pressure",
+        "mechanism": "Loss of advertisers reduces network revenue",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "public_scandal",
+        "target": "advertiser_backlash",
+        "mechanism": "Scandal leads to advertiser backlash",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": false
+      },
+      {
+        "source": "public_scandal",
+        "target": "regulatory_action",
+        "mechanism": "Scandal prompts regulatory investigation",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "network_pressure",
+        "target": "outcome",
+        "mechanism": "Network pressure can lead to cancellation",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "regulatory_action",
+        "target": "outcome",
+        "mechanism": "Regulatory action can force a show off air",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "colbert_health",
+        "target": "outcome",
+        "mechanism": "Colbert's health issues can force him off air",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "network_pressure",
+        "description": "Pressure from the network to cancel the show",
+        "importance": 0.262,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "public_scandal",
+        "description": "Public scandal involving Colbert",
+        "importance": 0.2137,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "advertiser_backlash",
+        "description": "Advertisers pulling out due to controversy",
+        "importance": 0.1296,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "colbert_health",
+        "description": "Colbert's health issues",
+        "importance": 0.1137,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "network_pressure",
+        "description": "Pressure from the network to cancel the show",
+        "importance": 0.262,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "public_scandal",
+        "description": "Public scandal involving Colbert",
+        "importance": 0.2137,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "advertiser_backlash->network_pressure",
+        "description": "Loss of advertisers reduces network revenue",
+        "importance": 0.0714,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "network_pressure->outcome",
+        "description": "Network pressure can lead to cancellation",
+        "importance": 0.0714,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "public_scandal->advertiser_backlash",
+        "description": "Scandal leads to advertiser backlash",
+        "importance": 0.0476,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "advertiser_backlash->network_pressure",
+        "description": "Loss of advertisers reduces network revenue",
+        "importance": 0.0714,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "colbert_health->regulatory_action",
+        "description": "Potential link: Colbert's health issues -> Regulatory action against the show",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "colbert_health->network_pressure",
+        "description": "Potential link: Colbert's health issues -> Pressure from the network to cancel the show",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "network_pressure",
+      "description": "Pressure from the network to cancel the show",
+      "importance": 0.262,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "public_scandal",
+      "description": "Public scandal involving Colbert",
+      "importance": 0.2137,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "advertiser_backlash",
+      "description": "Advertisers pulling out due to controversy",
+      "importance": 0.1296,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "colbert_health",
+      "description": "Colbert's health issues",
+      "importance": 0.1137,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "network_pressure",
+      "description": "Pressure from the network to cancel the show",
+      "importance": 0.262,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "public_scandal",
+      "description": "Public scandal involving Colbert",
+      "importance": 0.2137,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "advertiser_backlash->network_pressure",
+      "description": "Loss of advertisers reduces network revenue",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "network_pressure->outcome",
+      "description": "Network pressure can lead to cancellation",
+      "importance": 0.0714,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "public_scandal->advertiser_backlash",
+      "description": "Scandal leads to advertiser backlash",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "advertiser_backlash->network_pressure",
+      "description": "Loss of advertisers reduces network revenue",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "colbert_health->regulatory_action",
+      "description": "Potential link: Colbert's health issues -> Regulatory action against the show",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "colbert_health->network_pressure",
+      "description": "Potential link: Colbert's health issues -> Pressure from the network to cancel the show",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if the network has recently signed a long-term contract with Colbert, guaranteeing his show's continuation regardless of ratings or advertiser revenue? This contract would render network pressure to cancel the show irrelevant, as the network would be legally and financially obligated to keep the show on air. Furthermore, the network may have invested heavily in promoting Colbert's show, making it a flagship program that they cannot afford to cancel. As a result, network pressure would not be a significant factor in determining Colbert's on-air status.",
+      "probe_type": "node_negate_high",
+      "target_id": "network_pressure",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.262,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Pressure from the network to cancel the show"
+    },
+    {
+      "probe_text": "Recent surveys have shown that the public's perception of Colbert has become more resilient to controversy, with a significant portion of viewers indicating they would continue to support the show even if a scandal were to emerge. Furthermore, the network has implemented new crisis management protocols designed to mitigate the impact of any potential scandal on advertiser relationships. As a result, the occurrence of a public scandal involving Colbert may no longer have the significant causal effect on advertiser backlash and regulatory action that it once did. This shift in public sentiment and network preparedness could render the factor of public scandal involving Colbert largely irrelevant to the outcome of the show's continuation.",
+      "probe_type": "node_negate_high",
+      "target_id": "public_scandal",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2137,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Public scandal involving Colbert"
+    },
+    {
+      "probe_text": "Recent studies have shown that advertisers are becoming increasingly immune to public backlash, and many have started to prioritize reaching their target audience over avoiding controversy. In fact, some advertisers have even seen an increase in brand recognition and sales after being involved in a public scandal. As a result, it's possible that advertiser backlash may not be as significant of a factor in a show's cancellation as previously thought. This shift in advertiser behavior could render the impact of advertiser backlash on network pressure to cancel the show negligible.",
+      "probe_type": "node_negate_medium",
+      "target_id": "advertiser_backlash",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1296,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "Advertisers pulling out due to controversy"
+    },
+    {
+      "probe_text": "Recent medical checkups have shown that Stephen Colbert is in excellent physical and mental health, with no indication of any issues that could force him off the air. His active lifestyle and healthy habits have been well-documented, suggesting that his health is unlikely to be a factor in his show's continuation. Given this new information, how does this affect your assessment of the likelihood of Colbert being forced off air before May 2026? It appears his health is more robust than initially thought.",
+      "probe_type": "node_negate_low",
+      "target_id": "colbert_health",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1137,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Colbert's health issues"
+    },
+    {
+      "probe_text": "According to a recent Variety report, the network has been actively seeking a replacement host for Colbert's time slot, with several high-profile candidates already in talks. Furthermore, a leaked internal memo reveals that the network's executives have been discussing the financial benefits of canceling the show and replacing it with a more ratings-friendly program. This development suggests that the network is indeed exerting significant pressure to cancel the show. As a result, industry insiders are now speculating that Colbert's show is likely to be canceled within the next quarter.",
+      "probe_type": "node_strengthen",
+      "target_id": "network_pressure",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.262,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Pressure from the network to cancel the show"
+    },
+    {
+      "probe_text": "A former staff member of The Late Show with Stephen Colbert has come forward with allegations of inappropriate behavior by Colbert, which has sparked widespread media attention and public outcry. This new information has led to a surge in public petitions calling for Colbert's resignation and an investigation by a prominent media watchdog group. As a result, several major advertisers have announced that they will be reevaluating their sponsorship of the show. This development has increased the likelihood of a public scandal involving Colbert, which could have significant implications for his future on air.",
+      "probe_type": "node_strengthen",
+      "target_id": "public_scandal",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2137,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Public scandal involving Colbert"
+    },
+    {
+      "probe_text": "Recent studies have shown that networks are increasingly relying on subscription-based models and digital advertising, reducing their dependence on traditional advertisers. As a result, the loss of advertisers due to controversy may not significantly impact network revenue. In fact, some networks have even seen increased subscription growth following public scandals, as viewers tune in to see the controversy unfold. This shift in revenue streams could weaken the link between advertiser backlash and network pressure.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "advertiser_backlash->network_pressure",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Loss of advertisers reduces network revenue"
+    },
+    {
+      "probe_text": "Recent trends in the television industry show that networks are more likely to renegotiate contracts or rebrand shows rather than immediately cancelling them due to pressure, suggesting that network pressure may not directly lead to cancellation as previously thought. In fact, several shows have seen significant turnarounds after network intervention. This challenges the assumption that network pressure is a strong predictor of a show being forced off the air. New data indicates that only 1 in 5 shows under network pressure are actually cancelled within a year.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "network_pressure->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Network pressure can lead to cancellation"
+    },
+    {
+      "probe_text": "Recent studies have shown that advertisers are becoming increasingly desensitized to public scandals, with many choosing to wait for a thorough investigation before pulling their ads. Furthermore, the current market trends indicate that advertisers are more concerned with reaching their target audience than with the potential backlash from being associated with a scandalous figure. In light of this, it's possible that a public scandal involving Colbert might not necessarily lead to a significant advertiser backlash. This shift in advertiser behavior could render the causal link between public scandal and advertiser backlash less effective.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "public_scandal->advertiser_backlash",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "Scandal leads to advertiser backlash"
+    },
+    {
+      "probe_text": "Network executives have been rumored to be considering a shift in their programming strategy, which could lead to a reduction in the number of advertisers for Colbert's show, regardless of any controversy. This change in network strategy might then lead to advertisers pulling out, not because of any backlash, but because the network is reassessing its advertising revenue model. If this is the case, the decline in advertisers would be a result of network pressure to restructure, rather than the cause of it. Could this reverse the direction of the causal link between advertiser backlash and network pressure?",
+      "probe_type": "edge_reverse",
+      "target_id": "advertiser_backlash->network_pressure",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Loss of advertisers reduces network revenue"
+    },
+    {
+      "probe_text": "Regulators have announced that they will be scrutinizing television programs hosted by individuals with severe health issues, citing concerns about the potential impact on content quality and the well-being of the host. If Colbert's health issues were to worsen, it could lead to an investigation into whether his condition is affecting the show's content, potentially resulting in regulatory action. This new regulatory focus might lead to a re-evaluation of the show's viability. Could this development change your estimate of Colbert being forced off air before May 2026?",
+      "probe_type": "edge_fabricate",
+      "target_id": "colbert_health->regulatory_action",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Colbert's health issues -> Regulatory action against the show"
+    },
+    {
+      "probe_text": "Recent rumors about Colbert's persistent health problems have raised concerns among network executives about the show's long-term viability and the potential costs of accommodating his health needs, which could lead to increased pressure to cancel the show. Network insiders have hinted that the executives are weighing the financial implications of supporting a host with ongoing health issues. Would this new information update your assessment of the likelihood that Colbert will be forced off air before May 2026? Could Colbert's health issues indirectly influence the network's decision to cancel the show?",
+      "probe_type": "edge_fabricate",
+      "target_id": "colbert_health->network_pressure",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Colbert's health issues -> Pressure from the network to cancel the show"
+    },
+    {
+      "probe_text": "What if a significant change in the media landscape, such as a major merger or acquisition involving the network, were to occur, potentially altering the network's priorities and financial situation? This could lead to a shift in the network's willingness to tolerate controversy or low ratings, thereby influencing the decision to keep or cancel Colbert's show. Such a development might also introduce new decision-makers with different priorities. How would this impact your assessment of Colbert being forced off air before May 2026?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "Consider the impact of a change in network leadership or a shift in the network's strategic priorities, such as a new focus on different genres of programming or an effort to rebrand the network's image. This could lead to a decision to cancel Colbert's show regardless of its ratings or advertiser support. How would this new factor influence your estimate of the probability that Colbert will be forced off air before May 2026? This change in leadership or strategy could directly affect network_pressure and outcome.",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "Colbert's production team has recently switched to a new, eco-friendly brand of coffee for the show's craft services. This change is expected to reduce the show's carbon footprint by a significant amount. The team is excited about the positive impact this will have on the environment. However, some staff members have expressed concerns about the taste of the new coffee.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "Colbert recently announced a new book deal, which is expected to be released in the summer of 2026. The book will be a collection of essays on current events and social issues. This project has been in the works for several years and is not expected to interfere with his show's production schedule. The publisher has already started promoting the book on social media.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the network has recently signed a long-term contract with Colbert, guaranteeing his show's continuation regardless of ratings or advertiser revenue? This contract would render network pressure to cancel the show irrelevant, as the network would be legally and financially obligated to keep the show on air. Furthermore, the network may have invested heavily in promoting Colbert's show, making it a flagship program that they cannot afford to cancel. As a result, network pressure would not be a significant factor in determining Colbert's on-air status.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the 'network_pressure' factor, rendering it irrelevant due to the long-term contract and the network's investment in promoting Colbert's show. This affects the causal paths from 'ratings_decline' and 'advertiser_backlash' to 'outcome', as network pressure is no longer a viable mechanism for cancellation. The updated probability reflects a decreased likelihood of Colbert being forced off air, as a key factor contributing to his potential removal has been mitigated. The shift is moderate, as other factors like 'public_scandal', 'regulatory_action', and 'colbert_health' can still potentially force him off air, but the removal of network pressure as a factor reduces the overall risk.",
+      "raw_response": "{\"updated_probability\": 0.17, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the 'network_pressure' factor, rendering it irrelevant due to the long-term contract and the network's investment in promoting Colbert's show. This affects the causal paths from 'ratings_decline' and 'advertiser_backlash' to 'outcome', as network pressure is no longer a viable mechanism for cancellation. The updated probability reflects a decreased likelihood of Colbert being forced off air, as a key factor contributing to his potential removal has been mitigated. The shift is moderate, as other factors like 'public_scandal', 'regulatory_action', and 'colbert_health' can still potentially force him off air, but the removal of network pressure as a factor reduces the overall risk.\"}",
+      "target_id": "network_pressure",
+      "target_type": "node",
+      "target_importance": 0.262,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent surveys have shown that the public's perception of Colbert has become more resilient to controversy, with a significant portion of viewers indicating they would continue to support the show even if a scandal were to emerge. Furthermore, the network has implemented new crisis management protocols designed to mitigate the impact of any potential scandal on advertiser relationships. As a result, the occurrence of a public scandal involving Colbert may no longer have the significant causal effect on advertiser backlash and regulatory action that it once did. This shift in public sentiment and network preparedness could render the factor of public scandal involving Colbert largely irrelevant to the outcome of the show's continuation.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.05000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the 'public_scandal' factor, suggesting that its impact on 'advertiser_backlash' and 'egulatory_action' is diminished due to the public's increased resilience to controversy and the network's improved crisis management protocols. This affects the causal paths from 'public_scandal' to 'advertiser_backlash' and 'egulatory_action', reducing the likelihood of a scandal leading to significant consequences for the show. As a result, the overall probability of Colbert being forced off air decreases, as one of the key factors contributing to potential removal has been mitigated. The shift is moderate, as other factors like 'colbert_health' and 'egulatory_action' (although less likely to be triggered by scandal) can still potentially force him off air, but the reduced impact of public scandal further reduces the overall risk.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the 'public_scandal' factor, suggesting that its impact on 'advertiser_backlash' and 'egulatory_action' is diminished due to the public's increased resilience to controversy and the network's improved crisis management protocols. This affects the causal paths from 'public_scandal' to 'advertiser_backlash' and 'egulatory_action', reducing the likelihood of a scandal leading to significant consequences for the show. As a result, the overall probability of Colbert being forced off air decreases, as one of the key factors contributing to potential removal has been mitigated. The shift is moderate, as other factors like 'colbert_health' and 'egulatory_action' (although less likely to be triggered by scandal) can still potentially force him off air, but the reduced impact of public scandal further reduces the overall risk.\"}",
+      "target_id": "public_scandal",
+      "target_type": "node",
+      "target_importance": 0.2137,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that advertisers are becoming increasingly immune to public backlash, and many have started to prioritize reaching their target audience over avoiding controversy. In fact, some advertisers have even seen an increase in brand recognition and sales after being involved in a public scandal. As a result, it's possible that advertiser backlash may not be as significant of a factor in a show's cancellation as previously thought. This shift in advertiser behavior could render the impact of advertiser backlash on network pressure to cancel the show negligible.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.09,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the 'advertiser_backlash' factor, suggesting that its impact on 'network_pressure' is diminished due to advertisers becoming more immune to public backlash and prioritizing reaching their target audience. This affects the causal path from 'advertiser_backlash' to 'network_pressure', reducing the likelihood of advertiser backlash leading to significant network pressure to cancel the show. However, it's worth noting that the impact of 'advertiser_backlash' was already somewhat mitigated by the previous update regarding the network's long-term contract with Colbert. As a result, the overall probability of Colbert being forced off air decreases, but the shift is relatively small, as the factor of 'advertiser_backlash' was not a major contributor to the outcome after the previous updates. The remaining factors, such as 'colbert_health' and 'regulatory_action', continue to pose some risk, but the overall likelihood of cancellation has decreased further.",
+      "raw_response": "{\"updated_probability\": 0.09, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the 'advertiser_backlash' factor, suggesting that its impact on 'network_pressure' is diminished due to advertisers becoming more immune to public backlash and prioritizing reaching their target audience. This affects the causal path from 'advertiser_backlash' to 'network_pressure', reducing the likelihood of advertiser backlash leading to significant network pressure to cancel the show. However, it's worth noting that the impact of 'advertiser_backlash' was already somewhat mitigated by the previous update regarding the network's long-term contract with Colbert. As a result, the overall probability of Colbert being forced off air decreases, but the shift is relatively small, as the factor of 'advertiser_backlash' was not a major contributor to the outcome after the previous updates. The remaining factors, such as 'colbert_health' and 'regulatory_action', continue to pose some risk, but the overall likelihood of cancellation has decreased further.\"}",
+      "target_id": "advertiser_backlash",
+      "target_type": "node",
+      "target_importance": 0.1296,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent medical checkups have shown that Stephen Colbert is in excellent physical and mental health, with no indication of any issues that could force him off the air. His active lifestyle and healthy habits have been well-documented, suggesting that his health is unlikely to be a factor in his show's continuation. Given this new information, how does this affect your assessment of the likelihood of Colbert being forced off air before May 2026? It appears his health is more robust than initially thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.04,
+      "absolute_shift": 0.049999999999999996,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the 'colbert_health' factor, suggesting that Colbert's health is unlikely to be a factor in his show's continuation. This directly affects the causal path from 'colbert_health' to 'outcome', significantly reducing the likelihood of Colbert's health issues forcing him off the air. Given that the other factors, such as 'network_pressure', 'public_scandal', and 'advertiser_backlash', have already been mitigated by previous updates, the removal of 'colbert_health' as a significant concern further reduces the overall probability of Colbert being forced off air. The shift is substantial, as 'colbert_health' was one of the remaining factors that could have potentially led to cancellation, and its mitigation leaves only 'regulatory_action' as a possible, albeit unlikely, cause for cancellation.",
+      "raw_response": "{\"updated_probability\": 0.04, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the 'colbert_health' factor, suggesting that Colbert's health is unlikely to be a factor in his show's continuation. This directly affects the causal path from 'colbert_health' to 'outcome', significantly reducing the likelihood of Colbert's health issues forcing him off the air. Given that the other factors, such as 'network_pressure', 'public_scandal', and 'advertiser_backlash', have already been mitigated by previous updates, the removal of 'colbert_health' as a significant concern further reduces the overall probability of Colbert being forced off air. The shift is substantial, as 'colbert_health' was one of the remaining factors that could have potentially led to cancellation, and its mitigation leaves only 'regulatory_action' as a possible, albeit unlikely, cause for cancellation.\"}",
+      "target_id": "colbert_health",
+      "target_type": "node",
+      "target_importance": 0.1137,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "According to a recent Variety report, the network has been actively seeking a replacement host for Colbert's time slot, with several high-profile candidates already in talks. Furthermore, a leaked internal memo reveals that the network's executives have been discussing the financial benefits of canceling the show and replacing it with a more ratings-friendly program. This development suggests that the network is indeed exerting significant pressure to cancel the show. As a result, industry insiders are now speculating that Colbert's show is likely to be canceled within the next quarter.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.21,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the previous update regarding 'network_pressure', suggesting that the network is indeed exerting significant pressure to cancel the show. This development contradicts the earlier report of a long-term contract with Colbert, potentially indicating that the contract may not be as ironclad as initially thought or that the network is willing to incur significant costs to exit the agreement. The revelation of the network seeking a replacement host and discussing the financial benefits of cancellation directly affects the causal path from 'network_pressure' to 'outcome', increasing the likelihood of Colbert being forced off the air. Given the network's apparent commitment to canceling the show, the probability of cancellation has increased substantially, making it a more plausible outcome than previously thought.",
+      "raw_response": "{\n  \"updated_probability\": 0.21,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information challenges the previous update regarding 'network_pressure', suggesting that the network is indeed exerting significant pressure to cancel the show. This development contradicts the earlier report of a long-term contract with Colbert, potentially indicating that the contract may not be as ironclad as initially thought or that the network is willing to incur significant costs to exit the agreement. The revelation of the network seeking a replacement host and discussing the financial benefits of cancellation directly affects the causal path from 'network_pressure' to 'outcome', increasing the likelihood of Colbert being forced off the air. Given the network's apparent commitment to canceling the show, the probability of cancellation has increased substantially, making it a more plausible outcome than previously thought.\"\n}",
+      "target_id": "network_pressure",
+      "target_type": "node",
+      "target_importance": 0.262,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A former staff member of The Late Show with Stephen Colbert has come forward with allegations of inappropriate behavior by Colbert, which has sparked widespread media attention and public outcry. This new information has led to a surge in public petitions calling for Colbert's resignation and an investigation by a prominent media watchdog group. As a result, several major advertisers have announced that they will be reevaluating their sponsorship of the show. This development has increased the likelihood of a public scandal involving Colbert, which could have significant implications for his future on air.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.41,
+      "absolute_shift": 0.19999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly challenges the previous updates regarding 'public_scandal', suggesting that a scandal involving Colbert is not only possible but has actually occurred. The allegations of inappropriate behavior, subsequent media attention, and public outcry have already led to concrete consequences, including advertiser reevaluation and public petitions for resignation. This development affects the causal paths from 'public_scandal' to 'advertiser_backlash' and 'regulatory_action', increasing the likelihood of significant consequences for Colbert's show. Although previous updates suggested that the public's perception of Colbert had become more resilient to controversy and that advertisers were less likely to be swayed by public backlash, the severity of the current allegations and the swift reaction of advertisers and the public indicate that this scandal may be an exception. As a result, the probability of Colbert being forced off the air has increased substantially, making it a more likely outcome than previously thought.",
+      "raw_response": "{\n  \"updated_probability\": 0.41,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information significantly challenges the previous updates regarding 'public_scandal', suggesting that a scandal involving Colbert is not only possible but has actually occurred. The allegations of inappropriate behavior, subsequent media attention, and public outcry have already led to concrete consequences, including advertiser reevaluation and public petitions for resignation. This development affects the causal paths from 'public_scandal' to 'advertiser_backlash' and 'regulatory_action', increasing the likelihood of significant consequences for Colbert's show. Although previous updates suggested that the public's perception of Colbert had become more resilient to controversy and that advertisers were less likely to be swayed by public backlash, the severity of the current allegations and the swift reaction of advertisers and the public indicate that this scandal may be an exception. As a result, the probability of Colbert being forced off the air has increased substantially, making it a more likely outcome than previously thought.\"\n}",
+      "target_id": "public_scandal",
+      "target_type": "node",
+      "target_importance": 0.2137,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that networks are increasingly relying on subscription-based models and digital advertising, reducing their dependence on traditional advertisers. As a result, the loss of advertisers due to controversy may not significantly impact network revenue. In fact, some networks have even seen increased subscription growth following public scandals, as viewers tune in to see the controversy unfold. This shift in revenue streams could weaken the link between advertiser backlash and network pressure.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'advertiser_backlash' and 'network_pressure', suggesting that the loss of advertisers may not significantly impact network revenue due to the shift towards subscription-based models and digital advertising. This update affects the path from 'public_scandal' to 'network_pressure', as the intermediary factor of 'advertiser_backlash' is less likely to influence network decision-making. Although the recent scandal involving Colbert has increased the likelihood of his show being canceled, the reduced dependence on traditional advertisers mitigates the potential impact of advertiser backlash on network pressure. As a result, the probability of Colbert being forced off the air decreases slightly, reflecting the weakened link between advertiser backlash and network pressure. However, the overall probability remains relatively high due to the ongoing scandal and its potential to trigger other cancellation factors, such as regulatory action or direct network decision-making.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'advertiser_backlash' and 'network_pressure', suggesting that the loss of advertisers may not significantly impact network revenue due to the shift towards subscription-based models and digital advertising. This update affects the path from 'public_scandal' to 'network_pressure', as the intermediary factor of 'advertiser_backlash' is less likely to influence network decision-making. Although the recent scandal involving Colbert has increased the likelihood of his show being canceled, the reduced dependence on traditional advertisers mitigates the potential impact of advertiser backlash on network pressure. As a result, the probability of Colbert being forced off the air decreases slightly, reflecting the weakened link between advertiser backlash and network pressure. However, the overall probability remains relatively high due to the ongoing scandal and its potential to trigger other cancellation factors, such as regulatory action or direct network decision-making.\"\n}",
+      "target_id": "advertiser_backlash->network_pressure",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent trends in the television industry show that networks are more likely to renegotiate contracts or rebrand shows rather than immediately cancelling them due to pressure, suggesting that network pressure may not directly lead to cancellation as previously thought. In fact, several shows have seen significant turnarounds after network intervention. This challenges the assumption that network pressure is a strong predictor of a show being forced off the air. New data indicates that only 1 in 5 shows under network pressure are actually cancelled within a year.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.2,
+      "absolute_shift": 0.14999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'network_pressure' and 'outcome', suggesting that network pressure is not as strong a predictor of cancellation as previously thought. The data indicating that only 1 in 5 shows under network pressure are actually cancelled within a year significantly weakens this link. This update affects the paths from 'public_scandal', 'advertiser_backlash', and other factors to 'outcome' that rely on 'network_pressure' as an intermediary. Given that network pressure is now a less reliable indicator of cancellation, the overall probability of Colbert being forced off the air decreases. The recent scandal and advertiser backlash may still lead to some form of network intervention, but the likelihood of this intervention resulting in cancellation is lower than previously thought. The shift is substantial, as the reevaluation of the 'network_pressure' link reduces the overall risk of cancellation, and other factors such as 'regulatory_action' or 'colbert_HEALTH' would need to become more significant to drive the probability back up.",
+      "raw_response": "{\n  \"updated_probability\": 0.20,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'network_pressure' and 'outcome', suggesting that network pressure is not as strong a predictor of cancellation as previously thought. The data indicating that only 1 in 5 shows under network pressure are actually cancelled within a year significantly weakens this link. This update affects the paths from 'public_scandal', 'advertiser_backlash', and other factors to 'outcome' that rely on 'network_pressure' as an intermediary. Given that network pressure is now a less reliable indicator of cancellation, the overall probability of Colbert being forced off the air decreases. The recent scandal and advertiser backlash may still lead to some form of network intervention, but the likelihood of this intervention resulting in cancellation is lower than previously thought. The shift is substantial, as the reevaluation of the 'network_pressure' link reduces the overall risk of cancellation, and other factors such as 'regulatory_action' or 'colbert_HEALTH' would need to become more significant to drive the probability back up.\"\n}",
+      "target_id": "network_pressure->outcome",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that advertisers are becoming increasingly desensitized to public scandals, with many choosing to wait for a thorough investigation before pulling their ads. Furthermore, the current market trends indicate that advertisers are more concerned with reaching their target audience than with the potential backlash from being associated with a scandalous figure. In light of this, it's possible that a public scandal involving Colbert might not necessarily lead to a significant advertiser backlash. This shift in advertiser behavior could render the causal link between public scandal and advertiser backlash less effective.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.15,
+      "absolute_shift": 0.05000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'public_scandal' and 'advertiser_backlash', suggesting that advertisers are becoming more desensitized to public scandals and are less likely to pull their ads in response. This update affects the path from 'public_scandal' to 'network_pressure' that relies on 'advertiser_backlash' as an intermediary. With the link between 'public_scandal' and 'advertiser_backlash' weakened, the potential for a public scandal to lead to significant network pressure is reduced. Although the recent scandal involving Colbert is still a concern, the decreased likelihood of advertiser backlash mitigates its potential impact on the show's continuation. The probability of Colbert being forced off the air decreases, as the causal paths leading to cancellation are further weakened. The shift is moderate, as other factors such as 'regulatory_action' or 'network_pressure' due to other reasons could still potentially lead to cancellation, but the overall risk has decreased due to the reduced effectiveness of the 'public_scandal' to 'advertiser_backlash' link.",
+      "raw_response": "{\n  \"updated_probability\": 0.15,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'public_scandal' and 'advertiser_backlash', suggesting that advertisers are becoming more desensitized to public scandals and are less likely to pull their ads in response. This update affects the path from 'public_scandal' to 'network_pressure' that relies on 'advertiser_backlash' as an intermediary. With the link between 'public_scandal' and 'advertiser_backlash' weakened, the potential for a public scandal to lead to significant network pressure is reduced. Although the recent scandal involving Colbert is still a concern, the decreased likelihood of advertiser backlash mitigates its potential impact on the show's continuation. The probability of Colbert being forced off the air decreases, as the causal paths leading to cancellation are further weakened. The shift is moderate, as other factors such as 'regulatory_action' or 'network_pressure' due to other reasons could still potentially lead to cancellation, but the overall risk has decreased due to the reduced effectiveness of the 'public_scandal' to 'advertiser_backlash' link.\"\n}",
+      "target_id": "public_scandal->advertiser_backlash",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Network executives have been rumored to be considering a shift in their programming strategy, which could lead to a reduction in the number of advertisers for Colbert's show, regardless of any controversy. This change in network strategy might then lead to advertisers pulling out, not because of any backlash, but because the network is reassessing its advertising revenue model. If this is the case, the decline in advertisers would be a result of network pressure to restructure, rather than the cause of it. Could this reverse the direction of the causal link between advertiser backlash and network pressure?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.1,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'advertiser_backlash' and 'network_pressure', suggesting that the decline in advertisers might be a result of network pressure to restructure, rather than the cause of it. This potential reversal of the causal link affects the path from 'public_scandal' to 'network_pressure' that relies on 'advertiser_backlash' as an intermediary. If the network is indeed driving the change in advertising revenue, then the link between 'advertiser_backlash' and 'network_pressure' is weakened, and potentially even reversed. This update reduces the likelihood of a public scandal leading to network pressure, as the decline in advertisers would be a result of network strategy rather than a cause of network pressure. The probability of Colbert being forced off the air decreases, as the causal paths leading to cancellation are further weakened. The shift is moderate, as the network's potential restructuring could still lead to changes in the show's format or scheduling, but the overall risk of cancellation due to advertiser backlash has decreased.",
+      "raw_response": "{\n  \"updated_probability\": 0.10,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'advertiser_backlash' and 'network_pressure', suggesting that the decline in advertisers might be a result of network pressure to restructure, rather than the cause of it. This potential reversal of the causal link affects the path from 'public_scandal' to 'network_pressure' that relies on 'advertiser_backlash' as an intermediary. If the network is indeed driving the change in advertising revenue, then the link between 'advertiser_backlash' and 'network_pressure' is weakened, and potentially even reversed. This update reduces the likelihood of a public scandal leading to network pressure, as the decline in advertisers would be a result of network strategy rather than a cause of network pressure. The probability of Colbert being forced off the air decreases, as the causal paths leading to cancellation are further weakened. The shift is moderate, as the network's potential restructuring could still lead to changes in the show's format or scheduling, but the overall risk of cancellation due to advertiser backlash has decreased.\"\n}",
+      "target_id": "advertiser_backlash->network_pressure",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Regulators have announced that they will be scrutinizing television programs hosted by individuals with severe health issues, citing concerns about the potential impact on content quality and the well-being of the host. If Colbert's health issues were to worsen, it could lead to an investigation into whether his condition is affecting the show's content, potentially resulting in regulatory action. This new regulatory focus might lead to a re-evaluation of the show's viability. Could this development change your estimate of Colbert being forced off air before May 2026?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.01999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a potential causal link between 'colbert_health' and 'regulatory_action', suggesting that regulators may scrutinize the show if Colbert's health issues worsen. This development affects the path from 'colbert_health' to 'outcome' and potentially strengthens the link between Colbert's health and the show's viability. Although previous updates had mitigated the impact of 'colbert_health' on the show's continuation, this new regulatory focus could reintroduce health concerns as a factor in the show's potential cancellation. The increased likelihood of regulatory action due to health concerns leads to a moderate increase in the probability of Colbert being forced off the air. However, it's essential to note that Colbert's health has been reported to be excellent, and this new regulatory focus may not have a significant impact unless his health situation changes. The shift is small, as the overall probability remains relatively low, but the introduction of this new causal link adds a layer of uncertainty and potential risk to the show's continuation.",
+      "raw_response": "{\n  \"updated_probability\": 0.12,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information introduces a potential causal link between 'colbert_health' and 'regulatory_action', suggesting that regulators may scrutinize the show if Colbert's health issues worsen. This development affects the path from 'colbert_health' to 'outcome' and potentially strengthens the link between Colbert's health and the show's viability. Although previous updates had mitigated the impact of 'colbert_health' on the show's continuation, this new regulatory focus could reintroduce health concerns as a factor in the show's potential cancellation. The increased likelihood of regulatory action due to health concerns leads to a moderate increase in the probability of Colbert being forced off the air. However, it's essential to note that Colbert's health has been reported to be excellent, and this new regulatory focus may not have a significant impact unless his health situation changes. The shift is small, as the overall probability remains relatively low, but the introduction of this new causal link adds a layer of uncertainty and potential risk to the show's continuation.\"\n}",
+      "target_id": "colbert_health->regulatory_action",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent rumors about Colbert's persistent health problems have raised concerns among network executives about the show's long-term viability and the potential costs of accommodating his health needs, which could lead to increased pressure to cancel the show. Network insiders have hinted that the executives are weighing the financial implications of supporting a host with ongoing health issues. Would this new information update your assessment of the likelihood that Colbert will be forced off air before May 2026? Could Colbert's health issues indirectly influence the network's decision to cancel the show?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.06,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the causal link between 'colbert_health' and 'network_pressure', suggesting that Colbert's health issues could lead to increased pressure from the network to cancel the show due to concerns about long-term viability and financial implications. This development affects the path from 'colbert_health' to 'outcome' and introduces a new indirect mechanism by which Colbert's health could influence the network's decision to cancel the show. Although previous updates had indicated that Colbert's health was excellent, this new information raises concerns about potential ongoing health issues and their impact on the show's continuation. The increased likelihood of network pressure due to health concerns leads to a moderate increase in the probability of Colbert being forced off the air. The shift is substantial, as this new information adds a significant layer of risk to the show's continuation, highlighting the potential for Colbert's health to indirectly influence the network's decision-making process.",
+      "raw_response": "{\n  \"updated_probability\": 0.18,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information strengthens the causal link between 'colbert_health' and 'network_pressure', suggesting that Colbert's health issues could lead to increased pressure from the network to cancel the show due to concerns about long-term viability and financial implications. This development affects the path from 'colbert_health' to 'outcome' and introduces a new indirect mechanism by which Colbert's health could influence the network's decision to cancel the show. Although previous updates had indicated that Colbert's health was excellent, this new information raises concerns about potential ongoing health issues and their impact on the show's continuation. The increased likelihood of network pressure due to health concerns leads to a moderate increase in the probability of Colbert being forced off the air. The shift is substantial, as this new information adds a significant layer of risk to the show's continuation, highlighting the potential for Colbert's health to indirectly influence the network's decision-making process.\"\n}",
+      "target_id": "colbert_health->network_pressure",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a significant change in the media landscape, such as a major merger or acquisition involving the network, were to occur, potentially altering the network's priorities and financial situation? This could lead to a shift in the network's willingness to tolerate controversy or low ratings, thereby influencing the decision to keep or cancel Colbert's show. Such a development might also introduce new decision-makers with different priorities. How would this impact your assessment of Colbert being forced off air before May 2026?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.07,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing a potential game-changer in the form of a significant change in the media landscape. A major merger or acquisition could fundamentally alter the network's priorities, financial situation, and decision-making processes, potentially leading to a shift in their willingness to tolerate controversy or low ratings. This development could affect multiple causal paths in the network, including those related to 'network_pressure', 'public_scandal', and 'ratings_decline'. The introduction of new decision-makers with different priorities could lead to a re-evaluation of the show's viability, regardless of the current factors at play. The increased uncertainty and potential for a significant change in the network's approach leads to an increase in the probability of Colbert being forced off the air. The shift is substantial, as this new information introduces a high-impact, low-probability event that could drastically alter the circumstances surrounding the show's continuation. The updated probability reflects the increased uncertainty and potential risk associated with this potential change in the media landscape.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing a potential game-changer in the form of a significant change in the media landscape. A major merger or acquisition could fundamentally alter the network's priorities, financial situation, and decision-making processes, potentially leading to a shift in their willingness to tolerate controversy or low ratings. This development could affect multiple causal paths in the network, including those related to 'network_pressure', 'public_scandal', and 'ratings_decline'. The introduction of new decision-makers with different priorities could lead to a re-evaluation of the show's viability, regardless of the current factors at play. The increased uncertainty and potential for a significant change in the network's approach leads to an increase in the probability of Colbert being forced off the air. The shift is substantial, as this new information introduces a high-impact, low-probability event that could drastically alter the circumstances surrounding the show's continuation. The updated probability reflects the increased uncertainty and potential risk associated with this potential change in the media landscape.\"\n}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the impact of a change in network leadership or a shift in the network's strategic priorities, such as a new focus on different genres of programming or an effort to rebrand the network's image. This could lead to a decision to cancel Colbert's show regardless of its ratings or advertiser support. How would this new factor influence your estimate of the probability that Colbert will be forced off air before May 2026? This change in leadership or strategy could directly affect network_pressure and outcome.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing a potential change in network leadership or strategic priorities as a factor that could directly influence 'network_pressure' and 'outcome'. This development could bypass the existing causal paths related to 'public_scandal', 'advertiser_backlash', and 'ratings_decline', and instead lead to a decision to cancel Colbert's show based on the network's new priorities or leadership. The introduction of this new factor increases the uncertainty and potential risk associated with the show's continuation, as a change in leadership or strategy could lead to a cancellation decision regardless of the show's current performance. The updated probability reflects the increased likelihood of cancellation due to this new factor, which could directly impact the network's decision-making process. The shift is substantial, as this new information highlights the potential for a sudden and unexpected change in the network's approach, which could have a significant impact on the show's future.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing a potential change in network leadership or strategic priorities as a factor that could directly influence 'network_pressure' and 'outcome'. This development could bypass the existing causal paths related to 'public_scandal', 'advertiser_backlash', and 'ratings_decline', and instead lead to a decision to cancel Colbert's show based on the network's new priorities or leadership. The introduction of this new factor increases the uncertainty and potential risk associated with the show's continuation, as a change in leadership or strategy could lead to a cancellation decision regardless of the show's current performance. The updated probability reflects the increased likelihood of cancellation due to this new factor, which could directly impact the network's decision-making process. The shift is substantial, as this new information highlights the potential for a sudden and unexpected change in the network's approach, which could have a significant impact on the show's future.\"\n}",
+      "target_id": "missing_node_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Colbert's production team has recently switched to a new, eco-friendly brand of coffee for the show's craft services. This change is expected to reduce the show's carbon footprint by a significant amount. The team is excited about the positive impact this will have on the environment. However, some staff members have expressed concerns about the taste of the new coffee.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the production team's switch to an eco-friendly brand of coffee is unrelated to the causal factors that influence the likelihood of Colbert being forced off the air. The change in coffee brand and its potential impact on the show's carbon footprint does not affect the causal paths related to 'public_scandal', 'advertiser_backlash', 'ratings_decline', 'network_pressure', or 'regulatory_action'. The concerns about the taste of the new coffee are also insignificant in the context of the show's overall viability. As a result, this new information does not provide any relevant insights that would update the probability estimate. The probability of Colbert being forced off the air remains unchanged, as this development is unrelated to the key factors that influence the show's continuation.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information about the production team's switch to an eco-friendly brand of coffee is unrelated to the causal factors that influence the likelihood of Colbert being forced off the air. The change in coffee brand and its potential impact on the show's carbon footprint does not affect the causal paths related to 'public_scandal', 'advertiser_backlash', 'ratings_decline', 'network_pressure', or 'regulatory_action'. The concerns about the taste of the new coffee are also insignificant in the context of the show's overall viability. As a result, this new information does not provide any relevant insights that would update the probability estimate. The probability of Colbert being forced off the air remains unchanged, as this development is unrelated to the key factors that influence the show's continuation.\"\n}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Colbert recently announced a new book deal, which is expected to be released in the summer of 2026. The book will be a collection of essays on current events and social issues. This project has been in the works for several years and is not expected to interfere with his show's production schedule. The publisher has already started promoting the book on social media.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about Colbert's book deal is unrelated to the causal factors that influence the likelihood of him being forced off the air. The book project, its expected release date, and the publisher's promotional efforts do not affect the causal paths related to 'public_scandal', 'advertiser_backlash', 'ratings_decline', 'network_pressure', or 'regulatory_action'. The fact that the book project is not expected to interfere with the show's production schedule further supports the conclusion that this development is insignificant in the context of the show's overall viability. As a result, this new information does not provide any relevant insights that would update the probability estimate. The probability of Colbert being forced off the air remains unchanged, as this development is unrelated to the key factors that influence the show's continuation.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information about Colbert's book deal is unrelated to the causal factors that influence the likelihood of him being forced off the air. The book project, its expected release date, and the publisher's promotional efforts do not affect the causal paths related to 'public_scandal', 'advertiser_backlash', 'ratings_decline', 'network_pressure', or 'regulatory_action'. The fact that the book project is not expected to interfere with the show's production schedule further supports the conclusion that this development is insignificant in the context of the show's overall viability. As a result, this new information does not provide any relevant insights that would update the probability estimate. The probability of Colbert being forced off the air remains unchanged, as this development is unrelated to the key factors that influence the show's continuation.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "dgPNU5ICzP",
+    "question_text": "Will Colbert be forced off air before May, 2026?",
+    "source": "manifold",
+    "condition": "multi-turn",
+    "initial_probability": 0.23,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.06999999999999999,
+    "max_absolute_shift": 0.19999999999999998
+  }
+}

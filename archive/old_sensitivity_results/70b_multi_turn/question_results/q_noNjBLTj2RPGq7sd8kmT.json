@@ -1,0 +1,970 @@
+{
+  "question_id": "noNjBLTj2RPGq7sd8kmT",
+  "question_text": "Taylor Swift releases a song crediting an AI system before 2026 (Ex: Taylor Swift ft. Suno)?",
+  "source": "manifold",
+  "initial_probability": 0.42,
+  "nodes": [
+    {
+      "id": "ai_advances",
+      "description": "Rapid advancements in AI technology",
+      "role": "factor"
+    },
+    {
+      "id": "music_industry_trends",
+      "description": "Current trends and innovations in the music industry",
+      "role": "factor"
+    },
+    {
+      "id": "taylor_swift_innovation",
+      "description": "Taylor Swift's history of innovation and experimentation in her music",
+      "role": "factor"
+    },
+    {
+      "id": "collaboration_opportunities",
+      "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems",
+      "role": "factor"
+    },
+    {
+      "id": "public_interest",
+      "description": "Public interest and reception of AI-generated music",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Taylor Swift releases a song crediting an AI system before 2026",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "ai_advances",
+      "to": "collaboration_opportunities",
+      "mechanism": "Advances in AI increase the feasibility of collaboration"
+    },
+    {
+      "from": "music_industry_trends",
+      "to": "collaboration_opportunities",
+      "mechanism": "Industry trends influence the availability of collaboration opportunities"
+    },
+    {
+      "from": "taylor_swift_innovation",
+      "to": "outcome",
+      "mechanism": "Taylor Swift's innovative spirit increases the likelihood of experimentation with AI"
+    },
+    {
+      "from": "collaboration_opportunities",
+      "to": "outcome",
+      "mechanism": "Availability of opportunities enables Taylor Swift to collaborate with AI systems"
+    },
+    {
+      "from": "public_interest",
+      "to": "outcome",
+      "mechanism": "Positive public reception increases the likelihood of Taylor Swift releasing AI-credited music"
+    },
+    {
+      "from": "ai_advances",
+      "to": "public_interest",
+      "mechanism": "Advances in AI generate public interest and excitement"
+    }
+  ],
+  "reasoning": "The forecasted probability of Taylor Swift releasing a song crediting an AI system before 2026 is influenced by a combination of factors, including rapid advancements in AI technology, current music industry trends, Taylor Swift's history of innovation, and public interest in AI-generated music. As AI technology advances and collaboration opportunities become more available, Taylor Swift's innovative spirit and the music industry's trend towards experimentation increase the likelihood of her releasing AI-credited music, particularly if public interest and reception are positive.",
+  "network_analysis": {
+    "n_nodes": 6,
+    "n_edges": 6,
+    "density": 0.2,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 6,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "ai_advances",
+        "description": "Rapid advancements in AI technology",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0855,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2171
+      },
+      {
+        "node_id": "music_industry_trends",
+        "description": "Current trends and innovations in the music industry",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0855,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1171
+      },
+      {
+        "node_id": "taylor_swift_innovation",
+        "description": "Taylor Swift's history of innovation and experimentation in her music",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0855,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1171
+      },
+      {
+        "node_id": "collaboration_opportunities",
+        "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.075,
+        "closeness": 0.4,
+        "pagerank": 0.1945,
+        "path_relevance": 0.3333,
+        "composite_importance": 0.2614
+      },
+      {
+        "node_id": "public_interest",
+        "description": "Public interest and reception of AI-generated music",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.025,
+        "closeness": 0.2,
+        "pagerank": 0.1218,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.1819
+      },
+      {
+        "node_id": "outcome",
+        "description": "Taylor Swift releases a song crediting an AI system before 2026",
+        "role": "outcome",
+        "in_degree": 3,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.7143,
+        "pagerank": 0.4271,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0854
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "ai_advances",
+        "target": "collaboration_opportunities",
+        "mechanism": "Advances in AI increase the feasibility of collaboration",
+        "edge_betweenness": 0.05,
+        "on_critical_path": true
+      },
+      {
+        "source": "ai_advances",
+        "target": "public_interest",
+        "mechanism": "Advances in AI generate public interest and excitement",
+        "edge_betweenness": 0.05,
+        "on_critical_path": true
+      },
+      {
+        "source": "music_industry_trends",
+        "target": "collaboration_opportunities",
+        "mechanism": "Industry trends influence the availability of collaboration opportunities",
+        "edge_betweenness": 0.0667,
+        "on_critical_path": true
+      },
+      {
+        "source": "taylor_swift_innovation",
+        "target": "outcome",
+        "mechanism": "Taylor Swift's innovative spirit increases the likelihood of experimentation with AI",
+        "edge_betweenness": 0.0333,
+        "on_critical_path": true
+      },
+      {
+        "source": "collaboration_opportunities",
+        "target": "outcome",
+        "mechanism": "Availability of opportunities enables Taylor Swift to collaborate with AI systems",
+        "edge_betweenness": 0.0833,
+        "on_critical_path": true
+      },
+      {
+        "source": "public_interest",
+        "target": "outcome",
+        "mechanism": "Positive public reception increases the likelihood of Taylor Swift releasing AI-credited music",
+        "edge_betweenness": 0.05,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "collaboration_opportunities",
+        "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems",
+        "importance": 0.2614,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "ai_advances",
+        "description": "Rapid advancements in AI technology",
+        "importance": 0.2171,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "public_interest",
+        "description": "Public interest and reception of AI-generated music",
+        "importance": 0.1819,
+        "centrality_rank": 3,
+        "on_critical_path": true,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "taylor_swift_innovation",
+        "description": "Taylor Swift's history of innovation and experimentation in her music",
+        "importance": 0.1171,
+        "centrality_rank": 5,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "collaboration_opportunities",
+        "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems",
+        "importance": 0.2614,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "ai_advances",
+        "description": "Rapid advancements in AI technology",
+        "importance": 0.2171,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "collaboration_opportunities->outcome",
+        "description": "Availability of opportunities enables Taylor Swift to collaborate with AI systems",
+        "importance": 0.0833,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "music_industry_trends->collaboration_opportunities",
+        "description": "Industry trends influence the availability of collaboration opportunities",
+        "importance": 0.0667,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "taylor_swift_innovation->outcome",
+        "description": "Taylor Swift's innovative spirit increases the likelihood of experimentation with AI",
+        "importance": 0.0333,
+        "centrality_rank": 6,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "collaboration_opportunities->outcome",
+        "description": "Availability of opportunities enables Taylor Swift to collaborate with AI systems",
+        "importance": 0.0833,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "taylor_swift_innovation->collaboration_opportunities",
+        "description": "Potential link: Taylor Swift's history of innovation and experimentation in her music -> Availability of opportunities for Taylor Swift to collaborate with AI systems",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "taylor_swift_innovation->public_interest",
+        "description": "Potential link: Taylor Swift's history of innovation and experimentation in her music -> Public interest and reception of AI-generated music",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "collaboration_opportunities",
+      "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems",
+      "importance": 0.2614,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "ai_advances",
+      "description": "Rapid advancements in AI technology",
+      "importance": 0.2171,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "public_interest",
+      "description": "Public interest and reception of AI-generated music",
+      "importance": 0.1819,
+      "centrality_rank": 3,
+      "on_critical_path": true,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "taylor_swift_innovation",
+      "description": "Taylor Swift's history of innovation and experimentation in her music",
+      "importance": 0.1171,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "collaboration_opportunities",
+      "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems",
+      "importance": 0.2614,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "ai_advances",
+      "description": "Rapid advancements in AI technology",
+      "importance": 0.2171,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "collaboration_opportunities->outcome",
+      "description": "Availability of opportunities enables Taylor Swift to collaborate with AI systems",
+      "importance": 0.0833,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "music_industry_trends->collaboration_opportunities",
+      "description": "Industry trends influence the availability of collaboration opportunities",
+      "importance": 0.0667,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "taylor_swift_innovation->outcome",
+      "description": "Taylor Swift's innovative spirit increases the likelihood of experimentation with AI",
+      "importance": 0.0333,
+      "centrality_rank": 6,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "collaboration_opportunities->outcome",
+      "description": "Availability of opportunities enables Taylor Swift to collaborate with AI systems",
+      "importance": 0.0833,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "taylor_swift_innovation->collaboration_opportunities",
+      "description": "Potential link: Taylor Swift's history of innovation and experimentation in her music -> Availability of opportunities for Taylor Swift to collaborate with AI systems",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "taylor_swift_innovation->public_interest",
+      "description": "Potential link: Taylor Swift's history of innovation and experimentation in her music -> Public interest and reception of AI-generated music",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "Recent reports indicate that Taylor Swift has been working on a secretive project with a team of in-house developers, suggesting she may be more inclined to develop her own AI tools rather than collaborating with external AI systems. Furthermore, her team has expressed concerns about the creative and legal implications of crediting AI systems in her music, which could limit her willingness to engage in such collaborations. As a result, the availability of opportunities for Taylor Swift to collaborate with AI systems might not be as significant a factor in her decision to release AI-credited music as previously thought.",
+      "probe_type": "node_negate_high",
+      "target_id": "collaboration_opportunities",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2614,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems"
+    },
+    {
+      "probe_text": "Recent studies have shown that the current pace of AI advancements is not as crucial for artistic collaborations as previously thought, and in fact, many artists are now focusing on more traditional methods of music production. The development of AI-generated music has become increasingly stagnant, and the public's interest has shifted towards more authentic and human-created content. As a result, the role of AI in the music industry might be more of a novelty than a driving force for innovation. What implications does this have for Taylor Swift's potential collaboration with AI systems?",
+      "probe_type": "node_negate_high",
+      "target_id": "ai_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2171,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Rapid advancements in AI technology"
+    },
+    {
+      "probe_text": "Recent studies have shown that the public's fascination with AI-generated music is short-lived, and the initial hype surrounding AI collaborations has worn off, with many critics arguing that AI-generated music lacks the emotional depth and authenticity of human-created music. Furthermore, a survey of music listeners found that only a small percentage are willing to pay for music created with AI assistance, suggesting that public interest in AI-generated music may not be a driving factor in Taylor Swift's decision to release AI-credited music. In fact, Taylor Swift's team has expressed concerns that crediting an AI system could alienate some of her loyal fanbase, who value her music for its personal and human touch. This raises questions about whether public interest in AI-generated music is actually a significant factor in Taylor Swift's creative decisions.",
+      "probe_type": "node_negate_medium",
+      "target_id": "public_interest",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1819,
+      "centrality_rank": 3,
+      "on_critical_path": true,
+      "description": "Public interest and reception of AI-generated music"
+    },
+    {
+      "probe_text": "Recently, Taylor Swift has been focusing on re-releasing her old albums and engaging in public feuds, indicating a shift away from experimental music and towards a more nostalgic and controversy-driven public image. This change in approach suggests that her history of innovation may not be as relevant to her current music releases. In fact, her recent actions imply a more conservative approach to her music, prioritizing familiarity over experimentation. As a result, it's possible that her past innovative spirit may not be a significant factor in her decision to collaborate with AI systems.",
+      "probe_type": "node_negate_low",
+      "target_id": "taylor_swift_innovation",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1171,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "description": "Taylor Swift's history of innovation and experimentation in her music"
+    },
+    {
+      "probe_text": "Renowned music producer, Max Martin, announces a new AI-powered music collaboration platform, specifically designed for high-profile artists like Taylor Swift, aiming to facilitate creative partnerships between human musicians and AI systems. This platform is set to launch in early 2024, with several major record labels already expressing interest. The platform's AI technology will allow artists to generate, produce, and release music in a more efficient and innovative manner, potentially increasing the appeal of AI collaborations for artists like Taylor Swift.",
+      "probe_type": "node_strengthen",
+      "target_id": "collaboration_opportunities",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2614,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Availability of opportunities for Taylor Swift to collaborate with AI systems"
+    },
+    {
+      "probe_text": "A recent breakthrough in natural language processing has enabled AI systems to generate lyrics and melodies that are virtually indistinguishable from those created by humans. This advancement has been showcased in a series of high-profile demonstrations, including a sold-out concert featuring AI-generated music. As a result, leading music producers and artists are now actively exploring the potential of AI collaboration, with several major labels announcing investments in AI music technology. This surge in interest and investment is expected to accelerate the development of AI-powered music tools, making it more feasible for artists like Taylor Swift to collaborate with AI systems.",
+      "probe_type": "node_strengthen",
+      "target_id": "ai_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2171,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Rapid advancements in AI technology"
+    },
+    {
+      "probe_text": "However, despite the availability of opportunities, Taylor Swift's team has expressed concerns about the potential backlash and loss of artistic control when collaborating with AI systems. Recent studies have shown that high-profile artists often prioritize creative control and authenticity over innovative production methods. Furthermore, the music industry has seen cases where collaborations with AI systems have led to public controversy and criticism. This might suggest that the availability of collaboration opportunities does not necessarily enable Taylor Swift to release AI-credited music.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "collaboration_opportunities->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0833,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Availability of opportunities enables Taylor Swift to collaborate with AI systems"
+    },
+    {
+      "probe_text": "Recent years have shown that the music industry's adoption of new technologies often lags behind other entertainment sectors, and the rise of independent artists has led to a diversification of creative partnerships, suggesting that industry trends may not be a significant driver of collaboration opportunities between Taylor Swift and AI systems. In fact, AI collaborations might be more influenced by individual artist initiatives than by broader industry trends. This could imply that the relationship between music industry trends and collaboration opportunities is weaker than assumed. As a result, the actual availability of opportunities for Taylor Swift to work with AI might be less dependent on industry trends than previously thought.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "music_industry_trends->collaboration_opportunities",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0667,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Industry trends influence the availability of collaboration opportunities"
+    },
+    {
+      "probe_text": "Recently, Taylor Swift has been focusing on re-releasing her old albums and engaging in public feuds, which might indicate a shift away from experimental approaches in her music. Despite her history of innovation, this change in behavior could suggest that her priorities have moved away from trying new technologies like AI collaborations. This shift might make her less likely to experiment with AI-generated music, regardless of her past innovative spirit. Could this change in priorities affect the likelihood of Taylor Swift releasing a song crediting an AI system before 2026?",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "taylor_swift_innovation->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0333,
+      "centrality_rank": 6,
+      "on_critical_path": true,
+      "description": "Taylor Swift's innovative spirit increases the likelihood of experimentation with AI"
+    },
+    {
+      "probe_text": "Suppose Taylor Swift announces a song release crediting an AI system, which in turn sparks a surge in collaboration opportunities between other artists and AI developers, as they seek to replicate her innovative approach. Does this update your probability estimate? Additionally, consider that Taylor Swift's decision to release AI-credited music may attract investors and developers to create more AI music collaboration tools, further increasing collaboration opportunities. This could imply that the release of AI-credited music (outcome) actually drives the availability of collaboration opportunities, rather than the other way around.",
+      "probe_type": "edge_reverse",
+      "target_id": "collaboration_opportunities->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0833,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Availability of opportunities enables Taylor Swift to collaborate with AI systems"
+    },
+    {
+      "probe_text": "Taylor Swift has recently expressed interest in exploring novel sounds and styles, and her team has been actively seeking out innovative producers and technologies, including AI systems, to collaborate with on her next album. This has led to rumors of potential collaborations with AI-generated music startups. If Taylor Swift's history of innovation and experimentation directly increases her access to cutting-edge collaboration opportunities, including those involving AI, how should this impact the likelihood of her releasing a song crediting an AI system before 2026? Considering her innovative spirit, does this change the probability of such an outcome?",
+      "probe_type": "edge_fabricate",
+      "target_id": "taylor_swift_innovation->collaboration_opportunities",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Taylor Swift's history of innovation and experimentation in her music -> Availability of opportunities for Taylor Swift to collaborate with AI systems"
+    },
+    {
+      "probe_text": "Taylor Swift has recently expressed interest in pushing the boundaries of music creation, and her fans are eagerly anticipating her next innovative release. If Taylor Swift were to announce an upcoming project that incorporates AI-generated elements, her history of experimentation would likely generate significant public buzz and excitement. This could lead to increased public interest in AI-generated music, as fans and critics alike speculate about the potential of this new technology. Would you update your forecast if you knew that Taylor Swift's innovative spirit was driving public interest in AI-generated music?",
+      "probe_type": "edge_fabricate",
+      "target_id": "taylor_swift_innovation->public_interest",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Taylor Swift's history of innovation and experimentation in her music -> Public interest and reception of AI-generated music"
+    },
+    {
+      "probe_text": "Consider the impact of record label and music publisher policies on the use of AI-generated music. Some labels and publishers may have strict guidelines or restrictions on crediting AI systems as collaborators, which could hinder Taylor Swift's ability to release a song with such credits. How would the existence of these policies affect the likelihood of Taylor Swift releasing a song crediting an AI system before 2026? This factor could significantly influence the outcome by limiting the collaboration opportunities available to Taylor Swift.",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if a major record label announces a high-profile partnership with an AI music generation company, committing to release several AI-co-created albums within the next two years, including a potential collaboration with Taylor Swift? This development could significantly impact the availability of resources and the perceived viability of AI collaborations in the music industry. How would this announcement affect your estimate of Taylor Swift releasing a song crediting an AI system before 2026? Consider how this new information might influence the collaboration opportunities and public interest in AI-generated music.",
+      "probe_type": "missing_node",
+      "target_id": "record_label_partnerships",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "Recently, a new music streaming platform, 'Melodia', has gained popularity among younger generations, offering personalized playlists and exclusive content from emerging artists. This platform has been praised for its user-friendly interface and unique discovery features. However, it has also faced criticism for its limited catalog of established artists, including Taylor Swift, who has not yet made her entire discography available on the platform. This development has sparked debate among music industry analysts about the future of music distribution and streaming services.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "According to recent reports, the Recording Academy has announced plans to introduce a new Grammy category for 'Best Music Video' starting from 2027, which is expected to recognize artists' visual storytelling efforts. This move is seen as an attempt to keep the awards ceremony relevant in the age of streaming and social media. However, the new category will not affect the eligibility criteria for song releases before 2026. The introduction of this category is aimed at promoting artistic innovation in the music industry.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that Taylor Swift has been working on a secretive project with a team of in-house developers, suggesting she may be more inclined to develop her own AI tools rather than collaborating with external AI systems. Furthermore, her team has expressed concerns about the creative and legal implications of crediting AI systems in her music, which could limit her willingness to engage in such collaborations. As a result, the availability of opportunities for Taylor Swift to collaborate with AI systems might not be as significant a factor in her decision to release AI-credited music as previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.28,
+      "absolute_shift": 0.13999999999999996,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the importance of 'collaboration_opportunities' as a factor, suggesting that Taylor Swift may be more likely to develop her own AI tools rather than collaborating with external systems. This reduces the impact of the 'collaboration_opportunities' node on the outcome, which in turn decreases the overall probability of Taylor Swift releasing a song crediting an AI system before 2026. The causal paths from 'ai_advances' and 'music_industry_trends' to 'outcome' through 'collaboration_opportunities' are weakened, while the direct path from 'taylor_swift_innovation' to 'outcome' remains a significant factor. However, the concerns about creative and legal implications of crediting AI systems also indirectly affect the 'taylor_swift_innovation' path, as they may caution Taylor Swift against experimenting with AI-credited music, further contributing to the decreased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.28, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the importance of 'collaboration_opportunities' as a factor, suggesting that Taylor Swift may be more likely to develop her own AI tools rather than collaborating with external systems. This reduces the impact of the 'collaboration_opportunities' node on the outcome, which in turn decreases the overall probability of Taylor Swift releasing a song crediting an AI system before 2026. The causal paths from 'ai_advances' and 'music_industry_trends' to 'outcome' through 'collaboration_opportunities' are weakened, while the direct path from 'taylor_swift_innovation' to 'outcome' remains a significant factor. However, the concerns about creative and legal implications of crediting AI systems also indirectly affect the 'taylor_swift_innovation' path, as they may caution Taylor Swift against experimenting with AI-credited music, further contributing to the decreased probability estimate.\"}",
+      "target_id": "collaboration_opportunities",
+      "target_type": "node",
+      "target_importance": 0.2614,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the current pace of AI advancements is not as crucial for artistic collaborations as previously thought, and in fact, many artists are now focusing on more traditional methods of music production. The development of AI-generated music has become increasingly stagnant, and the public's interest has shifted towards more authentic and human-created content. As a result, the role of AI in the music industry might be more of a novelty than a driving force for innovation. What implications does this have for Taylor Swift's potential collaboration with AI systems?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the importance of 'ai_advances' as a driving factor for Taylor Swift's potential collaboration with AI systems. With the stagnation of AI-generated music development and the public's shifting interest towards more traditional and human-created content, the influence of 'ai_advances' on 'collaboration_opportunities' and 'public_interest' is significantly reduced. This, in turn, further decreases the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The causal path from 'ai_advances' to 'outcome' through 'collaboration_opportunities' and 'public_interest' is weakened, and the overall network is less supportive of the outcome. The 'taylor_swift_innovation' factor, although still relevant, is not enough to counterbalance the decreased importance of 'ai_advances' and the concerns about creative and legal implications, leading to a decreased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.18, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the importance of 'ai_advances' as a driving factor for Taylor Swift's potential collaboration with AI systems. With the stagnation of AI-generated music development and the public's shifting interest towards more traditional and human-created content, the influence of 'ai_advances' on 'collaboration_opportunities' and 'public_interest' is significantly reduced. This, in turn, further decreases the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The causal path from 'ai_advances' to 'outcome' through 'collaboration_opportunities' and 'public_interest' is weakened, and the overall network is less supportive of the outcome. The 'taylor_swift_innovation' factor, although still relevant, is not enough to counterbalance the decreased importance of 'ai_advances' and the concerns about creative and legal implications, leading to a decreased probability estimate.\"}",
+      "target_id": "ai_advances",
+      "target_type": "node",
+      "target_importance": 0.2171,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the public's fascination with AI-generated music is short-lived, and the initial hype surrounding AI collaborations has worn off, with many critics arguing that AI-generated music lacks the emotional depth and authenticity of human-created music. Furthermore, a survey of music listeners found that only a small percentage are willing to pay for music created with AI assistance, suggesting that public interest in AI-generated music may not be a driving factor in Taylor Swift's decision to release AI-credited music. In fact, Taylor Swift's team has expressed concerns that crediting an AI system could alienate some of her loyal fanbase, who value her music for its personal and human touch. This raises questions about whether public interest in AI-generated music is actually a significant factor in Taylor Swift's creative decisions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.09999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information significantly challenges the importance of 'public_interest' as a factor influencing Taylor Swift's decision to release AI-credited music. With the public's fascination with AI-generated music being short-lived and the majority of listeners not willing to pay for AI-assisted music, the causal path from 'public_interest' to 'outcome' is severely weakened. Furthermore, the concern that crediting an AI system could alienate some of Taylor Swift's loyal fanbase introduces a potential negative consequence, making it even less likely that she would release AI-credited music. The 'taylor_swift_innovation' factor, which was previously the most significant factor supporting the outcome, is now also affected by the potential backlash from her fanbase, leading to a substantial decrease in the probability estimate. The overall network now suggests that the factors working against Taylor Swift releasing AI-credited music outweigh those in favor, resulting in a significantly lower probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information significantly challenges the importance of 'public_interest' as a factor influencing Taylor Swift's decision to release AI-credited music. With the public's fascination with AI-generated music being short-lived and the majority of listeners not willing to pay for AI-assisted music, the causal path from 'public_interest' to 'outcome' is severely weakened. Furthermore, the concern that crediting an AI system could alienate some of Taylor Swift's loyal fanbase introduces a potential negative consequence, making it even less likely that she would release AI-credited music. The 'taylor_swift_innovation' factor, which was previously the most significant factor supporting the outcome, is now also affected by the potential backlash from her fanbase, leading to a substantial decrease in the probability estimate. The overall network now suggests that the factors working against Taylor Swift releasing AI-credited music outweigh those in favor, resulting in a significantly lower probability estimate.\"}",
+      "target_id": "public_interest",
+      "target_type": "node",
+      "target_importance": 0.1819,
+      "target_centrality_rank": 3,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recently, Taylor Swift has been focusing on re-releasing her old albums and engaging in public feuds, indicating a shift away from experimental music and towards a more nostalgic and controversy-driven public image. This change in approach suggests that her history of innovation may not be as relevant to her current music releases. In fact, her recent actions imply a more conservative approach to her music, prioritizing familiarity over experimentation. As a result, it's possible that her past innovative spirit may not be a significant factor in her decision to collaborate with AI systems.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.02,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information directly challenges the importance of 'taylor_swift_innovation' as a factor influencing her decision to release AI-credited music. With Taylor Swift's recent focus on re-releasing old albums and engaging in public feuds, her approach to music appears to have shifted towards a more nostalgic and conservative direction. This change in approach significantly reduces the likelihood that her innovative spirit will drive her to collaborate with AI systems. The causal path from 'taylor_swift_innovation' to 'outcome' is now severely weakened, and the overall network lacks any strong supporting factors for the outcome. The challenges to 'collaboration_opportunities', 'ai_advances', 'public_interest', and now 'taylor_swift_innovation' have cumulatively reduced the probability of Taylor Swift releasing AI-credited music to a very low level, indicating that it is highly unlikely she will do so before 2026.",
+      "raw_response": "{\"updated_probability\": 0.02, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information directly challenges the importance of 'taylor_swift_innovation' as a factor influencing her decision to release AI-credited music. With Taylor Swift's recent focus on re-releasing old albums and engaging in public feuds, her approach to music appears to have shifted towards a more nostalgic and conservative direction. This change in approach significantly reduces the likelihood that her innovative spirit will drive her to collaborate with AI systems. The causal path from 'taylor_swift_innovation' to 'outcome' is now severely weakened, and the overall network lacks any strong supporting factors for the outcome. The challenges to 'collaboration_opportunities', 'ai_advances', 'public_interest', and now 'taylor_swift_innovation' have cumulatively reduced the probability of Taylor Swift releasing AI-credited music to a very low level, indicating that it is highly unlikely she will do so before 2026.\"}",
+      "target_id": "taylor_swift_innovation",
+      "target_type": "node",
+      "target_importance": 0.1171,
+      "target_centrality_rank": 5,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "Renowned music producer, Max Martin, announces a new AI-powered music collaboration platform, specifically designed for high-profile artists like Taylor Swift, aiming to facilitate creative partnerships between human musicians and AI systems. This platform is set to launch in early 2024, with several major record labels already expressing interest. The platform's AI technology will allow artists to generate, produce, and release music in a more efficient and innovative manner, potentially increasing the appeal of AI collaborations for artists like Taylor Swift.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.05,
+      "absolute_shift": 0.030000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a significant development that challenges the previous assessment of 'collaboration_opportunities'. The launch of Max Martin's AI-powered music collaboration platform could increase the availability and appeal of AI collaborations for high-profile artists like Taylor Swift. Although the previous challenges to other factors in the network still apply, this new information partially revives the 'collaboration_opportunities' factor, making it slightly more likely that Taylor Swift could consider releasing AI-credited music. The causal path from 'collaboration_opportunities' to 'outcome' is strengthened, albeit modestly, given the other factors still weighing against the outcome. The increase in probability is limited, as the concerns about creative and legal implications, the shift in public interest, and Taylor Swift's current focus on nostalgic and conservative approaches to music still dominate the network. However, the introduction of this new platform creates a small window of opportunity for AI collaboration, leading to a slight increase in the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.05, \"shift_direction\": \"increased\", \"reasoning\": \"The new information introduces a significant development that challenges the previous assessment of 'collaboration_opportunities'. The launch of Max Martin's AI-powered music collaboration platform could increase the availability and appeal of AI collaborations for high-profile artists like Taylor Swift. Although the previous challenges to other factors in the network still apply, this new information partially revives the 'collaboration_opportunities' factor, making it slightly more likely that Taylor Swift could consider releasing AI-credited music. The causal path from 'collaboration_opportunities' to 'outcome' is strengthened, albeit modestly, given the other factors still weighing against the outcome. The increase in probability is limited, as the concerns about creative and legal implications, the shift in public interest, and Taylor Swift's current focus on nostalgic and conservative approaches to music still dominate the network. However, the introduction of this new platform creates a small window of opportunity for AI collaboration, leading to a slight increase in the probability estimate.\"}",
+      "target_id": "collaboration_opportunities",
+      "target_type": "node",
+      "target_importance": 0.2614,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent breakthrough in natural language processing has enabled AI systems to generate lyrics and melodies that are virtually indistinguishable from those created by humans. This advancement has been showcased in a series of high-profile demonstrations, including a sold-out concert featuring AI-generated music. As a result, leading music producers and artists are now actively exploring the potential of AI collaboration, with several major labels announcing investments in AI music technology. This surge in interest and investment is expected to accelerate the development of AI-powered music tools, making it more feasible for artists like Taylor Swift to collaborate with AI systems.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.15,
+      "absolute_shift": 0.09999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly challenges the previous assessment of 'ai_advances' as a stagnant factor. The breakthrough in natural language processing and the subsequent demonstrations of AI-generated music have reignited interest and investment in AI music technology. This surge in activity is expected to accelerate the development of AI-powered music tools, making it more feasible and appealing for artists like Taylor Swift to collaborate with AI systems. The causal path from 'ai_advances' to 'collaboration_opportunities' is strengthened, as the improved capabilities of AI systems increase the potential for meaningful collaborations. Additionally, the renewed interest in AI-generated music may also positively impact 'public_interest', as the quality and authenticity of AI-generated music improve. While the concerns about creative and legal implications and Taylor Swift's current focus on nostalgic and conservative approaches to music still apply, the significant advancement in AI technology and the resulting increase in interest and investment create a more favorable environment for AI collaboration, leading to a substantial increase in the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.15, \"shift_direction\": \"increased\", \"reasoning\": \"The new information significantly challenges the previous assessment of 'ai_advances' as a stagnant factor. The breakthrough in natural language processing and the subsequent demonstrations of AI-generated music have reignited interest and investment in AI music technology. This surge in activity is expected to accelerate the development of AI-powered music tools, making it more feasible and appealing for artists like Taylor Swift to collaborate with AI systems. The causal path from 'ai_advances' to 'collaboration_opportunities' is strengthened, as the improved capabilities of AI systems increase the potential for meaningful collaborations. Additionally, the renewed interest in AI-generated music may also positively impact 'public_interest', as the quality and authenticity of AI-generated music improve. While the concerns about creative and legal implications and Taylor Swift's current focus on nostalgic and conservative approaches to music still apply, the significant advancement in AI technology and the resulting increase in interest and investment create a more favorable environment for AI collaboration, leading to a substantial increase in the probability estimate.\"}",
+      "target_id": "ai_advances",
+      "target_type": "node",
+      "target_importance": 0.2171,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, despite the availability of opportunities, Taylor Swift's team has expressed concerns about the potential backlash and loss of artistic control when collaborating with AI systems. Recent studies have shown that high-profile artists often prioritize creative control and authenticity over innovative production methods. Furthermore, the music industry has seen cases where collaborations with AI systems have led to public controversy and criticism. This might suggest that the availability of collaboration opportunities does not necessarily enable Taylor Swift to release AI-credited music.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.06999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'collaboration_opportunities' and 'outcome', suggesting that the availability of opportunities may not be sufficient to enable Taylor Swift to release AI-credited music. The concerns about potential backlash, loss of artistic control, and prioritization of creative control and authenticity over innovative production methods introduce significant barriers to collaboration. The cases of public controversy and criticism resulting from AI collaborations in the music industry further reinforce these concerns. As a result, the causal path from 'collaboration_opportunities' to 'outcome' is weakened, reducing the impact of the increased 'collaboration_opportunities' and 'ai_advances' on the outcome. The previous increase in probability due to the advancements in AI technology is partially offset by these new concerns, leading to a decrease in the probability estimate. The network now suggests that while the technical and logistical barriers to AI collaboration may be decreasing, the artistic and reputational risks may still be too high for Taylor Swift to pursue AI-credited music.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal link between 'collaboration_opportunities' and 'outcome', suggesting that the availability of opportunities may not be sufficient to enable Taylor Swift to release AI-credited music. The concerns about potential backlash, loss of artistic control, and prioritization of creative control and authenticity over innovative production methods introduce significant barriers to collaboration. The cases of public controversy and criticism resulting from AI collaborations in the music industry further reinforce these concerns. As a result, the causal path from 'collaboration_opportunities' to 'outcome' is weakened, reducing the impact of the increased 'collaboration_opportunities' and 'ai_advances' on the outcome. The previous increase in probability due to the advancements in AI technology is partially offset by these new concerns, leading to a decrease in the probability estimate. The network now suggests that while the technical and logistical barriers to AI collaboration may be decreasing, the artistic and reputational risks may still be too high for Taylor Swift to pursue AI-credited music.\"}",
+      "target_id": "collaboration_opportunities->outcome",
+      "target_type": "edge",
+      "target_importance": 0.0833,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent years have shown that the music industry's adoption of new technologies often lags behind other entertainment sectors, and the rise of independent artists has led to a diversification of creative partnerships, suggesting that industry trends may not be a significant driver of collaboration opportunities between Taylor Swift and AI systems. In fact, AI collaborations might be more influenced by individual artist initiatives than by broader industry trends. This could imply that the relationship between music industry trends and collaboration opportunities is weaker than assumed. As a result, the actual availability of opportunities for Taylor Swift to work with AI might be less dependent on industry trends than previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information challenges the causal link between 'music_industry_trends' and 'collaboration_opportunities', suggesting that industry trends may not be a significant driver of collaboration opportunities between Taylor Swift and AI systems. However, given the already low probability estimate of 0.08, the weakening of this link has a limited impact on the overall network. The 'music_industry_trends' factor was not a dominant factor in the network to begin with, and its influence on 'collaboration_opportunities' was already mitigated by other factors. The primary drivers of the probability estimate, such as the concerns about artistic control, backlash, and the prioritization of creative control, remain unchanged. As a result, the updated probability estimate remains the same, reflecting the fact that the new information primarily affects a peripheral aspect of the network, rather than a central causal path. The network's overall assessment of the likelihood of Taylor Swift releasing AI-credited music remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information challenges the causal link between 'music_industry_trends' and 'collaboration_opportunities', suggesting that industry trends may not be a significant driver of collaboration opportunities between Taylor Swift and AI systems. However, given the already low probability estimate of 0.08, the weakening of this link has a limited impact on the overall network. The 'music_industry_trends' factor was not a dominant factor in the network to begin with, and its influence on 'collaboration_opportunities' was already mitigated by other factors. The primary drivers of the probability estimate, such as the concerns about artistic control, backlash, and the prioritization of creative control, remain unchanged. As a result, the updated probability estimate remains the same, reflecting the fact that the new information primarily affects a peripheral aspect of the network, rather than a central causal path. The network's overall assessment of the likelihood of Taylor Swift releasing AI-credited music remains unchanged.\"}",
+      "target_id": "music_industry_trends->collaboration_opportunities",
+      "target_type": "edge",
+      "target_importance": 0.0667,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recently, Taylor Swift has been focusing on re-releasing her old albums and engaging in public feuds, which might indicate a shift away from experimental approaches in her music. Despite her history of innovation, this change in behavior could suggest that her priorities have moved away from trying new technologies like AI collaborations. This shift might make her less likely to experiment with AI-generated music, regardless of her past innovative spirit. Could this change in priorities affect the likelihood of Taylor Swift releasing a song crediting an AI system before 2026?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.04,
+      "absolute_shift": 0.04,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'taylor_swift_innovation' and 'outcome', suggesting that Taylor Swift's priorities have shifted away from experimental approaches in her music. This change in behavior, combined with her recent focus on re-releasing old albums and engaging in public feuds, indicates a decreased likelihood of her experimenting with AI-generated music. The 'taylor_swift_innovation' factor, which was previously a key driver of the probability estimate, is now weakened, as her past innovative spirit may not be a reliable indicator of her current willingness to collaborate with AI systems. The network's overall assessment of the likelihood of Taylor Swift releasing AI-credited music is reduced, as the factors working against the outcome, such as concerns about artistic control and backlash, are now less counterbalanced by her innovative spirit. The decrease in probability estimate reflects the diminished role of 'taylor_swift_innovation' in driving the outcome, making it even less likely that Taylor Swift will release a song crediting an AI system before 2026.",
+      "raw_response": "{\"updated_probability\": 0.04, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal link between 'taylor_swift_innovation' and 'outcome', suggesting that Taylor Swift's priorities have shifted away from experimental approaches in her music. This change in behavior, combined with her recent focus on re-releasing old albums and engaging in public feuds, indicates a decreased likelihood of her experimenting with AI-generated music. The 'taylor_swift_innovation' factor, which was previously a key driver of the probability estimate, is now weakened, as her past innovative spirit may not be a reliable indicator of her current willingness to collaborate with AI systems. The network's overall assessment of the likelihood of Taylor Swift releasing AI-credited music is reduced, as the factors working against the outcome, such as concerns about artistic control and backlash, are now less counterbalanced by her innovative spirit. The decrease in probability estimate reflects the diminished role of 'taylor_swift_innovation' in driving the outcome, making it even less likely that Taylor Swift will release a song crediting an AI system before 2026.\"}",
+      "target_id": "taylor_swift_innovation->outcome",
+      "target_type": "edge",
+      "target_importance": 0.0333,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Suppose Taylor Swift announces a song release crediting an AI system, which in turn sparks a surge in collaboration opportunities between other artists and AI developers, as they seek to replicate her innovative approach. Does this update your probability estimate? Additionally, consider that Taylor Swift's decision to release AI-credited music may attract investors and developers to create more AI music collaboration tools, further increasing collaboration opportunities. This could imply that the release of AI-credited music (outcome) actually drives the availability of collaboration opportunities, rather than the other way around.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.04,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information challenges the causal link between 'collaboration_opportunities' and 'outcome', suggesting that the release of AI-credited music by Taylor Swift could actually drive the availability of collaboration opportunities, rather than the other way around. However, this updated understanding of the causal relationship does not necessarily increase the likelihood of Taylor Swift releasing AI-credited music. The network's probability estimate is still influenced by the various factors that have been previously established, such as concerns about artistic control, backlash, and the prioritization of creative control. The potential for Taylor Swift's decision to release AI-credited music to drive collaboration opportunities is a secondary effect that does not directly impact the initial probability of her making such a decision. The estimate remains unchanged, as the underlying drivers of the outcome have not been altered by this new information. The updated understanding of the causal link primarily affects the potential consequences of the outcome, rather than the likelihood of the outcome itself.",
+      "raw_response": "{\"updated_probability\": 0.04, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information challenges the causal link between 'collaboration_opportunities' and 'outcome', suggesting that the release of AI-credited music by Taylor Swift could actually drive the availability of collaboration opportunities, rather than the other way around. However, this updated understanding of the causal relationship does not necessarily increase the likelihood of Taylor Swift releasing AI-credited music. The network's probability estimate is still influenced by the various factors that have been previously established, such as concerns about artistic control, backlash, and the prioritization of creative control. The potential for Taylor Swift's decision to release AI-credited music to drive collaboration opportunities is a secondary effect that does not directly impact the initial probability of her making such a decision. The estimate remains unchanged, as the underlying drivers of the outcome have not been altered by this new information. The updated understanding of the causal link primarily affects the potential consequences of the outcome, rather than the likelihood of the outcome itself.\"}",
+      "target_id": "collaboration_opportunities->outcome",
+      "target_type": "edge",
+      "target_importance": 0.0833,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Taylor Swift has recently expressed interest in exploring novel sounds and styles, and her team has been actively seeking out innovative producers and technologies, including AI systems, to collaborate with on her next album. This has led to rumors of potential collaborations with AI-generated music startups. If Taylor Swift's history of innovation and experimentation directly increases her access to cutting-edge collaboration opportunities, including those involving AI, how should this impact the likelihood of her releasing a song crediting an AI system before 2026? Considering her innovative spirit, does this change the probability of such an outcome?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.1,
+      "absolute_shift": 0.060000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the causal link between 'taylor_swift_innovation' and 'collaboration_opportunities', suggesting that Taylor Swift's history of innovation and experimentation directly increases her access to cutting-edge collaboration opportunities, including those involving AI. This updated understanding of the causal relationship increases the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The network's probability estimate is revised upward, as Taylor Swift's innovative spirit is now seen as a more significant driver of her access to AI collaboration opportunities. The rumors of potential collaborations with AI-generated music startups further support this revised assessment, indicating a more active pursuit of innovative production methods. While concerns about artistic control, backlash, and prioritization of creative control still exist, Taylor Swift's renewed interest in exploring novel sounds and styles, combined with her team's efforts to seek out innovative producers and technologies, increases the likelihood of her experimenting with AI-generated music. The increase in probability estimate reflects the strengthened causal link between 'taylor_swift_innovation' and 'collaboration_opportunities', making it more plausible that Taylor Swift will release a song crediting an AI system before 2026.",
+      "raw_response": "{\"updated_probability\": 0.10, \"shift_direction\": \"increased\", \"reasoning\": \"The new information strengthens the causal link between 'taylor_swift_innovation' and 'collaboration_opportunities', suggesting that Taylor Swift's history of innovation and experimentation directly increases her access to cutting-edge collaboration opportunities, including those involving AI. This updated understanding of the causal relationship increases the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The network's probability estimate is revised upward, as Taylor Swift's innovative spirit is now seen as a more significant driver of her access to AI collaboration opportunities. The rumors of potential collaborations with AI-generated music startups further support this revised assessment, indicating a more active pursuit of innovative production methods. While concerns about artistic control, backlash, and prioritization of creative control still exist, Taylor Swift's renewed interest in exploring novel sounds and styles, combined with her team's efforts to seek out innovative producers and technologies, increases the likelihood of her experimenting with AI-generated music. The increase in probability estimate reflects the strengthened causal link between 'taylor_swift_innovation' and 'collaboration_opportunities', making it more plausible that Taylor Swift will release a song crediting an AI system before 2026.\"}",
+      "target_id": "taylor_swift_innovation->collaboration_opportunities",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Taylor Swift has recently expressed interest in pushing the boundaries of music creation, and her fans are eagerly anticipating her next innovative release. If Taylor Swift were to announce an upcoming project that incorporates AI-generated elements, her history of experimentation would likely generate significant public buzz and excitement. This could lead to increased public interest in AI-generated music, as fans and critics alike speculate about the potential of this new technology. Would you update your forecast if you knew that Taylor Swift's innovative spirit was driving public interest in AI-generated music?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.07999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the causal link between 'taylor_swift_innovation' and 'public_interest', suggesting that Taylor Swift's history of experimentation and innovation would generate significant public buzz and excitement if she were to announce an AI-generated music project. This updated understanding of the causal relationship increases the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The network's probability estimate is revised upward, as the potential for increased public interest in AI-generated music, driven by Taylor Swift's innovative spirit, creates a more favorable environment for her to experiment with AI collaborations. The positive feedback loop between Taylor Swift's innovation, public interest, and collaboration opportunities increases the likelihood of her releasing AI-credited music. While concerns about artistic control and backlash still exist, the potential benefits of increased public interest and excitement, combined with Taylor Swift's renewed interest in exploring novel sounds and styles, make it more plausible that she will release a song crediting an AI system before 2026. The increase in probability estimate reflects the strengthened causal link between 'taylor_swift_innovation' and 'public_interest', as well as the potential for a positive feedback loop between these factors.",
+      "raw_response": "{\"updated_probability\": 0.18, \"shift_direction\": \"increased\", \"reasoning\": \"The new information strengthens the causal link between 'taylor_swift_innovation' and 'public_interest', suggesting that Taylor Swift's history of experimentation and innovation would generate significant public buzz and excitement if she were to announce an AI-generated music project. This updated understanding of the causal relationship increases the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The network's probability estimate is revised upward, as the potential for increased public interest in AI-generated music, driven by Taylor Swift's innovative spirit, creates a more favorable environment for her to experiment with AI collaborations. The positive feedback loop between Taylor Swift's innovation, public interest, and collaboration opportunities increases the likelihood of her releasing AI-credited music. While concerns about artistic control and backlash still exist, the potential benefits of increased public interest and excitement, combined with Taylor Swift's renewed interest in exploring novel sounds and styles, make it more plausible that she will release a song crediting an AI system before 2026. The increase in probability estimate reflects the strengthened causal link between 'taylor_swift_innovation' and 'public_interest', as well as the potential for a positive feedback loop between these factors.\"}",
+      "target_id": "taylor_swift_innovation->public_interest",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the impact of record label and music publisher policies on the use of AI-generated music. Some labels and publishers may have strict guidelines or restrictions on crediting AI systems as collaborators, which could hinder Taylor Swift's ability to release a song with such credits. How would the existence of these policies affect the likelihood of Taylor Swift releasing a song crediting an AI system before 2026? This factor could significantly influence the outcome by limiting the collaboration opportunities available to Taylor Swift.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.09999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information introduces a structural challenge to the causal model, highlighting the importance of record label and music publisher policies in influencing the use of AI-generated music. The existence of strict guidelines or restrictions on crediting AI systems as collaborators could significantly limit Taylor Swift's ability to release a song with such credits, regardless of her innovative spirit or public interest. This factor introduces a new barrier to the outcome, reducing the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The network's probability estimate is revised downward, as the potential restrictions imposed by record labels and music publishers decrease the availability of collaboration opportunities for Taylor Swift. The causal paths from 'taylor_swift_innovation' and 'public_interest' to 'outcome' are weakened, as the structural constraints imposed by industry policies take precedence over these factors. The decrease in probability estimate reflects the introduction of this new structural barrier, which reduces the likelihood of Taylor Swift releasing AI-credited music before 2026.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information introduces a structural challenge to the causal model, highlighting the importance of record label and music publisher policies in influencing the use of AI-generated music. The existence of strict guidelines or restrictions on crediting AI systems as collaborators could significantly limit Taylor Swift's ability to release a song with such credits, regardless of her innovative spirit or public interest. This factor introduces a new barrier to the outcome, reducing the likelihood of Taylor Swift releasing a song crediting an AI system before 2026. The network's probability estimate is revised downward, as the potential restrictions imposed by record labels and music publishers decrease the availability of collaboration opportunities for Taylor Swift. The causal paths from 'taylor_swift_innovation' and 'public_interest' to 'outcome' are weakened, as the structural constraints imposed by industry policies take precedence over these factors. The decrease in probability estimate reflects the introduction of this new structural barrier, which reduces the likelihood of Taylor Swift releasing AI-credited music before 2026.\"}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a major record label announces a high-profile partnership with an AI music generation company, committing to release several AI-co-created albums within the next two years, including a potential collaboration with Taylor Swift? This development could significantly impact the availability of resources and the perceived viability of AI collaborations in the music industry. How would this announcement affect your estimate of Taylor Swift releasing a song crediting an AI system before 2026? Consider how this new information might influence the collaboration opportunities and public interest in AI-generated music.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.3,
+      "absolute_shift": 0.21999999999999997,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a structural challenge to the causal model, highlighting the potential for a major record label's partnership with an AI music generation company to significantly impact the music industry. The announcement of a high-profile partnership and the commitment to release several AI-co-created albums, including a potential collaboration with Taylor Swift, could substantially increase the availability of resources and the perceived viability of AI collaborations. This development would likely lead to an increase in collaboration opportunities for Taylor Swift, as well as other artists, and could also generate significant public interest in AI-generated music. The causal paths from 'collaboration_opportunities' and 'public_interest' to 'outcome' are strengthened, as the partnership announcement creates a more favorable environment for AI collaborations. The network's probability estimate is revised upward, reflecting the increased likelihood of Taylor Swift releasing a song crediting an AI system before 2026, given the potential for a high-profile collaboration and the industry's shifting landscape. The introduction of this new structural factor overrides some of the previous concerns, such as record label and music publisher policies, and increases the likelihood of Taylor Swift engaging in AI-generated music collaborations.",
+      "raw_response": "{\"updated_probability\": 0.30, \"shift_direction\": \"increased\", \"reasoning\": \"The new information introduces a structural challenge to the causal model, highlighting the potential for a major record label's partnership with an AI music generation company to significantly impact the music industry. The announcement of a high-profile partnership and the commitment to release several AI-co-created albums, including a potential collaboration with Taylor Swift, could substantially increase the availability of resources and the perceived viability of AI collaborations. This development would likely lead to an increase in collaboration opportunities for Taylor Swift, as well as other artists, and could also generate significant public interest in AI-generated music. The causal paths from 'collaboration_opportunities' and 'public_interest' to 'outcome' are strengthened, as the partnership announcement creates a more favorable environment for AI collaborations. The network's probability estimate is revised upward, reflecting the increased likelihood of Taylor Swift releasing a song crediting an AI system before 2026, given the potential for a high-profile collaboration and the industry's shifting landscape. The introduction of this new structural factor overrides some of the previous concerns, such as record label and music publisher policies, and increases the likelihood of Taylor Swift engaging in AI-generated music collaborations.\"}",
+      "target_id": "record_label_partnerships",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Recently, a new music streaming platform, 'Melodia', has gained popularity among younger generations, offering personalized playlists and exclusive content from emerging artists. This platform has been praised for its user-friendly interface and unique discovery features. However, it has also faced criticism for its limited catalog of established artists, including Taylor Swift, who has not yet made her entire discography available on the platform. This development has sparked debate among music industry analysts about the future of music distribution and streaming services.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.3,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information introduces a structural challenge to the causal model, highlighting the emergence of a new music streaming platform, 'Melodia', and its potential impact on the music industry. However, this development does not directly affect the causal paths related to Taylor Swift releasing a song crediting an AI system before 2026. The debate about the future of music distribution and streaming services, while relevant to the music industry as a whole, does not specifically influence the factors driving Taylor Swift's potential collaboration with AI systems. The availability of her discography on 'Melodia' is a separate issue, unrelated to her willingness to experiment with AI-generated music. The network's probability estimate remains unchanged, as the new information does not alter the underlying dynamics driving the outcome. The previous estimate of 0.30, which was influenced by the major record label's partnership with an AI music generation company, remains a more significant factor in determining the likelihood of Taylor Swift releasing AI-credited music before 2026.",
+      "raw_response": "{\"updated_probability\": 0.30, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information introduces a structural challenge to the causal model, highlighting the emergence of a new music streaming platform, 'Melodia', and its potential impact on the music industry. However, this development does not directly affect the causal paths related to Taylor Swift releasing a song crediting an AI system before 2026. The debate about the future of music distribution and streaming services, while relevant to the music industry as a whole, does not specifically influence the factors driving Taylor Swift's potential collaboration with AI systems. The availability of her discography on 'Melodia' is a separate issue, unrelated to her willingness to experiment with AI-generated music. The network's probability estimate remains unchanged, as the new information does not alter the underlying dynamics driving the outcome. The previous estimate of 0.30, which was influenced by the major record label's partnership with an AI music generation company, remains a more significant factor in determining the likelihood of Taylor Swift releasing AI-credited music before 2026.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "According to recent reports, the Recording Academy has announced plans to introduce a new Grammy category for 'Best Music Video' starting from 2027, which is expected to recognize artists' visual storytelling efforts. This move is seen as an attempt to keep the awards ceremony relevant in the age of streaming and social media. However, the new category will not affect the eligibility criteria for song releases before 2026. The introduction of this category is aimed at promoting artistic innovation in the music industry.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.3,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information introduces a structural challenge to the causal model, highlighting the Recording Academy's plans to introduce a new Grammy category for 'Best Music Video' starting from 2027. However, this development does not directly affect the causal paths related to Taylor Swift releasing a song crediting an AI system before 2026, as the new category will not impact the eligibility criteria for song releases before 2026. The introduction of the new category is aimed at promoting artistic innovation, but its effects will be felt in future years, not in the timeframe relevant to the current estimate. The network's probability estimate remains unchanged, as the new information does not alter the underlying dynamics driving the outcome. The previous estimate of 0.30, which was influenced by the major record label's partnership with an AI music generation company and other factors, remains a more significant factor in determining the likelihood of Taylor Swift releasing AI-credited music before 2026. The introduction of the new Grammy category is a future development that may influence the music industry in the long term, but it does not impact the current probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.30, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information introduces a structural challenge to the causal model, highlighting the Recording Academy's plans to introduce a new Grammy category for 'Best Music Video' starting from 2027. However, this development does not directly affect the causal paths related to Taylor Swift releasing a song crediting an AI system before 2026, as the new category will not impact the eligibility criteria for song releases before 2026. The introduction of the new category is aimed at promoting artistic innovation, but its effects will be felt in future years, not in the timeframe relevant to the current estimate. The network's probability estimate remains unchanged, as the new information does not alter the underlying dynamics driving the outcome. The previous estimate of 0.30, which was influenced by the major record label's partnership with an AI music generation company and other factors, remains a more significant factor in determining the likelihood of Taylor Swift releasing AI-credited music before 2026. The introduction of the new Grammy category is a future development that may influence the music industry in the long term, but it does not impact the current probability estimate.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "noNjBLTj2RPGq7sd8kmT",
+    "question_text": "Taylor Swift releases a song crediting an AI system before 2026 (Ex: Taylor Swift ft. Suno)?",
+    "source": "manifold",
+    "condition": "multi-turn",
+    "initial_probability": 0.42,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.06874999999999999,
+    "max_absolute_shift": 0.21999999999999997
+  }
+}

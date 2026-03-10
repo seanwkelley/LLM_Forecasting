@@ -1,0 +1,999 @@
+{
+  "question_id": "ALGN",
+  "question_text": "Will ALGN's market close price on 2025-12-28 be higher than its market close price on 2025-12-21?\n\nStock splits and reverse splits will be accounted for in resolving this question. Forecasts on questions about companies that have been delisted (through mergers or bankruptcy) will resolve to their final close price.",
+  "source": "yfinance",
+  "initial_probability": 0.62,
+  "nodes": [
+    {
+      "id": "market_trend",
+      "description": "The overall direction of the market",
+      "role": "factor"
+    },
+    {
+      "id": "company_performance",
+      "description": "ALGN's financial performance and health",
+      "role": "factor"
+    },
+    {
+      "id": "industry_outlook",
+      "description": "The outlook for the medical devices industry",
+      "role": "factor"
+    },
+    {
+      "id": "economic_growth",
+      "description": "The state of the economy and its growth prospects",
+      "role": "factor"
+    },
+    {
+      "id": "interest_rates",
+      "description": "The level and direction of interest rates",
+      "role": "factor"
+    },
+    {
+      "id": "investor_sentiment",
+      "description": "The overall attitude of investors towards ALGN",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "ALGN's market close price on 2025-12-28 being higher than on 2025-12-21",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "market_trend",
+      "to": "investor_sentiment",
+      "mechanism": "A positive market trend tends to improve investor sentiment"
+    },
+    {
+      "from": "company_performance",
+      "to": "investor_sentiment",
+      "mechanism": "Strong company performance boosts investor confidence"
+    },
+    {
+      "from": "industry_outlook",
+      "to": "company_performance",
+      "mechanism": "A favorable industry outlook can enhance a company's financial prospects"
+    },
+    {
+      "from": "economic_growth",
+      "to": "market_trend",
+      "mechanism": "Economic growth typically supports a positive market trend"
+    },
+    {
+      "from": "interest_rates",
+      "to": "economic_growth",
+      "mechanism": "Lower interest rates can stimulate economic growth"
+    },
+    {
+      "from": "investor_sentiment",
+      "to": "outcome",
+      "mechanism": "Positive investor sentiment can drive up the stock price"
+    },
+    {
+      "from": "company_performance",
+      "to": "outcome",
+      "mechanism": "Good company performance is likely to increase the stock price"
+    }
+  ],
+  "reasoning": "The forecasted probability reflects the interaction of various factors influencing ALGN's stock price. A positive market trend, driven by economic growth and favorable interest rates, can improve investor sentiment. Strong company performance within a promising industry outlook further supports a potential increase in the stock price. However, uncertainties in these factors lead to a probability estimate that is not extremely high, acknowledging the complexity and unpredictability of the market.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "market_trend",
+        "description": "The overall direction of the market",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1333,
+        "closeness": 0.2222,
+        "pagerank": 0.1478,
+        "path_relevance": 0.3333,
+        "composite_importance": 0.2696
+      },
+      {
+        "node_id": "company_performance",
+        "description": "ALGN's financial performance and health",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 2,
+        "betweenness": 0.0667,
+        "closeness": 0.1667,
+        "pagerank": 0.1063,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2913
+      },
+      {
+        "node_id": "industry_outlook",
+        "description": "The outlook for the medical devices industry",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0574,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1115
+      },
+      {
+        "node_id": "economic_growth",
+        "description": "The state of the economy and its growth prospects",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.1667,
+        "pagerank": 0.1063,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2013
+      },
+      {
+        "node_id": "interest_rates",
+        "description": "The level and direction of interest rates",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0574,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1115
+      },
+      {
+        "node_id": "investor_sentiment",
+        "description": "The overall attitude of investors towards ALGN",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.463,
+        "pagerank": 0.2282,
+        "path_relevance": 0.5,
+        "composite_importance": 0.3256
+      },
+      {
+        "node_id": "outcome",
+        "description": "ALGN's market close price on 2025-12-28 being higher than on 2025-12-21",
+        "role": "outcome",
+        "in_degree": 2,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.4615,
+        "pagerank": 0.2966,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0593
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "market_trend",
+        "target": "investor_sentiment",
+        "mechanism": "A positive market trend tends to improve investor sentiment",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      },
+      {
+        "source": "company_performance",
+        "target": "investor_sentiment",
+        "mechanism": "Strong company performance boosts investor confidence",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": false
+      },
+      {
+        "source": "company_performance",
+        "target": "outcome",
+        "mechanism": "Good company performance is likely to increase the stock price",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "industry_outlook",
+        "target": "company_performance",
+        "mechanism": "A favorable industry outlook can enhance a company's financial prospects",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "economic_growth",
+        "target": "market_trend",
+        "mechanism": "Economic growth typically supports a positive market trend",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      },
+      {
+        "source": "interest_rates",
+        "target": "economic_growth",
+        "mechanism": "Lower interest rates can stimulate economic growth",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "investor_sentiment",
+        "target": "outcome",
+        "mechanism": "Positive investor sentiment can drive up the stock price",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "investor_sentiment",
+        "description": "The overall attitude of investors towards ALGN",
+        "importance": 0.3256,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "company_performance",
+        "description": "ALGN's financial performance and health",
+        "importance": 0.2913,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "economic_growth",
+        "description": "The state of the economy and its growth prospects",
+        "importance": 0.2013,
+        "centrality_rank": 4,
+        "on_critical_path": true,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "interest_rates",
+        "description": "The level and direction of interest rates",
+        "importance": 0.1115,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "investor_sentiment",
+        "description": "The overall attitude of investors towards ALGN",
+        "importance": 0.3256,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "company_performance",
+        "description": "ALGN's financial performance and health",
+        "importance": 0.2913,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "market_trend->investor_sentiment",
+        "description": "A positive market trend tends to improve investor sentiment",
+        "importance": 0.1429,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "economic_growth->market_trend",
+        "description": "Economic growth typically supports a positive market trend",
+        "importance": 0.1429,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "company_performance->investor_sentiment",
+        "description": "Strong company performance boosts investor confidence",
+        "importance": 0.0476,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "market_trend->investor_sentiment",
+        "description": "A positive market trend tends to improve investor sentiment",
+        "importance": 0.1429,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "industry_outlook->market_trend",
+        "description": "Potential link: The outlook for the medical devices industry -> The overall direction of the market",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "industry_outlook->interest_rates",
+        "description": "Potential link: The outlook for the medical devices industry -> The level and direction of interest rates",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "investor_sentiment",
+      "description": "The overall attitude of investors towards ALGN",
+      "importance": 0.3256,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "company_performance",
+      "description": "ALGN's financial performance and health",
+      "importance": 0.2913,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "economic_growth",
+      "description": "The state of the economy and its growth prospects",
+      "importance": 0.2013,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "interest_rates",
+      "description": "The level and direction of interest rates",
+      "importance": 0.1115,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "investor_sentiment",
+      "description": "The overall attitude of investors towards ALGN",
+      "importance": 0.3256,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "company_performance",
+      "description": "ALGN's financial performance and health",
+      "importance": 0.2913,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "market_trend->investor_sentiment",
+      "description": "A positive market trend tends to improve investor sentiment",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "economic_growth->market_trend",
+      "description": "Economic growth typically supports a positive market trend",
+      "importance": 0.1429,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "company_performance->investor_sentiment",
+      "description": "Strong company performance boosts investor confidence",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "market_trend->investor_sentiment",
+      "description": "A positive market trend tends to improve investor sentiment",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "industry_outlook->market_trend",
+      "description": "Potential link: The outlook for the medical devices industry -> The overall direction of the market",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "industry_outlook->interest_rates",
+      "description": "Potential link: The outlook for the medical devices industry -> The level and direction of interest rates",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if the overall attitude of investors towards ALGN is actually driven by technical analysis rather than fundamental factors, making investor sentiment less relevant in determining the stock's price movement? Alternatively, recent studies have suggested that investor sentiment may be a lagging indicator, reacting to changes in the stock price rather than driving them. This could render investor sentiment an unreliable predictor of ALGN's market close price on 2025-12-28. If this is the case, the stock's price movement might be more closely tied to other factors, such as economic growth or industry outlook.",
+      "probe_type": "node_negate_high",
+      "target_id": "investor_sentiment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3256,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "The overall attitude of investors towards ALGN"
+    },
+    {
+      "probe_text": "What if ALGN's financial performance and health are not as crucial to its stock price as expected, due to the company's strong brand loyalty and consistent innovation in the medical devices industry? Recent studies have shown that companies with strong brand recognition can weather financial storms without significant impact on their stock price. Furthermore, the medical devices industry is less sensitive to company-specific financial performance, making ALGN's stock price more resilient to fluctuations in its financial health. This could render ALGN's financial performance and health irrelevant to its stock price movement.",
+      "probe_type": "node_negate_high",
+      "target_id": "company_performance",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2913,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "ALGN's financial performance and health"
+    },
+    {
+      "probe_text": "Recent data suggests that the current economic growth is largely driven by inflationary pressures rather than sustainable productivity gains, which could lead to a market correction rather than continued growth. Furthermore, the latest GDP report revealed a significant decrease in consumer spending, a key driver of economic growth. This indicates that the economy may be experiencing a slowdown, contradicting the assumption of ongoing economic growth. As a result, the forecaster's reliance on economic growth as a positive factor may be misplaced.",
+      "probe_type": "node_negate_medium",
+      "target_id": "economic_growth",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2013,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "description": "The state of the economy and its growth prospects"
+    },
+    {
+      "probe_text": "Recent studies suggest that the impact of interest rates on economic growth may be overestimated, and other factors such as technological innovation and global trade are becoming more influential. Furthermore, ALGN's business model is less sensitive to interest rate fluctuations compared to other industries. As a result, the current low interest rates may not have a significant stimulatory effect on the economy, and thus may not be a key driver of ALGN's stock price. The relationship between interest rates and economic growth may be more nuanced than previously thought.",
+      "probe_type": "node_negate_low",
+      "target_id": "interest_rates",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1115,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "The level and direction of interest rates"
+    },
+    {
+      "probe_text": "A recent survey of institutional investors revealed a significant increase in bullish sentiment towards ALGN, with 75% of respondents expressing confidence in the company's growth prospects. This shift in sentiment was attributed to ALGN's recent product launches and strategic partnerships, which are expected to drive revenue growth in the coming quarters. Furthermore, several high-profile investors have publicly endorsed ALGN as a top pick for 2025, citing its strong financials and competitive position in the medical devices industry. As a result, trading volumes and option activity have increased, indicating growing interest and speculation among investors.",
+      "probe_type": "node_strengthen",
+      "target_id": "investor_sentiment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3256,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "The overall attitude of investors towards ALGN"
+    },
+    {
+      "probe_text": "ALGN has just announced a major breakthrough in their dental implant technology, resulting in a significant increase in sales and revenue projections for the next quarter. This development has been hailed by industry experts as a game-changer, and analysts are now predicting a substantial increase in the company's profitability. As a result, ALGN's financial performance and health are expected to receive a major boost, further solidifying their position as a leader in the medical devices industry. This news has sent shockwaves of excitement through the investment community, with many experts now revising their forecasts upwards.",
+      "probe_type": "node_strengthen",
+      "target_id": "company_performance",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2913,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "ALGN's financial performance and health"
+    },
+    {
+      "probe_text": "However, recent studies have shown that investor sentiment towards specific stocks like ALGN can become decoupled from the overall market trend during times of high industry-specific volatility, such as when there are significant regulatory changes or breakthroughs in the medical devices sector. This suggests that the relationship between market trend and investor sentiment may be much weaker than assumed, especially for stocks with strong industry-driven dynamics. Furthermore, if ALGN's industry peers are experiencing financial difficulties despite a positive market trend, this could negatively impact investor sentiment towards ALGN, regardless of the broader market conditions. This decoupling could significantly alter the probability of ALGN's market close price being higher on 2025-12-28 than on 2025-12-21.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "market_trend->investor_sentiment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "A positive market trend tends to improve investor sentiment"
+    },
+    {
+      "probe_text": "Recent studies have shown that economic growth can sometimes lead to increased inflation, which in turn can cause market volatility and negatively impact market trends, potentially weakening the link between economic growth and positive market trends. Furthermore, the current economic expansion is largely driven by technological advancements and shifts in global trade, factors that may not necessarily translate to broad market gains. As a result, the traditional assumption that economic growth supports a positive market trend may not hold in this specific scenario. This could lead to a decoupling of economic growth from market trend, challenging the forecaster's causal model.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "economic_growth->market_trend",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Economic growth typically supports a positive market trend"
+    },
+    {
+      "probe_text": "Recently, ALGN has faced increased scrutiny over its environmental impact, leading to concerns that even strong financial performance may not necessarily translate to improved investor sentiment due to growing ESG considerations. In fact, some investors have begun to prioritize sustainability over profit, potentially decoupling company performance from investor confidence. This shift in investor values could undermine the typical positive relationship between company performance and investor sentiment. As a result, ALGN's strong financials may not boost investor sentiment as expected.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "company_performance->investor_sentiment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "Strong company performance boosts investor confidence"
+    },
+    {
+      "probe_text": "Investors often drive market trends through their collective sentiment, as evidenced by the significant impact of investor sentiment on market volatility. When investor sentiment is optimistic, it can lead to increased buying activity, which in turn propels the market trend upward. This suggests that the causal link between market trend and investor sentiment may be reversed, with investor sentiment influencing the market trend. For instance, if investors become increasingly bullish on ALGN due to its strong company performance, their sentiment could drive up the market trend, rather than the other way around.",
+      "probe_type": "edge_reverse",
+      "target_id": "market_trend->investor_sentiment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "A positive market trend tends to improve investor sentiment"
+    },
+    {
+      "probe_text": "Recent advancements in medical technology have led to increased investment in the medical devices industry, which in turn has contributed to a surge in the overall market trend due to the industry's significant impact on the healthcare sector and its potential for long-term growth. As the medical devices industry continues to innovate and expand, its influence on the broader market is becoming more pronounced. This raises questions about the potential interplay between the industry's outlook and the market's overall direction. Would the forecaster's estimate change if they considered a direct link between the industry outlook and market trend?",
+      "probe_type": "edge_fabricate",
+      "target_id": "industry_outlook->market_trend",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: The outlook for the medical devices industry -> The overall direction of the market"
+    },
+    {
+      "probe_text": "The Federal Reserve has recently announced that it will prioritize investments in healthcare and medical research, leading to increased demand for medical devices and a subsequent boost in the industry's outlook. As a result, the Fed is considering lowering interest rates to stimulate further growth in this sector. If the medical devices industry outlook continues to improve, will the central bank's monetary policy decisions be influenced to keep interest rates low? This could have a ripple effect on the overall economy and ALGN's stock price.",
+      "probe_type": "edge_fabricate",
+      "target_id": "industry_outlook->interest_rates",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: The outlook for the medical devices industry -> The level and direction of interest rates"
+    },
+    {
+      "probe_text": "Regulatory changes, such as new FDA approvals or updates to medical device regulations, could significantly impact ALGN's stock price by affecting their ability to bring new products to market or altering the competitive landscape. The lack of consideration for regulatory factors in the current network may overlook a crucial influence on ALGN's market performance. If regulatory updates were to occur between 2025-12-21 and 2025-12-28, it could directly impact ALGN's stock price. How would this regulatory factor influence your forecast?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if a significant regulatory change, such as a new FDA approval pathway, were to impact the medical devices industry, potentially altering ALGN's competitive landscape and future revenue streams? This could, in turn, affect investor sentiment and company performance. The forecaster's network does not account for such regulatory factors, which could substantially influence the outcome. How would this regulatory change alter your forecast?",
+      "probe_type": "missing_node",
+      "target_id": "regulatory_environment",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "ALGN's headquarters is planning to introduce a new employee wellness program, which will provide on-site fitness classes and mental health resources. This program is expected to improve employee satisfaction and retention. The company's management believes that this initiative will contribute to a positive work environment. However, the program's launch is scheduled for early 2026, after the relevant market close dates.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "ALGN's headquarters is planning to implement a new, state-of-the-art cafeteria for its employees, featuring a variety of healthy dining options and collaborative workspaces. This renovation is expected to be completed by the end of 2025 and will provide a modern and comfortable space for employees to relax and socialize. The new cafeteria will also include a small museum showcasing the company's history and achievements. This project has been in the works for several months and is intended to boost employee morale and productivity.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the overall attitude of investors towards ALGN is actually driven by technical analysis rather than fundamental factors, making investor sentiment less relevant in determining the stock's price movement? Alternatively, recent studies have suggested that investor sentiment may be a lagging indicator, reacting to changes in the stock price rather than driving them. This could render investor sentiment an unreliable predictor of ALGN's market close price on 2025-12-28. If this is the case, the stock's price movement might be more closely tied to other factors, such as economic growth or industry outlook.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'investor_sentiment' factor suggests that its influence on the outcome may be less significant than initially thought. If investor sentiment is driven by technical analysis or is a lagging indicator, then its role in determining the stock's price movement is diminished. This affects the causal paths from 'market_trend' and 'company_performance' to 'investor_sentiment', and subsequently to the 'outcome'. As a result, the importance of 'investor_sentiment' in the causal network is reduced, leading to a decrease in the estimated probability. The updated probability of 0.58 reflects a shift in emphasis towards other factors, such as 'economic_growth' and 'industry_outlook', which may have a more direct impact on the stock's price movement.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'investor_sentiment' factor suggests that its influence on the outcome may be less significant than initially thought. If investor sentiment is driven by technical analysis or is a lagging indicator, then its role in determining the stock's price movement is diminished. This affects the causal paths from 'market_trend' and 'company_performance' to 'investor_sentiment', and subsequently to the 'outcome'. As a result, the importance of 'investor_sentiment' in the causal network is reduced, leading to a decrease in the estimated probability. The updated probability of 0.58 reflects a shift in emphasis towards other factors, such as 'economic_growth' and 'industry_outlook', which may have a more direct impact on the stock's price movement.\"}",
+      "target_id": "investor_sentiment",
+      "target_type": "node",
+      "target_importance": 0.3256,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if ALGN's financial performance and health are not as crucial to its stock price as expected, due to the company's strong brand loyalty and consistent innovation in the medical devices industry? Recent studies have shown that companies with strong brand recognition can weather financial storms without significant impact on their stock price. Furthermore, the medical devices industry is less sensitive to company-specific financial performance, making ALGN's stock price more resilient to fluctuations in its financial health. This could render ALGN's financial performance and health irrelevant to its stock price movement.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.029999999999999916,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'company_performance' factor suggests that its impact on the stock price may be less significant than initially thought. If ALGN's strong brand loyalty and consistent innovation make its stock price more resilient to financial performance, then the causal path from 'company_performance' to 'outcome' is weakened. Additionally, the reduced importance of company-specific financial performance in the medical devices industry further diminishes the role of 'company_performance' in determining the stock price. This affects the edges from 'industry_outlook' to 'company_performance' and from 'company_performance' to 'outcome', reducing the influence of 'company_performance' on the outcome. As a result, the estimated probability decreases to 0.55, reflecting a reduced emphasis on 'company_performance' and a greater reliance on other factors, such as 'market_trend', 'economic_growth', and 'industry_outlook', to drive the stock price movement.",
+      "raw_response": "{\"updated_probability\": 0.55, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'company_performance' factor suggests that its impact on the stock price may be less significant than initially thought. If ALGN's strong brand loyalty and consistent innovation make its stock price more resilient to financial performance, then the causal path from 'company_performance' to 'outcome' is weakened. Additionally, the reduced importance of company-specific financial performance in the medical devices industry further diminishes the role of 'company_performance' in determining the stock price. This affects the edges from 'industry_outlook' to 'company_performance' and from 'company_performance' to 'outcome', reducing the influence of 'company_performance' on the outcome. As a result, the estimated probability decreases to 0.55, reflecting a reduced emphasis on 'company_performance' and a greater reliance on other factors, such as 'market_trend', 'economic_growth', and 'industry_outlook', to drive the stock price movement.\"}",
+      "target_id": "company_performance",
+      "target_type": "node",
+      "target_importance": 0.2913,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent data suggests that the current economic growth is largely driven by inflationary pressures rather than sustainable productivity gains, which could lead to a market correction rather than continued growth. Furthermore, the latest GDP report revealed a significant decrease in consumer spending, a key driver of economic growth. This indicates that the economy may be experiencing a slowdown, contradicting the assumption of ongoing economic growth. As a result, the forecaster's reliance on economic growth as a positive factor may be misplaced.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'economic_growth' factor significantly alters the outlook, as the current growth may be unsustainable and potentially leading to a market correction. The decrease in consumer spending, a crucial component of economic growth, further supports the notion of an economic slowdown. This affects the causal path from 'economic_growth' to 'market_trend', which in turn influences 'investor_sentiment' and ultimately the 'outcome'. With the prospect of a market correction, the positive impact of 'economic_growth' on the 'outcome' is diminished. Additionally, the edge from 'interest_rates' to 'economic_growth' may also be impacted, as inflationary pressures could lead to increased interest rates, further slowing down the economy. The updated probability of 0.45 reflects a substantial decrease in the estimated likelihood of ALGN's market close price on 2025-12-28 being higher than on 2025-12-21, as the economic slowdown could have a negative impact on the stock price.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'economic_growth' factor significantly alters the outlook, as the current growth may be unsustainable and potentially leading to a market correction. The decrease in consumer spending, a crucial component of economic growth, further supports the notion of an economic slowdown. This affects the causal path from 'economic_growth' to 'market_trend', which in turn influences 'investor_sentiment' and ultimately the 'outcome'. With the prospect of a market correction, the positive impact of 'economic_growth' on the 'outcome' is diminished. Additionally, the edge from 'interest_rates' to 'economic_growth' may also be impacted, as inflationary pressures could lead to increased interest rates, further slowing down the economy. The updated probability of 0.45 reflects a substantial decrease in the estimated likelihood of ALGN's market close price on 2025-12-28 being higher than on 2025-12-21, as the economic slowdown could have a negative impact on the stock price.\"}",
+      "target_id": "economic_growth",
+      "target_type": "node",
+      "target_importance": 0.2013,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent studies suggest that the impact of interest rates on economic growth may be overestimated, and other factors such as technological innovation and global trade are becoming more influential. Furthermore, ALGN's business model is less sensitive to interest rate fluctuations compared to other industries. As a result, the current low interest rates may not have a significant stimulatory effect on the economy, and thus may not be a key driver of ALGN's stock price. The relationship between interest rates and economic growth may be more nuanced than previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'interest_rates' factor suggests that its impact on the economy and ALGN's stock price may be less significant than initially thought. While the relationship between interest rates and economic growth is complex, the fact that ALGN's business model is less sensitive to interest rate fluctuations reduces the importance of this factor. The causal path from 'interest_rates' to 'economic_growth' is weakened, but its overall impact on the network is relatively minor compared to other factors. The decrease in the estimated probability to 0.43 is relatively small, reflecting the peripheral role of 'interest_rates' in the causal network. The primary drivers of the outcome, such as 'market_trend', 'industry_outlook', and the recently challenged 'economic_growth', remain more influential in determining the stock price movement.",
+      "raw_response": "{\"updated_probability\": 0.43, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'interest_rates' factor suggests that its impact on the economy and ALGN's stock price may be less significant than initially thought. While the relationship between interest rates and economic growth is complex, the fact that ALGN's business model is less sensitive to interest rate fluctuations reduces the importance of this factor. The causal path from 'interest_rates' to 'economic_growth' is weakened, but its overall impact on the network is relatively minor compared to other factors. The decrease in the estimated probability to 0.43 is relatively small, reflecting the peripheral role of 'interest_rates' in the causal network. The primary drivers of the outcome, such as 'market_trend', 'industry_outlook', and the recently challenged 'economic_growth', remain more influential in determining the stock price movement.\"}",
+      "target_id": "interest_rates",
+      "target_type": "node",
+      "target_importance": 0.1115,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent survey of institutional investors revealed a significant increase in bullish sentiment towards ALGN, with 75% of respondents expressing confidence in the company's growth prospects. This shift in sentiment was attributed to ALGN's recent product launches and strategic partnerships, which are expected to drive revenue growth in the coming quarters. Furthermore, several high-profile investors have publicly endorsed ALGN as a top pick for 2025, citing its strong financials and competitive position in the medical devices industry. As a result, trading volumes and option activity have increased, indicating growing interest and speculation among investors.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.53,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the previous notion that 'investor_sentiment' is a lagging indicator or less relevant due to technical analysis. The significant increase in bullish sentiment among institutional investors, coupled with public endorsements from high-profile investors, suggests that 'investor_sentiment' is indeed a driving factor in ALGN's stock price movement. The causal path from 'market_trend' to 'investor_sentiment' is strengthened, as the positive sentiment is likely to reinforce the market trend. Additionally, the edge from 'company_performance' to 'investor_sentiment' is also revitalized, as the investors' confidence in ALGN's growth prospects is tied to its financials and strategic partnerships. The increased trading volumes and option activity indicate a growing speculative interest, which can further drive up the stock price. The updated probability of 0.53 reflects a modest increase in the estimated likelihood of ALGN's market close price on 2025-12-28 being higher than on 2025-12-21, as the improved investor sentiment becomes a more significant factor in the causal network.",
+      "raw_response": "{\"updated_probability\": 0.53, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenges the previous notion that 'investor_sentiment' is a lagging indicator or less relevant due to technical analysis. The significant increase in bullish sentiment among institutional investors, coupled with public endorsements from high-profile investors, suggests that 'investor_sentiment' is indeed a driving factor in ALGN's stock price movement. The causal path from 'market_trend' to 'investor_sentiment' is strengthened, as the positive sentiment is likely to reinforce the market trend. Additionally, the edge from 'company_performance' to 'investor_sentiment' is also revitalized, as the investors' confidence in ALGN's growth prospects is tied to its financials and strategic partnerships. The increased trading volumes and option activity indicate a growing speculative interest, which can further drive up the stock price. The updated probability of 0.53 reflects a modest increase in the estimated likelihood of ALGN's market close price on 2025-12-28 being higher than on 2025-12-21, as the improved investor sentiment becomes a more significant factor in the causal network.\"}",
+      "target_id": "investor_sentiment",
+      "target_type": "node",
+      "target_importance": 0.3256,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "ALGN has just announced a major breakthrough in their dental implant technology, resulting in a significant increase in sales and revenue projections for the next quarter. This development has been hailed by industry experts as a game-changer, and analysts are now predicting a substantial increase in the company's profitability. As a result, ALGN's financial performance and health are expected to receive a major boost, further solidifying their position as a leader in the medical devices industry. This news has sent shockwaves of excitement through the investment community, with many experts now revising their forecasts upwards.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.73,
+      "absolute_shift": 0.19999999999999996,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly strengthens the 'company_performance' factor, as the breakthrough in dental implant technology is expected to drive substantial sales and revenue growth. This development reinforces the causal path from 'company_performance' to 'outcome', as the improved financial performance and health of ALGN are likely to have a direct and positive impact on the stock price. The edge from 'industry_outlook' to 'company_performance' is also bolstered, as the company's innovative technology solidifies its position as a leader in the medical devices industry. The increased optimism among analysts and the investment community further amplifies the effect, as the positive news is likely to boost 'investor_sentiment' and drive up the stock price. The updated probability of 0.73 reflects a substantial increase in the estimated likelihood of ALGN's market close price on 2025-12-28 being higher than on 2025-12-21, as the company's improved performance and prospects become a dominant factor in the causal network.",
+      "raw_response": "{\"updated_probability\": 0.73, \"shift_direction\": \"increased\", \"reasoning\": \"The new information significantly strengthens the 'company_performance' factor, as the breakthrough in dental implant technology is expected to drive substantial sales and revenue growth. This development reinforces the causal path from 'company_performance' to 'outcome', as the improved financial performance and health of ALGN are likely to have a direct and positive impact on the stock price. The edge from 'industry_outlook' to 'company_performance' is also bolstered, as the company's innovative technology solidifies its position as a leader in the medical devices industry. The increased optimism among analysts and the investment community further amplifies the effect, as the positive news is likely to boost 'investor_sentiment' and drive up the stock price. The updated probability of 0.73 reflects a substantial increase in the estimated likelihood of ALGN's market close price on 2025-12-28 being higher than on 2025-12-21, as the company's improved performance and prospects become a dominant factor in the causal network.\"}",
+      "target_id": "company_performance",
+      "target_type": "node",
+      "target_importance": 0.2913,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, recent studies have shown that investor sentiment towards specific stocks like ALGN can become decoupled from the overall market trend during times of high industry-specific volatility, such as when there are significant regulatory changes or breakthroughs in the medical devices sector. This suggests that the relationship between market trend and investor sentiment may be much weaker than assumed, especially for stocks with strong industry-driven dynamics. Furthermore, if ALGN's industry peers are experiencing financial difficulties despite a positive market trend, this could negatively impact investor sentiment towards ALGN, regardless of the broader market conditions. This decoupling could significantly alter the probability of ALGN's market close price being higher on 2025-12-28 than on 2025-12-21.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.68,
+      "absolute_shift": 0.04999999999999993,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the assumption that the 'market_trend' has a strong influence on 'investor_sentiment' for ALGN. The possibility of decoupling between the overall market trend and investor sentiment towards specific stocks, especially during times of high industry-specific volatility, weakens the causal link between 'market_trend' and 'investor_sentiment'. This means that the positive market trend may not necessarily translate to increased investor sentiment for ALGN, particularly if its industry peers are experiencing difficulties. The edge from 'market_trend' to 'investor_sentiment' is diminished, reducing the indirect impact of 'market_trend' on the 'outcome'. However, the strong 'company_performance' and recent breakthrough in dental implant technology continue to support a positive outlook for ALGN. The updated probability of 0.68 reflects a moderate decrease in the estimated likelihood, as the decoupling of market trend and investor sentiment introduces some uncertainty, but the company's fundamentals remain a dominant factor in the causal network.",
+      "raw_response": "{\"updated_probability\": 0.68, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the assumption that the 'market_trend' has a strong influence on 'investor_sentiment' for ALGN. The possibility of decoupling between the overall market trend and investor sentiment towards specific stocks, especially during times of high industry-specific volatility, weakens the causal link between 'market_trend' and 'investor_sentiment'. This means that the positive market trend may not necessarily translate to increased investor sentiment for ALGN, particularly if its industry peers are experiencing difficulties. The edge from 'market_trend' to 'investor_sentiment' is diminished, reducing the indirect impact of 'market_trend' on the 'outcome'. However, the strong 'company_performance' and recent breakthrough in dental implant technology continue to support a positive outlook for ALGN. The updated probability of 0.68 reflects a moderate decrease in the estimated likelihood, as the decoupling of market trend and investor sentiment introduces some uncertainty, but the company's fundamentals remain a dominant factor in the causal network.\"}",
+      "target_id": "market_trend->investor_sentiment",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that economic growth can sometimes lead to increased inflation, which in turn can cause market volatility and negatively impact market trends, potentially weakening the link between economic growth and positive market trends. Furthermore, the current economic expansion is largely driven by technological advancements and shifts in global trade, factors that may not necessarily translate to broad market gains. As a result, the traditional assumption that economic growth supports a positive market trend may not hold in this specific scenario. This could lead to a decoupling of economic growth from market trend, challenging the forecaster's causal model.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the traditional assumption that 'economic_growth' supports a positive 'market_trend'. The possibility of increased inflation and market volatility, as well as the unique drivers of the current economic expansion, weaken the causal link between 'economic_growth' and 'market_trend'. This decoupling reduces the indirect impact of 'economic_growth' on the 'outcome', as the positive effects of economic growth on the market trend are no longer guaranteed. However, the strong 'company_performance' and recent breakthrough in dental implant technology continue to support a positive outlook for ALGN, and the 'industry_outlook' remains favorable. The edge from 'interest_rates' to 'economic_growth' is also affected, as the potential for inflation and market volatility may lead to increased interest rates, further complicating the relationship between economic growth and market trend. The updated probability of 0.65 reflects a moderate decrease in the estimated likelihood, as the challenged causal link introduces some uncertainty, but the company's fundamentals and industry outlook remain supportive of a positive outcome.",
+      "raw_response": "{\"updated_probability\": 0.65, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the traditional assumption that 'economic_growth' supports a positive 'market_trend'. The possibility of increased inflation and market volatility, as well as the unique drivers of the current economic expansion, weaken the causal link between 'economic_growth' and 'market_trend'. This decoupling reduces the indirect impact of 'economic_growth' on the 'outcome', as the positive effects of economic growth on the market trend are no longer guaranteed. However, the strong 'company_performance' and recent breakthrough in dental implant technology continue to support a positive outlook for ALGN, and the 'industry_outlook' remains favorable. The edge from 'interest_rates' to 'economic_growth' is also affected, as the potential for inflation and market volatility may lead to increased interest rates, further complicating the relationship between economic growth and market trend. The updated probability of 0.65 reflects a moderate decrease in the estimated likelihood, as the challenged causal link introduces some uncertainty, but the company's fundamentals and industry outlook remain supportive of a positive outcome.\"}",
+      "target_id": "economic_growth->market_trend",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recently, ALGN has faced increased scrutiny over its environmental impact, leading to concerns that even strong financial performance may not necessarily translate to improved investor sentiment due to growing ESG considerations. In fact, some investors have begun to prioritize sustainability over profit, potentially decoupling company performance from investor confidence. This shift in investor values could undermine the typical positive relationship between company performance and investor sentiment. As a result, ALGN's strong financials may not boost investor sentiment as expected.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.59,
+      "absolute_shift": 0.06000000000000005,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the assumption that strong 'company_performance' necessarily leads to improved 'investor_sentiment'. The growing importance of ESG considerations and the potential decoupling of company performance from investor confidence weaken the causal link between 'company_performance' and 'investor_sentiment'. This means that ALGN's strong financials may not have the expected positive impact on investor sentiment, as some investors may prioritize sustainability over profit. The edge from 'company_performance' to 'investor_sentiment' is diminished, reducing the indirect impact of 'company_performance' on the 'outcome'. However, the recent breakthrough in dental implant technology and the favorable 'industry_outlook' continue to support a positive outlook for ALGN. The updated probability of 0.59 reflects a moderate decrease in the estimated likelihood, as the challenged causal link introduces some uncertainty and reduces the expected positive impact of strong company performance on investor sentiment.",
+      "raw_response": "{\"updated_probability\": 0.59, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the assumption that strong 'company_performance' necessarily leads to improved 'investor_sentiment'. The growing importance of ESG considerations and the potential decoupling of company performance from investor confidence weaken the causal link between 'company_performance' and 'investor_sentiment'. This means that ALGN's strong financials may not have the expected positive impact on investor sentiment, as some investors may prioritize sustainability over profit. The edge from 'company_performance' to 'investor_sentiment' is diminished, reducing the indirect impact of 'company_performance' on the 'outcome'. However, the recent breakthrough in dental implant technology and the favorable 'industry_outlook' continue to support a positive outlook for ALGN. The updated probability of 0.59 reflects a moderate decrease in the estimated likelihood, as the challenged causal link introduces some uncertainty and reduces the expected positive impact of strong company performance on investor sentiment.\"}",
+      "target_id": "company_performance->investor_sentiment",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Investors often drive market trends through their collective sentiment, as evidenced by the significant impact of investor sentiment on market volatility. When investor sentiment is optimistic, it can lead to increased buying activity, which in turn propels the market trend upward. This suggests that the causal link between market trend and investor sentiment may be reversed, with investor sentiment influencing the market trend. For instance, if investors become increasingly bullish on ALGN due to its strong company performance, their sentiment could drive up the market trend, rather than the other way around.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.63,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the direction of the causal link between 'market_trend' and 'investor_sentiment'. The suggestion that investor sentiment drives market trends, rather than the other way around, reverses the causal link. This means that the positive 'investor_sentiment' towards ALGN, driven by its strong 'company_performance', could actually drive up the 'market_trend', rather than being influenced by it. The revised causal link strengthens the indirect impact of 'company_performance' on the 'outcome', as the positive investor sentiment can now influence the market trend in a positive way. The updated probability of 0.63 reflects a moderate increase in the estimated likelihood, as the revised causal link introduces a new positive feedback loop between investor sentiment, market trend, and company performance, supporting a more optimistic outlook for ALGN.",
+      "raw_response": "{\"updated_probability\": 0.63, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenges the direction of the causal link between 'market_trend' and 'investor_sentiment'. The suggestion that investor sentiment drives market trends, rather than the other way around, reverses the causal link. This means that the positive 'investor_sentiment' towards ALGN, driven by its strong 'company_performance', could actually drive up the 'market_trend', rather than being influenced by it. The revised causal link strengthens the indirect impact of 'company_performance' on the 'outcome', as the positive investor sentiment can now influence the market trend in a positive way. The updated probability of 0.63 reflects a moderate increase in the estimated likelihood, as the revised causal link introduces a new positive feedback loop between investor sentiment, market trend, and company performance, supporting a more optimistic outlook for ALGN.\"}",
+      "target_id": "market_trend->investor_sentiment",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent advancements in medical technology have led to increased investment in the medical devices industry, which in turn has contributed to a surge in the overall market trend due to the industry's significant impact on the healthcare sector and its potential for long-term growth. As the medical devices industry continues to innovate and expand, its influence on the broader market is becoming more pronounced. This raises questions about the potential interplay between the industry's outlook and the market's overall direction. Would the forecaster's estimate change if they considered a direct link between the industry outlook and market trend?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.69,
+      "absolute_shift": 0.05999999999999994,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests a direct and positive link between 'industry_outlook' and 'market_trend', which strengthens the causal network. The increased investment and innovation in the medical devices industry, and its significant impact on the healthcare sector, imply that a favorable 'industry_outlook' can directly contribute to a positive 'market_trend'. This introduces a new path from 'industry_outlook' to 'market_trend', which reinforces the positive influence of the industry's outlook on the market's direction. As ALGN is a leader in the medical devices industry, this revised link enhances the indirect impact of 'industry_outlook' on the 'outcome', making it more likely that the company's stock price will increase. The updated probability of 0.69 reflects a moderate increase in the estimated likelihood, as the new link between industry outlook and market trend introduces an additional positive factor supporting a bullish outlook for ALGN.",
+      "raw_response": "{\"updated_probability\": 0.69, \"shift_direction\": \"increased\", \"reasoning\": \"The new information suggests a direct and positive link between 'industry_outlook' and 'market_trend', which strengthens the causal network. The increased investment and innovation in the medical devices industry, and its significant impact on the healthcare sector, imply that a favorable 'industry_outlook' can directly contribute to a positive 'market_trend'. This introduces a new path from 'industry_outlook' to 'market_trend', which reinforces the positive influence of the industry's outlook on the market's direction. As ALGN is a leader in the medical devices industry, this revised link enhances the indirect impact of 'industry_outlook' on the 'outcome', making it more likely that the company's stock price will increase. The updated probability of 0.69 reflects a moderate increase in the estimated likelihood, as the new link between industry outlook and market trend introduces an additional positive factor supporting a bullish outlook for ALGN.\"}",
+      "target_id": "industry_outlook->market_trend",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "The Federal Reserve has recently announced that it will prioritize investments in healthcare and medical research, leading to increased demand for medical devices and a subsequent boost in the industry's outlook. As a result, the Fed is considering lowering interest rates to stimulate further growth in this sector. If the medical devices industry outlook continues to improve, will the central bank's monetary policy decisions be influenced to keep interest rates low? This could have a ripple effect on the overall economy and ALGN's stock price.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.72,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests a potential link between 'industry_outlook' and 'interest_rates', where a favorable industry outlook could lead to lower interest rates. This introduces a new path from 'industry_outlook' to 'interest_rates', which could have a positive impact on the economy and ALGN's stock price. The central bank's consideration of lowering interest rates to stimulate growth in the medical devices sector implies that a strong industry outlook could lead to accommodative monetary policy, which in turn could boost the stock market and ALGN's stock price. The updated probability of 0.72 reflects a moderate increase in the estimated likelihood, as the potential link between industry outlook and interest rates introduces an additional positive factor supporting a bullish outlook for ALGN. The favorable industry outlook, combined with the potential for lower interest rates, reinforces the positive influences on the stock price, making it more likely that ALGN's market close price on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.72, \"shift_direction\": \"increased\", \"reasoning\": \"The new information suggests a potential link between 'industry_outlook' and 'interest_rates', where a favorable industry outlook could lead to lower interest rates. This introduces a new path from 'industry_outlook' to 'interest_rates', which could have a positive impact on the economy and ALGN's stock price. The central bank's consideration of lowering interest rates to stimulate growth in the medical devices sector implies that a strong industry outlook could lead to accommodative monetary policy, which in turn could boost the stock market and ALGN's stock price. The updated probability of 0.72 reflects a moderate increase in the estimated likelihood, as the potential link between industry outlook and interest rates introduces an additional positive factor supporting a bullish outlook for ALGN. The favorable industry outlook, combined with the potential for lower interest rates, reinforces the positive influences on the stock price, making it more likely that ALGN's market close price on 2025-12-28 will be higher than on 2025-12-21.\"}",
+      "target_id": "industry_outlook->interest_rates",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Regulatory changes, such as new FDA approvals or updates to medical device regulations, could significantly impact ALGN's stock price by affecting their ability to bring new products to market or altering the competitive landscape. The lack of consideration for regulatory factors in the current network may overlook a crucial influence on ALGN's market performance. If regulatory updates were to occur between 2025-12-21 and 2025-12-28, it could directly impact ALGN's stock price. How would this regulatory factor influence your forecast?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.7,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The introduction of regulatory factors as a potential influence on ALGN's stock price adds a new layer of uncertainty to the forecast. While regulatory updates could have a positive impact on ALGN's stock price, such as new FDA approvals, they could also have a negative impact, such as increased regulatory scrutiny or changes to medical device regulations. The lack of consideration for regulatory factors in the current network means that the forecast may be overly simplistic and neglects a crucial influence on ALGN's market performance. The updated probability of 0.70 reflects a moderate decrease in the estimated likelihood, as the introduction of regulatory factors introduces additional uncertainty and potential risks to the forecast. The decrease in probability acknowledges that regulatory updates could have a negative impact on ALGN's stock price, which was not previously considered in the network. To fully incorporate regulatory factors, the network would need to be revised to include a new node for regulatory updates and edges to connect it to other relevant nodes, such as company performance and market trend.",
+      "raw_response": "{\"updated_probability\": 0.70, \"shift_direction\": \"decreased\", \"reasoning\": \"The introduction of regulatory factors as a potential influence on ALGN's stock price adds a new layer of uncertainty to the forecast. While regulatory updates could have a positive impact on ALGN's stock price, such as new FDA approvals, they could also have a negative impact, such as increased regulatory scrutiny or changes to medical device regulations. The lack of consideration for regulatory factors in the current network means that the forecast may be overly simplistic and neglects a crucial influence on ALGN's market performance. The updated probability of 0.70 reflects a moderate decrease in the estimated likelihood, as the introduction of regulatory factors introduces additional uncertainty and potential risks to the forecast. The decrease in probability acknowledges that regulatory updates could have a negative impact on ALGN's stock price, which was not previously considered in the network. To fully incorporate regulatory factors, the network would need to be revised to include a new node for regulatory updates and edges to connect it to other relevant nodes, such as company performance and market trend.\"}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a significant regulatory change, such as a new FDA approval pathway, were to impact the medical devices industry, potentially altering ALGN's competitive landscape and future revenue streams? This could, in turn, affect investor sentiment and company performance. The forecaster's network does not account for such regulatory factors, which could substantially influence the outcome. How would this regulatory change alter your forecast?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.04999999999999993,
+      "shift_direction": "decreased",
+      "reasoning": "The potential for a significant regulatory change, such as a new FDA approval pathway, to impact the medical devices industry and ALGN's competitive landscape introduces a substantial source of uncertainty and risk to the forecast. This regulatory change could affect investor sentiment, company performance, and ultimately the stock price, but the direction and magnitude of this impact are difficult to predict. The lack of consideration for regulatory factors in the current network means that the forecast may be overly optimistic and neglects a crucial influence on ALGN's market performance. The updated probability of 0.65 reflects a moderate decrease in the estimated likelihood, as the introduction of regulatory uncertainty and potential risks to the forecast reduce the confidence in the original estimate. To accurately incorporate the potential impact of regulatory changes, the network would need to be revised to include a new node for regulatory environment and edges to connect it to other relevant nodes, such as industry outlook, company performance, and investor sentiment. The decreased probability acknowledges the potential for regulatory changes to negatively impact ALGN's stock price, which was not previously considered in the network.",
+      "raw_response": "{\"updated_probability\": 0.65, \"shift_direction\": \"decreased\", \"reasoning\": \"The potential for a significant regulatory change, such as a new FDA approval pathway, to impact the medical devices industry and ALGN's competitive landscape introduces a substantial source of uncertainty and risk to the forecast. This regulatory change could affect investor sentiment, company performance, and ultimately the stock price, but the direction and magnitude of this impact are difficult to predict. The lack of consideration for regulatory factors in the current network means that the forecast may be overly optimistic and neglects a crucial influence on ALGN's market performance. The updated probability of 0.65 reflects a moderate decrease in the estimated likelihood, as the introduction of regulatory uncertainty and potential risks to the forecast reduce the confidence in the original estimate. To accurately incorporate the potential impact of regulatory changes, the network would need to be revised to include a new node for regulatory environment and edges to connect it to other relevant nodes, such as industry outlook, company performance, and investor sentiment. The decreased probability acknowledges the potential for regulatory changes to negatively impact ALGN's stock price, which was not previously considered in the network.\"}",
+      "target_id": "regulatory_environment",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "ALGN's headquarters is planning to introduce a new employee wellness program, which will provide on-site fitness classes and mental health resources. This program is expected to improve employee satisfaction and retention. The company's management believes that this initiative will contribute to a positive work environment. However, the program's launch is scheduled for early 2026, after the relevant market close dates.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The introduction of a new employee wellness program, while potentially beneficial for ALGN's work environment and employee satisfaction, does not have a direct impact on the forecast for the market close price on 2025-12-28 compared to 2025-12-21. Since the program's launch is scheduled for early 2026, after the relevant market close dates, it is unlikely to influence the stock price during the period of interest. The updated probability remains unchanged at 0.65, as this new information does not introduce any significant factors that would alter the forecast. The employee wellness program may have long-term benefits for the company, but its impact is not relevant to the specific time frame being considered.",
+      "raw_response": "{\"updated_probability\": 0.65, \"shift_direction\": \"unchanged\", \"reasoning\": \"The introduction of a new employee wellness program, while potentially beneficial for ALGN's work environment and employee satisfaction, does not have a direct impact on the forecast for the market close price on 2025-12-28 compared to 2025-12-21. Since the program's launch is scheduled for early 2026, after the relevant market close dates, it is unlikely to influence the stock price during the period of interest. The updated probability remains unchanged at 0.65, as this new information does not introduce any significant factors that would alter the forecast. The employee wellness program may have long-term benefits for the company, but its impact is not relevant to the specific time frame being considered.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "ALGN's headquarters is planning to implement a new, state-of-the-art cafeteria for its employees, featuring a variety of healthy dining options and collaborative workspaces. This renovation is expected to be completed by the end of 2025 and will provide a modern and comfortable space for employees to relax and socialize. The new cafeteria will also include a small museum showcasing the company's history and achievements. This project has been in the works for several months and is intended to boost employee morale and productivity.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The introduction of a new cafeteria and museum at ALGN's headquarters is an internal development that, while potentially beneficial for employee morale and productivity, is unlikely to have a significant impact on the company's stock price or market performance. The project's completion by the end of 2025 may lead to some short-term positive publicity or employee satisfaction, but it is not a material factor that would influence investor decisions or the broader market. The updated probability remains unchanged at 0.65, as this new information does not introduce any significant external factors that would alter the forecast. The focus of the forecast remains on external market and economic factors, rather than internal company developments that do not have a direct impact on the stock price.",
+      "raw_response": "{\"updated_probability\": 0.65, \"shift_direction\": \"unchanged\", \"reasoning\": \"The introduction of a new cafeteria and museum at ALGN's headquarters is an internal development that, while potentially beneficial for employee morale and productivity, is unlikely to have a significant impact on the company's stock price or market performance. The project's completion by the end of 2025 may lead to some short-term positive publicity or employee satisfaction, but it is not a material factor that would influence investor decisions or the broader market. The updated probability remains unchanged at 0.65, as this new information does not introduce any significant external factors that would alter the forecast. The focus of the forecast remains on external market and economic factors, rather than internal company developments that do not have a direct impact on the stock price.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "ALGN",
+    "question_text": "Will ALGN's market close price on 2025-12-28 be higher than its market close price on 2025-12-21?\n\nStock splits and reverse splits will be accounted for in resolving this question. Forecasts on questions about companies that have been delisted (through mergers or bankruptcy) will resolve to their final close price.",
+    "source": "yfinance",
+    "condition": "multi-turn",
+    "initial_probability": 0.62,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.051875,
+    "max_absolute_shift": 0.19999999999999996
+  }
+}

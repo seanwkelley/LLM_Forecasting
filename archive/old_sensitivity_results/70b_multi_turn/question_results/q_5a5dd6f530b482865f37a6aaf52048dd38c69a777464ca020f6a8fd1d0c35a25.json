@@ -1,0 +1,999 @@
+{
+  "question_id": "5a5dd6f530b482865f37a6aaf52048dd38c69a777464ca020f6a8fd1d0c35a25",
+  "question_text": "Will there be more than ten times as many 'Violence against civilians' in Mayotte for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Violence against civilians' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Violence against civilians'\n2023-11-11,1\n2023-10-10,2\nto calculate one plus the 30-day average of 'Violence against civilians' over the preceding 360 days, we\u2019d have: 1+(1+2)/12=1.25.\n\nIn this example, for the question to resolve positively, 13 (10 x 1.25) or more 'Violence against civilians' would need to occur in the 30 days leading up to the resolution.",
+  "source": "acled",
+  "initial_probability": 0.23,
+  "nodes": [
+    {
+      "id": "social_unrest",
+      "description": "Level of social discontent and unrest in Mayotte",
+      "role": "factor"
+    },
+    {
+      "id": "economic_conditions",
+      "description": "State of the economy in Mayotte, including employment and poverty rates",
+      "role": "factor"
+    },
+    {
+      "id": "political_stability",
+      "description": "Level of stability and effectiveness of the government in Mayotte",
+      "role": "factor"
+    },
+    {
+      "id": "crime_rate",
+      "description": "Overall rate of criminal activity in Mayotte",
+      "role": "factor"
+    },
+    {
+      "id": "violence_trend",
+      "description": "Recent trend in violence against civilians in Mayotte",
+      "role": "factor"
+    },
+    {
+      "id": "external_influence",
+      "description": "Influence of external factors, such as global events or neighboring country instability",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "The forecasted event: more than ten times as many 'Violence against civilians' in Mayotte for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Violence against civilians' over the 360 days preceding 2025-12-21",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "social_unrest",
+      "to": "crime_rate",
+      "mechanism": "Social unrest can lead to increased criminal activity, including violence against civilians"
+    },
+    {
+      "from": "economic_conditions",
+      "to": "social_unrest",
+      "mechanism": "Poor economic conditions can contribute to social unrest and discontent"
+    },
+    {
+      "from": "political_stability",
+      "to": "social_unrest",
+      "mechanism": "Unstable or ineffective government can lead to increased social unrest"
+    },
+    {
+      "from": "crime_rate",
+      "to": "violence_trend",
+      "mechanism": "High crime rates can contribute to an increasing trend in violence against civilians"
+    },
+    {
+      "from": "violence_trend",
+      "to": "outcome",
+      "mechanism": "An increasing trend in violence against civilians can lead to a higher likelihood of exceeding the threshold"
+    },
+    {
+      "from": "external_influence",
+      "to": "political_stability",
+      "mechanism": "External influences, such as global events or neighboring country instability, can impact the stability of the government in Mayotte"
+    },
+    {
+      "from": "external_influence",
+      "to": "social_unrest",
+      "mechanism": "External influences can also contribute to social unrest and discontent in Mayotte"
+    }
+  ],
+  "reasoning": "The forecasted event is influenced by a complex interplay of factors, including social unrest, economic conditions, political stability, crime rate, and external influence. An increase in social unrest, driven by poor economic conditions and unstable government, can lead to a higher crime rate and an increasing trend in violence against civilians. External influences can also impact the stability of the government and contribute to social unrest. Given the current state of these factors, the probability of exceeding the threshold is estimated to be 0.23, reflecting a relatively low but still possible likelihood of a significant increase in violence against civilians in Mayotte.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "social_unrest",
+        "description": "Level of social discontent and unrest in Mayotte",
+        "role": "factor",
+        "in_degree": 3,
+        "out_degree": 1,
+        "betweenness": 0.3,
+        "closeness": 0.5,
+        "pagerank": 0.1747,
+        "path_relevance": 0.5,
+        "composite_importance": 0.3749
+      },
+      {
+        "node_id": "economic_conditions",
+        "description": "State of the economy in Mayotte, including employment and poverty rates",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0501,
+        "path_relevance": 0.0,
+        "composite_importance": 0.11
+      },
+      {
+        "node_id": "political_stability",
+        "description": "Level of stability and effectiveness of the government in Mayotte",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.1667,
+        "pagerank": 0.0714,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1143
+      },
+      {
+        "node_id": "crime_rate",
+        "description": "Overall rate of criminal activity in Mayotte",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.2667,
+        "closeness": 0.381,
+        "pagerank": 0.1986,
+        "path_relevance": 0.6667,
+        "composite_importance": 0.4197
+      },
+      {
+        "node_id": "violence_trend",
+        "description": "Recent trend in violence against civilians in Mayotte",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1667,
+        "closeness": 0.3472,
+        "pagerank": 0.2189,
+        "path_relevance": 0.8333,
+        "composite_importance": 0.4438
+      },
+      {
+        "node_id": "external_influence",
+        "description": "Influence of external factors, such as global events or neighboring country instability",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0501,
+        "path_relevance": 0.0,
+        "composite_importance": 0.21
+      },
+      {
+        "node_id": "outcome",
+        "description": "The forecasted event: more than ten times as many 'Violence against civilians' in Mayotte for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Violence against civilians' over the 360 days preceding 2025-12-21",
+        "role": "outcome",
+        "in_degree": 1,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.3333,
+        "pagerank": 0.2362,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0472
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "social_unrest",
+        "target": "crime_rate",
+        "mechanism": "Social unrest can lead to increased criminal activity, including violence against civilians",
+        "edge_betweenness": 0.2857,
+        "on_critical_path": true
+      },
+      {
+        "source": "economic_conditions",
+        "target": "social_unrest",
+        "mechanism": "Poor economic conditions can contribute to social unrest and discontent",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "political_stability",
+        "target": "social_unrest",
+        "mechanism": "Unstable or ineffective government can lead to increased social unrest",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "crime_rate",
+        "target": "violence_trend",
+        "mechanism": "High crime rates can contribute to an increasing trend in violence against civilians",
+        "edge_betweenness": 0.2381,
+        "on_critical_path": true
+      },
+      {
+        "source": "violence_trend",
+        "target": "outcome",
+        "mechanism": "An increasing trend in violence against civilians can lead to a higher likelihood of exceeding the threshold",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      },
+      {
+        "source": "external_influence",
+        "target": "political_stability",
+        "mechanism": "External influences, such as global events or neighboring country instability, can impact the stability of the government in Mayotte",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": false
+      },
+      {
+        "source": "external_influence",
+        "target": "social_unrest",
+        "mechanism": "External influences can also contribute to social unrest and discontent in Mayotte",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "violence_trend",
+        "description": "Recent trend in violence against civilians in Mayotte",
+        "importance": 0.4438,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "crime_rate",
+        "description": "Overall rate of criminal activity in Mayotte",
+        "importance": 0.4197,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "external_influence",
+        "description": "Influence of external factors, such as global events or neighboring country instability",
+        "importance": 0.21,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "economic_conditions",
+        "description": "State of the economy in Mayotte, including employment and poverty rates",
+        "importance": 0.11,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "violence_trend",
+        "description": "Recent trend in violence against civilians in Mayotte",
+        "importance": 0.4438,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "crime_rate",
+        "description": "Overall rate of criminal activity in Mayotte",
+        "importance": 0.4197,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "social_unrest->crime_rate",
+        "description": "Social unrest can lead to increased criminal activity, including violence against civilians",
+        "importance": 0.2857,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "crime_rate->violence_trend",
+        "description": "High crime rates can contribute to an increasing trend in violence against civilians",
+        "importance": 0.2381,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "external_influence->political_stability",
+        "description": "External influences, such as global events or neighboring country instability, can impact the stability of the government in Mayotte",
+        "importance": 0.0238,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "social_unrest->crime_rate",
+        "description": "Social unrest can lead to increased criminal activity, including violence against civilians",
+        "importance": 0.2857,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "external_influence->economic_conditions",
+        "description": "Potential link: Influence of external factors, such as global events or neighboring country instability -> State of the economy in Mayotte, including employment and poverty rates",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "external_influence->crime_rate",
+        "description": "Potential link: Influence of external factors, such as global events or neighboring country instability -> Overall rate of criminal activity in Mayotte",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "violence_trend",
+      "description": "Recent trend in violence against civilians in Mayotte",
+      "importance": 0.4438,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "crime_rate",
+      "description": "Overall rate of criminal activity in Mayotte",
+      "importance": 0.4197,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "external_influence",
+      "description": "Influence of external factors, such as global events or neighboring country instability",
+      "importance": 0.21,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "economic_conditions",
+      "description": "State of the economy in Mayotte, including employment and poverty rates",
+      "importance": 0.11,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "violence_trend",
+      "description": "Recent trend in violence against civilians in Mayotte",
+      "importance": 0.4438,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "crime_rate",
+      "description": "Overall rate of criminal activity in Mayotte",
+      "importance": 0.4197,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "social_unrest->crime_rate",
+      "description": "Social unrest can lead to increased criminal activity, including violence against civilians",
+      "importance": 0.2857,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "crime_rate->violence_trend",
+      "description": "High crime rates can contribute to an increasing trend in violence against civilians",
+      "importance": 0.2381,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "external_influence->political_stability",
+      "description": "External influences, such as global events or neighboring country instability, can impact the stability of the government in Mayotte",
+      "importance": 0.0238,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "social_unrest->crime_rate",
+      "description": "Social unrest can lead to increased criminal activity, including violence against civilians",
+      "importance": 0.2857,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "external_influence->economic_conditions",
+      "description": "Potential link: Influence of external factors, such as global events or neighboring country instability -> State of the economy in Mayotte, including employment and poverty rates",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "external_influence->crime_rate",
+      "description": "Potential link: Influence of external factors, such as global events or neighboring country instability -> Overall rate of criminal activity in Mayotte",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if the recent trend in violence against civilians in Mayotte is actually a poor predictor of future violence, due to the implementation of new community policing initiatives and social programs that have been shown to reduce violence in similar contexts? Perhaps the current trend is an anomaly and not indicative of future outcomes. Alternatively, it's possible that the trend is being driven by factors that are not relevant to the forecast period, such as a recent spike in violence related to a specific event that has since been resolved. If this is the case, then the recent trend in violence against civilians may not be a useful indicator of whether there will be more than ten times as many 'Violence against civilians' in Mayotte for the 30 days before 2025-12-28.",
+      "probe_type": "node_negate_high",
+      "target_id": "violence_trend",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.4438,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Recent trend in violence against civilians in Mayotte"
+    },
+    {
+      "probe_text": "What if the overall rate of criminal activity in Mayotte has no significant impact on the trend of violence against civilians, due to the fact that most crimes are unrelated to violence against civilians, such as property crimes or white-collar crimes? Perhaps the recent focus on community policing and social programs has effectively decoupled the relationship between crime rates and violence against civilians. This could mean that even a high crime rate does not necessarily lead to an increase in violence against civilians, rendering this factor irrelevant to the outcome. Alternatively, it's possible that a high crime rate actually leads to increased community cohesion and cooperation with law enforcement, reducing the likelihood of violence against civilians.",
+      "probe_type": "node_negate_high",
+      "target_id": "crime_rate",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.4197,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Overall rate of criminal activity in Mayotte"
+    },
+    {
+      "probe_text": "Recent diplomatic efforts have led to a significant reduction in tensions between Mayotte and neighboring countries, resulting in a stable regional environment that minimizes the influence of external factors on the island's social and political landscape. Additionally, global events have shifted focus away from the region, further diminishing the impact of external influences. This reduction in external pressures suggests that the forecasted event may be less susceptible to external factors than initially thought. As a result, the influence of external factors on the outcome may be negligible.",
+      "probe_type": "node_negate_medium",
+      "target_id": "external_influence",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.21,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "Influence of external factors, such as global events or neighboring country instability"
+    },
+    {
+      "probe_text": "Recent data suggests that Mayotte's economy has experienced a significant boost due to new investments and trade agreements, leading to improved employment rates and reduced poverty. This economic upturn may have mitigated the impact of economic conditions on social unrest, rendering it a less significant factor in predicting violence against civilians. As a result, the previously assumed relationship between economic conditions and social unrest may be weaker than initially thought. This new information challenges the importance of economic conditions in the causal network.",
+      "probe_type": "node_negate_low",
+      "target_id": "economic_conditions",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.11,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "State of the economy in Mayotte, including employment and poverty rates"
+    },
+    {
+      "probe_text": "According to a recent report by the Mayotte Department of Interior, the island has seen a significant surge in violent attacks over the past quarter, with a marked increase in assaults and armed robberies. This trend is corroborated by local law enforcement data, which shows a 25% rise in reported violent crimes compared to the same period last year. Experts warn that this escalating violence is likely to continue, driven by a combination of factors including social unrest, economic hardship, and the presence of organized crime groups. As a result, the department has announced plans to deploy additional security personnel and implement enhanced community policing initiatives to combat the growing violence.",
+      "probe_type": "node_strengthen",
+      "target_id": "violence_trend",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.4438,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Recent trend in violence against civilians in Mayotte"
+    },
+    {
+      "probe_text": "According to a recent report by the Mayotte Police Department, the overall crime rate in Mayotte has increased by 15% over the past quarter, with a significant surge in violent crimes such as armed robbery and assault. This trend is expected to continue due to the growing presence of organized crime groups in the region. Furthermore, local law enforcement officials have expressed concerns about their ability to effectively combat this rising crime wave, citing inadequate resources and manpower. This development reinforces the importance of the crime rate as a contributing factor to the increasing trend in violence against civilians.",
+      "probe_type": "node_strengthen",
+      "target_id": "crime_rate",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.4197,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Overall rate of criminal activity in Mayotte"
+    },
+    {
+      "probe_text": "Recent community-led initiatives in Mayotte have successfully redirected frustrated individuals into constructive outlets, such as vocational training and sports programs, thereby reducing the likelihood that social unrest translates into increased criminal activity. Furthermore, enhanced policing strategies have been implemented to specifically address and deter violent behavior, potentially decoupling social unrest from crime rates. This suggests the relationship between social unrest and crime rate might be weaker than assumed. Empirical evidence from similar contexts indicates that such interventions can significantly mitigate the impact of social unrest on crime.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "social_unrest->crime_rate",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.2857,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Social unrest can lead to increased criminal activity, including violence against civilians"
+    },
+    {
+      "probe_text": "Recent studies have shown that in Mayotte, high crime rates are often met with increased policing efforts, which can effectively reduce the trend of violence against civilians. Moreover, many crimes in Mayotte are property-related and do not necessarily contribute to an increasing trend in violence against civilians. This suggests that the relationship between crime rate and violence trend might be weaker than assumed. The introduction of community-based crime prevention programs could further diminish the impact of high crime rates on violence trends.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "crime_rate->violence_trend",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.2381,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "High crime rates can contribute to an increasing trend in violence against civilians"
+    },
+    {
+      "probe_text": "Recent studies have shown that the government of Mayotte has implemented effective measures to insulate itself from external influences, such as establishing strong diplomatic relationships with neighboring countries and investing in internal stability programs. As a result, the impact of external factors on the political stability of Mayotte may be negligible. Furthermore, the island's unique cultural and historical context may render it less susceptible to external pressures. This could mean that external influences have little to no effect on the political stability of Mayotte.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "external_influence->political_stability",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0238,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "External influences, such as global events or neighboring country instability, can impact the stability of the government in Mayotte"
+    },
+    {
+      "probe_text": "New research suggests that a surge in criminal activity, particularly violent crimes, can create an environment of fear and mistrust among the population, thereby fueling social unrest. For instance, a recent wave of violent robberies in Mayotte has led to widespread protests and demands for increased police presence. This indicates that the relationship between social unrest and crime rate may be more complex than initially thought, with crime potentially driving social unrest. Could it be that the causal link between social unrest and crime rate is actually reversed?",
+      "probe_type": "edge_reverse",
+      "target_id": "social_unrest->crime_rate",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.2857,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Social unrest can lead to increased criminal activity, including violence against civilians"
+    },
+    {
+      "probe_text": "A recent global economic downturn has led to a significant decline in tourism and trade in Mayotte, resulting in increased unemployment and poverty rates among its population. This downturn is expected to exacerbate social unrest and discontent, potentially leading to a surge in violence against civilians. However, the forecaster's current model does not account for the direct impact of external economic factors on the local economy. Will the forecaster update their beliefs to reflect this potential causal link?",
+      "probe_type": "edge_fabricate",
+      "target_id": "external_influence->economic_conditions",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Influence of external factors, such as global events or neighboring country instability -> State of the economy in Mayotte, including employment and poverty rates"
+    },
+    {
+      "probe_text": "Recently, a prominent terrorist organization based in a neighboring country has increased its recruitment efforts in Mayotte, leading to a rise in radicalized individuals and subsequent violent crimes. This surge in extremist activity is likely to continue, potentially leading to an increase in overall criminal activity in Mayotte. If true, this development would suggest a direct link between external influences and the crime rate in Mayotte. How does this new information affect your forecast?",
+      "probe_type": "edge_fabricate",
+      "target_id": "external_influence->crime_rate",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Influence of external factors, such as global events or neighboring country instability -> Overall rate of criminal activity in Mayotte"
+    },
+    {
+      "probe_text": "Consider the impact of climate change and natural disasters on the island of Mayotte, such as droughts, floods, or cyclones, which could exacerbate social unrest, economic hardship, and political instability, ultimately influencing the trend of violence against civilians. For instance, a severe drought could lead to food and water shortages, increasing tensions and conflict among the population. How would you update your forecast if Mayotte were to experience a devastating cyclone in the months leading up to 2025-12-28, disrupting critical infrastructure and livelihoods? This event could test the resilience of the government and the community, potentially affecting the outcome.",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "A recent influx of refugees from a neighboring country has put a strain on Mayotte's resources, potentially leading to increased competition for jobs and services, and thus affecting social unrest and the overall crime rate. This factor, 'refugee_influx', could significantly influence the outcome by exacerbating social tensions and contributing to a higher crime rate. The forecaster's network does not account for the potential impact of refugee inflows on social unrest and crime. How would the inclusion of 'refugee_influx' as a causal factor affect the forecasted probability of more than ten times as many 'Violence against civilians' in Mayotte?",
+      "probe_type": "missing_node",
+      "target_id": "refugee_influx",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "The Mayotte Department of Tourism has announced a new initiative to promote the island's unique cultural heritage, including the development of a mobile app that provides guided tours of historic sites and traditional festivals. This initiative is expected to increase tourism revenue and create new job opportunities in the service sector. However, the initiative's focus is primarily on showcasing Mayotte's cultural and historical attractions, and it does not address any of the underlying social, economic, or political factors that may contribute to violence against civilians. The app is set to launch in early 2025, with a targeted marketing campaign aimed at European tourists.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "A new marine conservation effort has been launched in Mayotte, aiming to protect the island's coral reefs and promote sustainable fishing practices. This initiative has garnered significant support from local communities and is expected to create new job opportunities in the tourism and environmental sectors. The program's organizers have announced plans to establish a network of marine protected areas and implement education programs to raise awareness about the importance of conservation. While this effort is seen as a positive development for the island's ecosystem, it is unlikely to have any direct impact on the social or economic factors that influence violence against civilians.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the recent trend in violence against civilians in Mayotte is actually a poor predictor of future violence, due to the implementation of new community policing initiatives and social programs that have been shown to reduce violence in similar contexts? Perhaps the current trend is an anomaly and not indicative of future outcomes. Alternatively, it's possible that the trend is being driven by factors that are not relevant to the forecast period, such as a recent spike in violence related to a specific event that has since been resolved. If this is the case, then the recent trend in violence against civilians may not be a useful indicator of whether there will be more than ten times as many 'Violence against civilians' in Mayotte for the 30 days before 2025-12-28.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'violence_trend' factor suggests that the recent trend in violence against civilians may not be a reliable predictor of future violence, due to the implementation of new community policing initiatives and social programs. This challenge affects the causal path from 'violence_trend' to 'outcome', which was a key factor in the initial forecast. As a result, the weight of this path should be reduced, leading to a decrease in the overall probability estimate. The updated probability of 0.17 reflects a reduced confidence in the predictive power of the recent violence trend, and acknowledges the potential for the new initiatives and programs to mitigate future violence. The decrease in probability is moderate, as the challenge does not completely eliminate the possibility of increased violence, but rather suggests that the trend may not be as informative as initially thought.",
+      "raw_response": "{\"updated_probability\": 0.17, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'violence_trend' factor suggests that the recent trend in violence against civilians may not be a reliable predictor of future violence, due to the implementation of new community policing initiatives and social programs. This challenge affects the causal path from 'violence_trend' to 'outcome', which was a key factor in the initial forecast. As a result, the weight of this path should be reduced, leading to a decrease in the overall probability estimate. The updated probability of 0.17 reflects a reduced confidence in the predictive power of the recent violence trend, and acknowledges the potential for the new initiatives and programs to mitigate future violence. The decrease in probability is moderate, as the challenge does not completely eliminate the possibility of increased violence, but rather suggests that the trend may not be as informative as initially thought.\"}",
+      "target_id": "violence_trend",
+      "target_type": "node",
+      "target_importance": 0.4438,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the overall rate of criminal activity in Mayotte has no significant impact on the trend of violence against civilians, due to the fact that most crimes are unrelated to violence against civilians, such as property crimes or white-collar crimes? Perhaps the recent focus on community policing and social programs has effectively decoupled the relationship between crime rates and violence against civilians. This could mean that even a high crime rate does not necessarily lead to an increase in violence against civilians, rendering this factor irrelevant to the outcome. Alternatively, it's possible that a high crime rate actually leads to increased community cohesion and cooperation with law enforcement, reducing the likelihood of violence against civilians.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.05000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'crime_rate' factor suggests that the overall rate of criminal activity in Mayotte may not have a significant impact on the trend of violence against civilians. This challenge affects the causal path from 'crime_rate' to 'violence_trend', which was a key intermediate factor in the initial forecast. As a result, the weight of this path should be reduced, leading to a decrease in the overall probability estimate. The idea that a high crime rate could actually lead to increased community cohesion and cooperation with law enforcement, reducing the likelihood of violence against civilians, further supports the notion that the relationship between crime rate and violence trend is not straightforward. The updated probability of 0.12 reflects a reduced confidence in the predictive power of crime rates, and acknowledges the potential for other factors to drive the trend of violence against civilians. The decrease in probability is moderate, as the challenge does not completely eliminate the possibility of increased violence, but rather suggests that the relationship between crime rates and violence trend is more complex and nuanced than initially thought.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'crime_rate' factor suggests that the overall rate of criminal activity in Mayotte may not have a significant impact on the trend of violence against civilians. This challenge affects the causal path from 'crime_rate' to 'violence_trend', which was a key intermediate factor in the initial forecast. As a result, the weight of this path should be reduced, leading to a decrease in the overall probability estimate. The idea that a high crime rate could actually lead to increased community cohesion and cooperation with law enforcement, reducing the likelihood of violence against civilians, further supports the notion that the relationship between crime rate and violence trend is not straightforward. The updated probability of 0.12 reflects a reduced confidence in the predictive power of crime rates, and acknowledges the potential for other factors to drive the trend of violence against civilians. The decrease in probability is moderate, as the challenge does not completely eliminate the possibility of increased violence, but rather suggests that the relationship between crime rates and violence trend is more complex and nuanced than initially thought.\"}",
+      "target_id": "crime_rate",
+      "target_type": "node",
+      "target_importance": 0.4197,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent diplomatic efforts have led to a significant reduction in tensions between Mayotte and neighboring countries, resulting in a stable regional environment that minimizes the influence of external factors on the island's social and political landscape. Additionally, global events have shifted focus away from the region, further diminishing the impact of external influences. This reduction in external pressures suggests that the forecasted event may be less susceptible to external factors than initially thought. As a result, the influence of external factors on the outcome may be negligible.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.09,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'external_influence' factor suggests that the regional environment has become more stable, and global events have shifted focus away from the region, minimizing the impact of external factors on Mayotte's social and political landscape. This challenge affects the causal paths from 'external_influence' to 'political_stability' and 'social_unrest', which were initial factors in the forecast. As a result, the weight of these paths should be reduced, leading to a decrease in the overall probability estimate. With external influences minimized, the internal factors such as 'social_unrest', 'economic_conditions', and 'political_stability' become more prominent in driving the outcome. However, the challenges to 'violence_trend' and 'crime_rate' have already reduced the confidence in these internal factors. The updated probability of 0.09 reflects a reduced confidence in the overall forecast, as the minimization of external influences does not necessarily lead to a more stable or predictable internal environment. The decrease in probability is moderate, as the challenge does not completely eliminate the possibility of increased violence, but rather suggests that the internal dynamics of Mayotte will be the primary drivers of the outcome.",
+      "raw_response": "{\"updated_probability\": 0.09, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'external_influence' factor suggests that the regional environment has become more stable, and global events have shifted focus away from the region, minimizing the impact of external factors on Mayotte's social and political landscape. This challenge affects the causal paths from 'external_influence' to 'political_stability' and 'social_unrest', which were initial factors in the forecast. As a result, the weight of these paths should be reduced, leading to a decrease in the overall probability estimate. With external influences minimized, the internal factors such as 'social_unrest', 'economic_conditions', and 'political_stability' become more prominent in driving the outcome. However, the challenges to 'violence_trend' and 'crime_rate' have already reduced the confidence in these internal factors. The updated probability of 0.09 reflects a reduced confidence in the overall forecast, as the minimization of external influences does not necessarily lead to a more stable or predictable internal environment. The decrease in probability is moderate, as the challenge does not completely eliminate the possibility of increased violence, but rather suggests that the internal dynamics of Mayotte will be the primary drivers of the outcome.\"}",
+      "target_id": "external_influence",
+      "target_type": "node",
+      "target_importance": 0.21,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent data suggests that Mayotte's economy has experienced a significant boost due to new investments and trade agreements, leading to improved employment rates and reduced poverty. This economic upturn may have mitigated the impact of economic conditions on social unrest, rendering it a less significant factor in predicting violence against civilians. As a result, the previously assumed relationship between economic conditions and social unrest may be weaker than initially thought. This new information challenges the importance of economic conditions in the causal network.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.06,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'economic_conditions' factor suggests that the recent economic upturn in Mayotte has mitigated the impact of economic conditions on social unrest, rendering it a less significant factor in predicting violence against civilians. This challenge affects the causal path from 'economic_conditions' to 'social_unrest', which was a key factor in the initial forecast. As a result, the weight of this path should be reduced, leading to a decrease in the overall probability estimate. With economic conditions no longer being a significant driver of social unrest, the other factors such as 'political_stability' and 'social_unrest' itself become less influential in predicting the outcome. The cumulative effect of the challenges to 'violence_trend', 'crime_rate', 'external_influence', and now 'economic_conditions' has significantly reduced the confidence in the forecast. The updated probability of 0.06 reflects a low confidence in the outcome, as the majority of the initial factors have been challenged, and the remaining factors are not sufficient to drive a high probability of the forecasted event. The decrease in probability is moderate to large, as the challenge to economic conditions is another significant reduction in the predictive power of the causal network.",
+      "raw_response": "{\"updated_probability\": 0.06, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'economic_conditions' factor suggests that the recent economic upturn in Mayotte has mitigated the impact of economic conditions on social unrest, rendering it a less significant factor in predicting violence against civilians. This challenge affects the causal path from 'economic_conditions' to 'social_unrest', which was a key factor in the initial forecast. As a result, the weight of this path should be reduced, leading to a decrease in the overall probability estimate. With economic conditions no longer being a significant driver of social unrest, the other factors such as 'political_stability' and 'social_unrest' itself become less influential in predicting the outcome. The cumulative effect of the challenges to 'violence_trend', 'crime_rate', 'external_influence', and now 'economic_conditions' has significantly reduced the confidence in the forecast. The updated probability of 0.06 reflects a low confidence in the outcome, as the majority of the initial factors have been challenged, and the remaining factors are not sufficient to drive a high probability of the forecasted event. The decrease in probability is moderate to large, as the challenge to economic conditions is another significant reduction in the predictive power of the causal network.\"}",
+      "target_id": "economic_conditions",
+      "target_type": "node",
+      "target_importance": 0.11,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "According to a recent report by the Mayotte Department of Interior, the island has seen a significant surge in violent attacks over the past quarter, with a marked increase in assaults and armed robberies. This trend is corroborated by local law enforcement data, which shows a 25% rise in reported violent crimes compared to the same period last year. Experts warn that this escalating violence is likely to continue, driven by a combination of factors including social unrest, economic hardship, and the presence of organized crime groups. As a result, the department has announced plans to deploy additional security personnel and implement enhanced community policing initiatives to combat the growing violence.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.21,
+      "absolute_shift": 0.15,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the previous challenge to the 'violence_trend' factor, which suggested that the recent trend in violence against civilians was not a reliable predictor of future violence. However, the recent report by the Mayotte Department of Interior and local law enforcement data indicate a significant surge in violent attacks, which contradicts the previous challenge. This new information strengthens the causal path from 'violence_trend' to 'outcome', as the escalating violence is likely to continue and may exceed the threshold of more than ten times the average. The updated probability of 0.21 reflects an increased confidence in the forecast, as the new information suggests that the trend of violence against civilians is a significant and reliable predictor of future violence. The increase in probability is moderate to large, as the new information directly challenges the previous challenge and restores the importance of the 'violence_trend' factor in the causal network. However, it's worth noting that the other challenges to the causal factors, such as 'crime_rate', 'external_influence', and 'economic_conditions', still apply, and the overall probability estimate remains relatively low compared to the initial estimate.",
+      "raw_response": "{\"updated_probability\": 0.21, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenges the previous challenge to the 'violence_trend' factor, which suggested that the recent trend in violence against civilians was not a reliable predictor of future violence. However, the recent report by the Mayotte Department of Interior and local law enforcement data indicate a significant surge in violent attacks, which contradicts the previous challenge. This new information strengthens the causal path from 'violence_trend' to 'outcome', as the escalating violence is likely to continue and may exceed the threshold of more than ten times the average. The updated probability of 0.21 reflects an increased confidence in the forecast, as the new information suggests that the trend of violence against civilians is a significant and reliable predictor of future violence. The increase in probability is moderate to large, as the new information directly challenges the previous challenge and restores the importance of the 'violence_trend' factor in the causal network. However, it's worth noting that the other challenges to the causal factors, such as 'crime_rate', 'external_influence', and 'economic_conditions', still apply, and the overall probability estimate remains relatively low compared to the initial estimate.\"}",
+      "target_id": "violence_trend",
+      "target_type": "node",
+      "target_importance": 0.4438,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "According to a recent report by the Mayotte Police Department, the overall crime rate in Mayotte has increased by 15% over the past quarter, with a significant surge in violent crimes such as armed robbery and assault. This trend is expected to continue due to the growing presence of organized crime groups in the region. Furthermore, local law enforcement officials have expressed concerns about their ability to effectively combat this rising crime wave, citing inadequate resources and manpower. This development reinforces the importance of the crime rate as a contributing factor to the increasing trend in violence against civilians.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.31,
+      "absolute_shift": 0.1,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the previous challenge to the 'crime_rate' factor, which suggested that the overall rate of criminal activity in Mayotte had no significant impact on the trend of violence against civilians. However, the recent report by the Mayotte Police Department indicates a significant surge in violent crimes, which reinforces the importance of the 'crime_rate' factor in contributing to the increasing trend in violence against civilians. This new information strengthens the causal path from 'crime_rate' to 'violence_trend', as the growing presence of organized crime groups and the inability of local law enforcement to effectively combat the rising crime wave are likely to drive an increase in violence against civilians. The updated probability of 0.31 reflects an increased confidence in the forecast, as the new information suggests that both the 'violence_trend' and 'crime_rate' factors are significant and reliable predictors of future violence. The increase in probability is moderate, as the new information directly challenges the previous challenge and restores the importance of the 'crime_rate' factor in the causal network. The cumulative effect of the restored 'violence_trend' and 'crime_rate' factors, despite the previous challenges to other factors, has increased the overall probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.31, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenges the previous challenge to the 'crime_rate' factor, which suggested that the overall rate of criminal activity in Mayotte had no significant impact on the trend of violence against civilians. However, the recent report by the Mayotte Police Department indicates a significant surge in violent crimes, which reinforces the importance of the 'crime_rate' factor in contributing to the increasing trend in violence against civilians. This new information strengthens the causal path from 'crime_rate' to 'violence_trend', as the growing presence of organized crime groups and the inability of local law enforcement to effectively combat the rising crime wave are likely to drive an increase in violence against civilians. The updated probability of 0.31 reflects an increased confidence in the forecast, as the new information suggests that both the 'violence_trend' and 'crime_rate' factors are significant and reliable predictors of future violence. The increase in probability is moderate, as the new information directly challenges the previous challenge and restores the importance of the 'crime_rate' factor in the causal network. The cumulative effect of the restored 'violence_trend' and 'crime_rate' factors, despite the previous challenges to other factors, has increased the overall probability estimate.\"}",
+      "target_id": "crime_rate",
+      "target_type": "node",
+      "target_importance": 0.4197,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent community-led initiatives in Mayotte have successfully redirected frustrated individuals into constructive outlets, such as vocational training and sports programs, thereby reducing the likelihood that social unrest translates into increased criminal activity. Furthermore, enhanced policing strategies have been implemented to specifically address and deter violent behavior, potentially decoupling social unrest from crime rates. This suggests the relationship between social unrest and crime rate might be weaker than assumed. Empirical evidence from similar contexts indicates that such interventions can significantly mitigate the impact of social unrest on crime.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.26,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'social_unrest' and 'crime_rate', suggesting that recent community-led initiatives and enhanced policing strategies have weakened this relationship. As a result, the weight of the path from 'social_unrest' to 'crime_rate' should be reduced. This update has a moderate impact on the overall probability estimate, as the 'social_unrest' factor was not a primary driver of the forecast. However, the reduction in the strength of this causal link slightly decreases the confidence in the forecast, as it implies that the 'crime_rate' factor may not be as strongly influenced by 'social_unrest' as initially thought. The updated probability of 0.26 reflects this decreased confidence, although the overall probability remains relatively high due to the restored importance of the 'violence_trend' and 'crime_rate' factors. The decrease in probability is small to moderate, as the challenge primarily affects a secondary causal path, and the core drivers of the forecast remain intact.",
+      "raw_response": "{\"updated_probability\": 0.26, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal link between 'social_unrest' and 'crime_rate', suggesting that recent community-led initiatives and enhanced policing strategies have weakened this relationship. As a result, the weight of the path from 'social_unrest' to 'crime_rate' should be reduced. This update has a moderate impact on the overall probability estimate, as the 'social_unrest' factor was not a primary driver of the forecast. However, the reduction in the strength of this causal link slightly decreases the confidence in the forecast, as it implies that the 'crime_rate' factor may not be as strongly influenced by 'social_unrest' as initially thought. The updated probability of 0.26 reflects this decreased confidence, although the overall probability remains relatively high due to the restored importance of the 'violence_trend' and 'crime_rate' factors. The decrease in probability is small to moderate, as the challenge primarily affects a secondary causal path, and the core drivers of the forecast remain intact.\"}",
+      "target_id": "social_unrest->crime_rate",
+      "target_type": "edge",
+      "target_importance": 0.2857,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that in Mayotte, high crime rates are often met with increased policing efforts, which can effectively reduce the trend of violence against civilians. Moreover, many crimes in Mayotte are property-related and do not necessarily contribute to an increasing trend in violence against civilians. This suggests that the relationship between crime rate and violence trend might be weaker than assumed. The introduction of community-based crime prevention programs could further diminish the impact of high crime rates on violence trends.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.08000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'crime_rate' and 'violence_trend', suggesting that increased policing efforts and community-based crime prevention programs can effectively reduce the trend of violence against civilians, even in the presence of high crime rates. Furthermore, the distinction between property-related crimes and violent crimes implies that not all crimes contribute to an increasing trend in violence against civilians. As a result, the weight of the path from 'crime_rate' to 'violence_trend' should be significantly reduced. This update has a substantial impact on the overall probability estimate, as the 'crime_rate' factor was a key driver of the forecast. The reduction in the strength of this causal link decreases the confidence in the forecast, as it implies that the 'crime_rate' factor may not be as strongly linked to the 'violence_trend' as initially thought. The updated probability of 0.18 reflects this decreased confidence, as the challenge undermines one of the primary mechanisms by which the forecast was driven. The decrease in probability is moderate to large, as the challenge directly affects a key causal path and reduces the overall predictive power of the model.",
+      "raw_response": "{\"updated_probability\": 0.18, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal link between 'crime_rate' and 'violence_trend', suggesting that increased policing efforts and community-based crime prevention programs can effectively reduce the trend of violence against civilians, even in the presence of high crime rates. Furthermore, the distinction between property-related crimes and violent crimes implies that not all crimes contribute to an increasing trend in violence against civilians. As a result, the weight of the path from 'crime_rate' to 'violence_trend' should be significantly reduced. This update has a substantial impact on the overall probability estimate, as the 'crime_rate' factor was a key driver of the forecast. The reduction in the strength of this causal link decreases the confidence in the forecast, as it implies that the 'crime_rate' factor may not be as strongly linked to the 'violence_trend' as initially thought. The updated probability of 0.18 reflects this decreased confidence, as the challenge undermines one of the primary mechanisms by which the forecast was driven. The decrease in probability is moderate to large, as the challenge directly affects a key causal path and reduces the overall predictive power of the model.\"}",
+      "target_id": "crime_rate->violence_trend",
+      "target_type": "edge",
+      "target_importance": 0.2381,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the government of Mayotte has implemented effective measures to insulate itself from external influences, such as establishing strong diplomatic relationships with neighboring countries and investing in internal stability programs. As a result, the impact of external factors on the political stability of Mayotte may be negligible. Furthermore, the island's unique cultural and historical context may render it less susceptible to external pressures. This could mean that external influences have little to no effect on the political stability of Mayotte.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information challenges the causal link between 'external_influence' and 'political_stability', suggesting that the government of Mayotte has taken effective measures to insulate itself from external influences. However, this challenge has a negligible impact on the overall probability estimate, as the 'external_influence' factor was already considered to have a minimal impact on the forecast due to previous challenges. The updated probability of 0.18 remains unchanged, as the challenge primarily affects a peripheral causal path that was not a primary driver of the forecast. The 'external_influence' factor was previously downweighted due to the stable regional environment and reduced global focus on the region, and this new information merely reinforces that assessment. As a result, the forecast remains unchanged, and the confidence in the estimate is not significantly altered.",
+      "raw_response": "{\"updated_probability\": 0.18, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information challenges the causal link between 'external_influence' and 'political_stability', suggesting that the government of Mayotte has taken effective measures to insulate itself from external influences. However, this challenge has a negligible impact on the overall probability estimate, as the 'external_influence' factor was already considered to have a minimal impact on the forecast due to previous challenges. The updated probability of 0.18 remains unchanged, as the challenge primarily affects a peripheral causal path that was not a primary driver of the forecast. The 'external_influence' factor was previously downweighted due to the stable regional environment and reduced global focus on the region, and this new information merely reinforces that assessment. As a result, the forecast remains unchanged, and the confidence in the estimate is not significantly altered.\"}",
+      "target_id": "external_influence->political_stability",
+      "target_type": "edge",
+      "target_importance": 0.0238,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "New research suggests that a surge in criminal activity, particularly violent crimes, can create an environment of fear and mistrust among the population, thereby fueling social unrest. For instance, a recent wave of violent robberies in Mayotte has led to widespread protests and demands for increased police presence. This indicates that the relationship between social unrest and crime rate may be more complex than initially thought, with crime potentially driving social unrest. Could it be that the causal link between social unrest and crime rate is actually reversed?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.22,
+      "absolute_shift": 0.04000000000000001,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the causal link between 'social_unrest' and 'crime_rate', suggesting that the relationship may be reversed, with crime potentially driving social unrest. This challenge has a moderate impact on the overall probability estimate, as it introduces a new mechanism by which crime rates can influence the forecast. The updated probability of 0.22 reflects an increased confidence in the forecast, as the reversed causal link between 'crime_rate' and 'social_unrest' could amplify the effect of high crime rates on the outcome. The increase in probability is small to moderate, as the challenge adds a new layer of complexity to the model, but does not fundamentally alter the core drivers of the forecast. The 'crime_rate' factor, which was previously restored as a significant predictor of the outcome, may now have an additional pathway to influence the forecast through its impact on 'social_unrest'. This revised understanding of the relationship between 'crime_rate' and 'social_unrest' slightly increases the overall probability estimate, as it suggests that high crime rates could have a broader impact on the social and political landscape of Mayotte.",
+      "raw_response": "{\"updated_probability\": 0.22, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenges the causal link between 'social_unrest' and 'crime_rate', suggesting that the relationship may be reversed, with crime potentially driving social unrest. This challenge has a moderate impact on the overall probability estimate, as it introduces a new mechanism by which crime rates can influence the forecast. The updated probability of 0.22 reflects an increased confidence in the forecast, as the reversed causal link between 'crime_rate' and 'social_unrest' could amplify the effect of high crime rates on the outcome. The increase in probability is small to moderate, as the challenge adds a new layer of complexity to the model, but does not fundamentally alter the core drivers of the forecast. The 'crime_rate' factor, which was previously restored as a significant predictor of the outcome, may now have an additional pathway to influence the forecast through its impact on 'social_unrest'. This revised understanding of the relationship between 'crime_rate' and 'social_unrest' slightly increases the overall probability estimate, as it suggests that high crime rates could have a broader impact on the social and political landscape of Mayotte.\"}",
+      "target_id": "social_unrest->crime_rate",
+      "target_type": "edge",
+      "target_importance": 0.2857,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "A recent global economic downturn has led to a significant decline in tourism and trade in Mayotte, resulting in increased unemployment and poverty rates among its population. This downturn is expected to exacerbate social unrest and discontent, potentially leading to a surge in violence against civilians. However, the forecaster's current model does not account for the direct impact of external economic factors on the local economy. Will the forecaster update their beliefs to reflect this potential causal link?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.28,
+      "absolute_shift": 0.060000000000000026,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the absence of a causal link between 'external_influence' and 'economic_conditions' in the current model. The recent global economic downturn and its impact on Mayotte's tourism and trade suggest that external economic factors can have a significant effect on the local economy, leading to increased unemployment and poverty rates. This, in turn, can exacerbate social unrest and potentially lead to a surge in violence against civilians. The introduction of this new causal link adds a previously unaccounted-for mechanism by which external influences can impact the forecast. The updated probability of 0.28 reflects an increased confidence in the forecast, as the new link between 'external_influence' and 'economic_conditions' provides an additional pathway for external factors to influence the outcome. The increase in probability is moderate, as the challenge highlights a significant omission in the current model and adds a new layer of complexity to the forecast. The revised understanding of the relationship between external economic factors and the local economy suggests that the forecasted event may be more susceptible to external influences than initially thought, leading to a higher overall probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.28, \"shift_direction\": \"increased\", \"reasoning\": \"The new information challenges the absence of a causal link between 'external_influence' and 'economic_conditions' in the current model. The recent global economic downturn and its impact on Mayotte's tourism and trade suggest that external economic factors can have a significant effect on the local economy, leading to increased unemployment and poverty rates. This, in turn, can exacerbate social unrest and potentially lead to a surge in violence against civilians. The introduction of this new causal link adds a previously unaccounted-for mechanism by which external influences can impact the forecast. The updated probability of 0.28 reflects an increased confidence in the forecast, as the new link between 'external_influence' and 'economic_conditions' provides an additional pathway for external factors to influence the outcome. The increase in probability is moderate, as the challenge highlights a significant omission in the current model and adds a new layer of complexity to the forecast. The revised understanding of the relationship between external economic factors and the local economy suggests that the forecasted event may be more susceptible to external influences than initially thought, leading to a higher overall probability estimate.\"}",
+      "target_id": "external_influence->economic_conditions",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recently, a prominent terrorist organization based in a neighboring country has increased its recruitment efforts in Mayotte, leading to a rise in radicalized individuals and subsequent violent crimes. This surge in extremist activity is likely to continue, potentially leading to an increase in overall criminal activity in Mayotte. If true, this development would suggest a direct link between external influences and the crime rate in Mayotte. How does this new information affect your forecast?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the absence of a direct causal link between 'external_influence' and 'crime_rate' in the current model. The increased recruitment efforts of a prominent terrorist organization in Mayotte and the subsequent rise in radicalized individuals and violent crimes suggest a direct link between external influences and the crime rate. This new information strengthens the forecast by introducing an additional pathway for external factors to influence the outcome. The updated probability of 0.38 reflects an increased confidence in the forecast, as the new link between 'external_influence' and 'crime_rate' provides a significant mechanism by which external factors can drive an increase in crime rates and, subsequently, violence against civilians. The increase in probability is moderate to large, as the challenge highlights a previously unaccounted-for causal link that significantly amplifies the potential impact of external influences on the forecast. The revised understanding of the relationship between external influences and the crime rate in Mayotte suggests that the forecasted event may be more likely than initially thought, leading to a higher overall probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.38,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information challenges the absence of a direct causal link between 'external_influence' and 'crime_rate' in the current model. The increased recruitment efforts of a prominent terrorist organization in Mayotte and the subsequent rise in radicalized individuals and violent crimes suggest a direct link between external influences and the crime rate. This new information strengthens the forecast by introducing an additional pathway for external factors to influence the outcome. The updated probability of 0.38 reflects an increased confidence in the forecast, as the new link between 'external_influence' and 'crime_rate' provides a significant mechanism by which external factors can drive an increase in crime rates and, subsequently, violence against civilians. The increase in probability is moderate to large, as the challenge highlights a previously unaccounted-for causal link that significantly amplifies the potential impact of external influences on the forecast. The revised understanding of the relationship between external influences and the crime rate in Mayotte suggests that the forecasted event may be more likely than initially thought, leading to a higher overall probability estimate.\"\n}",
+      "target_id": "external_influence->crime_rate",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the impact of climate change and natural disasters on the island of Mayotte, such as droughts, floods, or cyclones, which could exacerbate social unrest, economic hardship, and political instability, ultimately influencing the trend of violence against civilians. For instance, a severe drought could lead to food and water shortages, increasing tensions and conflict among the population. How would you update your forecast if Mayotte were to experience a devastating cyclone in the months leading up to 2025-12-28, disrupting critical infrastructure and livelihoods? This event could test the resilience of the government and the community, potentially affecting the outcome.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.14,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing climate change and natural disasters as a previously unaccounted-for factor that could significantly impact the forecast. The potential for a devastating cyclone to disrupt critical infrastructure and livelihoods in Mayotte could exacerbate social unrest, economic hardship, and political instability, ultimately increasing the trend of violence against civilians. This new factor adds a significant layer of complexity to the model, as it introduces an external stressor that could test the resilience of the government and the community. The updated probability of 0.52 reflects a substantial increase in confidence in the forecast, as the introduction of this new factor provides a plausible mechanism by which the outcome could be driven. The increase in probability is large, as the challenge fundamentally alters the understanding of the system's dynamics and introduces a new, high-impact factor that could significantly influence the outcome. The revised model suggests that the forecasted event may be more likely than initially thought, particularly if Mayotte were to experience a devastating cyclone in the months leading up to 2025-12-28. The potential for climate-related disasters to drive social unrest, economic hardship, and political instability highlights the need for a more nuanced understanding of the complex inter relationships between environmental, social, and political factors in Mayotte.",
+      "raw_response": "{\n  \"updated_probability\": 0.52,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing climate change and natural disasters as a previously unaccounted-for factor that could significantly impact the forecast. The potential for a devastating cyclone to disrupt critical infrastructure and livelihoods in Mayotte could exacerbate social unrest, economic hardship, and political instability, ultimately increasing the trend of violence against civilians. This new factor adds a significant layer of complexity to the model, as it introduces an external stressor that could test the resilience of the government and the community. The updated probability of 0.52 reflects a substantial increase in confidence in the forecast, as the introduction of this new factor provides a plausible mechanism by which the outcome could be driven. The increase in probability is large, as the challenge fundamentally alters the understanding of the system's dynamics and introduces a new, high-impact factor that could significantly influence the outcome. The revised model suggests that the forecasted event may be more likely than initially thought, particularly if Mayotte were to experience a devastating cyclone in the months leading up to 2025-12-28. The potential for climate-related disasters to drive social unrest, economic hardship, and political instability highlights the need for a more nuanced understanding of the complex inter relationships between environmental, social, and political factors in Mayotte.\"\n}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "A recent influx of refugees from a neighboring country has put a strain on Mayotte's resources, potentially leading to increased competition for jobs and services, and thus affecting social unrest and the overall crime rate. This factor, 'refugee_influx', could significantly influence the outcome by exacerbating social tensions and contributing to a higher crime rate. The forecaster's network does not account for the potential impact of refugee inflows on social unrest and crime. How would the inclusion of 'refugee_influx' as a causal factor affect the forecasted probability of more than ten times as many 'Violence against civilians' in Mayotte?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.63,
+      "absolute_shift": 0.10999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing 'efugee_influx' as a previously unaccounted-for factor that could significantly impact the forecast. The inclusion of 'efugee_influx' as a causal factor adds a new pathway for social unrest and crime to increase, as the competition for resources and services among the existing population and refugees could exacerbate social tensions and contribute to a higher crime rate. This new factor is likely to have a synergistic effect with the existing factors, such as 'economic_conditions', 'ocial_unrest', and 'crime_rate', potentially amplifying their impact on the outcome. The updated probability of 0.63 reflects a substantial increase in confidence in the forecast, as the introduction of 'efugee_influx' provides a plausible mechanism by which the outcome could be driven. The increase in probability is large, as the challenge fundamentally alters the understanding of the system's dynamics and introduces a new, high-impact factor that could significantly influence the outcome. The revised model suggests that the forecasted event may be more likely than initially thought, particularly in the presence of a large refugee influx. The potential for refugee inflows to drive social unrest, economic hardship, and crime highlights the need for a more nuanced understanding of the complex inter relationships between demographic, social, and economic factors in Mayotte.",
+      "raw_response": "{\n  \"updated_probability\": 0.63,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing 'efugee_influx' as a previously unaccounted-for factor that could significantly impact the forecast. The inclusion of 'efugee_influx' as a causal factor adds a new pathway for social unrest and crime to increase, as the competition for resources and services among the existing population and refugees could exacerbate social tensions and contribute to a higher crime rate. This new factor is likely to have a synergistic effect with the existing factors, such as 'economic_conditions', 'ocial_unrest', and 'crime_rate', potentially amplifying their impact on the outcome. The updated probability of 0.63 reflects a substantial increase in confidence in the forecast, as the introduction of 'efugee_influx' provides a plausible mechanism by which the outcome could be driven. The increase in probability is large, as the challenge fundamentally alters the understanding of the system's dynamics and introduces a new, high-impact factor that could significantly influence the outcome. The revised model suggests that the forecasted event may be more likely than initially thought, particularly in the presence of a large refugee influx. The potential for refugee inflows to drive social unrest, economic hardship, and crime highlights the need for a more nuanced understanding of the complex inter relationships between demographic, social, and economic factors in Mayotte.\"\n}",
+      "target_id": "refugee_influx",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The Mayotte Department of Tourism has announced a new initiative to promote the island's unique cultural heritage, including the development of a mobile app that provides guided tours of historic sites and traditional festivals. This initiative is expected to increase tourism revenue and create new job opportunities in the service sector. However, the initiative's focus is primarily on showcasing Mayotte's cultural and historical attractions, and it does not address any of the underlying social, economic, or political factors that may contribute to violence against civilians. The app is set to launch in early 2025, with a targeted marketing campaign aimed at European tourists.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.63,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing a new initiative by the Mayotte Department of Tourism to promote the island's cultural heritage. However, this initiative is unlikely to have a significant impact on the forecasted probability of more than ten times as many 'Violence against civilians' in Mayotte. The initiative's focus on increasing tourism revenue and creating new job opportunities in the service sector may have a positive effect on the local economy, but it does not address any of the underlying social, economic, or political factors that may contribute to violence against civilians. As a result, the causal paths in the network remain largely unchanged, and the updated probability of 0.63 remains the same. The increase in tourism revenue and job opportunities may have a marginal effect on reducing poverty and unemployment, but it is unlikely to have a substantial impact on the overall crime rate or social unrest. The marketing campaign's targeted focus on European tourists also suggests that the initiative's impact will be limited to a specific segment of the population, rather than addressing the broader social and economic issues that contribute to violence against civilians.",
+      "raw_response": "{\n  \"updated_probability\": 0.63,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing a new initiative by the Mayotte Department of Tourism to promote the island's cultural heritage. However, this initiative is unlikely to have a significant impact on the forecasted probability of more than ten times as many 'Violence against civilians' in Mayotte. The initiative's focus on increasing tourism revenue and creating new job opportunities in the service sector may have a positive effect on the local economy, but it does not address any of the underlying social, economic, or political factors that may contribute to violence against civilians. As a result, the causal paths in the network remain largely unchanged, and the updated probability of 0.63 remains the same. The increase in tourism revenue and job opportunities may have a marginal effect on reducing poverty and unemployment, but it is unlikely to have a substantial impact on the overall crime rate or social unrest. The marketing campaign's targeted focus on European tourists also suggests that the initiative's impact will be limited to a specific segment of the population, rather than addressing the broader social and economic issues that contribute to violence against civilians.\"\n}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A new marine conservation effort has been launched in Mayotte, aiming to protect the island's coral reefs and promote sustainable fishing practices. This initiative has garnered significant support from local communities and is expected to create new job opportunities in the tourism and environmental sectors. The program's organizers have announced plans to establish a network of marine protected areas and implement education programs to raise awareness about the importance of conservation. While this effort is seen as a positive development for the island's ecosystem, it is unlikely to have any direct impact on the social or economic factors that influence violence against civilians.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.63,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a structural challenge to the causal model, introducing a new marine conservation effort in Mayotte. However, this initiative is unlikely to have any direct impact on the social or economic factors that influence violence against civilians. The creation of new job opportunities in the tourism and environmental sectors may have a marginal effect on reducing unemployment, but it is unlikely to have a substantial impact on the overall crime rate or social unrest. The focus of the initiative on protecting coral reefs and promoting sustainable fishing practices is primarily environmental, and it does not address any of the underlying social, economic, or political factors that contribute to violence against civilians. As a result, the causal paths in the network remain largely unchanged, and the updated probability of 0.63 remains the same. The conservation effort may have positive indirect effects, such as promoting community engagement and cooperation, but these effects are unlikely to be significant enough to alter the forecasted probability of more than ten times as many 'Violence against civilians' in Mayotte.",
+      "raw_response": "{\n  \"updated_probability\": 0.63,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, introducing a new marine conservation effort in Mayotte. However, this initiative is unlikely to have any direct impact on the social or economic factors that influence violence against civilians. The creation of new job opportunities in the tourism and environmental sectors may have a marginal effect on reducing unemployment, but it is unlikely to have a substantial impact on the overall crime rate or social unrest. The focus of the initiative on protecting coral reefs and promoting sustainable fishing practices is primarily environmental, and it does not address any of the underlying social, economic, or political factors that contribute to violence against civilians. As a result, the causal paths in the network remain largely unchanged, and the updated probability of 0.63 remains the same. The conservation effort may have positive indirect effects, such as promoting community engagement and cooperation, but these effects are unlikely to be significant enough to alter the forecasted probability of more than ten times as many 'Violence against civilians' in Mayotte.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "5a5dd6f530b482865f37a6aaf52048dd38c69a777464ca020f6a8fd1d0c35a25",
+    "question_text": "Will there be more than ten times as many 'Violence against civilians' in Mayotte for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Violence against civilians' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Violence against civilians'\n2023-11-11,1\n2023-10-10,2\nto calculate one plus the 30-day average of 'Violence against civilians' over the preceding 360 days, we\u2019d have: 1+(1+2)/12=1.25.\n\nIn this example, for the question to resolve positively, 13 (10 x 1.25) or more 'Violence against civilians' would need to occur in the 30 days leading up to the resolution.",
+    "source": "acled",
+    "condition": "multi-turn",
+    "initial_probability": 0.23,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.0625,
+    "max_absolute_shift": 0.15
+  }
+}

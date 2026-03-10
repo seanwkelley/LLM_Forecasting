@@ -1,0 +1,405 @@
+{
+  "question_id": "AAA10Y",
+  "question_text": "Will Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield have increased by 2025-12-28 as compared to its value on 2025-12-21?",
+  "source": "fred",
+  "initial_probability": 0.63,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "The general trend of corporate bond yields has been increasing since 2020, which suggests that the Aaa corporate bond yield is likely to continue to rise.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The Federal Reserve has indicated that it will continue to raise interest rates in 2025 to combat inflation, which could lead to higher Treasury yields and, in turn, higher corporate bond yields.",
+      "importance": "high"
+    },
+    {
+      "id": 3,
+      "text": "Moody's Aaa corporate bond yield has historically been closely tied to the 10-year Treasury yield, which suggests that an increase in the Treasury yield could lead to an increase in the corporate bond yield.",
+      "importance": "medium"
+    },
+    {
+      "id": 4,
+      "text": "However, there are signs of economic slowdown, which could lead to a decrease in corporate bond yields if investors become less risk-averse.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Based on the general trend of corporate bond yields and the Federal Reserve's plans to raise interest rates, I estimate a 63% probability that the Aaa corporate bond yield will have increased by 2025-12-28 compared to its value on 2025-12-21.",
+  "probes": [
+    {
+      "probe_text": "Moody's Aaa Corporate Bond Yield might actually decrease relative to the 10-year Treasury yield by 2025-12-28, contrary to the recent trend, due to a potential increase in the supply of high-quality corporate bonds, which could lead to a decrease in demand and subsequently lower yields.",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the International Association of Credit Rating Agencies suggests that the COVID-19 pandemic has accelerated a shift towards sustainable and ESG-focused investing, leading to a surge in demand for high-quality, low-risk corporate bonds. This trend, combined with regulatory changes in several major economies to incentivize sustainable finance, may lead to a significant increase in investment in Aaa-rated corporate bonds, potentially stabilizing or even decreasing yields.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent survey of investors and analysts has revealed a sudden and unexpected shift in their expectations for the global economy, with a significant portion indicating a reduced likelihood of recession in the next 2-3 years. This shift in expectations could potentially lead to a decrease in long-term interest rates, including the 10-year Treasury yield, which in turn could slow or even reverse the recent trend of increasing corporate bond yields.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report from S&P Global Ratings noted that the upward pressure on corporate bond yields is being driven by a combination of factors, including rising inflation expectations and a decrease in investor demand for low-risk assets. Furthermore, the report highlighted that the Aaa corporate bond yield has historically been more sensitive to changes in inflation expectations than other bond yields, suggesting that its upward trend is likely to continue.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve has announced plans to introduce a new series of commemorative coins in 2026 to celebrate the 50th anniversary of the Federal Reserve's independence from the U.S. Treasury.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "What if, despite the Federal Reserve's intention to combat inflation, the economy experiences a recession in 2025, causing the Federal Reserve to pivot and cut interest rates, which in turn leads to a decrease in Treasury yields and subsequently corporate bond yields?",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A confidential memo from a top economist at the Federal Reserve has been leaked, suggesting that the central bank is reconsidering its interest rate hiking strategy due to concerns about the potential impact on the economy. The memo, which is said to be from a senior economist on the Federal Open Market Committee, indicates that the Fed may adopt a more data-dependent approach, potentially leading to a pause in rate hikes by mid-2025. This development could potentially lead to a decrease in Treasury yields, which in turn may not result in higher corporate bond yields.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve unexpectedly announces a pause in interest rate hikes due to a notable decline in inflation rates, citing a strengthening economy and improving labor market conditions.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the Federal Reserve Bank of New York indicates that the median forecast of Fed officials suggests an additional 50-75 basis point hike in the federal funds rate in the second half of 2025, which would further tighten monetary policy and likely lead to higher Treasury yields.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "Moody's Aaa Corporate Bond Yield is currently used as a benchmark in the financial industry for evaluating the creditworthiness of other companies, with some analysts suggesting it may be replaced by the Bloomberg Barclays Aggregate Bond Index in the future.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the correlation between Moody's Aaa corporate bond yield and the 10-year Treasury yield has been driven by market expectations of economic growth, rather than the yields themselves? In this scenario, if the 10-year Treasury yield increases, it may be due to a shift in investor expectations of a stronger economy, leading to increased demand for corporate bonds and a corresponding decrease in their yields.",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent Bloomberg article cites a new study by the International Association of Credit Analysts, which suggests that the rise of passive investing and index-tracking funds has decoupled the performance of Aaa corporate bonds from traditional interest rate benchmarks, including the 10-year Treasury yield. According to the study, this decoupling has resulted in a 30% deviation in Aaa corporate bond yields from their historical correlation with Treasury yields over the past 5 years.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Moody's Aaa corporate bond yield has recently been influenced by a significant increase in issuance of high-quality, long-term corporate bonds, which has driven down yields and reduced the bond's sensitivity to changes in the 10-year Treasury yield.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study by the Federal Reserve Bank of New York found that during the 2020-2022 period, Moody's Aaa corporate bond yield increased by an average of 10 basis points for every 1 basis point increase in the 10-year Treasury yield, suggesting a strong and consistent correlation between the two.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The European Central Bank has announced plans to maintain its current quantitative easing policy through 2026, citing a desire to support economic growth in the eurozone. This decision has been met with mixed reactions from investors, with some expressing concerns about the potential impact on inflation.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "What if investors, anticipating a potential economic slowdown, become more risk-averse and start seeking safer assets, causing a decrease in demand for corporate bonds and, subsequently, an increase in Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield?",
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "Today, the European Central Bank announced a surprise rate hike of 25 basis points, citing concerns over the potential for increased inflation due to rising global demand for risk assets. This move was seen as a signal that the ECB is preparing for a more aggressive tightening cycle in the face of a strengthening economic outlook, which could lead to increased investor risk appetite and, in turn, push corporate bond yields higher.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent survey of institutional investors reveals that a significant portion of their portfolios are now allocated to alternative investments, such as private equity and real assets, in response to rising market volatility. This shift away from traditional fixed income assets could lead to increased demand for corporate bonds, thereby potentially offsetting the expected economic slowdown's impact on yields.",
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "The Bank of America Merrill Lynch Global Research team recently published a report stating that they anticipate a moderate recession in the US economy in 2026, citing weakening consumer spending and a decline in business investment. This assessment is in line with our forecast, suggesting that investors are indeed becoming more cautious and risk-averse, which could further support a decrease in corporate bond yields.",
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "The European Central Bank has announced plans to introduce a new euro-denominated coin, replacing the \u20ac2 commemorative coin, which was first introduced in 2004. This move is aimed at promoting the use of cash alongside digital payments and will not impact monetary policy decisions.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "generated": true
+    }
+  ],
+  "condition": "one-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "Moody's Aaa Corporate Bond Yield might actually decrease relative to the 10-year Treasury yield by 2025-12-28, contrary to the recent trend, due to a potential increase in the supply of high-quality corporate bonds, which could lead to a decrease in demand and subsequently lower yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.21000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information presents a compelling challenge to my initial assumption that the general trend of corporate bond yields has been increasing since 2020. The potential increase in the supply of high-quality corporate bonds could indeed lead to a decrease in demand and subsequently lower yields. While the trend of increasing yields was a strong reason for my initial estimate, this new information reduces its impact. I now believe that the likelihood of the Aaa corporate bond yield increasing relative to the 10-year Treasury yield by 2025-12-28 is lower, but still not zero. I am updating my estimate to reflect this reduced confidence in the trend-based reason.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information presents a compelling challenge to my initial assumption that the general trend of corporate bond yields has been increasing since 2020. The potential increase in the supply of high-quality corporate bonds could indeed lead to a decrease in demand and subsequently lower yields. While the trend of increasing yields was a strong reason for my initial estimate, this new information reduces its impact. I now believe that the likelihood of the Aaa corporate bond yield increasing relative to the 10-year Treasury yield by 2025-12-28 is lower, but still not zero. I am updating my estimate to reflect this reduced confidence in the trend-based reason.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A recent report by the International Association of Credit Rating Agencies suggests that the COVID-19 pandemic has accelerated a shift towards sustainable and ESG-focused investing, leading to a surge in demand for high-quality, low-risk corporate bonds. This trend, combined with regulatory changes in several major economies to incentivize sustainable finance, may lead to a significant increase in investment in Aaa-rated corporate bonds, potentially stabilizing or even decreasing yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "This new information challenges my initial assumption of a continued increase in corporate bond yields due to the general trend. The surge in demand for high-quality, low-risk corporate bonds driven by sustainable and ESG-focused investing, combined with regulatory changes, may lead to a stabilizing or even decreasing effect on yields. As a result, I have decreased my probability estimate from 0.63 to 0.45, reflecting a reduced likelihood of an increase in Moody's Aaa corporate bond yield compared to the 10-year Treasury yield by 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"This new information challenges my initial assumption of a continued increase in corporate bond yields due to the general trend. The surge in demand for high-quality, low-risk corporate bonds driven by sustainable and ESG-focused investing, combined with regulatory changes, may lead to a stabilizing or even decreasing effect on yields. As a result, I have decreased my probability estimate from 0.63 to 0.45, reflecting a reduced likelihood of an increase in Moody's Aaa corporate bond yield compared to the 10-year Treasury yield by 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "A recent survey of investors and analysts has revealed a sudden and unexpected shift in their expectations for the global economy, with a significant portion indicating a reduced likelihood of recession in the next 2-3 years. This shift in expectations could potentially lead to a decrease in long-term interest rates, including the 10-year Treasury yield, which in turn could slow or even reverse the recent trend of increasing corporate bond yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The recent shift in investor expectations regarding the global economy has significantly reduced the likelihood of a recession, which could lead to a decrease in long-term interest rates. This new information challenges my initial assumption of a continued increase in corporate bond yields (reason #1). While the trend of increasing corporate bond yields since 2020 is still a valid consideration, the potential for a decrease in long-term interest rates due to reduced recession expectations outweighs it. As a result, I have decreased my probability estimate to 0.45, indicating a lower likelihood of an increase in the Aaa corporate bond yield compared to the 10-year Treasury yield by 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The recent shift in investor expectations regarding the global economy has significantly reduced the likelihood of a recession, which could lead to a decrease in long-term interest rates. This new information challenges my initial assumption of a continued increase in corporate bond yields (reason #1). While the trend of increasing corporate bond yields since 2020 is still a valid consideration, the potential for a decrease in long-term interest rates due to reduced recession expectations outweighs it. As a result, I have decreased my probability estimate to 0.45, indicating a lower likelihood of an increase in the Aaa corporate bond yield compared to the 10-year Treasury yield by 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A recent report from S&P Global Ratings noted that the upward pressure on corporate bond yields is being driven by a combination of factors, including rising inflation expectations and a decrease in investor demand for low-risk assets. Furthermore, the report highlighted that the Aaa corporate bond yield has historically been more sensitive to changes in inflation expectations than other bond yields, suggesting that its upward trend is likely to continue.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.82,
+      "absolute_shift": 0.18999999999999995,
+      "shift_direction": "increased",
+      "reasoning": "The new information from S&P Global Ratings provides additional support for the upward trend in Aaa corporate bond yields. The report's emphasis on the role of rising inflation expectations and the sensitivity of Aaa corporate bond yields to these expectations strengthens reason #1. This new information has increased my confidence in the forecast, leading to an updated probability of 0.82. The report's findings have effectively countered the potential counterargument posed by reason #4, which suggested that economic slowdown could lead to decreased corporate bond yields. As a result, I have increased my probability estimate by 0.19, from 0.63 to 0.82.",
+      "raw_response": "{\n  \"updated_probability\": 0.82,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from S&P Global Ratings provides additional support for the upward trend in Aaa corporate bond yields. The report's emphasis on the role of rising inflation expectations and the sensitivity of Aaa corporate bond yields to these expectations strengthens reason #1. This new information has increased my confidence in the forecast, leading to an updated probability of 0.82. The report's findings have effectively countered the potential counterargument posed by reason #4, which suggested that economic slowdown could lead to decreased corporate bond yields. As a result, I have increased my probability estimate by 0.19, from 0.63 to 0.82.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "The Federal Reserve has announced plans to introduce a new series of commemorative coins in 2026 to celebrate the 50th anniversary of the Federal Reserve's independence from the U.S. Treasury.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.28,
+      "shift_direction": "decreased",
+      "reasoning": "The announcement of commemorative coins is unrelated to the general trend of corporate bond yields, which I previously cited as a reason for expecting an increase. The challenge is weak and irrelevant, so I only make a small update. However, I do decrease my probability estimate slightly because the announcement is a distraction and may shift investors' attention away from the fundamental economic trends that drive bond yields.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The announcement of commemorative coins is unrelated to the general trend of corporate bond yields, which I previously cited as a reason for expecting an increase. The challenge is weak and irrelevant, so I only make a small update. However, I do decrease my probability estimate slightly because the announcement is a distraction and may shift investors' attention away from the fundamental economic trends that drive bond yields.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "What if, despite the Federal Reserve's intention to combat inflation, the economy experiences a recession in 2025, causing the Federal Reserve to pivot and cut interest rates, which in turn leads to a decrease in Treasury yields and subsequently corporate bond yields?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The new information introduces a significant risk that the Federal Reserve's interest rate hikes may be reversed due to a recession, leading to a decrease in Treasury and corporate bond yields. This challenges my initial assumption (#2) that the Federal Reserve's rate hikes will continue to drive up corporate bond yields. While the other factors supporting the initial estimate remain relevant, the potential for a rate cut and subsequent decrease in yields is a substantial counterweight, leading to a substantial decrease in my estimated probability of the Aaa corporate bond yield increasing.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information introduces a significant risk that the Federal Reserve's interest rate hikes may be reversed due to a recession, leading to a decrease in Treasury and corporate bond yields. This challenges my initial assumption (#2) that the Federal Reserve's rate hikes will continue to drive up corporate bond yields. While the other factors supporting the initial estimate remain relevant, the potential for a rate cut and subsequent decrease in yields is a substantial counterweight, leading to a substantial decrease in my estimated probability of the Aaa corporate bond yield increasing.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "A confidential memo from a top economist at the Federal Reserve has been leaked, suggesting that the central bank is reconsidering its interest rate hiking strategy due to concerns about the potential impact on the economy. The memo, which is said to be from a senior economist on the Federal Open Market Committee, indicates that the Fed may adopt a more data-dependent approach, potentially leading to a pause in rate hikes by mid-2025. This development could potentially lead to a decrease in Treasury yields, which in turn may not result in higher corporate bond yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The leaked memo suggests that the Federal Reserve may reconsider its interest rate hiking strategy, potentially leading to a pause in rate hikes and a decrease in Treasury yields. This new information challenges my initial assumption that the Fed will continue to raise interest rates in 2025. While the memo is not an official announcement, it suggests a more nuanced and data-dependent approach, which could reduce the likelihood of higher Treasury yields and, in turn, higher corporate bond yields. This development has caused me to reassess the probability of the Aaa corporate bond yield increasing relative to the 10-year Treasury yield by the end of 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The leaked memo suggests that the Federal Reserve may reconsider its interest rate hiking strategy, potentially leading to a pause in rate hikes and a decrease in Treasury yields. This new information challenges my initial assumption that the Fed will continue to raise interest rates in 2025. While the memo is not an official announcement, it suggests a more nuanced and data-dependent approach, which could reduce the likelihood of higher Treasury yields and, in turn, higher corporate bond yields. This development has caused me to reassess the probability of the Aaa corporate bond yield increasing relative to the 10-year Treasury yield by the end of 2025.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "The Federal Reserve unexpectedly announces a pause in interest rate hikes due to a notable decline in inflation rates, citing a strengthening economy and improving labor market conditions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The Federal Reserve's unexpected pause in interest rate hikes due to a decline in inflation rates and a strengthening economy has weakened the case for increased corporate bond yields. This new information contradicts my initial assumption that the Federal Reserve would continue to raise interest rates, which was a key driver of my initial probability estimate. As a result, I have decreased my probability of the Aaa corporate bond yield increasing by 2025-12-28 as compared to its value on 2025-12-21. The updated reasons for my forecast are: 1. [high] The general trend of corporate bond yields has been increasing since 2020, which still suggests an upward trend. 2. [medium] Moody's Aaa corporate bond yield has historically been closely tied to the 10-year Treasury yield, but the recent development of the Federal Reserve's decision to pause interest rate hikes has reduced the likelihood of an increase. 3. [low] However, there are still signs of economic slowdown, which could lead to a decrease in corporate bond yields if investors become less risk-averse.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The Federal Reserve's unexpected pause in interest rate hikes due to a decline in inflation rates and a strengthening economy has weakened the case for increased corporate bond yields. This new information contradicts my initial assumption that the Federal Reserve would continue to raise interest rates, which was a key driver of my initial probability estimate. As a result, I have decreased my probability of the Aaa corporate bond yield increasing by 2025-12-28 as compared to its value on 2025-12-21. The updated reasons for my forecast are: 1. [high] The general trend of corporate bond yields has been increasing since 2020, which still suggests an upward trend. 2. [medium] Moody's Aaa corporate bond yield has historically been closely tied to the 10-year Treasury yield, but the recent development of the Federal Reserve's decision to pause interest rate hikes has reduced the likelihood of an increase. 3. [low] However, there are still signs of economic slowdown, which could lead to a decrease in corporate bond yields if investors become less risk-averse.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "A recent report by the Federal Reserve Bank of New York indicates that the median forecast of Fed officials suggests an additional 50-75 basis point hike in the federal funds rate in the second half of 2025, which would further tighten monetary policy and likely lead to higher Treasury yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.73,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the Federal Reserve Bank of New York's report provides additional evidence that the Fed will continue to tighten monetary policy, which increases the likelihood of higher Treasury yields and, in turn, higher corporate bond yields. This strengthens reason #2, making it even more likely that the Aaa corporate bond yield will increase by 2025-12-28 as compared to its value on 2025-12-21. I have increased my probability estimate from 0.63 to 0.73, as this new information provides more confidence in the trend of increasing corporate bond yields.",
+      "raw_response": "{\n  \"updated_probability\": 0.73,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the Federal Reserve Bank of New York's report provides additional evidence that the Fed will continue to tighten monetary policy, which increases the likelihood of higher Treasury yields and, in turn, higher corporate bond yields. This strengthens reason #2, making it even more likely that the Aaa corporate bond yield will increase by 2025-12-28 as compared to its value on 2025-12-21. I have increased my probability estimate from 0.63 to 0.73, as this new information provides more confidence in the trend of increasing corporate bond yields.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "Moody's Aaa Corporate Bond Yield is currently used as a benchmark in the financial industry for evaluating the creditworthiness of other companies, with some analysts suggesting it may be replaced by the Bloomberg Barclays Aggregate Bond Index in the future.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.53,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that the Federal Reserve's interest rate hikes may be less effective in increasing corporate bond yields, as the Aaa corporate bond yield may be replaced by a different benchmark. This reduces the likelihood of an increase in the corporate bond yield compared to the Treasury yield. I have decreased my probability estimate by 10% to reflect this change.",
+      "raw_response": "{\n  \"updated_probability\": 0.53,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that the Federal Reserve's interest rate hikes may be less effective in increasing corporate bond yields, as the Aaa corporate bond yield may be replaced by a different benchmark. This reduces the likelihood of an increase in the corporate bond yield compared to the Treasury yield. I have decreased my probability estimate by 10% to reflect this change.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if the correlation between Moody's Aaa corporate bond yield and the 10-year Treasury yield has been driven by market expectations of economic growth, rather than the yields themselves? In this scenario, if the 10-year Treasury yield increases, it may be due to a shift in investor expectations of a stronger economy, leading to increased demand for corporate bonds and a corresponding decrease in their yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the assumption that the correlation between Moody's Aaa corporate bond yield and the 10-year Treasury yield is causal. Instead, it suggests that the relationship may be driven by market expectations of economic growth. If this is the case, an increase in the 10-year Treasury yield may lead to an increase in demand for corporate bonds, causing their yields to decrease. This challenges my initial estimate, which was based on the assumption that the corporate bond yield would increase in tandem with the Treasury yield. As a result, I am decreasing my probability estimate to 0.45.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the assumption that the correlation between Moody's Aaa corporate bond yield and the 10-year Treasury yield is causal. Instead, it suggests that the relationship may be driven by market expectations of economic growth. If this is the case, an increase in the 10-year Treasury yield may lead to an increase in demand for corporate bonds, causing their yields to decrease. This challenges my initial estimate, which was based on the assumption that the corporate bond yield would increase in tandem with the Treasury yield. As a result, I am decreasing my probability estimate to 0.45.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "A recent Bloomberg article cites a new study by the International Association of Credit Analysts, which suggests that the rise of passive investing and index-tracking funds has decoupled the performance of Aaa corporate bonds from traditional interest rate benchmarks, including the 10-year Treasury yield. According to the study, this decoupling has resulted in a 30% deviation in Aaa corporate bond yields from their historical correlation with Treasury yields over the past 5 years.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the decoupling of Aaa corporate bond yields from traditional interest rate benchmarks, particularly the 10-year Treasury yield, significantly weakens my previous assumption (reason #3). While the general trend of corporate bond yields and the Federal Reserve's interest rate policy remain unchanged, the historical correlation between Aaa corporate bond yields and Treasury yields is now estimated to be only 70% effective. This reduction in correlation reduces the likelihood of the Aaa corporate bond yield increasing in tandem with the 10-year Treasury yield, thus decreasing my overall probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the decoupling of Aaa corporate bond yields from traditional interest rate benchmarks, particularly the 10-year Treasury yield, significantly weakens my previous assumption (reason #3). While the general trend of corporate bond yields and the Federal Reserve's interest rate policy remain unchanged, the historical correlation between Aaa corporate bond yields and Treasury yields is now estimated to be only 70% effective. This reduction in correlation reduces the likelihood of the Aaa corporate bond yield increasing in tandem with the 10-year Treasury yield, thus decreasing my overall probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "Moody's Aaa corporate bond yield has recently been influenced by a significant increase in issuance of high-quality, long-term corporate bonds, which has driven down yields and reduced the bond's sensitivity to changes in the 10-year Treasury yield.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.48,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information has significantly weakened the relationship between Moody's Aaa corporate bond yield and the 10-year Treasury yield, as the increase in high-quality, long-term corporate bond issuance has driven down yields and reduced the bond's sensitivity to changes in the 10-year Treasury yield. This reduces the likelihood of a strong correlation between the two yields, making a significant increase in the corporate bond yield less certain.",
+      "raw_response": "{\n  \"updated_probability\": 0.48,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information has significantly weakened the relationship between Moody's Aaa corporate bond yield and the 10-year Treasury yield, as the increase in high-quality, long-term corporate bond issuance has driven down yields and reduced the bond's sensitivity to changes in the 10-year Treasury yield. This reduces the likelihood of a strong correlation between the two yields, making a significant increase in the corporate bond yield less certain.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "A recent study by the Federal Reserve Bank of New York found that during the 2020-2022 period, Moody's Aaa corporate bond yield increased by an average of 10 basis points for every 1 basis point increase in the 10-year Treasury yield, suggesting a strong and consistent correlation between the two.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.71,
+      "absolute_shift": 0.07999999999999996,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the Federal Reserve Bank of New York study strengthens my confidence in reason #3, suggesting a strong and consistent correlation between Moody's Aaa corporate bond yield and the 10-year Treasury yield. This makes it more likely that the corporate bond yield will increase in line with the Treasury yield. Given this updated information, I am increasing my probability estimate from 0.63 to 0.71.",
+      "raw_response": "{\n  \"updated_probability\": 0.71,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the Federal Reserve Bank of New York study strengthens my confidence in reason #3, suggesting a strong and consistent correlation between Moody's Aaa corporate bond yield and the 10-year Treasury yield. This makes it more likely that the corporate bond yield will increase in line with the Treasury yield. Given this updated information, I am increasing my probability estimate from 0.63 to 0.71.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "The European Central Bank has announced plans to maintain its current quantitative easing policy through 2026, citing a desire to support economic growth in the eurozone. This decision has been met with mixed reactions from investors, with some expressing concerns about the potential impact on inflation.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.12,
+      "shift_direction": "decreased",
+      "reasoning": "The European Central Bank's decision to maintain its quantitative easing policy through 2026 could lead to a divergence between the 10-year Treasury yield in the US and the eurozone. This, in turn, might reduce the likelihood of a direct increase in the Moody's Aaa corporate bond yield relative to the 10-year Treasury yield in the US. While this does not necessarily mean that the Aaa corporate bond yield will decrease, it does suggest that the relationship between the two yields might be less straightforward than previously assumed, leading me to decrease my initial probability estimate of 0.63 to 0.51.",
+      "raw_response": "{\n  \"updated_probability\": 0.51,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The European Central Bank's decision to maintain its quantitative easing policy through 2026 could lead to a divergence between the 10-year Treasury yield in the US and the eurozone. This, in turn, might reduce the likelihood of a direct increase in the Moody's Aaa corporate bond yield relative to the 10-year Treasury yield in the US. While this does not necessarily mean that the Aaa corporate bond yield will decrease, it does suggest that the relationship between the two yields might be less straightforward than previously assumed, leading me to decrease my initial probability estimate of 0.63 to 0.51.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "probe_text": "What if investors, anticipating a potential economic slowdown, become more risk-averse and start seeking safer assets, causing a decrease in demand for corporate bonds and, subsequently, an increase in Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.76,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "This new information strengthens my initial assessment that Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield will increase by 2025-12-28. The idea that investors, anticipating an economic slowdown, might become more risk-averse and prefer safer assets, leading to a decrease in demand for corporate bonds and an increase in the Aaa corporate bond yield, provides a plausible mechanism for this outcome. While this information does not eliminate the possibility of the economic slowdown leading to decreased corporate bond yields, it increases the likelihood of the opposite scenario. I have increased my probability estimate by 13% (from 0.63 to 0.76) to reflect this updated assessment.",
+      "raw_response": "{\n  \"updated_probability\": 0.76,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"This new information strengthens my initial assessment that Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield will increase by 2025-12-28. The idea that investors, anticipating an economic slowdown, might become more risk-averse and prefer safer assets, leading to a decrease in demand for corporate bonds and an increase in the Aaa corporate bond yield, provides a plausible mechanism for this outcome. While this information does not eliminate the possibility of the economic slowdown leading to decreased corporate bond yields, it increases the likelihood of the opposite scenario. I have increased my probability estimate by 13% (from 0.63 to 0.76) to reflect this updated assessment.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "probe_text": "Today, the European Central Bank announced a surprise rate hike of 25 basis points, citing concerns over the potential for increased inflation due to rising global demand for risk assets. This move was seen as a signal that the ECB is preparing for a more aggressive tightening cycle in the face of a strengthening economic outlook, which could lead to increased investor risk appetite and, in turn, push corporate bond yields higher.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.79,
+      "absolute_shift": 0.16000000000000003,
+      "shift_direction": "increased",
+      "reasoning": "The ECB's surprise rate hike and its implications for a strengthening economic outlook and increased investor risk appetite strengthen reason #4 (low confidence) that an economic slowdown could lead to decreased corporate bond yields. As a result, I have increased my estimate of the probability of Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield increasing by 2025-12-28. This new information suggests that the potential for economic slowdown and decreased risk aversion may be less likely than I initially thought, which in turn suggests that the corporate bond yield may be more likely to increase.",
+      "raw_response": "{\n  \"updated_probability\": 0.79,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The ECB's surprise rate hike and its implications for a strengthening economic outlook and increased investor risk appetite strengthen reason #4 (low confidence) that an economic slowdown could lead to decreased corporate bond yields. As a result, I have increased my estimate of the probability of Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield increasing by 2025-12-28. This new information suggests that the potential for economic slowdown and decreased risk aversion may be less likely than I initially thought, which in turn suggests that the corporate bond yield may be more likely to increase.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "probe_text": "A recent survey of institutional investors reveals that a significant portion of their portfolios are now allocated to alternative investments, such as private equity and real assets, in response to rising market volatility. This shift away from traditional fixed income assets could lead to increased demand for corporate bonds, thereby potentially offsetting the expected economic slowdown's impact on yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.76,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "This new information highlights a potential mitigating factor to the expected economic slowdown's impact on corporate bond yields. The shift away from traditional fixed income assets towards alternative investments could lead to increased demand for corporate bonds, thereby offsetting the expected decrease in yields. As a result, I have increased my probability estimate for the Aaa corporate bond yield to increase compared to the 10-year Treasury yield by 2025-12-28. While the other reasons for my initial estimate remain valid, this new information suggests that the expected economic slowdown may have less of an impact on corporate bond yields than previously thought.",
+      "raw_response": "{\n  \"updated_probability\": 0.76,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"This new information highlights a potential mitigating factor to the expected economic slowdown's impact on corporate bond yields. The shift away from traditional fixed income assets towards alternative investments could lead to increased demand for corporate bonds, thereby offsetting the expected decrease in yields. As a result, I have increased my probability estimate for the Aaa corporate bond yield to increase compared to the 10-year Treasury yield by 2025-12-28. While the other reasons for my initial estimate remain valid, this new information suggests that the expected economic slowdown may have less of an impact on corporate bond yields than previously thought.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "probe_text": "The Bank of America Merrill Lynch Global Research team recently published a report stating that they anticipate a moderate recession in the US economy in 2026, citing weakening consumer spending and a decline in business investment. This assessment is in line with our forecast, suggesting that investors are indeed becoming more cautious and risk-averse, which could further support a decrease in corporate bond yields.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The recent report from the Bank of America Merrill Lynch Global Research team, anticipating a moderate recession in the US economy in 2026, has strengthened the argument that economic slowdown could lead to a decrease in corporate bond yields. Given this new information, I update my probability estimate from 0.63 to 0.45, reflecting a more cautious outlook for corporate bond yields. Although the general trend of corporate bond yields has been increasing since 2020 and the Federal Reserve has indicated continued interest rate hikes, the increasing likelihood of economic slowdown and investors becoming more risk-averse has diminished the likelihood of corporate bond yields increasing relative to the 10-year Treasury yield by 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The recent report from the Bank of America Merrill Lynch Global Research team, anticipating a moderate recession in the US economy in 2026, has strengthened the argument that economic slowdown could lead to a decrease in corporate bond yields. Given this new information, I update my probability estimate from 0.63 to 0.45, reflecting a more cautious outlook for corporate bond yields. Although the general trend of corporate bond yields has been increasing since 2020 and the Federal Reserve has indicated continued interest rate hikes, the increasing likelihood of economic slowdown and investors becoming more risk-averse has diminished the likelihood of corporate bond yields increasing relative to the 10-year Treasury yield by 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "probe_text": "The European Central Bank has announced plans to introduce a new euro-denominated coin, replacing the \u20ac2 commemorative coin, which was first introduced in 2004. This move is aimed at promoting the use of cash alongside digital payments and will not impact monetary policy decisions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.68,
+      "absolute_shift": 0.050000000000000044,
+      "shift_direction": "unchanged",
+      "reasoning": "The announcement by the European Central Bank about introducing a new euro-denominated coin is unrelated to monetary policy decisions and does not provide any new information about the potential economic slowdown or interest rate changes. Therefore, I do not see a significant impact on my previous estimate. The probability remains slightly increased due to the inherent uncertainty in the global economic outlook.",
+      "raw_response": "{\n  \"updated_probability\": 0.68,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The announcement by the European Central Bank about introducing a new euro-denominated coin is unrelated to monetary policy decisions and does not provide any new information about the potential economic slowdown or interest rate changes. Therefore, I do not see a significant impact on my previous estimate. The probability remains slightly increased due to the inherent uncertainty in the global economic outlook.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "AAA10Y",
+    "question_text": "Will Moody's Aaa Corporate Bond Yield compared to the 10-year Treasury yield have increased by 2025-12-28 as compared to its value on 2025-12-21?",
+    "source": "fred",
+    "condition": "one-turn",
+    "initial_probability": 0.63,
+    "n_probes": 20,
+    "n_successful": 20,
+    "mean_absolute_shift": 0.157,
+    "max_absolute_shift": 0.28
+  }
+}

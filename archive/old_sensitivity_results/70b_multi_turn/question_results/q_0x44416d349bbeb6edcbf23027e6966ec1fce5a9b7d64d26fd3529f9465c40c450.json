@@ -1,0 +1,999 @@
+{
+  "question_id": "0x44416d349bbeb6edcbf23027e6966ec1fce5a9b7d64d26fd3529f9465c40c450",
+  "question_text": "Will Kate Hudson win Best Actress at the 98th Academy Awards?",
+  "source": "polymarket",
+  "initial_probability": 0.23,
+  "nodes": [
+    {
+      "id": "kate_hudson_performance",
+      "description": "Quality of Kate Hudson's performance",
+      "role": "factor"
+    },
+    {
+      "id": "award_season_hype",
+      "description": "Level of hype and promotion during award season",
+      "role": "factor"
+    },
+    {
+      "id": "competition_level",
+      "description": "Strength of competition in the Best Actress category",
+      "role": "factor"
+    },
+    {
+      "id": "academy_voter_bias",
+      "description": "Potential biases of Academy voters",
+      "role": "factor"
+    },
+    {
+      "id": "film_popularity",
+      "description": "Popularity and critical acclaim of Kate Hudson's film",
+      "role": "factor"
+    },
+    {
+      "id": "past_award_wins",
+      "description": "Kate Hudson's past award wins and nominations",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Kate Hudson winning Best Actress at the 98th Academy Awards",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "kate_hudson_performance",
+      "to": "film_popularity",
+      "mechanism": "A strong performance contributes to the film's overall popularity"
+    },
+    {
+      "from": "film_popularity",
+      "to": "award_season_hype",
+      "mechanism": "Popular films tend to generate more award season buzz"
+    },
+    {
+      "from": "award_season_hype",
+      "to": "outcome",
+      "mechanism": "High levels of hype can increase an actress's chances of winning"
+    },
+    {
+      "from": "competition_level",
+      "to": "outcome",
+      "mechanism": "A weaker field of competitors can improve Kate Hudson's chances"
+    },
+    {
+      "from": "academy_voter_bias",
+      "to": "outcome",
+      "mechanism": "Voter biases can influence the outcome of the award"
+    },
+    {
+      "from": "past_award_wins",
+      "to": "academy_voter_bias",
+      "mechanism": "Past wins can create a positive bias among voters"
+    },
+    {
+      "from": "kate_hudson_performance",
+      "to": "outcome",
+      "mechanism": "An exceptional performance can directly influence voting decisions"
+    }
+  ],
+  "reasoning": "Kate Hudson's chances of winning Best Actress depend on a combination of factors, including the quality of her performance, the popularity of her film, and the level of competition in the category. Additionally, award season hype, Academy voter biases, and her past award wins can all play a role in influencing the outcome. Given these factors, I estimate her probability of winning at 0.23, reflecting a competitive field and the uncertainty of voter preferences.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "kate_hudson_performance",
+        "description": "Quality of Kate Hudson's performance",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0704,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2141
+      },
+      {
+        "node_id": "award_season_hype",
+        "description": "Level of hype and promotion during award season",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.2222,
+        "pagerank": 0.1556,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.1911
+      },
+      {
+        "node_id": "competition_level",
+        "description": "Strength of competition in the Best Actress category",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0704,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1141
+      },
+      {
+        "node_id": "academy_voter_bias",
+        "description": "Potential biases of Academy voters",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.1302,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.186
+      },
+      {
+        "node_id": "film_popularity",
+        "description": "Popularity and critical acclaim of Kate Hudson's film",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.1003,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1301
+      },
+      {
+        "node_id": "past_award_wins",
+        "description": "Kate Hudson's past award wins and nominations",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0704,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1141
+      },
+      {
+        "node_id": "outcome",
+        "description": "Kate Hudson winning Best Actress at the 98th Academy Awards",
+        "role": "outcome",
+        "in_degree": 4,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.75,
+        "pagerank": 0.4029,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0806
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "kate_hudson_performance",
+        "target": "film_popularity",
+        "mechanism": "A strong performance contributes to the film's overall popularity",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": false
+      },
+      {
+        "source": "kate_hudson_performance",
+        "target": "outcome",
+        "mechanism": "An exceptional performance can directly influence voting decisions",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "award_season_hype",
+        "target": "outcome",
+        "mechanism": "High levels of hype can increase an actress's chances of winning",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "competition_level",
+        "target": "outcome",
+        "mechanism": "A weaker field of competitors can improve Kate Hudson's chances",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "academy_voter_bias",
+        "target": "outcome",
+        "mechanism": "Voter biases can influence the outcome of the award",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "film_popularity",
+        "target": "award_season_hype",
+        "mechanism": "Popular films tend to generate more award season buzz",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "past_award_wins",
+        "target": "academy_voter_bias",
+        "mechanism": "Past wins can create a positive bias among voters",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "kate_hudson_performance",
+        "description": "Quality of Kate Hudson's performance",
+        "importance": 0.2141,
+        "centrality_rank": 1,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "award_season_hype",
+        "description": "Level of hype and promotion during award season",
+        "importance": 0.1911,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "film_popularity",
+        "description": "Popularity and critical acclaim of Kate Hudson's film",
+        "importance": 0.1301,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "past_award_wins",
+        "description": "Kate Hudson's past award wins and nominations",
+        "importance": 0.1141,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "kate_hudson_performance",
+        "description": "Quality of Kate Hudson's performance",
+        "importance": 0.2141,
+        "centrality_rank": 1,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "award_season_hype",
+        "description": "Level of hype and promotion during award season",
+        "importance": 0.1911,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "film_popularity->award_season_hype",
+        "description": "Popular films tend to generate more award season buzz",
+        "importance": 0.0714,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "award_season_hype->outcome",
+        "description": "High levels of hype can increase an actress's chances of winning",
+        "importance": 0.0476,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "kate_hudson_performance->film_popularity",
+        "description": "A strong performance contributes to the film's overall popularity",
+        "importance": 0.0476,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "film_popularity->award_season_hype",
+        "description": "Popular films tend to generate more award season buzz",
+        "importance": 0.0714,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "award_season_hype->competition_level",
+        "description": "Potential link: Level of hype and promotion during award season -> Strength of competition in the Best Actress category",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "award_season_hype->academy_voter_bias",
+        "description": "Potential link: Level of hype and promotion during award season -> Potential biases of Academy voters",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "kate_hudson_performance",
+      "description": "Quality of Kate Hudson's performance",
+      "importance": 0.2141,
+      "centrality_rank": 1,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "award_season_hype",
+      "description": "Level of hype and promotion during award season",
+      "importance": 0.1911,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "film_popularity",
+      "description": "Popularity and critical acclaim of Kate Hudson's film",
+      "importance": 0.1301,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "past_award_wins",
+      "description": "Kate Hudson's past award wins and nominations",
+      "importance": 0.1141,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "kate_hudson_performance",
+      "description": "Quality of Kate Hudson's performance",
+      "importance": 0.2141,
+      "centrality_rank": 1,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "award_season_hype",
+      "description": "Level of hype and promotion during award season",
+      "importance": 0.1911,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "film_popularity->award_season_hype",
+      "description": "Popular films tend to generate more award season buzz",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "award_season_hype->outcome",
+      "description": "High levels of hype can increase an actress's chances of winning",
+      "importance": 0.0476,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "kate_hudson_performance->film_popularity",
+      "description": "A strong performance contributes to the film's overall popularity",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "film_popularity->award_season_hype",
+      "description": "Popular films tend to generate more award season buzz",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "award_season_hype->competition_level",
+      "description": "Potential link: Level of hype and promotion during award season -> Strength of competition in the Best Actress category",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "award_season_hype->academy_voter_bias",
+      "description": "Potential link: Level of hype and promotion during award season -> Potential biases of Academy voters",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if Kate Hudson's performance, despite being highly praised by critics, does not significantly influence the voting decisions of the Academy due to a shift in voter priorities towards film impact and cultural relevance? Recent studies have shown that voters are increasingly considering the broader social and cultural context of a film, rather than solely the quality of individual performances. As a result, the exceptional acting in Kate Hudson's film might not be the decisive factor it once was. This change in voter behavior could render Kate Hudson's performance less relevant to the outcome.",
+      "probe_type": "node_negate_high",
+      "target_id": "kate_hudson_performance",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2141,
+      "centrality_rank": 1,
+      "on_critical_path": false,
+      "description": "Quality of Kate Hudson's performance"
+    },
+    {
+      "probe_text": "What if the excessive marketing and publicity campaigns during award season actually lead to voter fatigue, causing them to overlook Kate Hudson's performance? Perhaps the Academy voters are more inclined to recognize subtle, understated performances rather than those heavily promoted in the media. Recent studies have suggested that overexposure to an actress's image and interviews can negatively impact their chances of winning. Could it be that a more low-key approach would actually benefit Kate Hudson's nomination?",
+      "probe_type": "node_negate_high",
+      "target_id": "award_season_hype",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1911,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Level of hype and promotion during award season"
+    },
+    {
+      "probe_text": "Despite Kate Hudson's film receiving widespread critical acclaim, a recent scandal involving the film's production company has led to a significant backlash, with many critics and audiences reevaluating their initial positive assessments. As a result, the film's popularity has taken a substantial hit, with several high-profile award shows and critics' groups rescinding their earlier endorsements. This shift in public opinion raises questions about the true impact of film popularity on award outcomes. Does the film's current notoriety overshadow its initial critical success?",
+      "probe_type": "node_negate_medium",
+      "target_id": "film_popularity",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1301,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "Popularity and critical acclaim of Kate Hudson's film"
+    },
+    {
+      "probe_text": "Kate Hudson's past award wins and nominations have been largely overlooked in recent years due to a shift in voter focus towards newer talent. Additionally, the Academy's efforts to increase diversity and recognize emerging artists may have diminished the impact of past awards on current voting decisions. As a result, Kate Hudson's history of award wins may not be as significant a factor in the voting process as previously thought. This change in voter priorities could render her past awards less relevant to the outcome.",
+      "probe_type": "node_negate_low",
+      "target_id": "past_award_wins",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1141,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Kate Hudson's past award wins and nominations"
+    },
+    {
+      "probe_text": "Renowned film critic, Peter Travers, has just released a glowing review of Kate Hudson's performance, stating it's 'a tour-de-force that cements her status as one of the greatest actresses of our time.' This review is particularly significant given Travers' history of accurately predicting Oscar winners. The review has sparked widespread buzz, with many in the film community now considering Kate Hudson a frontrunner for the award. As a result, her performance is receiving increased attention and acclaim from both critics and audiences.",
+      "probe_type": "node_strengthen",
+      "target_id": "kate_hudson_performance",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2141,
+      "centrality_rank": 1,
+      "on_critical_path": false,
+      "description": "Quality of Kate Hudson's performance"
+    },
+    {
+      "probe_text": "According to a recent interview, the film's marketing team has secured a series of high-profile talk show appearances and magazine covers for Kate Hudson, significantly boosting her visibility during award season. Industry insiders are now predicting a substantial surge in public interest and buzz around her performance. This increased exposure is expected to translate into a higher profile at the Academy Awards, further solidifying her position as a top contender. As a result, award season analysts are revising their predictions to reflect the growing momentum behind Kate Hudson's campaign.",
+      "probe_type": "node_strengthen",
+      "target_id": "award_season_hype",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1911,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Level of hype and promotion during award season"
+    },
+    {
+      "probe_text": "However, it's possible that the award season hype surrounding Kate Hudson's film is not solely driven by its popularity, but rather by a strategic marketing campaign targeted at Academy voters. Recent examples, such as the film 'The Revenant', have shown that a well-orchestrated publicity push can generate significant buzz regardless of a film's overall popularity. Furthermore, the rise of social media has enabled studios to create and control their own narratives, potentially decoupling a film's popularity from its award season hype. This suggests that the link between film popularity and award season hype may be weaker than assumed.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "film_popularity->award_season_hype",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Popular films tend to generate more award season buzz"
+    },
+    {
+      "probe_text": "Despite generating significant buzz during award season, several highly publicized films in recent years have failed to translate their hype into major awards, suggesting that the relationship between award season hype and winning outcomes may be overstated. Furthermore, voters have increasingly expressed a desire to recognize more understated, yet critically acclaimed performances, potentially diminishing the impact of hype on their decisions. This shift in voter sentiment could indicate that the causal link between award season hype and winning outcomes is weaker than previously thought. Recent examples include films that were expected to sweep the awards but ended up with few or no major wins.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "award_season_hype->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "High levels of hype can increase an actress's chances of winning"
+    },
+    {
+      "probe_text": "However, it's been reported that Kate Hudson's film has received widespread critical acclaim largely due to its thought-provoking storyline and exceptional directing, rather than solely because of her performance. In fact, some critics have noted that the film's success can be attributed to its cultural relevance and timely release, which may overshadow individual performances. This suggests that the film's popularity might not be as heavily influenced by Kate Hudson's performance as initially thought. Could this external factor reduce the impact of her performance on the film's overall popularity?",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "kate_hudson_performance->film_popularity",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "A strong performance contributes to the film's overall popularity"
+    },
+    {
+      "probe_text": "Recent social media analysis reveals that award season hype often precedes and drives increased box office sales and popularity for films, as Academy voters and the public alike become more interested in films that are perceived as contenders. This suggests that the relationship between film popularity and award season hype may be reversed, with hype actually contributing to a film's popularity rather than the other way around. For instance, a film that gains significant award season traction may see a surge in ticket sales and streaming numbers, even if its initial release was modest. Could it be that award season hype is a key driver of film popularity, rather than the reverse?",
+      "probe_type": "edge_reverse",
+      "target_id": "film_popularity->award_season_hype",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Popular films tend to generate more award season buzz"
+    },
+    {
+      "probe_text": "It has been reported that the award season hype surrounding Kate Hudson's film has attracted several high-profile actresses to enter the Best Actress category, potentially increasing the competition level. Meanwhile, some less prominent actresses have decided not to submit their performances for consideration due to the intense hype and perceived strength of the field. This shift in the competitive landscape may impact Kate Hudson's chances of winning. Does this new information affect your estimate of Kate Hudson's probability of winning Best Actress?",
+      "probe_type": "edge_fabricate",
+      "target_id": "award_season_hype->competition_level",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of hype and promotion during award season -> Strength of competition in the Best Actress category"
+    },
+    {
+      "probe_text": "It's been reported that the Academy voters have been increasingly exposed to Kate Hudson's film through targeted promotional campaigns during award season, which may have subconsciously influenced their perception of her as a more deserving candidate. This exposure could have created a positive bias among voters, potentially swaying their decisions. Does this new information impact your estimate of Kate Hudson's chances of winning Best Actress? Consider how the increased hype might affect voter biases.",
+      "probe_type": "edge_fabricate",
+      "target_id": "award_season_hype->academy_voter_bias",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of hype and promotion during award season -> Potential biases of Academy voters"
+    },
+    {
+      "probe_text": "What if Kate Hudson engages in a high-profile charity campaign just before the award ceremony, potentially capturing the hearts of Academy voters and swaying their decisions? This could introduce a new factor, 'public_perception_of_kate_hudson', influencing the outcome through its effects on 'academy_voter_bias' and 'award_season_hype'. The charity campaign could improve voters' perception of Kate Hudson, thus biasing them in her favor. How would this new information change your estimate of Kate Hudson winning Best Actress?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if Kate Hudson's film is part of a larger social movement, resonating with the cultural zeitgeist and sparking important conversations among Academy voters, potentially influencing their voting decisions? The film's cultural relevance could be a significant factor in its success during award season. This factor was not considered in the initial causal network. How would you update your probability estimate if Kate Hudson's film aligns with a significant cultural movement?",
+      "probe_type": "missing_node",
+      "target_id": "cultural_relevance",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "The 98th Academy Awards ceremony will be held at the Dolby Theatre, which has recently undergone a renovation to improve its seating capacity and acoustic system. This renovation has been praised by attendees of past events for its improved comfort and aesthetics. However, some have noted that the new seating arrangement may affect the visibility of the stage from certain seats. The renovation's impact on the overall audience experience has been a topic of discussion among event organizers.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "The 98th Academy Awards ceremony will be held at a new venue, the Dolby Theatre, which has a slightly larger seating capacity than the previous venue. This change is expected to accommodate more attendees and provide a more immersive experience for the audience. The new venue's architecture and design have been praised for their aesthetic appeal and state-of-the-art technology. However, the venue's seating arrangement and stage design will remain largely unchanged from previous years.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if Kate Hudson's performance, despite being highly praised by critics, does not significantly influence the voting decisions of the Academy due to a shift in voter priorities towards film impact and cultural relevance? Recent studies have shown that voters are increasingly considering the broader social and cultural context of a film, rather than solely the quality of individual performances. As a result, the exceptional acting in Kate Hudson's film might not be the decisive factor it once was. This change in voter behavior could render Kate Hudson's performance less relevant to the outcome.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the direct influence of 'kate_hudson_performance' on the outcome, suggesting that voter priorities have shifted towards film impact and cultural relevance. This affects the causal path from 'kate_hudson_performance' to 'outcome', reducing its weight. Although 'kate_hudson_performance' still contributes to 'film_popularity', which in turn influences 'award_season_hype' and indirectly the outcome, the diminished direct impact of performance on voting decisions leads to a decrease in the overall probability estimate. The shift in voter priorities introduces uncertainty, but given the information, a moderate decrease in probability is warranted, reflecting the reduced reliance on individual performance quality in voting decisions.",
+      "raw_response": "{\"updated_probability\": 0.17, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the direct influence of 'kate_hudson_performance' on the outcome, suggesting that voter priorities have shifted towards film impact and cultural relevance. This affects the causal path from 'kate_hudson_performance' to 'outcome', reducing its weight. Although 'kate_hudson_performance' still contributes to 'film_popularity', which in turn influences 'award_season_hype' and indirectly the outcome, the diminished direct impact of performance on voting decisions leads to a decrease in the overall probability estimate. The shift in voter priorities introduces uncertainty, but given the information, a moderate decrease in probability is warranted, reflecting the reduced reliance on individual performance quality in voting decisions.\"}",
+      "target_id": "kate_hudson_performance",
+      "target_type": "node",
+      "target_importance": 0.2141,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the excessive marketing and publicity campaigns during award season actually lead to voter fatigue, causing them to overlook Kate Hudson's performance? Perhaps the Academy voters are more inclined to recognize subtle, understated performances rather than those heavily promoted in the media. Recent studies have suggested that overexposure to an actress's image and interviews can negatively impact their chances of winning. Could it be that a more low-key approach would actually benefit Kate Hudson's nomination?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.13,
+      "absolute_shift": 0.04000000000000001,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the positive effect of 'award_season_hype' on the outcome, suggesting that excessive marketing and publicity can lead to voter fatigue and negatively impact Kate Hudson's chances. This reverses the mechanism of the causal path from 'award_season_hype' to 'outcome', potentially turning what was once a beneficial factor into a hindrance. Given the updated understanding that overexposure might harm Kate Hudson's nomination, the probability of her winning decreases. The edges from 'film_popularity' to 'award_season_hype' and then to 'outcome' are now less favorable, as the initial assumption that more hype would increase her chances is no longer valid. This change introduces a new layer of complexity, highlighting the potential drawbacks of aggressive marketing strategies during award season.",
+      "raw_response": "{\"updated_probability\": 0.13, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the positive effect of 'award_season_hype' on the outcome, suggesting that excessive marketing and publicity can lead to voter fatigue and negatively impact Kate Hudson's chances. This reverses the mechanism of the causal path from 'award_season_hype' to 'outcome', potentially turning what was once a beneficial factor into a hindrance. Given the updated understanding that overexposure might harm Kate Hudson's nomination, the probability of her winning decreases. The edges from 'film_popularity' to 'award_season_hype' and then to 'outcome' are now less favorable, as the initial assumption that more hype would increase her chances is no longer valid. This change introduces a new layer of complexity, highlighting the potential drawbacks of aggressive marketing strategies during award season.\"}",
+      "target_id": "award_season_hype",
+      "target_type": "node",
+      "target_importance": 0.1911,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Despite Kate Hudson's film receiving widespread critical acclaim, a recent scandal involving the film's production company has led to a significant backlash, with many critics and audiences reevaluating their initial positive assessments. As a result, the film's popularity has taken a substantial hit, with several high-profile award shows and critics' groups rescinding their earlier endorsements. This shift in public opinion raises questions about the true impact of film popularity on award outcomes. Does the film's current notoriety overshadow its initial critical success?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.06,
+      "absolute_shift": 0.07,
+      "shift_direction": "decreased",
+      "reasoning": "The new information significantly challenges the 'film_popularity' factor, as the scandal surrounding the production company has led to a substantial decline in the film's public standing. This affects multiple causal paths: the edge from 'kate_hudson_performance' to 'film_popularity' is still present, but the reduced popularity of the film due to the scandal diminishes the positive impact of Kate Hudson's performance on the outcome. Furthermore, the decreased 'film_popularity' leads to lower 'award_season_hype', which, as previously updated, might not be beneficial due to voter fatigue. The combined effect of reduced film popularity and the potential negative impact of hype suggests a considerable decrease in Kate Hudson's chances of winning. The scandal's influence on public opinion and the rescinding of endorsements by award shows and critics' groups introduces a strong negative factor, overshadowing the film's initial critical success and substantially lowering the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.06, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information significantly challenges the 'film_popularity' factor, as the scandal surrounding the production company has led to a substantial decline in the film's public standing. This affects multiple causal paths: the edge from 'kate_hudson_performance' to 'film_popularity' is still present, but the reduced popularity of the film due to the scandal diminishes the positive impact of Kate Hudson's performance on the outcome. Furthermore, the decreased 'film_popularity' leads to lower 'award_season_hype', which, as previously updated, might not be beneficial due to voter fatigue. The combined effect of reduced film popularity and the potential negative impact of hype suggests a considerable decrease in Kate Hudson's chances of winning. The scandal's influence on public opinion and the rescinding of endorsements by award shows and critics' groups introduces a strong negative factor, overshadowing the film's initial critical success and substantially lowering the probability estimate.\"}",
+      "target_id": "film_popularity",
+      "target_type": "node",
+      "target_importance": 0.1301,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Kate Hudson's past award wins and nominations have been largely overlooked in recent years due to a shift in voter focus towards newer talent. Additionally, the Academy's efforts to increase diversity and recognize emerging artists may have diminished the impact of past awards on current voting decisions. As a result, Kate Hudson's history of award wins may not be as significant a factor in the voting process as previously thought. This change in voter priorities could render her past awards less relevant to the outcome.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.05,
+      "absolute_shift": 0.009999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the influence of 'past_award_wins' on the outcome, suggesting that the Academy's shift in focus towards newer talent and diversity has diminished the impact of Kate Hudson's past awards. This affects the causal path from 'past_award_wins' to 'academy_voter_bias', potentially reducing the positive bias that past wins might have created among voters. However, given that the probability estimate is already quite low (0.06), and the factor of 'past_award_wins' was not a primary driver of the initial forecast, the update to this factor results in a relatively small decrease in the overall probability. The change primarily reinforces the existing challenges to Kate Hudson's nomination, such as the film's scandal, voter fatigue, and shifted voter priorities, but does not drastically alter the outlook due to its initially peripheral role in the causal network.",
+      "raw_response": "{\"updated_probability\": 0.05, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the influence of 'past_award_wins' on the outcome, suggesting that the Academy's shift in focus towards newer talent and diversity has diminished the impact of Kate Hudson's past awards. This affects the causal path from 'past_award_wins' to 'academy_voter_bias', potentially reducing the positive bias that past wins might have created among voters. However, given that the probability estimate is already quite low (0.06), and the factor of 'past_award_wins' was not a primary driver of the initial forecast, the update to this factor results in a relatively small decrease in the overall probability. The change primarily reinforces the existing challenges to Kate Hudson's nomination, such as the film's scandal, voter fatigue, and shifted voter priorities, but does not drastically alter the outlook due to its initially peripheral role in the causal network.\"}",
+      "target_id": "past_award_wins",
+      "target_type": "node",
+      "target_importance": 0.1141,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "Renowned film critic, Peter Travers, has just released a glowing review of Kate Hudson's performance, stating it's 'a tour-de-force that cements her status as one of the greatest actresses of our time.' This review is particularly significant given Travers' history of accurately predicting Oscar winners. The review has sparked widespread buzz, with many in the film community now considering Kate Hudson a frontrunner for the award. As a result, her performance is receiving increased attention and acclaim from both critics and audiences.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.06999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly challenges the previously diminished view of 'kate_hudson_performance' as a factor, reintroducing its potential impact on the outcome. Peter Travers' review, given his reputation for predicting Oscar winners, adds substantial credibility to Kate Hudson's performance, potentially overcoming some of the negative factors such as the film's scandal and voter fatigue. This development affects the causal path from 'kate_hudson_performance' to 'outcome', as the renewed focus on her performance could directly influence voting decisions. Additionally, the increased attention and acclaim might partially mitigate the negative effects of the film's scandal on 'film_popularity' and subsequently on 'award_season_hype'. However, considering the complex interplay of factors and the previous challenges to her nomination, the increase in probability, while notable, remains moderate, reflecting the persistent uncertainty and competition in the Best Actress category.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"increased\", \"reasoning\": \"The new information significantly challenges the previously diminished view of 'kate_hudson_performance' as a factor, reintroducing its potential impact on the outcome. Peter Travers' review, given his reputation for predicting Oscar winners, adds substantial credibility to Kate Hudson's performance, potentially overcoming some of the negative factors such as the film's scandal and voter fatigue. This development affects the causal path from 'kate_hudson_performance' to 'outcome', as the renewed focus on her performance could directly influence voting decisions. Additionally, the increased attention and acclaim might partially mitigate the negative effects of the film's scandal on 'film_popularity' and subsequently on 'award_season_hype'. However, considering the complex interplay of factors and the previous challenges to her nomination, the increase in probability, while notable, remains moderate, reflecting the persistent uncertainty and competition in the Best Actress category.\"}",
+      "target_id": "kate_hudson_performance",
+      "target_type": "node",
+      "target_importance": 0.2141,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "According to a recent interview, the film's marketing team has secured a series of high-profile talk show appearances and magazine covers for Kate Hudson, significantly boosting her visibility during award season. Industry insiders are now predicting a substantial surge in public interest and buzz around her performance. This increased exposure is expected to translate into a higher profile at the Academy Awards, further solidifying her position as a top contender. As a result, award season analysts are revising their predictions to reflect the growing momentum behind Kate Hudson's campaign.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.2,
+      "absolute_shift": 0.08000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The new information positively affects the 'award_season_hype' factor, suggesting that the strategic marketing efforts will successfully increase Kate Hudson's visibility and public interest in her performance. This development impacts the causal path from 'award_season_hype' to 'outcome', as the heightened buzz and momentum are expected to improve her chances of winning. Although previous updates suggested that excessive hype might lead to voter fatigue, the current context, where Kate Hudson's performance has recently received a significant boost from Peter Travers' review, indicates that the increased exposure might actually contribute to her nomination's strength. The marketing team's efforts to secure high-profile appearances and covers could help offset some of the negative effects of the film's scandal, potentially leading to a more favorable view of her performance among voters. Given the growing momentum and revised predictions from award season analysts, a moderate increase in the probability estimate is warranted, reflecting the enhanced visibility and buzz surrounding Kate Hudson's campaign.",
+      "raw_response": "{\"updated_probability\": 0.20, \"shift_direction\": \"increased\", \"reasoning\": \"The new information positively affects the 'award_season_hype' factor, suggesting that the strategic marketing efforts will successfully increase Kate Hudson's visibility and public interest in her performance. This development impacts the causal path from 'award_season_hype' to 'outcome', as the heightened buzz and momentum are expected to improve her chances of winning. Although previous updates suggested that excessive hype might lead to voter fatigue, the current context, where Kate Hudson's performance has recently received a significant boost from Peter Travers' review, indicates that the increased exposure might actually contribute to her nomination's strength. The marketing team's efforts to secure high-profile appearances and covers could help offset some of the negative effects of the film's scandal, potentially leading to a more favorable view of her performance among voters. Given the growing momentum and revised predictions from award season analysts, a moderate increase in the probability estimate is warranted, reflecting the enhanced visibility and buzz surrounding Kate Hudson's campaign.\"}",
+      "target_id": "award_season_hype",
+      "target_type": "node",
+      "target_importance": 0.1911,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, it's possible that the award season hype surrounding Kate Hudson's film is not solely driven by its popularity, but rather by a strategic marketing campaign targeted at Academy voters. Recent examples, such as the film 'The Revenant', have shown that a well-orchestrated publicity push can generate significant buzz regardless of a film's overall popularity. Furthermore, the rise of social media has enabled studios to create and control their own narratives, potentially decoupling a film's popularity from its award season hype. This suggests that the link between film popularity and award season hype may be weaker than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.2,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information challenges the strength of the causal link between 'film_popularity' and 'award_season_hype', suggesting that a strategic marketing campaign can drive award season hype independently of a film's popularity. This update does not directly alter the probability estimate because the current forecast already incorporates a scenario where 'award_season_hype' is positively influencing the outcome, driven by the marketing efforts rather than solely by 'film_popularity'. The example of 'The Revenant' and the impact of social media on controlling narratives support the idea that 'award_season_hype' can be managed and enhanced through targeted campaigns, which is consistent with the recent increase in Kate Hudson's visibility and buzz. Since the probability estimate was already adjusted to reflect the positive impact of 'award_season_hype' on her chances, and this new information primarily provides additional context on how 'award_season_hype' is generated rather than altering its effect on the outcome, the probability remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.20, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information challenges the strength of the causal link between 'film_popularity' and 'award_season_hype', suggesting that a strategic marketing campaign can drive award season hype independently of a film's popularity. This update does not directly alter the probability estimate because the current forecast already incorporates a scenario where 'award_season_hype' is positively influencing the outcome, driven by the marketing efforts rather than solely by 'film_popularity'. The example of 'The Revenant' and the impact of social media on controlling narratives support the idea that 'award_season_hype' can be managed and enhanced through targeted campaigns, which is consistent with the recent increase in Kate Hudson's visibility and buzz. Since the probability estimate was already adjusted to reflect the positive impact of 'award_season_hype' on her chances, and this new information primarily provides additional context on how 'award_season_hype' is generated rather than altering its effect on the outcome, the probability remains unchanged.\"}",
+      "target_id": "film_popularity->award_season_hype",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Despite generating significant buzz during award season, several highly publicized films in recent years have failed to translate their hype into major awards, suggesting that the relationship between award season hype and winning outcomes may be overstated. Furthermore, voters have increasingly expressed a desire to recognize more understated, yet critically acclaimed performances, potentially diminishing the impact of hype on their decisions. This shift in voter sentiment could indicate that the causal link between award season hype and winning outcomes is weaker than previously thought. Recent examples include films that were expected to sweep the awards but ended up with few or no major wins.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.15,
+      "absolute_shift": 0.05000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the strength of the causal link between 'award_season_hype' and 'outcome', suggesting that the relationship between hype and winning outcomes may be weaker than previously assumed. This update affects the probability estimate because it diminishes the expected positive impact of 'award_season_hype' on Kate Hudson's chances of winning. The examples of highly publicized films failing to translate hype into major awards, combined with the shift in voter sentiment towards recognizing more understated performances, indicate that voters may be less swayed by hype than previously thought. As a result, the increased 'award_season_hype' surrounding Kate Hudson's film may not be as beneficial to her nomination as initially estimated. Given this new information, a moderate decrease in the probability estimate is warranted, reflecting the potentially reduced impact of award season hype on the outcome.",
+      "raw_response": "{\"updated_probability\": 0.15, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the strength of the causal link between 'award_season_hype' and 'outcome', suggesting that the relationship between hype and winning outcomes may be weaker than previously assumed. This update affects the probability estimate because it diminishes the expected positive impact of 'award_season_hype' on Kate Hudson's chances of winning. The examples of highly publicized films failing to translate hype into major awards, combined with the shift in voter sentiment towards recognizing more understated performances, indicate that voters may be less swayed by hype than previously thought. As a result, the increased 'award_season_hype' surrounding Kate Hudson's film may not be as beneficial to her nomination as initially estimated. Given this new information, a moderate decrease in the probability estimate is warranted, reflecting the potentially reduced impact of award season hype on the outcome.\"}",
+      "target_id": "award_season_hype->outcome",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "However, it's been reported that Kate Hudson's film has received widespread critical acclaim largely due to its thought-provoking storyline and exceptional directing, rather than solely because of her performance. In fact, some critics have noted that the film's success can be attributed to its cultural relevance and timely release, which may overshadow individual performances. This suggests that the film's popularity might not be as heavily influenced by Kate Hudson's performance as initially thought. Could this external factor reduce the impact of her performance on the film's overall popularity?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the strength of the causal link between 'kate_hudson_performance' and 'film_popularity', suggesting that the film's success is more broadly attributed to its storyline, directing, cultural relevance, and timely release, rather than solely to Kate Hudson's performance. This update affects the probability estimate because it reduces the expected positive impact of 'kate_hudson_performance' on 'film_popularity', and subsequently on the outcome. Although Kate Hudson's performance has received critical acclaim, the fact that the film's popularity is driven by other factors diminishes the direct influence of her performance on the film's overall success. Given that the probability estimate already accounts for various challenges to her nomination, this additional nuance further refines the understanding of the causal paths, leading to a moderate decrease in the probability estimate. The decrease reflects the reduced weight given to 'kate_hudson_performance' as a driver of 'film_popularity' and, by extension, the outcome.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the strength of the causal link between 'kate_hudson_performance' and 'film_popularity', suggesting that the film's success is more broadly attributed to its storyline, directing, cultural relevance, and timely release, rather than solely to Kate Hudson's performance. This update affects the probability estimate because it reduces the expected positive impact of 'kate_hudson_performance' on 'film_popularity', and subsequently on the outcome. Although Kate Hudson's performance has received critical acclaim, the fact that the film's popularity is driven by other factors diminishes the direct influence of her performance on the film's overall success. Given that the probability estimate already accounts for various challenges to her nomination, this additional nuance further refines the understanding of the causal paths, leading to a moderate decrease in the probability estimate. The decrease reflects the reduced weight given to 'kate_hudson_performance' as a driver of 'film_popularity' and, by extension, the outcome.\"}",
+      "target_id": "kate_hudson_performance->film_popularity",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent social media analysis reveals that award season hype often precedes and drives increased box office sales and popularity for films, as Academy voters and the public alike become more interested in films that are perceived as contenders. This suggests that the relationship between film popularity and award season hype may be reversed, with hype actually contributing to a film's popularity rather than the other way around. For instance, a film that gains significant award season traction may see a surge in ticket sales and streaming numbers, even if its initial release was modest. Could it be that award season hype is a key driver of film popularity, rather than the reverse?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information challenges the direction of the causal link between 'film_popularity' and 'award_season_hype', suggesting that award season hype may actually drive film popularity, rather than the reverse. However, this update does not significantly alter the probability estimate because the current forecast already incorporates a scenario where 'award_season_hype' is a key factor influencing the outcome, regardless of its relationship with 'film_popularity'. The reversal of the causal link primarily affects the understanding of how 'film_popularity' is influenced, rather than changing the overall impact of 'award_season_hype' on Kate Hudson's chances of winning. Given that the probability estimate is based on the cumulative effect of various factors, including the direct influence of 'kate_hudson_performance', 'award_season_hype', and other considerations, the revised understanding of the 'film_popularity' to 'award_season_hype' link does not substantially alter the overall assessment of her nomination prospects.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information challenges the direction of the causal link between 'film_popularity' and 'award_season_hype', suggesting that award season hype may actually drive film popularity, rather than the reverse. However, this update does not significantly alter the probability estimate because the current forecast already incorporates a scenario where 'award_season_hype' is a key factor influencing the outcome, regardless of its relationship with 'film_popularity'. The reversal of the causal link primarily affects the understanding of how 'film_popularity' is influenced, rather than changing the overall impact of 'award_season_hype' on Kate Hudson's chances of winning. Given that the probability estimate is based on the cumulative effect of various factors, including the direct influence of 'kate_hudson_performance', 'award_season_hype', and other considerations, the revised understanding of the 'film_popularity' to 'award_season_hype' link does not substantially alter the overall assessment of her nomination prospects.\"}",
+      "target_id": "film_popularity->award_season_hype",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "It has been reported that the award season hype surrounding Kate Hudson's film has attracted several high-profile actresses to enter the Best Actress category, potentially increasing the competition level. Meanwhile, some less prominent actresses have decided not to submit their performances for consideration due to the intense hype and perceived strength of the field. This shift in the competitive landscape may impact Kate Hudson's chances of winning. Does this new information affect your estimate of Kate Hudson's probability of winning Best Actress?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.09,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The new information introduces a challenge to the causal link between 'award_season_hype' and 'competition_level', suggesting that the increased hype surrounding Kate Hudson's film has actually attracted stronger competition to the Best Actress category. This development affects the probability estimate because a more competitive field typically decreases an individual's chances of winning. The fact that several high-profile actresses have entered the category, while less prominent ones have opted out, indicates a more intense and competitive environment. Given this updated understanding of the competitive landscape, a decrease in the probability estimate is warranted, reflecting the increased difficulty for Kate Hudson to stand out and secure the award amidst a stronger field of competitors.",
+      "raw_response": "{\"updated_probability\": 0.09, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information introduces a challenge to the causal link between 'award_season_hype' and 'competition_level', suggesting that the increased hype surrounding Kate Hudson's film has actually attracted stronger competition to the Best Actress category. This development affects the probability estimate because a more competitive field typically decreases an individual's chances of winning. The fact that several high-profile actresses have entered the category, while less prominent ones have opted out, indicates a more intense and competitive environment. Given this updated understanding of the competitive landscape, a decrease in the probability estimate is warranted, reflecting the increased difficulty for Kate Hudson to stand out and secure the award amidst a stronger field of competitors.\"}",
+      "target_id": "award_season_hype->competition_level",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "It's been reported that the Academy voters have been increasingly exposed to Kate Hudson's film through targeted promotional campaigns during award season, which may have subconsciously influenced their perception of her as a more deserving candidate. This exposure could have created a positive bias among voters, potentially swaying their decisions. Does this new information impact your estimate of Kate Hudson's chances of winning Best Actress? Consider how the increased hype might affect voter biases.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.03,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a positive influence on the causal link between 'award_season_hype' and 'academy_voter_bias', suggesting that the targeted promotional campaigns have created a favorable bias among Academy voters towards Kate Hudson. This development affects the probability estimate because a positive bias among voters can significantly improve an individual's chances of winning. The fact that voters have been subconsciously influenced by the increased exposure to Kate Hudson's film, potentially making them more inclined to view her as a deserving candidate, indicates a shift in the voting dynamics in her favor. Given this updated understanding of the voter bias, an increase in the probability estimate is warranted, reflecting the potential for the increased hype and promotional efforts to positively sway voter decisions and enhance Kate Hudson's chances of winning.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"increased\", \"reasoning\": \"The new information introduces a positive influence on the causal link between 'award_season_hype' and 'academy_voter_bias', suggesting that the targeted promotional campaigns have created a favorable bias among Academy voters towards Kate Hudson. This development affects the probability estimate because a positive bias among voters can significantly improve an individual's chances of winning. The fact that voters have been subconsciously influenced by the increased exposure to Kate Hudson's film, potentially making them more inclined to view her as a deserving candidate, indicates a shift in the voting dynamics in her favor. Given this updated understanding of the voter bias, an increase in the probability estimate is warranted, reflecting the potential for the increased hype and promotional efforts to positively sway voter decisions and enhance Kate Hudson's chances of winning.\"}",
+      "target_id": "award_season_hype->academy_voter_bias",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if Kate Hudson engages in a high-profile charity campaign just before the award ceremony, potentially capturing the hearts of Academy voters and swaying their decisions? This could introduce a new factor, 'public_perception_of_kate_hudson', influencing the outcome through its effects on 'academy_voter_bias' and 'award_season_hype'. The charity campaign could improve voters' perception of Kate Hudson, thus biasing them in her favor. How would this new information change your estimate of Kate Hudson winning Best Actress?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.06,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a structural challenge to the causal model by suggesting the addition of a new factor, 'public_perception_of_kate_hudson', which could influence the outcome through its effects on 'academy_voter_bias' and 'award_season_hype'. The potential for Kate Hudson to engage in a high-profile charity campaign just before the award ceremony could significantly improve her public image, thereby positively affecting voter bias and potentially amplifying the award season hype surrounding her film. This new factor introduces an additional pathway through which Kate Hudson's chances of winning could be increased, as a favorable public perception could not only directly influence voter bias but also reinforce the positive narratives surrounding her film during award season. Given the potential for this charity campaign to positively impact both voter bias and award season hype, a moderate increase in the probability estimate is warranted, reflecting the introduction of this new, potentially influential factor.",
+      "raw_response": "{\"updated_probability\": 0.18, \"shift_direction\": \"increased\", \"reasoning\": \"The new information introduces a structural challenge to the causal model by suggesting the addition of a new factor, 'public_perception_of_kate_hudson', which could influence the outcome through its effects on 'academy_voter_bias' and 'award_season_hype'. The potential for Kate Hudson to engage in a high-profile charity campaign just before the award ceremony could significantly improve her public image, thereby positively affecting voter bias and potentially amplifying the award season hype surrounding her film. This new factor introduces an additional pathway through which Kate Hudson's chances of winning could be increased, as a favorable public perception could not only directly influence voter bias but also reinforce the positive narratives surrounding her film during award season. Given the potential for this charity campaign to positively impact both voter bias and award season hype, a moderate increase in the probability estimate is warranted, reflecting the introduction of this new, potentially influential factor.\"}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if Kate Hudson's film is part of a larger social movement, resonating with the cultural zeitgeist and sparking important conversations among Academy voters, potentially influencing their voting decisions? The film's cultural relevance could be a significant factor in its success during award season. This factor was not considered in the initial causal network. How would you update your probability estimate if Kate Hudson's film aligns with a significant cultural movement?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.07,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a structural challenge to the causal model by highlighting the potential impact of the film's cultural relevance on the outcome. The fact that Kate Hudson's film is part of a larger social movement, resonating with the cultural zeitgeist, could significantly influence Academy voters' decisions, as they may be more inclined to recognize and reward films that spark important conversations and align with the values of the current cultural landscape. This new factor, 'cultural_relevance', could have a profound effect on the causal network, potentially strengthening the links between 'film_popularity', 'award_season_hype', and 'outcome', as well as introducing a new pathway through which 'cultural_relevance' directly influences 'academy_voter_bias' and 'outcome'. Given the potential for Kate Hudson's film to benefit from its alignment with a significant cultural movement, a moderate increase in the probability estimate is warranted, reflecting the introduction of this new, influential factor and its potential to sway voter decisions in favor of her film.",
+      "raw_response": "{\"updated_probability\": 0.25, \"shift_direction\": \"increased\", \"reasoning\": \"The new information introduces a structural challenge to the causal model by highlighting the potential impact of the film's cultural relevance on the outcome. The fact that Kate Hudson's film is part of a larger social movement, resonating with the cultural zeitgeist, could significantly influence Academy voters' decisions, as they may be more inclined to recognize and reward films that spark important conversations and align with the values of the current cultural landscape. This new factor, 'cultural_relevance', could have a profound effect on the causal network, potentially strengthening the links between 'film_popularity', 'award_season_hype', and 'outcome', as well as introducing a new pathway through which 'cultural_relevance' directly influences 'academy_voter_bias' and 'outcome'. Given the potential for Kate Hudson's film to benefit from its alignment with a significant cultural movement, a moderate increase in the probability estimate is warranted, reflecting the introduction of this new, influential factor and its potential to sway voter decisions in favor of her film.\"}",
+      "target_id": "cultural_relevance",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The 98th Academy Awards ceremony will be held at the Dolby Theatre, which has recently undergone a renovation to improve its seating capacity and acoustic system. This renovation has been praised by attendees of past events for its improved comfort and aesthetics. However, some have noted that the new seating arrangement may affect the visibility of the stage from certain seats. The renovation's impact on the overall audience experience has been a topic of discussion among event organizers.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information regarding the renovation of the Dolby Theatre, where the 98th Academy Awards ceremony will be held, does not structurally challenge the causal model related to Kate Hudson's chances of winning Best Actress. The details about the theatre's seating capacity, acoustic system, comfort, and aesthetics, as well as discussions about the visibility of the stage from certain seats, are irrelevant to the factors that influence the voting decisions of the Academy members. The outcome of the award is determined by the votes of the Academy members, which are based on their evaluation of the performances, films, and other relevant factors, not by the physical environment of the award ceremony. Therefore, this new information does not affect the probability estimate of Kate Hudson winning Best Actress.",
+      "raw_response": "{\"updated_probability\": 0.25, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information regarding the renovation of the Dolby Theatre, where the 98th Academy Awards ceremony will be held, does not structurally challenge the causal model related to Kate Hudson's chances of winning Best Actress. The details about the theatre's seating capacity, acoustic system, comfort, and aesthetics, as well as discussions about the visibility of the stage from certain seats, are irrelevant to the factors that influence the voting decisions of the Academy members. The outcome of the award is determined by the votes of the Academy members, which are based on their evaluation of the performances, films, and other relevant factors, not by the physical environment of the award ceremony. Therefore, this new information does not affect the probability estimate of Kate Hudson winning Best Actress.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The 98th Academy Awards ceremony will be held at a new venue, the Dolby Theatre, which has a slightly larger seating capacity than the previous venue. This change is expected to accommodate more attendees and provide a more immersive experience for the audience. The new venue's architecture and design have been praised for their aesthetic appeal and state-of-the-art technology. However, the venue's seating arrangement and stage design will remain largely unchanged from previous years.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information regarding the change in venue to the Dolby Theatre, with its larger seating capacity and improved aesthetics, does not structurally challenge the causal model related to Kate Hudson's chances of winning Best Actress. The factors that influence the voting decisions of the Academy members, such as the quality of performances, film popularity, award season hype, and voter bias, remain unaffected by the change in venue. The venue's seating arrangement and stage design, being largely unchanged, further minimizes any potential impact on the ceremony's dynamics that could influence voting outcomes. Therefore, this new information does not alter the probability estimate of Kate Hudson winning Best Actress.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n   \"shift_direction\": \"unchanged\",\n   \"reasoning\": \"The new information regarding the change in venue to the Dolby Theatre, with its larger seating capacity and improved aesthetics, does not structurally challenge the causal model related to Kate Hudson's chances of winning Best Actress. The factors that influence the voting decisions of the Academy members, such as the quality of performances, film popularity, award season hype, and voter bias, remain unaffected by the change in venue. The venue's seating arrangement and stage design, being largely unchanged, further minimizes any potential impact on the ceremony's dynamics that could influence voting outcomes. Therefore, this new information does not alter the probability estimate of Kate Hudson winning Best Actress.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "0x44416d349bbeb6edcbf23027e6966ec1fce5a9b7d64d26fd3529f9465c40c450",
+    "question_text": "Will Kate Hudson win Best Actress at the 98th Academy Awards?",
+    "source": "polymarket",
+    "condition": "multi-turn",
+    "initial_probability": 0.23,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.037500000000000006,
+    "max_absolute_shift": 0.08000000000000002
+  }
+}

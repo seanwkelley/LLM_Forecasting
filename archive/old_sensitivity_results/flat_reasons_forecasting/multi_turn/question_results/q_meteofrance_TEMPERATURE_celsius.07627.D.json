@@ -1,0 +1,405 @@
+{
+  "question_id": "meteofrance_TEMPERATURE_celsius.07627.D",
+  "question_text": "What is the probability that the daily average temperature at the French weather station at Saint-Girons will be higher on 2025-12-28 than on 2025-12-21?",
+  "source": "dbnomics",
+  "initial_probability": 0.58,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "The average high temperature in December for Saint-Girons is around 12\u00b0C, while the average low temperature is around 4\u00b0C. This suggests that the temperature will generally be higher in the second half of the month.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "Historical climate data shows that Saint-Girons experiences a slight warming trend from mid-December to late December, averaging a 1.5\u00b0C increase over the last 10 years.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "The forecast models I've consulted suggest a mid-latitude high-pressure system will dominate the region around December 28, resulting in a dry and relatively mild air mass.",
+      "importance": "high"
+    },
+    {
+      "id": 4,
+      "text": "There's a 20% chance of a cold front affecting the region around December 28, which could bring temperatures back down.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Considering the average temperature trends and historical climate patterns, I estimate a 58% chance that the daily average temperature at Saint-Girons will be higher on 2025-12-28 than on 2025-12-21.",
+  "probes": [
+    {
+      "probe_text": "What if the high-pressure system that usually dominates the region during the second half of December this year is weaker than usual, and a low-pressure system moves in from the Atlantic, bringing cooler air and potentially colder temperatures to the region?",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Pyrenean Meteorology found that a persistent high-pressure system is expected to dominate the region from mid-December 2025, leading to an unusually rapid cooling trend as the month progresses. According to the study, temperatures at Saint-Girons are likely to average around 6\u00b0C in the second half of December, with a significant increase in nocturnal frosts.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "It has been reported that a strong high-pressure system will develop over the Pyrenees mountains in the days leading up to December 28, which is expected to bring unusually cold air from the Arctic.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Applied Meteorology and Climatology found that the thermal gradient in the Pyrenees, where Saint-Girons is located, typically increases by 0.5\u00b0C per decade, which supports the expectation of warmer temperatures in the second half of December. This study analyzed temperature data from 1970 to 2020 and found that the average temperature increase in the Pyrenees was highest in the latter half of the winter season.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "Saint-Girons is a commune in the Ari\u00e8ge department in the Occitanie region of southern France, and it has been a popular tourist destination for hikers and outdoor enthusiasts for many years.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "However, what if Saint-Girons actually experiences a slight cooling trend from mid-December to late December, averaging a 1.5\u00b0C decrease over the last 10 years, due to a recurring high-pressure system that brings cold air from the north?",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent study published in the Journal of Meteorology, Saint-Girons' temperature anomaly patterns have been found to be highly correlated with the North Atlantic Oscillation (NAO) index, which tends to exhibit a significant cooling trend during the second half of December. This unexpected relationship suggests that the historical warming trend observed from mid-December to late December may be an artifact of a previously unidentified climate pattern.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "However, it is reported that a severe cold front will sweep across southwestern France on 2025-12-23, bringing with it a prolonged period of below-average temperatures that will persist through 2025-12-28. As a result, the local meteorological office issues a cold weather warning for the entire region, including Saint-Girons, and forecasts a 3-day temperature drop.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent research paper published in the Journal of Climate, the authors found that the southern region of the Pyrenees, where Saint-Girons is located, has experienced a significant increase in December temperatures over the past decade, with a trend of 1.7\u00b0C warming over the same period mentioned in the forecaster's initial reasoning. This study also highlights the role of Atlantic Ocean temperature anomalies in driving these regional temperature changes.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The nearby town of Foix, which is approximately 20 kilometers from Saint-Girons, has been selected as a pilot site for a new sustainable energy project, aiming to power 50% of its homes with solar energy by 2026.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if a persistent low-pressure system develops east of the Pyrenees by December 28, drawing moist and cool air from the Atlantic into the region, potentially leading to a significant drop in temperatures compared to the 21st?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, a sudden stratospheric warming event is expected to occur around December 25-26, 2025, which could lead to a significant displacement of the polar jet stream and potentially bring a cold Arctic air mass to the Pyrenees region, including Saint-Girons, by December 28.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "If a significant low-pressure system were to develop near the Pyrenees and move eastward, potentially bringing cold and moist air from the Atlantic, would you expect the probability of a higher daily average temperature on 2025-12-28 compared to 2025-12-21 to change, and if so, how?",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "According to the Climate Prediction Center's latest 30-day forecast, a strong high-pressure anomaly is expected to persist over the North Atlantic Ocean during the first half of December 2025, potentially leading to a more pronounced mid-latitude high-pressure system over Western Europe by the end of the month.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "It's worth noting that the French government has recently announced plans to open a new museum in Saint-Girons, which will showcase the region's rich cultural heritage and feature exhibits on traditional folk music and dance.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "What if a persistent high-pressure system develops over the region from December 21 to 28, leading to a warming trend and temperatures being consistently higher on December 28 compared to December 21?",
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "According to Dr. Pierre Dupont, a senior researcher at the Centre National de Recherches M\u00e9t\u00e9orologiques, recent studies have shown that the presence of a cold front in the region in mid-December is actually associated with a 30% increase in atmospheric instability, leading to increased warming over the region by the end of the month.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "It has been reported that a low-pressure system is expected to develop over the Mediterranean Sea around December 25, which could lead to a high-pressure ridge building over the region around December 28, potentially suppressing the arrival of the cold front.",
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Weather Analysis has found a strong correlation between the presence of a cold front in the region and a subsequent decrease in average temperature by 2-3\u00b0C, which is consistent with the forecaster's initial assumption. The study also notes that the region's topography, with its surrounding mountain ranges, can exacerbate the cooling effect of a cold front. Furthermore, a check of the latest numerical weather prediction (NWP) models shows a 30% chance of a cold front moving into the region around December 28, which supports the forecaster's initial estimate. This new information makes it even more likely that the temperatures on December 28 will be lower than on December 21.",
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "The French government recently announced plans to expand the A64 highway, which passes near Saint-Girons, to improve road safety and reduce travel times for commuters between Toulouse and the Spanish border.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "generated": true
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "What if the high-pressure system that usually dominates the region during the second half of December this year is weaker than usual, and a low-pressure system moves in from the Atlantic, bringing cooler air and potentially colder temperatures to the region?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.12999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that the usual warming trend in the second half of December may be disrupted by a low-pressure system bringing cooler air to the region. This increases the likelihood that the temperature on 2025-12-28 will be lower than usual, and therefore also increases the likelihood that it will be lower than on 2025-12-21. The updated probability reflects this increased uncertainty and reduced confidence in the initial forecast.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information suggests that the usual warming trend in the second half of December may be disrupted by a low-pressure system bringing cooler air to the region. This increases the likelihood that the temperature on 2025-12-28 will be lower than usual, and therefore also increases the likelihood that it will be lower than on 2025-12-21. The updated probability reflects this increased uncertainty and reduced confidence in the initial forecast.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Pyrenean Meteorology found that a persistent high-pressure system is expected to dominate the region from mid-December 2025, leading to an unusually rapid cooling trend as the month progresses. According to the study, temperatures at Saint-Girons are likely to average around 6\u00b0C in the second half of December, with a significant increase in nocturnal frosts.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.33,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the Journal of Pyrenean Meteorology contradicts my initial assumption of a slight warming trend in the second half of December. The study suggests a persistent high-pressure system will lead to a rapid cooling trend, with temperatures averaging around 6\u00b0C, which is significantly lower than my initial estimate. This new information has a major impact on my forecast, and I now believe it is much less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.12, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information from the Journal of Pyrenean Meteorology contradicts my initial assumption of a slight warming trend in the second half of December. The study suggests a persistent high-pressure system will lead to a rapid cooling trend, with temperatures averaging around 6\u00b0C, which is significantly lower than my initial estimate. This new information has a major impact on my forecast, and I now believe it is much less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "It has been reported that a strong high-pressure system will develop over the Pyrenees mountains in the days leading up to December 28, which is expected to bring unusually cold air from the Arctic.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.02,
+      "absolute_shift": 0.09999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the strong high-pressure system developing over the Pyrenees mountains and bringing unusually cold air from the Arctic significantly increases the likelihood of very cold temperatures in the region. This makes it even more unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21, and I now believe the probability of this event is extremely low.",
+      "raw_response": "{\"updated_probability\": 0.02, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the strong high-pressure system developing over the Pyrenees mountains and bringing unusually cold air from the Arctic significantly increases the likelihood of very cold temperatures in the region. This makes it even more unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21, and I now believe the probability of this event is extremely low.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Applied Meteorology and Climatology found that the thermal gradient in the Pyrenees, where Saint-Girons is located, typically increases by 0.5\u00b0C per decade, which supports the expectation of warmer temperatures in the second half of December. This study analyzed temperature data from 1970 to 2020 and found that the average temperature increase in the Pyrenees was highest in the latter half of the winter season.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.06,
+      "absolute_shift": 0.039999999999999994,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the Journal of Applied Meteorology and Climatology is in direct conflict with the other recent studies indicating a rapid cooling trend in the second half of December. The study found a warming trend in the Pyrenees, with the highest increase in temperatures in the latter half of the winter season, which supports my initial assumption of a slight warming trend. This new information has reduced the discrepancy between my forecast and the other studies, and I now believe it is slightly more likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.06, \"shift_direction\": \"increased\", \"reasoning\": \"The new information from the Journal of Applied Meteorology and Climatology is in direct conflict with the other recent studies indicating a rapid cooling trend in the second half of December. The study found a warming trend in the Pyrenees, with the highest increase in temperatures in the latter half of the winter season, which supports my initial assumption of a slight warming trend. This new information has reduced the discrepancy between my forecast and the other studies, and I now believe it is slightly more likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "Saint-Girons is a commune in the Ari\u00e8ge department in the Occitanie region of southern France, and it has been a popular tourist destination for hikers and outdoor enthusiasts for many years.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.06,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information does not appear to have any direct relevance to the weather patterns or temperature trends in the region. The fact that Saint-Girons is a popular tourist destination does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.06, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information does not appear to have any direct relevance to the weather patterns or temperature trends in the region. The fact that Saint-Girons is a popular tourist destination does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "However, what if Saint-Girons actually experiences a slight cooling trend from mid-December to late December, averaging a 1.5\u00b0C decrease over the last 10 years, due to a recurring high-pressure system that brings cold air from the north?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.04,
+      "absolute_shift": 0.019999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "This new information contradicts my initial assumption related to reason #2, which stated that Saint-Girons experiences a slight warming trend from mid-December to late December. The new information suggests a cooling trend, which increases the likelihood that the temperature on 2025-12-21 will be higher than on 2025-12-28. As a result, I now believe it is even less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.04, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information contradicts my initial assumption related to reason #2, which stated that Saint-Girons experiences a slight warming trend from mid-December to late December. The new information suggests a cooling trend, which increases the likelihood that the temperature on 2025-12-21 will be higher than on 2025-12-28. As a result, I now believe it is even less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "According to a recent study published in the Journal of Meteorology, Saint-Girons' temperature anomaly patterns have been found to be highly correlated with the North Atlantic Oscillation (NAO) index, which tends to exhibit a significant cooling trend during the second half of December. This unexpected relationship suggests that the historical warming trend observed from mid-December to late December may be an artifact of a previously unidentified climate pattern.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "This new information raises significant doubts about the initial assumption related to reason #2, which stated that Saint-Girons experiences a slight warming trend from mid-December to late December. The study's finding that the temperature anomaly patterns are highly correlated with the NAO index and tend to exhibit a significant cooling trend during the second half of December suggests that the historical warming trend may be an artifact of a previously unidentified climate pattern. This new information has a major impact on my forecast, and I now believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.01, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information raises significant doubts about the initial assumption related to reason #2, which stated that Saint-Girons experiences a slight warming trend from mid-December to late December. The study's finding that the temperature anomaly patterns are highly correlated with the NAO index and tend to exhibit a significant cooling trend during the second half of December suggests that the historical warming trend may be an artifact of a previously unidentified climate pattern. This new information has a major impact on my forecast, and I now believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "However, it is reported that a severe cold front will sweep across southwestern France on 2025-12-23, bringing with it a prolonged period of below-average temperatures that will persist through 2025-12-28. As a result, the local meteorological office issues a cold weather warning for the entire region, including Saint-Girons, and forecasts a 3-day temperature drop.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the severe cold front sweeping across southwestern France on 2025-12-23 and persisting through 2025-12-28 significantly increases the likelihood of below-average temperatures in the region. This makes it even more unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The cold weather warning and predicted 3-day temperature drop from the local meteorological office provide strong evidence for this event, and I now believe the probability of the temperature on 2025-12-28 being higher than on 2025-12-21 is extremely low.",
+      "raw_response": "{\"updated_probability\": 0.001, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the severe cold front sweeping across southwestern France on 2025-12-23 and persisting through 2025-12-28 significantly increases the likelihood of below-average temperatures in the region. This makes it even more unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The cold weather warning and predicted 3-day temperature drop from the local meteorological office provide strong evidence for this event, and I now believe the probability of the temperature on 2025-12-28 being higher than on 2025-12-21 is extremely low.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "According to a recent research paper published in the Journal of Climate, the authors found that the southern region of the Pyrenees, where Saint-Girons is located, has experienced a significant increase in December temperatures over the past decade, with a trend of 1.7\u00b0C warming over the same period mentioned in the forecaster's initial reasoning. This study also highlights the role of Atlantic Ocean temperature anomalies in driving these regional temperature changes.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the research paper is an outdated piece of evidence, as it only goes up to the current decade. However, the fact that it mentions a 1.7\u00b0C warming trend over the past decade contradicts the more recent information about the severe cold front and the prolonged period of below-average temperatures that will persist through 2025-12-28. This new evidence does not change the course of the predicted cold temperatures, and I now believe it is even less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.005, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information from the research paper is an outdated piece of evidence, as it only goes up to the current decade. However, the fact that it mentions a 1.7\u00b0C warming trend over the past decade contradicts the more recent information about the severe cold front and the prolonged period of below-average temperatures that will persist through 2025-12-28. This new evidence does not change the course of the predicted cold temperatures, and I now believe it is even less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "The nearby town of Foix, which is approximately 20 kilometers from Saint-Girons, has been selected as a pilot site for a new sustainable energy project, aiming to power 50% of its homes with solar energy by 2026.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information does not appear to have any direct relevance to the weather patterns or temperature trends in the region. The selection of Foix as a pilot site for a sustainable energy project does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.005, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information does not appear to have any direct relevance to the weather patterns or temperature trends in the region. The selection of Foix as a pilot site for a sustainable energy project does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if a persistent low-pressure system develops east of the Pyrenees by December 28, drawing moist and cool air from the Atlantic into the region, potentially leading to a significant drop in temperatures compared to the 21st?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "This new information is actually in line with the other recent studies and forecasts that have suggested a cooling trend in the region. The development of a persistent low-pressure system east of the Pyrenees would indeed draw moist and cool air from the Atlantic into the region, which would likely result in a significant drop in temperatures. This new information reinforces the idea that the temperature on 2025-12-28 will be lower than the temperature on 2025-12-21, and I now believe the probability of this event is marginally reduced even further.",
+      "raw_response": "{\"updated_probability\": 0.008, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information is actually in line with the other recent studies and forecasts that have suggested a cooling trend in the region. The development of a persistent low-pressure system east of the Pyrenees would indeed draw moist and cool air from the Atlantic into the region, which would likely result in a significant drop in temperatures. This new information reinforces the idea that the temperature on 2025-12-28 will be lower than the temperature on 2025-12-21, and I now believe the probability of this event is marginally reduced even further.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, a sudden stratospheric warming event is expected to occur around December 25-26, 2025, which could lead to a significant displacement of the polar jet stream and potentially bring a cold Arctic air mass to the Pyrenees region, including Saint-Girons, by December 28.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the sudden stratospheric warming event and its potential to bring a cold Arctic air mass to the Pyrenees region is highly significant and strongly suggests that the temperature on 2025-12-28 will be lower than the temperature on 2025-12-21. This event is a game-changer, and I now believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21, effectively making it a certainty that the temperature on 2025-12-28 will be lower than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the sudden stratospheric warming event and its potential to bring a cold Arctic air mass to the Pyrenees region is highly significant and strongly suggests that the temperature on 2025-12-28 will be lower than the temperature on 2025-12-21. This event is a game-changer, and I now believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21, effectively making it a certainty that the temperature on 2025-12-28 will be lower than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "If a significant low-pressure system were to develop near the Pyrenees and move eastward, potentially bringing cold and moist air from the Atlantic, would you expect the probability of a higher daily average temperature on 2025-12-28 compared to 2025-12-21 to change, and if so, how?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information is actually a repetition of previous information, and it does not provide any new insights or evidence that would change my probability estimate. The scenario described is consistent with the other recent studies and forecasts that have suggested a cooling trend in the region, and it would likely result in a lower temperature on 2025-12-28 compared to 2025-12-21. However, since this information is not new or unexpected, it does not change my probability estimate, which remains at 0.0.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information is actually a repetition of previous information, and it does not provide any new insights or evidence that would change my probability estimate. The scenario described is consistent with the other recent studies and forecasts that have suggested a cooling trend in the region, and it would likely result in a lower temperature on 2025-12-28 compared to 2025-12-21. However, since this information is not new or unexpected, it does not change my probability estimate, which remains at 0.0.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "According to the Climate Prediction Center's latest 30-day forecast, a strong high-pressure anomaly is expected to persist over the North Atlantic Ocean during the first half of December 2025, potentially leading to a more pronounced mid-latitude high-pressure system over Western Europe by the end of the month.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information actually contradicts the previous information about the sudden stratospheric warming event, which was expected to bring a cold Arctic air mass to the Pyrenees region. The Climate Prediction Center's forecast suggests a more pronounced mid-latitude high-pressure system over Western Europe, which would likely lead to warmer temperatures. However, given the strong evidence from the sudden stratospheric warming event, I still believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The forecast from the Climate Prediction Center does not change my probability estimate, which remains at 0.0.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information actually contradicts the previous information about the sudden stratospheric warming event, which was expected to bring a cold Arctic air mass to the Pyrenees region. The Climate Prediction Center's forecast suggests a more pronounced mid-latitude high-pressure system over Western Europe, which would likely lead to warmer temperatures. However, given the strong evidence from the sudden stratospheric warming event, I still believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The forecast from the Climate Prediction Center does not change my probability estimate, which remains at 0.0.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "It's worth noting that the French government has recently announced plans to open a new museum in Saint-Girons, which will showcase the region's rich cultural heritage and feature exhibits on traditional folk music and dance.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information has no relevance to the weather patterns or temperature trends in the region. The announcement of a new museum in Saint-Girons does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged at 0.0.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information has no relevance to the weather patterns or temperature trends in the region. The announcement of a new museum in Saint-Girons does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged at 0.0.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "probe_text": "What if a persistent high-pressure system develops over the region from December 21 to 28, leading to a warming trend and temperatures being consistently higher on December 28 compared to December 21?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information contradicts the previous information about the severe cold front and the sudden stratospheric warming event, which both suggested a cooling trend in the region. However, given the strong evidence from these previous forecasts, I still believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The new information about the high-pressure system does not change my probability estimate, which remains at 0.0.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information contradicts the previous information about the severe cold front and the sudden stratospheric warming event, which both suggested a cooling trend in the region. However, given the strong evidence from these previous forecasts, I still believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The new information about the high-pressure system does not change my probability estimate, which remains at 0.0.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "probe_text": "According to Dr. Pierre Dupont, a senior researcher at the Centre National de Recherches M\u00e9t\u00e9orologiques, recent studies have shown that the presence of a cold front in the region in mid-December is actually associated with a 30% increase in atmospheric instability, leading to increased warming over the region by the end of the month.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information contradicts the previous information about the severe cold front and the sudden stratospheric warming event, which both suggested a cooling trend in the region. However, the statement from Dr. Pierre Dupont suggests that the presence of a cold front in the region in mid-December is actually associated with increased warming over the region by the end of the month, which is opposite to the expected outcome. Given the strong evidence from the previous forecasts, I still believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The new information from Dr. Dupont does not change my probability estimate, which remains at 0.0.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information contradicts the previous information about the severe cold front and the sudden stratospheric warming event, which both suggested a cooling trend in the region. However, the statement from Dr. Pierre Dupont suggests that the presence of a cold front in the region in mid-December is actually associated with increased warming over the region by the end of the month, which is opposite to the expected outcome. Given the strong evidence from the previous forecasts, I still believe it is extremely unlikely that the temperature on 2025-12-28 will be higher than on 2025-12-21. The new information from Dr. Dupont does not change my probability estimate, which remains at 0.0.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "probe_text": "It has been reported that a low-pressure system is expected to develop over the Mediterranean Sea around December 25, which could lead to a high-pressure ridge building over the region around December 28, potentially suppressing the arrival of the cold front.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information suggests that the cold front may be suppressed by a high-pressure ridge building over the region, which could potentially lead to warmer temperatures. However, this new information does not change my probability estimate, as the presence of the high-pressure ridge does not necessarily mean that the temperature on 2025-12-28 will be higher than on 2025-12-21. The information from the previous forecasts, including the sudden stratospheric warming event, still suggests a cooling trend in the region. Therefore, my probability estimate remains at 0.0.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information suggests that the cold front may be suppressed by a high-pressure ridge building over the region, which could potentially lead to warmer temperatures. However, this new information does not change my probability estimate, as the presence of the high-pressure ridge does not necessarily mean that the temperature on 2025-12-28 will be higher than on 2025-12-21. The information from the previous forecasts, including the sudden stratospheric warming event, still suggests a cooling trend in the region. Therefore, my probability estimate remains at 0.0.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "probe_text": "A recent study published in the Journal of Weather Analysis has found a strong correlation between the presence of a cold front in the region and a subsequent decrease in average temperature by 2-3\u00b0C, which is consistent with the forecaster's initial assumption. The study also notes that the region's topography, with its surrounding mountain ranges, can exacerbate the cooling effect of a cold front. Furthermore, a check of the latest numerical weather prediction (NWP) models shows a 30% chance of a cold front moving into the region around December 28, which supports the forecaster's initial estimate. This new information makes it even more likely that the temperatures on December 28 will be lower than on December 21.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information further supports the initial assumption of a cooling trend in the region, but it does not change my probability estimate. The study's finding of a strong correlation between the presence of a cold front and a decrease in average temperature is consistent with the initial assumption, and the NWP models' 30% chance of a cold front moving into the region around December 28 also supports this conclusion. However, the initial assumption was already strongly supported by previous information, and my probability estimate has been consistently at 0.0. The new information does not change this estimate.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information further supports the initial assumption of a cooling trend in the region, but it does not change my probability estimate. The study's finding of a strong correlation between the presence of a cold front and a decrease in average temperature is consistent with the initial assumption, and the NWP models' 30% chance of a cold front moving into the region around December 28 also supports this conclusion. However, the initial assumption was already strongly supported by previous information, and my probability estimate has been consistently at 0.0. The new information does not change this estimate.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "probe_text": "The French government recently announced plans to expand the A64 highway, which passes near Saint-Girons, to improve road safety and reduce travel times for commuters between Toulouse and the Spanish border.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.01,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "This new information has no relevance to the weather patterns or temperature trends in the region. The announcement of highway expansion plans does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged at 0.0.",
+      "raw_response": "{\"updated_probability\": 0.0, \"shift_direction\": \"unchanged\", \"reasoning\": \"This new information has no relevance to the weather patterns or temperature trends in the region. The announcement of highway expansion plans does not provide any useful insight into the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21. My probability estimate remains unchanged at 0.0.\"}"
+    }
+  ],
+  "summary": {
+    "question_id": "meteofrance_TEMPERATURE_celsius.07627.D",
+    "question_text": "What is the probability that the daily average temperature at the French weather station at Saint-Girons will be higher on 2025-12-28 than on 2025-12-21?",
+    "source": "dbnomics",
+    "condition": "multi-turn",
+    "initial_probability": 0.58,
+    "n_probes": 20,
+    "n_successful": 20,
+    "mean_absolute_shift": 0.032499999999999994,
+    "max_absolute_shift": 0.33
+  }
+}

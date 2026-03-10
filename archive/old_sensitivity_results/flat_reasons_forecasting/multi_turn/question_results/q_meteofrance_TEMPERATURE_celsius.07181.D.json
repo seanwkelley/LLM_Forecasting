@@ -1,0 +1,405 @@
+{
+  "question_id": "meteofrance_TEMPERATURE_celsius.07181.D",
+  "question_text": "What is the probability that the daily average temperature at the French weather station at Nancy \u2013 Ochey Air Base will be higher on 2025-12-28 than on 2025-12-21?",
+  "source": "dbnomics",
+  "initial_probability": 0.62,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "December in Nancy typically sees a temperature increase of around 2-3\u00b0C over the first three weeks of the month.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The average high temperature for December 21st is around 6\u00b0C, while the average high temperature for December 28th is around 7\u00b0C, indicating a slight warming trend.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "Nancy's climate is characterized by a moderate climate with cold winters and warm summers, which suggests that the temperature difference between December 21st and December 28th is likely to be relatively small.",
+      "importance": "low"
+    },
+    {
+      "id": 4,
+      "text": "There is a moderate El Ni\u00f1o event predicted for the 2024-2025 winter season, which could lead to slightly warmer temperatures in Europe, including Nancy.",
+      "importance": "high"
+    }
+  ],
+  "reasoning": "Based on historical climate trends and the expected influence of the El Ni\u00f1o event, it is likely that the temperature will be higher on December 28th than on December 21st, with a moderate warming trend anticipated throughout the month of December.",
+  "probes": [
+    {
+      "probe_text": "What if December in Nancy typically sees a temperature decrease of around 2-3\u00b0C over the first three weeks of the month, due to a persistent high-pressure system that blocks warm air from the Mediterranean and leads to a cold snap?",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, researchers at the University of Strasbourg found that the temperature trend in Nancy during the first three weeks of December actually exhibits a slight cooling effect, with an average decrease of 1.2\u00b0C between the 1st and 21st of the month.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "In recent years, there has been a notable trend of milder winters in the region, with a significant portion of December days experiencing above-average temperatures. If a strong low-pressure system were to develop over the North Sea and move eastward, potentially bringing a mass of warm air from the Gulf Stream, would that significantly alter your assessment of the temperature difference between 2025-12-28 and 2025-12-21?",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that, on average, January temperatures in Nancy (Ochey Air Base) are 2.5\u00b0C higher than December temperatures, with a strong correlation between December temperature increases and subsequent January temperatures. This suggests that the typical temperature increase observed in the first three weeks of December is a reliable predictor of warmer-than-average temperatures in January, further supporting the forecast's assumption.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "Nancy's city council has announced plans to extend the duration of the festive lights display along the V\u00e9zelise River by two weeks, starting from 2025-12-15.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "However, despite the average high temperatures being generally warmer later in the month, this December has experienced an unusual cold snap caused by a persistent high-pressure system over Western Europe, which may lead to colder temperatures on the 28th compared to the 21st.",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Atmospheric Science suggests that a significant high-pressure system is expected to dominate the European weather pattern in late December 2025, leading to a prolonged cold snap. According to the study's lead author, Dr. Marie Curie, 'the temperature anomalies during this period will be strongly influenced by the blocking high-pressure system, resulting in temperature averages 2\u00b0C lower than normal on December 28th compared to December 21st'.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "However, recent research suggests that the high-pressure system that typically influences the region's weather patterns during this time of year may be weakening due to a shift in the North Atlantic Oscillation, which could lead to more variable temperature fluctuations.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, the winter months of 2024-2025 experienced a significant increase in solar radiation over Western Europe, with Nancy recording a 10% higher solar irradiance compared to the 20-year average. This increase in solar radiation is likely to contribute to warmer temperatures in December, supporting the expectation of a higher daily average temperature on 2025-12-28 compared to 2025-12-21.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A new study published in the European Journal of Meteorology has found that the percentage of winter storms in Western Europe that bring snow to the Vosges Mountains has remained relatively stable over the past three decades, with an average of 35% of storms producing snowfall.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if Nancy's climate is actually characterized by a unique microclimatic effect, where the temperature during the second half of December is consistently warmer due to the presence of a nearby lake, which retains heat from the summer months and releases it during the winter?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A study published in the Journal of Geophysical Research: Atmospheres reveals that a recent shift in the North Atlantic Oscillation has led to an increase in the frequency and magnitude of temperature fluctuations between the solstices in regions with moderate climates, such as Nancy. This phenomenon, dubbed the 'Winter Solstice Temperature Anomaly,' could result in unusually large temperature differences between December 21st and December 28th. The study's lead author, Dr. Sophie Dubois, notes that this anomaly is particularly pronounced in regions with cold winters, where the temperature can drop rapidly in the days leading up to the solstice. According to Dr. Dubois, the Nancy region is expected to experience a significant temperature difference between the two dates.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Consider a scenario where a strong high-pressure system develops over western Europe around 2025-12-24 and persists until at least 2025-12-28, forcing cold Arctic air to flow southward and potentially bringing a prolonged period of extremely cold air to eastern France.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "According to the French National Meteorological Service, the average temperature difference between December 21st and December 28th over the past decade at the Nancy \u2013 Ochey Air Base has been consistently around 2\u00b0C, which is relatively small and in line with the forecaster's initial assumption.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A new, non-weather-related event is scheduled to take place at the Nancy \u2013 Ochey Air Base on 2025-12-28: the annual Christmas market, which will attract thousands of visitors and require the base to host a large parking area.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the predicted El Ni\u00f1o event for the 2024-2025 winter season actually leads to a more meridional flow pattern in the North Atlantic, causing a cooler-than-average winter in Western Europe, including Nancy, due to increased blocking highs and more frequent cold air outbreaks from the Arctic?",
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent statement by the European Centre for Medium-Range Weather Forecasts (ECMWF), their latest model ensemble suggests that the winter 2024-2025 El Ni\u00f1o event may actually have a negative impact on European temperatures, particularly in the western regions, due to an expected strengthening of the North Atlantic Oscillation (NAO) which would lead to increased cold air advection.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "New research suggests that the El Ni\u00f1o event predicted for the 2024-2025 winter season might be significantly weaker than initially anticipated, potentially leading to neutral or even slightly cooler conditions in Europe, rather than the expected warming.",
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Climate Dynamics by a team of researchers at the University of Reading, a prominent institution in the field of atmospheric science, suggests that moderate El Ni\u00f1o events like the one predicted for the 2024-2025 winter season have a statistically significant correlation with above-average temperatures in central Europe during the same time period. Specifically, the study found that the probability of temperatures being at least 1\u00b0C above average in the region increases by approximately 25% during El Ni\u00f1o winters. This finding aligns with the forecaster's initial reasoning and provides additional confidence in the expected warmer temperatures at Nancy.",
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "According to the latest updates from the European Union's Horizon 2025 research program, a new initiative has been launched to develop more efficient and sustainable agriculture practices in the Grand Est region of France, which includes Nancy.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "generated": true
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "What if December in Nancy typically sees a temperature decrease of around 2-3\u00b0C over the first three weeks of the month, due to a persistent high-pressure system that blocks warm air from the Mediterranean and leads to a cold snap?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the persistent high-pressure system blocking warm air from the Mediterranean and leading to a cold snap in December reverses the typical temperature trend in Nancy. This means that the chances of the temperature being higher on 2025-12-28 than on 2025-12-21 are significantly reduced. The updated probability reflects this new understanding.",
+      "raw_response": "{\"updated_probability\": 0.42, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the persistent high-pressure system blocking warm air from the Mediterranean and leading to a cold snap in December reverses the typical temperature trend in Nancy. This means that the chances of the temperature being higher on 2025-12-28 than on 2025-12-21 are significantly reduced. The updated probability reflects this new understanding.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, researchers at the University of Strasbourg found that the temperature trend in Nancy during the first three weeks of December actually exhibits a slight cooling effect, with an average decrease of 1.2\u00b0C between the 1st and 21st of the month.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.26,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the recent study published in the Journal of Atmospheric Science further reinforces the notion that Nancy experiences a temperature decrease during the first three weeks of December. The specific finding of an average decrease of 1.2\u00b0C between the 1st and 21st of the month provides more precise information, which reduces the probability of the temperature being higher on 2025-12-28 than on 2025-12-21 even further.",
+      "raw_response": "{\"updated_probability\": 0.26, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information from the recent study published in the Journal of Atmospheric Science further reinforces the notion that Nancy experiences a temperature decrease during the first three weeks of December. The specific finding of an average decrease of 1.2\u00b0C between the 1st and 21st of the month provides more precise information, which reduces the probability of the temperature being higher on 2025-12-28 than on 2025-12-21 even further.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "In recent years, there has been a notable trend of milder winters in the region, with a significant portion of December days experiencing above-average temperatures. If a strong low-pressure system were to develop over the North Sea and move eastward, potentially bringing a mass of warm air from the Gulf Stream, would that significantly alter your assessment of the temperature difference between 2025-12-28 and 2025-12-21?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.19,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the trend of milder winters in the region and the potential for a strong low-pressure system to bring warm air from the Gulf Stream significantly alters the assessment. While the temperature decrease in the first three weeks of December is still a factor, the increased likelihood of above-average temperatures in December and the potential for a warm air mass to influence the region increases the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"increased\", \"reasoning\": \"The new information about the trend of milder winters in the region and the potential for a strong low-pressure system to bring warm air from the Gulf Stream significantly alters the assessment. While the temperature decrease in the first three weeks of December is still a factor, the increased likelihood of above-average temperatures in December and the potential for a warm air mass to influence the region increases the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that, on average, January temperatures in Nancy (Ochey Air Base) are 2.5\u00b0C higher than December temperatures, with a strong correlation between December temperature increases and subsequent January temperatures. This suggests that the typical temperature increase observed in the first three weeks of December is a reliable predictor of warmer-than-average temperatures in January, further supporting the forecast's assumption.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.07,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the study published in the Journal of Atmospheric Science provides a strong link between December temperature increases and subsequent January temperatures. This correlation suggests that the warmer-than-average temperatures in January are more likely to occur if the December temperatures have increased, which in turn supports the forecast's assumption about the temperature difference between 2025-12-28 and 2025-12-21. As a result, the probability of the temperature being higher on 2025-12-28 than on 2025-12-21 is increased.",
+      "raw_response": "{\"updated_probability\": 0.52, \"shift_direction\": \"increased\", \"reasoning\": \"The new information from the study published in the Journal of Atmospheric Science provides a strong link between December temperature increases and subsequent January temperatures. This correlation suggests that the warmer-than-average temperatures in January are more likely to occur if the December temperatures have increased, which in turn supports the forecast's assumption about the temperature difference between 2025-12-28 and 2025-12-21. As a result, the probability of the temperature being higher on 2025-12-28 than on 2025-12-21 is increased.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "Nancy's city council has announced plans to extend the duration of the festive lights display along the V\u00e9zelise River by two weeks, starting from 2025-12-15.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the city council's plans to extend the festive lights display along the V\u00e9zelise River is unrelated to the weather forecast and does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.52, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information about the city council's plans to extend the festive lights display along the V\u00e9zelise River is unrelated to the weather forecast and does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "However, despite the average high temperatures being generally warmer later in the month, this December has experienced an unusual cold snap caused by a persistent high-pressure system over Western Europe, which may lead to colder temperatures on the 28th compared to the 21st.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.49,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the unusual cold snap caused by a persistent high-pressure system over Western Europe introduces uncertainty and potentially reduces the likelihood of warmer temperatures in the latter part of the month. While the average high temperatures are generally warmer later in the month, the cold snap could lead to colder temperatures on the 28th compared to the 21st, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.49, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the unusual cold snap caused by a persistent high-pressure system over Western Europe introduces uncertainty and potentially reduces the likelihood of warmer temperatures in the latter part of the month. While the average high temperatures are generally warmer later in the month, the cold snap could lead to colder temperatures on the 28th compared to the 21st, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "A recent study published in the Journal of Atmospheric Science suggests that a significant high-pressure system is expected to dominate the European weather pattern in late December 2025, leading to a prolonged cold snap. According to the study's lead author, Dr. Marie Curie, 'the temperature anomalies during this period will be strongly influenced by the blocking high-pressure system, resulting in temperature averages 2\u00b0C lower than normal on December 28th compared to December 21st'.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.31,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the study published in the Journal of Atmospheric Science provides a strong indication of a prolonged cold snap in late December 2025, with temperature averages 2\u00b0C lower than normal on December 28th compared to December 21st. This suggests that the temperature on 2025-12-28 will likely be colder than on 2025-12-21, significantly decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.31, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information from the study published in the Journal of Atmospheric Science provides a strong indication of a prolonged cold snap in late December 2025, with temperature averages 2\u00b0C lower than normal on December 28th compared to December 21st. This suggests that the temperature on 2025-12-28 will likely be colder than on 2025-12-21, significantly decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "However, recent research suggests that the high-pressure system that typically influences the region's weather patterns during this time of year may be weakening due to a shift in the North Atlantic Oscillation, which could lead to more variable temperature fluctuations.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.10999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the potential weakening of the high-pressure system due to a shift in the North Atlantic Oscillation introduces uncertainty and potentially reduces the impact of the cold snap on the temperature difference between 2025-12-28 and 2025-12-21. This could lead to more variable temperature fluctuations, increasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\":0.42,\n   \"shift_direction\":\"increased\",\n   \"reasoning\":\"The new information about the potential weakening of the high-pressure system due to a shift in the North Atlantic Oscillation introduces uncertainty and potentially reduces the impact of the cold snap on the temperature difference between 2025-12-28 and 2025-12-21. This could lead to more variable temperature fluctuations, increasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, the winter months of 2024-2025 experienced a significant increase in solar radiation over Western Europe, with Nancy recording a 10% higher solar irradiance compared to the 20-year average. This increase in solar radiation is likely to contribute to warmer temperatures in December, supporting the expectation of a higher daily average temperature on 2025-12-28 compared to 2025-12-21.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.09000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the significant increase in solar radiation over Western Europe in the winter months of 2024-2025, and its likely contribution to warmer temperatures in December, provides a new factor to consider. This increase in solar radiation supports the expectation of a higher daily average temperature on 2025-12-28 compared to 2025-12-21, thereby increasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.51, \"shift_direction\": \"increased\", \"reasoning\": \"The new information about the significant increase in solar radiation over Western Europe in the winter months of 2024-2025, and its likely contribution to warmer temperatures in December, provides a new factor to consider. This increase in solar radiation supports the expectation of a higher daily average temperature on 2025-12-28 compared to 2025-12-21, thereby increasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "A new study published in the European Journal of Meteorology has found that the percentage of winter storms in Western Europe that bring snow to the Vosges Mountains has remained relatively stable over the past three decades, with an average of 35% of storms producing snowfall.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the stability of snow-producing winter storms in the Vosges Mountains does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.51, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information about the stability of snow-producing winter storms in the Vosges Mountains does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if Nancy's climate is actually characterized by a unique microclimatic effect, where the temperature during the second half of December is consistently warmer due to the presence of a nearby lake, which retains heat from the summer months and releases it during the winter?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.14,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the unique microclimatic effect in Nancy, where the nearby lake retains heat from the summer months and releases it during the winter, provides a plausible explanation for the warmer temperatures in the second half of December. This effect would increase the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21, thereby increasing the probability estimate.",
+      "raw_response": "{\n  \"updated_probability\":0.65,\n   \"shift_direction\":\"increased\",\n   \"reasoning\":\"The new information about the unique microclimatic effect in Nancy, where the nearby lake retains heat from the summer months and releases it during the winter, provides a plausible explanation for the warmer temperatures in the second half of December. This effect would increase the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21, thereby increasing the probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "A study published in the Journal of Geophysical Research: Atmospheres reveals that a recent shift in the North Atlantic Oscillation has led to an increase in the frequency and magnitude of temperature fluctuations between the solstices in regions with moderate climates, such as Nancy. This phenomenon, dubbed the 'Winter Solstice Temperature Anomaly,' could result in unusually large temperature differences between December 21st and December 28th. The study's lead author, Dr. Sophie Dubois, notes that this anomaly is particularly pronounced in regions with cold winters, where the temperature can drop rapidly in the days leading up to the solstice. According to Dr. Dubois, the Nancy region is expected to experience a significant temperature difference between the two dates.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.78,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the 'Winter Solstice Temperature Anomaly' and its potential to cause unusually large temperature differences between December 21st and December 28th, particularly in regions with cold winters like Nancy, provides a strong explanation for the potential temperature difference. The study's lead author's comment that the Nancy region is expected to experience a significant temperature difference between the two dates further increases the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21, thereby increasing the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.78, \"shift_direction\": \"increased\", \"reasoning\": \"The new information about the 'Winter Solstice Temperature Anomaly' and its potential to cause unusually large temperature differences between December 21st and December 28th, particularly in regions with cold winters like Nancy, provides a strong explanation for the potential temperature difference. The study's lead author's comment that the Nancy region is expected to experience a significant temperature difference between the two dates further increases the likelihood of the temperature being higher on 2025-12-28 than on 2025-12-21, thereby increasing the probability estimate.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "Consider a scenario where a strong high-pressure system develops over western Europe around 2025-12-24 and persists until at least 2025-12-28, forcing cold Arctic air to flow southward and potentially bringing a prolonged period of extremely cold air to eastern France.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.57,
+      "absolute_shift": 0.21000000000000008,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the potential development of a strong high-pressure system and the resulting cold Arctic air flow to eastern France introduces a new factor that could decrease the likelihood of warmer temperatures on 2025-12-28 compared to 2025-12-21. While the 'Winter Solstice Temperature Anomaly' still suggests a potential for temperature fluctuations, the prolonged period of cold air could offset this effect, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.57, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the potential development of a strong high-pressure system and the resulting cold Arctic air flow to eastern France introduces a new factor that could decrease the likelihood of warmer temperatures on 2025-12-28 compared to 2025-12-21. While the 'Winter Solstice Temperature Anomaly' still suggests a potential for temperature fluctuations, the prolonged period of cold air could offset this effect, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "According to the French National Meteorological Service, the average temperature difference between December 21st and December 28th over the past decade at the Nancy \u2013 Ochey Air Base has been consistently around 2\u00b0C, which is relatively small and in line with the forecaster's initial assumption.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.63,
+      "absolute_shift": 0.06000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the consistent average temperature difference between December 21st and December 28th over the past decade at the Nancy \u2013 Ochey Air Base, which is relatively small, provides additional support for the forecaster's initial assumption. This consistency suggests that the temperature difference between the two dates is less likely to be extreme, increasing the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.63, \"shift_direction\": \"increased\", \"reasoning\": \"The new information about the consistent average temperature difference between December 21st and December 28th over the past decade at the Nancy \u2013 Ochey Air Base, which is relatively small, provides additional support for the forecaster's initial assumption. This consistency suggests that the temperature difference between the two dates is less likely to be extreme, increasing the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "A new, non-weather-related event is scheduled to take place at the Nancy \u2013 Ochey Air Base on 2025-12-28: the annual Christmas market, which will attract thousands of visitors and require the base to host a large parking area.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.63,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the Christmas market at the Nancy \u2013 Ochey Air Base is unrelated to the weather forecast and does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.63, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information about the Christmas market at the Nancy \u2013 Ochey Air Base is unrelated to the weather forecast and does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "probe_text": "What if the predicted El Ni\u00f1o event for the 2024-2025 winter season actually leads to a more meridional flow pattern in the North Atlantic, causing a cooler-than-average winter in Western Europe, including Nancy, due to increased blocking highs and more frequent cold air outbreaks from the Arctic?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the potential for a more meridional flow pattern in the North Atlantic and a cooler-than-average winter in Western Europe, including Nancy, due to increased blocking highs and more frequent cold air outbreaks from the Arctic, suggests a decrease in the likelihood of warmer temperatures on 2025-12-28 compared to 2025-12-21. This is because a cooler winter would likely result in colder temperatures overall, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the potential for a more meridional flow pattern in the North Atlantic and a cooler-than-average winter in Western Europe, including Nancy, due to increased blocking highs and more frequent cold air outbreaks from the Arctic, suggests a decrease in the likelihood of warmer temperatures on 2025-12-28 compared to 2025-12-21. This is because a cooler winter would likely result in colder temperatures overall, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "probe_text": "According to a recent statement by the European Centre for Medium-Range Weather Forecasts (ECMWF), their latest model ensemble suggests that the winter 2024-2025 El Ni\u00f1o event may actually have a negative impact on European temperatures, particularly in the western regions, due to an expected strengthening of the North Atlantic Oscillation (NAO) which would lead to increased cold air advection.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.07,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the ECMWF's model ensemble suggesting a negative impact on European temperatures due to a strengthening of the North Atlantic Oscillation (NAO) and increased cold air advection further supports the idea of a cooler winter in Western Europe, including Nancy. This increases the likelihood of colder temperatures on 2025-12-28 compared to 2025-12-21, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about the ECMWF's model ensemble suggesting a negative impact on European temperatures due to a strengthening of the North Atlantic Oscillation (NAO) and increased cold air advection further supports the idea of a cooler winter in Western Europe, including Nancy. This increases the likelihood of colder temperatures on 2025-12-28 compared to 2025-12-21, decreasing the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "probe_text": "New research suggests that the El Ni\u00f1o event predicted for the 2024-2025 winter season might be significantly weaker than initially anticipated, potentially leading to neutral or even slightly cooler conditions in Europe, rather than the expected warming.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the potential weakness of the El Ni\u00f1o event and its possible impact on European temperatures, leading to neutral or even slightly cooler conditions, reduces the likelihood of a significant warming trend in the region. This, in turn, increases the probability of the temperature being higher on 2025-12-28 than on 2025-12-21, as the expected warming is no longer a dominant factor.",
+      "raw_response": "{\"updated_probability\": 0.51, \"shift_direction\": \"increased\", \"reasoning\": \"The new information about the potential weakness of the El Ni\u00f1o event and its possible impact on European temperatures, leading to neutral or even slightly cooler conditions, reduces the likelihood of a significant warming trend in the region. This, in turn, increases the probability of the temperature being higher on 2025-12-28 than on 2025-12-21, as the expected warming is no longer a dominant factor.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "probe_text": "A recent study published in the Journal of Climate Dynamics by a team of researchers at the University of Reading, a prominent institution in the field of atmospheric science, suggests that moderate El Ni\u00f1o events like the one predicted for the 2024-2025 winter season have a statistically significant correlation with above-average temperatures in central Europe during the same time period. Specifically, the study found that the probability of temperatures being at least 1\u00b0C above average in the region increases by approximately 25% during El Ni\u00f1o winters. This finding aligns with the forecaster's initial reasoning and provides additional confidence in the expected warmer temperatures at Nancy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.10999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the study published in the Journal of Climate Dynamics provides strong evidence for a correlation between moderate El Ni\u00f1o events and above-average temperatures in central Europe, including Nancy. The finding that the probability of temperatures being at least 1\u00b0C above average increases by approximately 25% during El Ni\u00f1o winters provides additional confidence in the forecaster's initial reasoning and increases the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.62, \"shift_direction\": \"increased\", \"reasoning\": \"The new information from the study published in the Journal of Climate Dynamics provides strong evidence for a correlation between moderate El Ni\u00f1o events and above-average temperatures in central Europe, including Nancy. The finding that the probability of temperatures being at least 1\u00b0C above average increases by approximately 25% during El Ni\u00f1o winters provides additional confidence in the forecaster's initial reasoning and increases the probability of the temperature being higher on 2025-12-28 than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "probe_text": "According to the latest updates from the European Union's Horizon 2025 research program, a new initiative has been launched to develop more efficient and sustainable agriculture practices in the Grand Est region of France, which includes Nancy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the European Union's Horizon 2025 research program and the initiative to develop more efficient and sustainable agriculture practices in the Grand Est region of France is unrelated to the weather forecast and does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.62, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information about the European Union's Horizon 2025 research program and the initiative to develop more efficient and sustainable agriculture practices in the Grand Est region of France is unrelated to the weather forecast and does not provide any relevant information about the temperature difference between 2025-12-28 and 2025-12-21. Therefore, the probability estimate remains unchanged.\"}"
+    }
+  ],
+  "summary": {
+    "question_id": "meteofrance_TEMPERATURE_celsius.07181.D",
+    "question_text": "What is the probability that the daily average temperature at the French weather station at Nancy \u2013 Ochey Air Base will be higher on 2025-12-28 than on 2025-12-21?",
+    "source": "dbnomics",
+    "condition": "multi-turn",
+    "initial_probability": 0.62,
+    "n_probes": 20,
+    "n_successful": 20,
+    "mean_absolute_shift": 0.10300000000000001,
+    "max_absolute_shift": 0.21000000000000008
+  }
+}

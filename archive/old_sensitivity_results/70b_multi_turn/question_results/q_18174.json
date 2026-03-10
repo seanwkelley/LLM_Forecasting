@@ -1,0 +1,999 @@
+{
+  "question_id": "18174",
+  "question_text": "Will solar power on Earth dominate renewable energy consumption before 2031?",
+  "source": "metaculus",
+  "initial_probability": 0.72,
+  "nodes": [
+    {
+      "id": "tech_advances",
+      "description": "Improvements in solar panel efficiency and cost",
+      "role": "factor"
+    },
+    {
+      "id": "gov_incentives",
+      "description": "Government subsidies and tax credits for renewable energy",
+      "role": "factor"
+    },
+    {
+      "id": "energy_demand",
+      "description": "Global demand for renewable energy sources",
+      "role": "factor"
+    },
+    {
+      "id": "fossil_fuel_prices",
+      "description": "Cost of fossil fuels compared to renewable energy",
+      "role": "factor"
+    },
+    {
+      "id": "grid_infrastructure",
+      "description": "Development of energy storage and grid infrastructure",
+      "role": "factor"
+    },
+    {
+      "id": "public_awareness",
+      "description": "Public perception and awareness of climate change and renewable energy",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Solar power dominating renewable energy consumption before 2031",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "tech_advances",
+      "to": "grid_infrastructure",
+      "mechanism": "Improved technology enables more efficient energy storage and grid management"
+    },
+    {
+      "from": "gov_incentives",
+      "to": "energy_demand",
+      "mechanism": "Incentives increase demand for renewable energy sources"
+    },
+    {
+      "from": "energy_demand",
+      "to": "outcome",
+      "mechanism": "High demand for renewable energy drives growth in solar power"
+    },
+    {
+      "from": "fossil_fuel_prices",
+      "to": "energy_demand",
+      "mechanism": "High fossil fuel prices increase demand for renewable energy alternatives"
+    },
+    {
+      "from": "grid_infrastructure",
+      "to": "outcome",
+      "mechanism": "Developed infrastructure supports widespread adoption of solar power"
+    },
+    {
+      "from": "public_awareness",
+      "to": "gov_incentives",
+      "mechanism": "Public awareness influences government policy and incentives for renewable energy"
+    },
+    {
+      "from": "tech_advances",
+      "to": "outcome",
+      "mechanism": "Improved technology reduces costs and increases efficiency of solar power"
+    }
+  ],
+  "reasoning": "The forecasted probability of solar power dominating renewable energy consumption before 2031 is influenced by several factors, including technological advances, government incentives, energy demand, fossil fuel prices, grid infrastructure, and public awareness. Improvements in technology and government incentives drive growth in energy demand and development of grid infrastructure, ultimately supporting the widespread adoption of solar power. With high demand for renewable energy and decreasing costs, solar power is likely to become a dominant source of renewable energy consumption in the near future.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "tech_advances",
+        "description": "Improvements in solar panel efficiency and cost",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0656,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2131
+      },
+      {
+        "node_id": "gov_incentives",
+        "description": "Government subsidies and tax credits for renewable energy",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0667,
+        "closeness": 0.1667,
+        "pagerank": 0.1214,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.1943
+      },
+      {
+        "node_id": "energy_demand",
+        "description": "Global demand for renewable energy sources",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.375,
+        "pagerank": 0.2245,
+        "path_relevance": 0.5,
+        "composite_importance": 0.3249
+      },
+      {
+        "node_id": "fossil_fuel_prices",
+        "description": "Cost of fossil fuels compared to renewable energy",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0656,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1131
+      },
+      {
+        "node_id": "grid_infrastructure",
+        "description": "Development of energy storage and grid infrastructure",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.1667,
+        "pagerank": 0.0935,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1187
+      },
+      {
+        "node_id": "public_awareness",
+        "description": "Public perception and awareness of climate change and renewable energy",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0656,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1131
+      },
+      {
+        "node_id": "outcome",
+        "description": "Solar power dominating renewable energy consumption before 2031",
+        "role": "outcome",
+        "in_degree": 3,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.6,
+        "pagerank": 0.3638,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0728
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "tech_advances",
+        "target": "grid_infrastructure",
+        "mechanism": "Improved technology enables more efficient energy storage and grid management",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": false
+      },
+      {
+        "source": "tech_advances",
+        "target": "outcome",
+        "mechanism": "Improved technology reduces costs and increases efficiency of solar power",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "gov_incentives",
+        "target": "energy_demand",
+        "mechanism": "Incentives increase demand for renewable energy sources",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "energy_demand",
+        "target": "outcome",
+        "mechanism": "High demand for renewable energy drives growth in solar power",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "fossil_fuel_prices",
+        "target": "energy_demand",
+        "mechanism": "High fossil fuel prices increase demand for renewable energy alternatives",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "grid_infrastructure",
+        "target": "outcome",
+        "mechanism": "Developed infrastructure supports widespread adoption of solar power",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "public_awareness",
+        "target": "gov_incentives",
+        "mechanism": "Public awareness influences government policy and incentives for renewable energy",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "energy_demand",
+        "description": "Global demand for renewable energy sources",
+        "importance": 0.3249,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "tech_advances",
+        "description": "Improvements in solar panel efficiency and cost",
+        "importance": 0.2131,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "grid_infrastructure",
+        "description": "Development of energy storage and grid infrastructure",
+        "importance": 0.1187,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "public_awareness",
+        "description": "Public perception and awareness of climate change and renewable energy",
+        "importance": 0.1131,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "energy_demand",
+        "description": "Global demand for renewable energy sources",
+        "importance": 0.3249,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "tech_advances",
+        "description": "Improvements in solar panel efficiency and cost",
+        "importance": 0.2131,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "gov_incentives->energy_demand",
+        "description": "Incentives increase demand for renewable energy sources",
+        "importance": 0.0952,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "energy_demand->outcome",
+        "description": "High demand for renewable energy drives growth in solar power",
+        "importance": 0.0952,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "tech_advances->grid_infrastructure",
+        "description": "Improved technology enables more efficient energy storage and grid management",
+        "importance": 0.0238,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "gov_incentives->energy_demand",
+        "description": "Incentives increase demand for renewable energy sources",
+        "importance": 0.0952,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "grid_infrastructure->energy_demand",
+        "description": "Potential link: Development of energy storage and grid infrastructure -> Global demand for renewable energy sources",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "energy_demand->tech_advances",
+        "description": "Potential link: Global demand for renewable energy sources -> Improvements in solar panel efficiency and cost",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "energy_demand",
+      "description": "Global demand for renewable energy sources",
+      "importance": 0.3249,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "tech_advances",
+      "description": "Improvements in solar panel efficiency and cost",
+      "importance": 0.2131,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "grid_infrastructure",
+      "description": "Development of energy storage and grid infrastructure",
+      "importance": 0.1187,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "public_awareness",
+      "description": "Public perception and awareness of climate change and renewable energy",
+      "importance": 0.1131,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "energy_demand",
+      "description": "Global demand for renewable energy sources",
+      "importance": 0.3249,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "tech_advances",
+      "description": "Improvements in solar panel efficiency and cost",
+      "importance": 0.2131,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "gov_incentives->energy_demand",
+      "description": "Incentives increase demand for renewable energy sources",
+      "importance": 0.0952,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "energy_demand->outcome",
+      "description": "High demand for renewable energy drives growth in solar power",
+      "importance": 0.0952,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "tech_advances->grid_infrastructure",
+      "description": "Improved technology enables more efficient energy storage and grid management",
+      "importance": 0.0238,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "gov_incentives->energy_demand",
+      "description": "Incentives increase demand for renewable energy sources",
+      "importance": 0.0952,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "grid_infrastructure->energy_demand",
+      "description": "Potential link: Development of energy storage and grid infrastructure -> Global demand for renewable energy sources",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "energy_demand->tech_advances",
+      "description": "Potential link: Global demand for renewable energy sources -> Improvements in solar panel efficiency and cost",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "Recent studies suggest that advancements in solar panel technology have made it economically viable even in low-demand scenarios, rendering global demand for renewable energy sources less relevant to the growth of solar power. In fact, the decreasing cost of solar energy may lead to increased adoption even in areas with stagnant or decreasing energy demand. This challenges the assumption that high demand for renewable energy is a driving factor in solar power's dominance. What if the demand for renewable energy is actually a lagging indicator, rather than a leading driver, of the transition to solar power?",
+      "probe_type": "node_negate_high",
+      "target_id": "energy_demand",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3249,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Global demand for renewable energy sources"
+    },
+    {
+      "probe_text": "Recent studies have shown that the efficiency of solar panels may be nearing a physical limit, and further advancements may not significantly reduce costs or increase efficiency. Additionally, the current supply chain for solar panels is highly dependent on rare earth minerals, which could lead to production bottlenecks and offset any potential gains from technological improvements. As a result, the cost and efficiency of solar panels may not decrease as rapidly as previously thought, making tech_advances a less significant factor in the adoption of solar power. What if the anticipated breakthroughs in solar panel technology fail to materialize, and the industry is forced to rely on existing technology?",
+      "probe_type": "node_negate_high",
+      "target_id": "tech_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2131,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Improvements in solar panel efficiency and cost"
+    },
+    {
+      "probe_text": "Recent studies have shown that advancements in smart grid technology may not be as crucial for the widespread adoption of solar power as previously thought, as decentralized energy systems and community-based solar initiatives can thrive without extensive grid infrastructure upgrades. In fact, the focus on developing energy storage solutions has shifted towards innovative battery technologies that can be integrated at the household level, reducing the dependency on large-scale grid infrastructure. This shift in technological trajectory might render the development of grid infrastructure less important for solar power dominance. As a result, the current grid infrastructure might be sufficient to support the growth of solar energy.",
+      "probe_type": "node_negate_medium",
+      "target_id": "grid_infrastructure",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1187,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "Development of energy storage and grid infrastructure"
+    },
+    {
+      "probe_text": "Recent studies have shown that government policies on renewable energy are increasingly driven by economic considerations rather than public opinion, suggesting that public awareness of climate change may have a negligible impact on government incentives for solar power. In fact, many countries have implemented renewable energy targets without significant public pressure. This raises questions about the role of public awareness in driving government policy and, by extension, the growth of solar power. As a result, the influence of public awareness on government incentives may be overstated.",
+      "probe_type": "node_negate_low",
+      "target_id": "public_awareness",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1131,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Public perception and awareness of climate change and renewable energy"
+    },
+    {
+      "probe_text": "The International Energy Agency (IEA) has released a new report projecting a significant increase in global demand for renewable energy sources over the next decade, driven by growing concerns about climate change and air pollution. This trend is expected to be particularly pronounced in developing economies, where renewable energy is becoming increasingly cost-competitive with fossil fuels. As a result, major corporations and governments are investing heavily in renewable energy infrastructure, further driving up demand. This shift in global energy demand is anticipated to accelerate the adoption of solar power, making it a crucial factor in the energy mix.",
+      "probe_type": "node_strengthen",
+      "target_id": "energy_demand",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3249,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Global demand for renewable energy sources"
+    },
+    {
+      "probe_text": "A recent breakthrough in solar panel technology has been announced by a leading renewable energy company, claiming a significant increase in efficiency and a substantial reduction in production costs. This innovation has been endorsed by several experts in the field as a major leap forward for the industry. As a result, industry analysts are predicting a surge in the adoption of solar power worldwide, driven by the improved economics of this new technology.",
+      "probe_type": "node_strengthen",
+      "target_id": "tech_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2131,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Improvements in solar panel efficiency and cost"
+    },
+    {
+      "probe_text": "Recent studies have shown that government incentives for renewable energy have been offset by simultaneous subsidies for fossil fuel industries, potentially neutralizing their impact on energy demand. Furthermore, the effectiveness of incentives in driving demand may be diminished by the complexity of global energy markets and the influence of other factors such as economic growth and technological advancements. In some regions, incentives have even led to an increase in energy consumption overall, rather than a shift towards renewable sources. This suggests that the causal link between government incentives and energy demand may be weaker than assumed.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "gov_incentives->energy_demand",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0952,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Incentives increase demand for renewable energy sources"
+    },
+    {
+      "probe_text": "However, recent studies have shown that increased demand for renewable energy can lead to a surge in investments in other forms of renewable energy, such as wind and hydro power, potentially diverting resources away from solar power. Furthermore, high demand can also lead to supply chain bottlenecks and increased costs for solar panels, slowing down the growth of solar power. This suggests that the relationship between energy demand and solar power growth might be more complex than assumed. What if this complexity undermines the expected outcome?",
+      "probe_type": "edge_negate_critical",
+      "target_id": "energy_demand->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0952,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "High demand for renewable energy drives growth in solar power"
+    },
+    {
+      "probe_text": "Recent studies have shown that advancements in solar panel technology have not significantly impacted the development of energy storage and grid infrastructure, as these systems are often designed and implemented independently. In fact, the primary drivers of grid infrastructure development are economic and regulatory factors, rather than technological innovations in solar power. Furthermore, the integration of solar power into existing grids has been successfully achieved through other means, such as smart grid management systems. This suggests that the relationship between tech_advances and grid_infrastructure may not be as direct or influential as previously thought.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "tech_advances->grid_infrastructure",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0238,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "Improved technology enables more efficient energy storage and grid management"
+    },
+    {
+      "probe_text": "Recent studies have shown that high demand for renewable energy sources often prompts governments to implement subsidies and tax credits, as policymakers respond to public pressure and economic opportunity. This suggests that the relationship between government incentives and energy demand may be reversed, with growing demand driving the creation of incentives rather than the other way around. Consider the example of Germany's Energiewende program, where soaring public demand for renewable energy led to increased government support. Does this change your estimate of solar power's prospects?",
+      "probe_type": "edge_reverse",
+      "target_id": "gov_incentives->energy_demand",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0952,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Incentives increase demand for renewable energy sources"
+    },
+    {
+      "probe_text": "Recent studies have shown that advancements in energy storage technology, a key component of grid infrastructure, have significantly reduced the intermittency concerns associated with renewable energy sources, making them more viable for widespread adoption and thus increasing global demand. As a result, investments in grid infrastructure have been found to directly influence consumer and industrial confidence in renewable energy, driving up demand. How does this new understanding of the relationship between grid infrastructure and energy demand impact your estimate? ",
+      "probe_type": "edge_fabricate",
+      "target_id": "grid_infrastructure->energy_demand",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Development of energy storage and grid infrastructure -> Global demand for renewable energy sources"
+    },
+    {
+      "probe_text": "Recent studies have shown that high global demand for renewable energy sources, particularly solar power, has driven investments in research and development, leading to breakthroughs in solar panel efficiency and cost reductions. As demand continues to rise, manufacturers are incentivized to improve technology to meet the growing need. This suggests a potential feedback loop where increasing energy demand fuels technological advancements. How might this relationship impact your forecast?",
+      "probe_type": "edge_fabricate",
+      "target_id": "energy_demand->tech_advances",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Global demand for renewable energy sources -> Improvements in solar panel efficiency and cost"
+    },
+    {
+      "probe_text": "What if international cooperation and global agreements, such as those aimed at reducing carbon emissions, were to significantly increase, leading to a unified global effort to prioritize renewable energy sources? This could potentially accelerate the development and implementation of solar power technology. Would this development impact your belief in solar power dominating renewable energy consumption before 2031? Consider how global coordination might influence government incentives, technological advancements, and public awareness.",
+      "probe_type": "missing_node",
+      "target_id": "global_agreements",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if international cooperation and global agreements, such as the Paris Agreement, play a significant role in driving the adoption of solar power by setting collective targets and facilitating technology sharing among nations? This factor could influence government incentives, public awareness, and ultimately the outcome. The absence of this factor in the current network might overlook the potential impact of global coordination on the growth of solar power. How would this omission affect your probability estimate?",
+      "probe_type": "missing_node",
+      "target_id": "global_agreements",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "A recent study found that the color scheme and branding of renewable energy companies have a significant impact on customer engagement and loyalty. The study discovered that companies using a green and blue color palette tend to have higher customer retention rates. However, the study did not examine the effect of branding on the overall adoption of solar power or the development of renewable energy infrastructure. This finding has been widely reported in the media and has sparked a debate about the importance of branding in the renewable energy sector.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "Researchers have discovered a new species of plant that is highly efficient at absorbing carbon dioxide, which could potentially lead to breakthroughs in bioengineering and carbon sequestration. This finding has been met with enthusiasm from environmentalists and scientists alike. However, it is still unclear how this discovery will be applied in practice. The research team is currently exploring ways to utilize this plant in large-scale carbon capture projects.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies suggest that advancements in solar panel technology have made it economically viable even in low-demand scenarios, rendering global demand for renewable energy sources less relevant to the growth of solar power. In fact, the decreasing cost of solar energy may lead to increased adoption even in areas with stagnant or decreasing energy demand. This challenges the assumption that high demand for renewable energy is a driving factor in solar power's dominance. What if the demand for renewable energy is actually a lagging indicator, rather than a leading driver, of the transition to solar power?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.81,
+      "absolute_shift": 0.09000000000000008,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the 'energy_demand' factor reduces the importance of this node in the causal network, as the growth of solar power is now less dependent on high demand for renewable energy. This means that the edge from 'energy_demand' to 'outcome' is weakened. However, the edges from 'tech_advances' to 'outcome' and from 'tech_advances' to 'grid_infrastructure' are strengthened, as advancements in solar panel technology are now seen as a more direct driver of solar power's dominance. The reduced reliance on energy demand as a driving factor increases the likelihood of solar power dominating renewable energy consumption before 2031, leading to an increased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.81, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the 'energy_demand' factor reduces the importance of this node in the causal network, as the growth of solar power is now less dependent on high demand for renewable energy. This means that the edge from 'energy_demand' to 'outcome' is weakened. However, the edges from 'tech_advances' to 'outcome' and from 'tech_advances' to 'grid_infrastructure' are strengthened, as advancements in solar panel technology are now seen as a more direct driver of solar power's dominance. The reduced reliance on energy demand as a driving factor increases the likelihood of solar power dominating renewable energy consumption before 2031, leading to an increased probability estimate.\"}",
+      "target_id": "energy_demand",
+      "target_type": "node",
+      "target_importance": 0.3249,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the efficiency of solar panels may be nearing a physical limit, and further advancements may not significantly reduce costs or increase efficiency. Additionally, the current supply chain for solar panels is highly dependent on rare earth minerals, which could lead to production bottlenecks and offset any potential gains from technological improvements. As a result, the cost and efficiency of solar panels may not decrease as rapidly as previously thought, making tech_advances a less significant factor in the adoption of solar power. What if the anticipated breakthroughs in solar panel technology fail to materialize, and the industry is forced to rely on existing technology?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.68,
+      "absolute_shift": 0.13,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'tech_advances' factor significantly weakens the edges from 'tech_advances' to 'outcome' and from 'tech_advances' to 'grid_infrastructure', as the potential for breakthroughs in solar panel technology is now diminished. This reduction in the expected pace of technological progress decreases the likelihood of solar power dominating renewable energy consumption before 2031. While other factors, such as 'gov_incentives' and 'public_awareness', may still support the growth of solar power, the diminished role of 'tech_advances' reduces the overall probability estimate. The network now relies more heavily on these other factors to drive the adoption of solar power, making the outcome less certain and leading to a decreased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.68, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'tech_advances' factor significantly weakens the edges from 'tech_advances' to 'outcome' and from 'tech_advances' to 'grid_infrastructure', as the potential for breakthroughs in solar panel technology is now diminished. This reduction in the expected pace of technological progress decreases the likelihood of solar power dominating renewable energy consumption before 2031. While other factors, such as 'gov_incentives' and 'public_awareness', may still support the growth of solar power, the diminished role of 'tech_advances' reduces the overall probability estimate. The network now relies more heavily on these other factors to drive the adoption of solar power, making the outcome less certain and leading to a decreased probability estimate.\"}",
+      "target_id": "tech_advances",
+      "target_type": "node",
+      "target_importance": 0.2131,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that advancements in smart grid technology may not be as crucial for the widespread adoption of solar power as previously thought, as decentralized energy systems and community-based solar initiatives can thrive without extensive grid infrastructure upgrades. In fact, the focus on developing energy storage solutions has shifted towards innovative battery technologies that can be integrated at the household level, reducing the dependency on large-scale grid infrastructure. This shift in technological trajectory might render the development of grid infrastructure less important for solar power dominance. As a result, the current grid infrastructure might be sufficient to support the growth of solar energy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.72,
+      "absolute_shift": 0.039999999999999925,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the 'grid_infrastructure' factor reduces the importance of this node in the causal network, as decentralized energy systems and community-based solar initiatives can drive the growth of solar power without relying heavily on extensive grid infrastructure upgrades. The edge from 'grid_infrastructure' to 'outcome' is weakened, but this reduction is partially offset by the increased feasibility of solar power adoption in various contexts. The shift in focus towards innovative battery technologies and household-level energy storage solutions also suggests that the current grid infrastructure might be sufficient to support the growth of solar energy, making the 'grid_infrastructure' factor less of a bottleneck. As a result, the probability estimate increases, reflecting the reduced dependency on grid infrastructure for solar power dominance, although the overall impact is moderate due to the existing challenges to 'tech_advances' and 'energy_demand' factors.",
+      "raw_response": "{\"updated_probability\": 0.72, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the 'grid_infrastructure' factor reduces the importance of this node in the causal network, as decentralized energy systems and community-based solar initiatives can drive the growth of solar power without relying heavily on extensive grid infrastructure upgrades. The edge from 'grid_infrastructure' to 'outcome' is weakened, but this reduction is partially offset by the increased feasibility of solar power adoption in various contexts. The shift in focus towards innovative battery technologies and household-level energy storage solutions also suggests that the current grid infrastructure might be sufficient to support the growth of solar energy, making the 'grid_infrastructure' factor less of a bottleneck. As a result, the probability estimate increases, reflecting the reduced dependency on grid infrastructure for solar power dominance, although the overall impact is moderate due to the existing challenges to 'tech_advances' and 'energy_demand' factors.\"}",
+      "target_id": "grid_infrastructure",
+      "target_type": "node",
+      "target_importance": 0.1187,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that government policies on renewable energy are increasingly driven by economic considerations rather than public opinion, suggesting that public awareness of climate change may have a negligible impact on government incentives for solar power. In fact, many countries have implemented renewable energy targets without significant public pressure. This raises questions about the role of public awareness in driving government policy and, by extension, the growth of solar power. As a result, the influence of public awareness on government incentives may be overstated.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.7,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'public_awareness' factor weakens the edge from 'public_awareness' to 'gov_incentives', as government policies on renewable energy are now seen as being driven more by economic considerations than public opinion. This reduction in the influence of public awareness on government incentives slightly decreases the overall probability estimate, as the growth of solar power is now less dependent on public pressure. However, the impact is moderate, as other factors, such as 'gov_incentives' and 'fossil_fuel_prices', can still drive the adoption of solar power. The network's reliance on 'public_awareness' as a driving factor is reduced, but the existing connections between other nodes, such as 'gov_incentives' and 'energy_demand', continue to support the growth of solar power, limiting the decrease in the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.70, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'public_awareness' factor weakens the edge from 'public_awareness' to 'gov_incentives', as government policies on renewable energy are now seen as being driven more by economic considerations than public opinion. This reduction in the influence of public awareness on government incentives slightly decreases the overall probability estimate, as the growth of solar power is now less dependent on public pressure. However, the impact is moderate, as other factors, such as 'gov_incentives' and 'fossil_fuel_prices', can still drive the adoption of solar power. The network's reliance on 'public_awareness' as a driving factor is reduced, but the existing connections between other nodes, such as 'gov_incentives' and 'energy_demand', continue to support the growth of solar power, limiting the decrease in the probability estimate.\"}",
+      "target_id": "public_awareness",
+      "target_type": "node",
+      "target_importance": 0.1131,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "The International Energy Agency (IEA) has released a new report projecting a significant increase in global demand for renewable energy sources over the next decade, driven by growing concerns about climate change and air pollution. This trend is expected to be particularly pronounced in developing economies, where renewable energy is becoming increasingly cost-competitive with fossil fuels. As a result, major corporations and governments are investing heavily in renewable energy infrastructure, further driving up demand. This shift in global energy demand is anticipated to accelerate the adoption of solar power, making it a crucial factor in the energy mix.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.78,
+      "absolute_shift": 0.08000000000000007,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the IEA report strengthens the 'energy_demand' factor, as the projected increase in global demand for renewable energy sources is expected to drive the adoption of solar power. This challenges the previous assumption that energy demand might be a lagging indicator, and instead suggests that it could be a leading driver of solar power growth. The edge from 'energy_demand' to 'outcome' is reinforced, as the growing demand for renewable energy is likely to accelerate the transition to solar power. Additionally, the increased investment in renewable energy infrastructure by corporations and governments further supports the growth of solar power, creating a positive feedback loop. While previous challenges to other factors, such as 'tech_advances' and 'grid_infrastructure', still apply, the renewed importance of 'energy_demand' as a driving factor increases the overall probability estimate, reflecting the potential for accelerated solar power adoption.",
+      "raw_response": "{\"updated_probability\": 0.78, \"shift_direction\": \"increased\", \"reasoning\": \"The new information from the IEA report strengthens the 'energy_demand' factor, as the projected increase in global demand for renewable energy sources is expected to drive the adoption of solar power. This challenges the previous assumption that energy demand might be a lagging indicator, and instead suggests that it could be a leading driver of solar power growth. The edge from 'energy_demand' to 'outcome' is reinforced, as the growing demand for renewable energy is likely to accelerate the transition to solar power. Additionally, the increased investment in renewable energy infrastructure by corporations and governments further supports the growth of solar power, creating a positive feedback loop. While previous challenges to other factors, such as 'tech_advances' and 'grid_infrastructure', still apply, the renewed importance of 'energy_demand' as a driving factor increases the overall probability estimate, reflecting the potential for accelerated solar power adoption.\"}",
+      "target_id": "energy_demand",
+      "target_type": "node",
+      "target_importance": 0.3249,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent breakthrough in solar panel technology has been announced by a leading renewable energy company, claiming a significant increase in efficiency and a substantial reduction in production costs. This innovation has been endorsed by several experts in the field as a major leap forward for the industry. As a result, industry analysts are predicting a surge in the adoption of solar power worldwide, driven by the improved economics of this new technology.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.86,
+      "absolute_shift": 0.07999999999999996,
+      "shift_direction": "increased",
+      "reasoning": "The breakthrough in solar panel technology significantly strengthens the 'tech_advances' factor, as the increased efficiency and reduced production costs are expected to drive a surge in the adoption of solar power worldwide. This new information directly challenges the previous assumption that the efficiency of solar panels may be nearing a physical limit, and instead suggests that major technological advancements are still possible. The edges from 'tech_advances' to 'outcome' and from 'tech_advances' to 'grid_infrastructure' are reinforced, as the improved technology is likely to increase the feasibility and attractiveness of solar power, even in areas with limited grid infrastructure. The combination of this technological breakthrough with the previously reported increase in global demand for renewable energy sources creates a powerful synergy, further accelerating the transition to solar power. As a result, the probability estimate increases substantially, reflecting the potential for rapid growth in the solar power industry.",
+      "raw_response": "{\"updated_probability\": 0.86, \"shift_direction\": \"increased\", \"reasoning\": \"The breakthrough in solar panel technology significantly strengthens the 'tech_advances' factor, as the increased efficiency and reduced production costs are expected to drive a surge in the adoption of solar power worldwide. This new information directly challenges the previous assumption that the efficiency of solar panels may be nearing a physical limit, and instead suggests that major technological advancements are still possible. The edges from 'tech_advances' to 'outcome' and from 'tech_advances' to 'grid_infrastructure' are reinforced, as the improved technology is likely to increase the feasibility and attractiveness of solar power, even in areas with limited grid infrastructure. The combination of this technological breakthrough with the previously reported increase in global demand for renewable energy sources creates a powerful synergy, further accelerating the transition to solar power. As a result, the probability estimate increases substantially, reflecting the potential for rapid growth in the solar power industry.\"}",
+      "target_id": "tech_advances",
+      "target_type": "node",
+      "target_importance": 0.2131,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that government incentives for renewable energy have been offset by simultaneous subsidies for fossil fuel industries, potentially neutralizing their impact on energy demand. Furthermore, the effectiveness of incentives in driving demand may be diminished by the complexity of global energy markets and the influence of other factors such as economic growth and technological advancements. In some regions, incentives have even led to an increase in energy consumption overall, rather than a shift towards renewable sources. This suggests that the causal link between government incentives and energy demand may be weaker than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.84,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'gov_incentives->energy_demand' weakens the connection between these two factors, as the effectiveness of government incentives in driving energy demand is now seen as being diminished by various factors. The complexity of global energy markets, the influence of economic growth and technological advancements, and the potential for incentives to increase overall energy consumption rather than shift towards renewable sources all contribute to a reduced impact of 'gov_incentives' on 'energy_demand'. However, the decrease in the probability estimate is moderate, as other factors such as 'tech_advances' and the renewed importance of 'energy_demand' continue to drive the growth of solar power. The network's reliance on 'gov_incentives' as a key driver of energy demand is reduced, but the overall momentum towards solar power adoption remains strong, limiting the decrease in the probability estimate. The edges from 'tech_advances' to 'outcome' and from 'energy_demand' to 'outcome' remain robust, supporting the continued growth of solar power.",
+      "raw_response": "{\"updated_probability\": 0.84, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'gov_incentives->energy_demand' weakens the connection between these two factors, as the effectiveness of government incentives in driving energy demand is now seen as being diminished by various factors. The complexity of global energy markets, the influence of economic growth and technological advancements, and the potential for incentives to increase overall energy consumption rather than shift towards renewable sources all contribute to a reduced impact of 'gov_incentives' on 'energy_demand'. However, the decrease in the probability estimate is moderate, as other factors such as 'tech_advances' and the renewed importance of 'energy_demand' continue to drive the growth of solar power. The network's reliance on 'gov_incentives' as a key driver of energy demand is reduced, but the overall momentum towards solar power adoption remains strong, limiting the decrease in the probability estimate. The edges from 'tech_advances' to 'outcome' and from 'energy_demand' to 'outcome' remain robust, supporting the continued growth of solar power.\"}",
+      "target_id": "gov_incentives->energy_demand",
+      "target_type": "edge",
+      "target_importance": 0.0952,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, recent studies have shown that increased demand for renewable energy can lead to a surge in investments in other forms of renewable energy, such as wind and hydro power, potentially diverting resources away from solar power. Furthermore, high demand can also lead to supply chain bottlenecks and increased costs for solar panels, slowing down the growth of solar power. This suggests that the relationship between energy demand and solar power growth might be more complex than assumed. What if this complexity undermines the expected outcome?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.78,
+      "absolute_shift": 0.05999999999999994,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'energy_demand->outcome' significantly weakens the connection between these two factors, as the increased demand for renewable energy may not necessarily translate to growth in solar power. The potential for investments to be diverted to other forms of renewable energy, such as wind and hydro power, and the risk of supply chain bottlenecks and increased costs for solar panels, introduce complexities that undermine the expected outcome. This new information suggests that the relationship between energy demand and solar power growth is more nuanced, and that high demand may not always lead to accelerated growth in solar power. As a result, the probability estimate decreases, reflecting the increased uncertainty and potential for unintended consequences. The edges from 'tech_advances' to 'outcome' and from 'gov_incentives' to 'outcome' remain important, but the reduced impact of 'energy_demand' on the outcome necessitates a downward revision of the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.78, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'energy_demand->outcome' significantly weakens the connection between these two factors, as the increased demand for renewable energy may not necessarily translate to growth in solar power. The potential for investments to be diverted to other forms of renewable energy, such as wind and hydro power, and the risk of supply chain bottlenecks and increased costs for solar panels, introduce complexities that undermine the expected outcome. This new information suggests that the relationship between energy demand and solar power growth is more nuanced, and that high demand may not always lead to accelerated growth in solar power. As a result, the probability estimate decreases, reflecting the increased uncertainty and potential for unintended consequences. The edges from 'tech_advances' to 'outcome' and from 'gov_incentives' to 'outcome' remain important, but the reduced impact of 'energy_demand' on the outcome necessitates a downward revision of the probability estimate.\"}",
+      "target_id": "energy_demand->outcome",
+      "target_type": "edge",
+      "target_importance": 0.0952,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that advancements in solar panel technology have not significantly impacted the development of energy storage and grid infrastructure, as these systems are often designed and implemented independently. In fact, the primary drivers of grid infrastructure development are economic and regulatory factors, rather than technological innovations in solar power. Furthermore, the integration of solar power into existing grids has been successfully achieved through other means, such as smart grid management systems. This suggests that the relationship between tech_advances and grid_infrastructure may not be as direct or influential as previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.76,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'tech_advances->grid_infrastructure' weakens the connection between these two factors, as the development of grid infrastructure is now seen as being driven more by economic and regulatory factors than by technological innovations in solar power. The edge from 'tech_advances' to 'grid_infrastructure' is diminished, reducing the indirect impact of technological advancements on the outcome through the grid infrastructure pathway. However, the decrease in the probability estimate is moderate, as the direct link from 'tech_advances' to 'outcome' remains robust, and the growth of solar power is still driven by the improved economics and efficiency of solar panels. The reduced importance of the 'tech_advances->grid_infrastructure' link slightly decreases the overall probability estimate, but the network's reliance on other factors, such as 'energy_demand' and 'gov_incentives', continues to support the growth of solar power, limiting the decrease.",
+      "raw_response": "{\"updated_probability\": 0.76, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'tech_advances->grid_infrastructure' weakens the connection between these two factors, as the development of grid infrastructure is now seen as being driven more by economic and regulatory factors than by technological innovations in solar power. The edge from 'tech_advances' to 'grid_infrastructure' is diminished, reducing the indirect impact of technological advancements on the outcome through the grid infrastructure pathway. However, the decrease in the probability estimate is moderate, as the direct link from 'tech_advances' to 'outcome' remains robust, and the growth of solar power is still driven by the improved economics and efficiency of solar panels. The reduced importance of the 'tech_advances->grid_infrastructure' link slightly decreases the overall probability estimate, but the network's reliance on other factors, such as 'energy_demand' and 'gov_incentives', continues to support the growth of solar power, limiting the decrease.\"}",
+      "target_id": "tech_advances->grid_infrastructure",
+      "target_type": "edge",
+      "target_importance": 0.0238,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that high demand for renewable energy sources often prompts governments to implement subsidies and tax credits, as policymakers respond to public pressure and economic opportunity. This suggests that the relationship between government incentives and energy demand may be reversed, with growing demand driving the creation of incentives rather than the other way around. Consider the example of Germany's Energiewende program, where soaring public demand for renewable energy led to increased government support. Does this change your estimate of solar power's prospects?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.79,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'gov_incentives->energy_demand' suggests that the relationship between these two factors may be reversed, with growing demand driving the creation of incentives rather than the other way around. This new information strengthens the overall narrative of solar power growth, as it implies that the increasing demand for renewable energy will lead to more government support, creating a self-reinforcing cycle. The edge from 'energy_demand' to 'gov_incentives' becomes more important, as growing demand is now seen as a driver of government incentives. While the direct link from 'gov_incentives' to 'energy_demand' is weakened, the indirect link from 'energy_demand' to 'gov_incentives' and then to 'outcome' becomes more significant. This revised understanding of the relationship between government incentives and energy demand increases the probability estimate, as it suggests that the growth of solar power will be supported by a positive feedback loop of increasing demand and government support.",
+      "raw_response": "{\"updated_probability\": 0.79, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'gov_incentives->energy_demand' suggests that the relationship between these two factors may be reversed, with growing demand driving the creation of incentives rather than the other way around. This new information strengthens the overall narrative of solar power growth, as it implies that the increasing demand for renewable energy will lead to more government support, creating a self-reinforcing cycle. The edge from 'energy_demand' to 'gov_incentives' becomes more important, as growing demand is now seen as a driver of government incentives. While the direct link from 'gov_incentives' to 'energy_demand' is weakened, the indirect link from 'energy_demand' to 'gov_incentives' and then to 'outcome' becomes more significant. This revised understanding of the relationship between government incentives and energy demand increases the probability estimate, as it suggests that the growth of solar power will be supported by a positive feedback loop of increasing demand and government support.\"}",
+      "target_id": "gov_incentives->energy_demand",
+      "target_type": "edge",
+      "target_importance": 0.0952,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that advancements in energy storage technology, a key component of grid infrastructure, have significantly reduced the intermittency concerns associated with renewable energy sources, making them more viable for widespread adoption and thus increasing global demand. As a result, investments in grid infrastructure have been found to directly influence consumer and industrial confidence in renewable energy, driving up demand. How does this new understanding of the relationship between grid infrastructure and energy demand impact your estimate? ",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.83,
+      "absolute_shift": 0.039999999999999925,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the causal link 'grid_infrastructure->energy_demand', as advancements in energy storage technology and grid infrastructure are now seen as directly influencing consumer and industrial confidence in renewable energy, driving up demand. This revised understanding of the relationship between grid infrastructure and energy demand suggests that investments in grid infrastructure will have a positive impact on energy demand, creating a virtuous cycle that supports the growth of solar power. The edge from 'grid_infrastructure' to 'energy_demand' becomes more important, and the indirect link from 'grid_infrastructure' to 'outcome' through 'energy_demand' is reinforced. As a result, the probability estimate increases, reflecting the enhanced role of grid infrastructure in driving energy demand and supporting the adoption of solar power. The network's overall dynamics are positively affected, as the growth of solar power is now seen as being supported by a stronger and more resilient grid infrastructure, which in turn drives up energy demand.",
+      "raw_response": "{\"updated_probability\": 0.83, \"shift_direction\": \"increased\", \"reasoning\": \"The new information strengthens the causal link 'grid_infrastructure->energy_demand', as advancements in energy storage technology and grid infrastructure are now seen as directly influencing consumer and industrial confidence in renewable energy, driving up demand. This revised understanding of the relationship between grid infrastructure and energy demand suggests that investments in grid infrastructure will have a positive impact on energy demand, creating a virtuous cycle that supports the growth of solar power. The edge from 'grid_infrastructure' to 'energy_demand' becomes more important, and the indirect link from 'grid_infrastructure' to 'outcome' through 'energy_demand' is reinforced. As a result, the probability estimate increases, reflecting the enhanced role of grid infrastructure in driving energy demand and supporting the adoption of solar power. The network's overall dynamics are positively affected, as the growth of solar power is now seen as being supported by a stronger and more resilient grid infrastructure, which in turn drives up energy demand.\"}",
+      "target_id": "grid_infrastructure->energy_demand",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that high global demand for renewable energy sources, particularly solar power, has driven investments in research and development, leading to breakthroughs in solar panel efficiency and cost reductions. As demand continues to rise, manufacturers are incentivized to improve technology to meet the growing need. This suggests a potential feedback loop where increasing energy demand fuels technological advancements. How might this relationship impact your forecast?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.87,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "increased",
+      "reasoning": "The new information reveals a positive feedback loop between 'energy_demand' and 'tech_advances', where increasing energy demand drives investments in research and development, leading to technological advancements in solar power. This feedback loop creates a self-reinforcing cycle, where growing demand fuels innovation, which in turn supports further growth in demand. The edge from 'energy_demand' to 'tech_advances' becomes a crucial component of the network, as it suggests that the growth of solar power will be accelerated by the increasing demand for renewable energy sources. The indirect links from 'energy_demand' to 'outcome' through 'tech_advances' and from 'tech_advances' to 'outcome' are reinforced, creating a robust and dynamic system that supports the rapid adoption of solar power. As a result, the probability estimate increases, reflecting the potential for a virtuous cycle of growing demand, technological innovation, and increasing adoption of solar power.",
+      "raw_response": "{\"updated_probability\": 0.87, \"shift_direction\": \"increased\", \"reasoning\": \"The new information reveals a positive feedback loop between 'energy_demand' and 'tech_advances', where increasing energy demand drives investments in research and development, leading to technological advancements in solar power. This feedback loop creates a self-reinforcing cycle, where growing demand fuels innovation, which in turn supports further growth in demand. The edge from 'energy_demand' to 'tech_advances' becomes a crucial component of the network, as it suggests that the growth of solar power will be accelerated by the increasing demand for renewable energy sources. The indirect links from 'energy_demand' to 'outcome' through 'tech_advances' and from 'tech_advances' to 'outcome' are reinforced, creating a robust and dynamic system that supports the rapid adoption of solar power. As a result, the probability estimate increases, reflecting the potential for a virtuous cycle of growing demand, technological innovation, and increasing adoption of solar power.\"}",
+      "target_id": "energy_demand->tech_advances",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if international cooperation and global agreements, such as those aimed at reducing carbon emissions, were to significantly increase, leading to a unified global effort to prioritize renewable energy sources? This could potentially accelerate the development and implementation of solar power technology. Would this development impact your belief in solar power dominating renewable energy consumption before 2031? Consider how global coordination might influence government incentives, technological advancements, and public awareness.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.92,
+      "absolute_shift": 0.050000000000000044,
+      "shift_direction": "increased",
+      "reasoning": "The structural challenge to the causal model introduces a new factor, 'global_cooperation', which has the potential to significantly impact the growth of solar power. Increased international cooperation and global agreements on reducing carbon emissions could lead to a unified global effort to prioritize renewable energy sources, accelerating the development and implementation of solar power technology. This would likely influence multiple factors in the network, including 'gov_incentives', 'tech_advances', and 'public_awareness'. Global coordination could lead to more effective and coordinated government incentives, driving innovation and investment in solar power. Additionally, international cooperation could facilitate the sharing of knowledge and expertise, accelerating technological advancements in solar power. The increased public awareness and pressure resulting from global agreements could also drive demand for renewable energy sources, further supporting the growth of solar power. The introduction of 'global_cooperation' as a new factor creates a positive feedback loop, where increased global coordination reinforces the growth of solar power, leading to a higher probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.92, \"shift_direction\": \"increased\", \"reasoning\": \"The structural challenge to the causal model introduces a new factor, 'global_cooperation', which has the potential to significantly impact the growth of solar power. Increased international cooperation and global agreements on reducing carbon emissions could lead to a unified global effort to prioritize renewable energy sources, accelerating the development and implementation of solar power technology. This would likely influence multiple factors in the network, including 'gov_incentives', 'tech_advances', and 'public_awareness'. Global coordination could lead to more effective and coordinated government incentives, driving innovation and investment in solar power. Additionally, international cooperation could facilitate the sharing of knowledge and expertise, accelerating technological advancements in solar power. The increased public awareness and pressure resulting from global agreements could also drive demand for renewable energy sources, further supporting the growth of solar power. The introduction of 'global_cooperation' as a new factor creates a positive feedback loop, where increased global coordination reinforces the growth of solar power, leading to a higher probability estimate.\"}",
+      "target_id": "global_agreements",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if international cooperation and global agreements, such as the Paris Agreement, play a significant role in driving the adoption of solar power by setting collective targets and facilitating technology sharing among nations? This factor could influence government incentives, public awareness, and ultimately the outcome. The absence of this factor in the current network might overlook the potential impact of global coordination on the growth of solar power. How would this omission affect your probability estimate?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.95,
+      "absolute_shift": 0.029999999999999916,
+      "shift_direction": "increased",
+      "reasoning": "The structural challenge to the causal model highlights the importance of 'global_cooperation' in driving the adoption of solar power. The introduction of this factor reveals a potential omission in the current network, as global coordination can have a profound impact on government incentives, public awareness, and ultimately the outcome. The Paris Agreement and similar international agreements can set collective targets, facilitate technology sharing, and create a sense of global urgency, driving nations to prioritize renewable energy sources. This, in turn, can lead to increased government incentives, public awareness, and investment in solar power. The addition of 'global_cooperation' as a factor creates a robust and dynamic system, where international coordination reinforces the growth of solar power, leading to a higher probability estimate. The updated network suggests that the collective efforts of nations can accelerate the transition to solar power, making it more likely that solar power will dominate renewable energy consumption before 2031. The increased probability estimate reflects the potential for global cooperation to drive a rapid and widespread adoption of solar power.",
+      "raw_response": "{\"updated_probability\": 0.95, \"shift_direction\": \"increased\", \"reasoning\": \"The structural challenge to the causal model highlights the importance of 'global_cooperation' in driving the adoption of solar power. The introduction of this factor reveals a potential omission in the current network, as global coordination can have a profound impact on government incentives, public awareness, and ultimately the outcome. The Paris Agreement and similar international agreements can set collective targets, facilitate technology sharing, and create a sense of global urgency, driving nations to prioritize renewable energy sources. This, in turn, can lead to increased government incentives, public awareness, and investment in solar power. The addition of 'global_cooperation' as a factor creates a robust and dynamic system, where international coordination reinforces the growth of solar power, leading to a higher probability estimate. The updated network suggests that the collective efforts of nations can accelerate the transition to solar power, making it more likely that solar power will dominate renewable energy consumption before 2031. The increased probability estimate reflects the potential for global cooperation to drive a rapid and widespread adoption of solar power.\"}",
+      "target_id": "global_agreements",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent study found that the color scheme and branding of renewable energy companies have a significant impact on customer engagement and loyalty. The study discovered that companies using a green and blue color palette tend to have higher customer retention rates. However, the study did not examine the effect of branding on the overall adoption of solar power or the development of renewable energy infrastructure. This finding has been widely reported in the media and has sparked a debate about the importance of branding in the renewable energy sector.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.95,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The structural challenge to the causal model introduces a new factor, 'branding', which has been found to have an impact on customer engagement and loyalty in the renewable energy sector. However, the study's findings are limited to the effect of branding on customer retention rates and do not examine the broader impact on the adoption of solar power or the development of renewable energy infrastructure. As a result, the introduction of 'branding' as a factor does not significantly alter the causal paths in the network, and the probability estimate remains unchanged. The growth of solar power is still driven by factors such as government incentives, technological advancements, and global cooperation, which are more directly related to the development and implementation of solar power technology. While branding may play a role in shaping public perception and customer engagement, its impact on the overall trajectory of solar power adoption is likely to be marginal, and therefore does not warrant a revision to the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.95, \"shift_direction\": \"unchanged\", \"reasoning\": \"The structural challenge to the causal model introduces a new factor, 'branding', which has been found to have an impact on customer engagement and loyalty in the renewable energy sector. However, the study's findings are limited to the effect of branding on customer retention rates and do not examine the broader impact on the adoption of solar power or the development of renewable energy infrastructure. As a result, the introduction of 'branding' as a factor does not significantly alter the causal paths in the network, and the probability estimate remains unchanged. The growth of solar power is still driven by factors such as government incentives, technological advancements, and global cooperation, which are more directly related to the development and implementation of solar power technology. While branding may play a role in shaping public perception and customer engagement, its impact on the overall trajectory of solar power adoption is likely to be marginal, and therefore does not warrant a revision to the probability estimate.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Researchers have discovered a new species of plant that is highly efficient at absorbing carbon dioxide, which could potentially lead to breakthroughs in bioengineering and carbon sequestration. This finding has been met with enthusiasm from environmentalists and scientists alike. However, it is still unclear how this discovery will be applied in practice. The research team is currently exploring ways to utilize this plant in large-scale carbon capture projects.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.95,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The structural challenge to the causal model introduces a new factor, 'carbon_sequestration_through_bioengineering', which has the potential to impact the growth of solar power. However, the current discovery is still in its early stages, and it is unclear how it will be applied in practice. The research team is exploring ways to utilize this plant in large-scale carbon capture projects, but it may take significant time and investment to develop and deploy this technology. As a result, the introduction of this factor does not directly impact the causal paths in the network, and the probability estimate remains unchanged. The growth of solar power is still driven by factors such as government incentives, technological advancements, and global cooperation, which are more directly related to the development and implementation of solar power technology. While the discovery of this new plant species may have long-term implications for carbon sequestration and the energy sector, its impact on the adoption of solar power before 2031 is likely to be negligible, and therefore does not warrant a revision to the probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.95,\n   \"shift_direction\": \"unchanged\",\n   \"reasoning\": \"The structural challenge to the causal model introduces a new factor, 'carbon_sequestration_through_bioengineering', which has the potential to impact the growth of solar power. However, the current discovery is still in its early stages, and it is unclear how it will be applied in practice. The research team is exploring ways to utilize this plant in large-scale carbon capture projects, but it may take significant time and investment to develop and deploy this technology. As a result, the introduction of this factor does not directly impact the causal paths in the network, and the probability estimate remains unchanged. The growth of solar power is still driven by factors such as government incentives, technological advancements, and global cooperation, which are more directly related to the development and implementation of solar power technology. While the discovery of this new plant species may have long-term implications for carbon sequestration and the energy sector, its impact on the adoption of solar power before 2031 is likely to be negligible, and therefore does not warrant a revision to the probability estimate.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "18174",
+    "question_text": "Will solar power on Earth dominate renewable energy consumption before 2031?",
+    "source": "metaculus",
+    "condition": "multi-turn",
+    "initial_probability": 0.72,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.045625,
+    "max_absolute_shift": 0.13
+  }
+}

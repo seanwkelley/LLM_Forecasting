@@ -38,7 +38,7 @@ PROBE_CATEGORIES = {
     "edge_reverse": "edge",
     "edge_spurious": "edge",
     "missing_node": "structural",
-    "irrelevant": "structural",
+    "irrelevant": "control",
 }
 
 

@@ -1,0 +1,987 @@
+{
+  "question_id": "975d02beef1ceddee5c08e950f851f87e0544a43acf3a0b2d21c2e2eac16c3c5",
+  "question_text": "According to Wikipedia, will a vaccine have been developed for Marburg hemorrhagic fever (MHF) by 2025-12-28?",
+  "source": "wikipedia",
+  "initial_probability": 0.67,
+  "nodes": [
+    {
+      "id": "research_funding",
+      "description": "Amount of funding allocated for Marburg hemorrhagic fever research",
+      "role": "factor"
+    },
+    {
+      "id": "scientific_breakthroughs",
+      "description": "Occurrence of significant scientific discoveries related to MHF",
+      "role": "factor"
+    },
+    {
+      "id": "regulatory_support",
+      "description": "Level of support from regulatory bodies for vaccine development",
+      "role": "factor"
+    },
+    {
+      "id": "industry_involvement",
+      "description": "Degree of participation from pharmaceutical companies in vaccine development",
+      "role": "factor"
+    },
+    {
+      "id": "global_health_priority",
+      "description": "Priority given to MHF by global health organizations",
+      "role": "factor"
+    },
+    {
+      "id": "vaccine_development_progress",
+      "description": "Current progress in developing a vaccine for MHF",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "A vaccine for Marburg hemorrhagic fever being developed by 2025-12-28",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "research_funding",
+      "to": "scientific_breakthroughs",
+      "mechanism": "Increased funding leads to more research, potentially resulting in scientific breakthroughs"
+    },
+    {
+      "from": "scientific_breakthroughs",
+      "to": "vaccine_development_progress",
+      "mechanism": "Breakthroughs accelerate vaccine development progress"
+    },
+    {
+      "from": "regulatory_support",
+      "to": "industry_involvement",
+      "mechanism": "Supportive regulations encourage pharmaceutical companies to participate"
+    },
+    {
+      "from": "industry_involvement",
+      "to": "vaccine_development_progress",
+      "mechanism": "Pharmaceutical companies contribute resources and expertise to development"
+    },
+    {
+      "from": "global_health_priority",
+      "to": "research_funding",
+      "mechanism": "High priority leads to increased funding allocation"
+    },
+    {
+      "from": "vaccine_development_progress",
+      "to": "outcome",
+      "mechanism": "Progress in development directly influences the likelihood of a vaccine being ready by the specified date"
+    }
+  ],
+  "reasoning": "The development of a vaccine for Marburg hemorrhagic fever by 2025-12-28 is influenced by several factors, including research funding, scientific breakthroughs, regulatory support, industry involvement, and global health priority. Increased research funding can lead to scientific breakthroughs, which in turn accelerate vaccine development progress. Regulatory support encourages industry involvement, contributing to development progress. Global health priority drives funding allocation. Given the current state of vaccine development and the interplay of these factors, there is a reasonable likelihood that a vaccine will be developed by the specified date.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 6,
+    "density": 0.1429,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "research_funding",
+        "description": "Amount of funding allocated for Marburg hemorrhagic fever research",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.1667,
+        "pagerank": 0.1023,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.3005
+      },
+      {
+        "node_id": "scientific_breakthroughs",
+        "description": "Occurrence of significant scientific discoveries related to MHF",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1333,
+        "closeness": 0.2222,
+        "pagerank": 0.1423,
+        "path_relevance": 0.3333,
+        "composite_importance": 0.3685
+      },
+      {
+        "node_id": "regulatory_support",
+        "description": "Level of support from regulatory bodies for vaccine development",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0553,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2111
+      },
+      {
+        "node_id": "industry_involvement",
+        "description": "Degree of participation from pharmaceutical companies in vaccine development",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0667,
+        "closeness": 0.1667,
+        "pagerank": 0.1023,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2905
+      },
+      {
+        "node_id": "global_health_priority",
+        "description": "Priority given to MHF by global health organizations",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0553,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2111
+      },
+      {
+        "node_id": "vaccine_development_progress",
+        "description": "Current progress in developing a vaccine for MHF",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.1667,
+        "closeness": 0.463,
+        "pagerank": 0.2633,
+        "path_relevance": 0.8333,
+        "composite_importance": 0.5527
+      },
+      {
+        "node_id": "outcome",
+        "description": "A vaccine for Marburg hemorrhagic fever being developed by 2025-12-28",
+        "role": "outcome",
+        "in_degree": 1,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.4,
+        "pagerank": 0.2791,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0558
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "research_funding",
+        "target": "scientific_breakthroughs",
+        "mechanism": "Increased funding leads to more research, potentially resulting in scientific breakthroughs",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      },
+      {
+        "source": "scientific_breakthroughs",
+        "target": "vaccine_development_progress",
+        "mechanism": "Breakthroughs accelerate vaccine development progress",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      },
+      {
+        "source": "regulatory_support",
+        "target": "industry_involvement",
+        "mechanism": "Supportive regulations encourage pharmaceutical companies to participate",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "industry_involvement",
+        "target": "vaccine_development_progress",
+        "mechanism": "Pharmaceutical companies contribute resources and expertise to development",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "global_health_priority",
+        "target": "research_funding",
+        "mechanism": "High priority leads to increased funding allocation",
+        "edge_betweenness": 0.0952,
+        "on_critical_path": true
+      },
+      {
+        "source": "vaccine_development_progress",
+        "target": "outcome",
+        "mechanism": "Progress in development directly influences the likelihood of a vaccine being ready by the specified date",
+        "edge_betweenness": 0.1429,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "vaccine_development_progress",
+        "description": "Current progress in developing a vaccine for MHF",
+        "importance": 0.5527,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "scientific_breakthroughs",
+        "description": "Occurrence of significant scientific discoveries related to MHF",
+        "importance": 0.3685,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "industry_involvement",
+        "description": "Degree of participation from pharmaceutical companies in vaccine development",
+        "importance": 0.2905,
+        "centrality_rank": 4,
+        "on_critical_path": true,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "global_health_priority",
+        "description": "Priority given to MHF by global health organizations",
+        "importance": 0.2111,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "vaccine_development_progress",
+        "description": "Current progress in developing a vaccine for MHF",
+        "importance": 0.5527,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "scientific_breakthroughs",
+        "description": "Occurrence of significant scientific discoveries related to MHF",
+        "importance": 0.3685,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "research_funding->scientific_breakthroughs",
+        "description": "Increased funding leads to more research, potentially resulting in scientific breakthroughs",
+        "importance": 0.1429,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "scientific_breakthroughs->vaccine_development_progress",
+        "description": "Breakthroughs accelerate vaccine development progress",
+        "importance": 0.1429,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "regulatory_support->industry_involvement",
+        "description": "Supportive regulations encourage pharmaceutical companies to participate",
+        "importance": 0.0714,
+        "centrality_rank": 6,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "research_funding->scientific_breakthroughs",
+        "description": "Increased funding leads to more research, potentially resulting in scientific breakthroughs",
+        "importance": 0.1429,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "regulatory_support->global_health_priority",
+        "description": "Potential link: Level of support from regulatory bodies for vaccine development -> Priority given to MHF by global health organizations",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "regulatory_support->vaccine_development_progress",
+        "description": "Potential link: Level of support from regulatory bodies for vaccine development -> Current progress in developing a vaccine for MHF",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "vaccine_development_progress",
+      "description": "Current progress in developing a vaccine for MHF",
+      "importance": 0.5527,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "scientific_breakthroughs",
+      "description": "Occurrence of significant scientific discoveries related to MHF",
+      "importance": 0.3685,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "industry_involvement",
+      "description": "Degree of participation from pharmaceutical companies in vaccine development",
+      "importance": 0.2905,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "global_health_priority",
+      "description": "Priority given to MHF by global health organizations",
+      "importance": 0.2111,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "vaccine_development_progress",
+      "description": "Current progress in developing a vaccine for MHF",
+      "importance": 0.5527,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "scientific_breakthroughs",
+      "description": "Occurrence of significant scientific discoveries related to MHF",
+      "importance": 0.3685,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "research_funding->scientific_breakthroughs",
+      "description": "Increased funding leads to more research, potentially resulting in scientific breakthroughs",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "scientific_breakthroughs->vaccine_development_progress",
+      "description": "Breakthroughs accelerate vaccine development progress",
+      "importance": 0.1429,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "regulatory_support->industry_involvement",
+      "description": "Supportive regulations encourage pharmaceutical companies to participate",
+      "importance": 0.0714,
+      "centrality_rank": 6,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "research_funding->scientific_breakthroughs",
+      "description": "Increased funding leads to more research, potentially resulting in scientific breakthroughs",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "regulatory_support->global_health_priority",
+      "description": "Potential link: Level of support from regulatory bodies for vaccine development -> Priority given to MHF by global health organizations",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "regulatory_support->vaccine_development_progress",
+      "description": "Potential link: Level of support from regulatory bodies for vaccine development -> Current progress in developing a vaccine for MHF",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if recent advancements in vaccine technology have made traditional development progress metrics obsolete, rendering current progress in developing a vaccine for MHF irrelevant to the actual timeline? Perhaps the focus on progress has blinded researchers to more innovative solutions that could expedite or hinder the development process. Alternatively, it's possible that the complexity of MHF requires a fundamentally different development approach, one that doesn't rely on typical progress indicators. This could mean that the current progress, no matter how advanced, does not accurately predict the likelihood of a vaccine being ready by 2025-12-28.",
+      "probe_type": "node_negate_high",
+      "target_id": "vaccine_development_progress",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.5527,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Current progress in developing a vaccine for MHF"
+    },
+    {
+      "probe_text": "Recent studies have shown that incremental improvements in existing technologies rather than groundbreaking scientific discoveries are driving progress in vaccine development for diseases like MHF. Furthermore, the complexity of MHF's viral structure suggests that a vaccine might be developed through meticulous engineering and testing rather than a eureka moment. This implies that the occurrence of significant scientific breakthroughs may not be as crucial for vaccine development as previously thought. In fact, a more evolutionary approach to vaccine development might yield results sooner.",
+      "probe_type": "node_negate_high",
+      "target_id": "scientific_breakthroughs",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3685,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Occurrence of significant scientific discoveries related to MHF"
+    },
+    {
+      "probe_text": "Recent reports indicate that several major pharmaceutical companies have shifted their focus towards more profitable vaccine development projects, such as those for COVID-19 variants, due to the high production costs and limited market demand for an MHF vaccine. As a result, it is likely that industry involvement in MHF vaccine development will be significantly lower than initially anticipated. This shift in priorities may be driven by the need for pharmaceutical companies to maximize returns on investment and allocate resources to projects with higher potential revenue. This change could hinder the development progress of an MHF vaccine.",
+      "probe_type": "node_negate_medium",
+      "target_id": "industry_involvement",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2905,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "description": "Degree of participation from pharmaceutical companies in vaccine development"
+    },
+    {
+      "probe_text": "Recent reports indicate that global health organizations have shifted their focus towards more prevalent diseases, and as a result, Marburg hemorrhagic fever has been deprioritized. This shift in focus has not led to a significant decrease in research funding, as private donors and philanthropic efforts have filled the gap. In fact, some experts argue that the reduced bureaucratic burden from global health organizations has allowed researchers to work more efficiently. This change suggests that the priority given to MHF by global health organizations may not be as crucial for research funding as previously thought.",
+      "probe_type": "node_negate_low",
+      "target_id": "global_health_priority",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2111,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Priority given to MHF by global health organizations"
+    },
+    {
+      "probe_text": "A recent press release from a leading pharmaceutical company announced the successful completion of Phase II clinical trials for a Marburg hemorrhagic fever vaccine candidate, with results showing a high level of efficacy and safety. The company has indicated plans to proceed with large-scale manufacturing and regulatory submissions, anticipating potential emergency use authorization by late 2025. This development has been hailed by global health experts as a significant milestone in the fight against MHF, underscoring the rapid progress being made in vaccine development. As a result, several major health organizations have expressed increased confidence in the likelihood of a licensed vaccine being available by the end of 2025.",
+      "probe_type": "node_strengthen",
+      "target_id": "vaccine_development_progress",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.5527,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Current progress in developing a vaccine for MHF"
+    },
+    {
+      "probe_text": "A recent publication in the journal Nature reports a groundbreaking discovery of a novel vaccine candidate for Marburg hemorrhagic fever, which has shown unprecedented efficacy in animal models. This breakthrough was achieved through a collaborative effort between leading researchers in the field, leveraging cutting-edge technologies and innovative approaches. Experts in the scientific community have hailed this finding as a major milestone in the quest for an MHF vaccine, significantly enhancing the prospects for successful vaccine development. The study's lead author, a renowned virologist, has expressed optimism about the potential for this discovery to accelerate vaccine development timelines.",
+      "probe_type": "node_strengthen",
+      "target_id": "scientific_breakthroughs",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3685,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Occurrence of significant scientific discoveries related to MHF"
+    },
+    {
+      "probe_text": "Recent studies have shown that increased funding for Marburg hemorrhagic fever research has led to a surge in low-quality, redundant, or unfocused projects, potentially diluting the impact of funding on actual scientific breakthroughs. Furthermore, the complexity of MHF may require innovative, out-of-the-box thinking rather than merely throwing more resources at the problem. It's possible that the relationship between research funding and scientific breakthroughs is weaker than assumed, especially if the funding is not strategically allocated. This could limit the effectiveness of increased funding in driving meaningful progress towards a vaccine.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "research_funding->scientific_breakthroughs",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Increased funding leads to more research, potentially resulting in scientific breakthroughs"
+    },
+    {
+      "probe_text": "Recent studies have shown that while scientific breakthroughs in understanding the Marburg virus have been significant, the translation of these discoveries into effective vaccine candidates has been slower than anticipated due to the complex nature of the virus and the challenges in inducing a strong, lasting immune response. Moreover, historical data on vaccine development for similar hemorrhagic fevers suggests that breakthroughs in basic science do not always correlate with accelerated development timelines. This discrepancy raises questions about the direct impact of scientific breakthroughs on vaccine development progress. The relationship between breakthroughs and development speed may be more nuanced than previously thought.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "scientific_breakthroughs->vaccine_development_progress",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Breakthroughs accelerate vaccine development progress"
+    },
+    {
+      "probe_text": "Recently, several pharmaceutical companies have expressed concerns that even with supportive regulatory environments, the financial risks and logistical challenges associated with developing vaccines for rare diseases like Marburg hemorrhagic fever outweigh the potential benefits, suggesting that regulatory support alone may not be sufficient to encourage industry involvement. Furthermore, companies might prioritize more profitable ventures over participating in MHF vaccine development, regardless of regulatory incentives. This could indicate that the relationship between regulatory support and industry involvement is more complex than initially thought. As a result, the impact of regulatory support on industry involvement might be less direct than assumed.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "regulatory_support->industry_involvement",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 6,
+      "on_critical_path": true,
+      "description": "Supportive regulations encourage pharmaceutical companies to participate"
+    },
+    {
+      "probe_text": "Recent studies have shown that scientific breakthroughs in Marburg hemorrhagic fever research often attract additional funding, as investors and governments are more willing to allocate resources to projects with proven potential. For instance, a breakthrough in understanding the virus's genetic structure could lead to a surge in funding for further research. This suggests that the relationship between research funding and scientific breakthroughs may be reversed, with breakthroughs driving increased funding. Could a significant discovery in MHF research lead to a substantial increase in funding, rather than the other way around?",
+      "probe_type": "edge_reverse",
+      "target_id": "research_funding->scientific_breakthroughs",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1429,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Increased funding leads to more research, potentially resulting in scientific breakthroughs"
+    },
+    {
+      "probe_text": "Recent reports indicate that the World Health Organization (WHO) has been actively engaging with regulatory bodies to expedite the review process for vaccines targeting high-priority diseases, suggesting that increased regulatory support for vaccine development could lead to a higher priority ranking for Marburg hemorrhagic fever by global health organizations. This collaboration implies a potential direct relationship between regulatory support and global health priority setting. If regulatory bodies demonstrate a strong commitment to facilitating vaccine development, global health organizations may be more likely to allocate resources and attention to diseases with promising vaccine candidates. Could this interplay influence the development of a Marburg hemorrhagic fever vaccine by 2025-12-28?",
+      "probe_type": "edge_fabricate",
+      "target_id": "regulatory_support->global_health_priority",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of support from regulatory bodies for vaccine development -> Priority given to MHF by global health organizations"
+    },
+    {
+      "probe_text": "Recent reports indicate that the FDA has implemented a fast-track approval process for vaccines targeting high-priority diseases, including Marburg hemorrhagic fever, potentially expediting the development timeline. This change suggests that heightened regulatory support could directly accelerate vaccine development progress by reducing bureaucratic hurdles and allowing for more flexible clinical trial designs. Considering this update, how might the probability of a vaccine being developed by 2025-12-28 change? Would an increase in regulatory support now have a more direct impact on the development progress?",
+      "probe_type": "edge_fabricate",
+      "target_id": "regulatory_support->vaccine_development_progress",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of support from regulatory bodies for vaccine development -> Current progress in developing a vaccine for MHF"
+    },
+    {
+      "probe_text": "What if international collaboration and data sharing among researchers, facilitated by global health organizations, significantly accelerated the discovery of effective vaccine candidates, thus potentially impacting the development timeline? This factor, 'international_collaboration', could influence 'scientific_breakthroughs' and 'vaccine_development_progress' by fostering a more coordinated and efficient global research effort. The absence of this node in the original causal network overlooks the potential benefits of collaborative research in expediting vaccine development. How would this omission affect your estimated probability of a vaccine being developed for Marburg hemorrhagic fever by 2025-12-28?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if public awareness and concern about Marburg hemorrhagic fever significantly increases due to a recent outbreak, leading to a surge in donations and volunteer efforts for vaccine research, potentially accelerating vaccine development progress? How would this impact your estimate of a vaccine being developed by 2025-12-28? This increased public awareness could lead to more funding, increased industry involvement, and higher priority given by global health organizations. Would this new information update your belief about the development of a vaccine for MHF?",
+      "probe_type": "missing_node",
+      "target_id": "public_awareness_and_concern",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "A recent study published in a reputable medical journal found that the genetic diversity of Marburg virus strains in West Africa is higher than previously thought, which may have implications for the long-term efficacy of potential vaccines. However, the study's findings are based on samples collected before 2020 and do not account for recent developments in vaccine technology. The research team behind the study has announced plans to conduct further investigations into the genetic evolution of the virus. This new information has sparked a debate among researchers about the potential challenges of creating a vaccine that can provide broad protection against different Marburg virus strains.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "According to recent reports, the World Health Organization (WHO) has launched a new public awareness campaign about the importance of hand hygiene in preventing the spread of infectious diseases, including Marburg hemorrhagic fever. This campaign aims to educate the general public about simple yet effective measures to reduce the risk of transmission. The campaign's budget is substantial, and it is expected to reach millions of people worldwide. However, the campaign's focus is solely on public health education and does not involve any research or development activities.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if recent advancements in vaccine technology have made traditional development progress metrics obsolete, rendering current progress in developing a vaccine for MHF irrelevant to the actual timeline? Perhaps the focus on progress has blinded researchers to more innovative solutions that could expedite or hinder the development process. Alternatively, it's possible that the complexity of MHF requires a fundamentally different development approach, one that doesn't rely on typical progress indicators. This could mean that the current progress, no matter how advanced, does not accurately predict the likelihood of a vaccine being ready by 2025-12-28.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.09000000000000008,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'vaccine_development_progress' as a reliable indicator of the outcome introduces significant uncertainty into the forecast. The edges from 'scientific_breakthroughs', 'industry_involvement', and 'research_funding' to 'vaccine_development_progress' are affected, as the traditional metrics of progress may no longer be valid. This uncertainty propagatesto the edge from 'vaccine_development_progress' to 'outcome', making the current progress a less reliable predictor of meeting the 2025-12-28 deadline. The decrease in probability reflects the increased uncertainty and potential for both expedited or hindered development due to innovative solutions or the need for a fundamentally different approach, which complicates the prediction.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'vaccine_development_progress' as a reliable indicator of the outcome introduces significant uncertainty into the forecast. The edges from 'scientific_breakthroughs', 'industry_involvement', and 'research_funding' to 'vaccine_development_progress' are affected, as the traditional metrics of progress may no longer be valid. This uncertainty propagatesto the edge from 'vaccine_development_progress' to 'outcome', making the current progress a less reliable predictor of meeting the 2025-12-28 deadline. The decrease in probability reflects the increased uncertainty and potential for both expedited or hindered development due to innovative solutions or the need for a fundamentally different approach, which complicates the prediction.\"}",
+      "target_id": "vaccine_development_progress",
+      "target_type": "node",
+      "target_importance": 0.5527,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that incremental improvements in existing technologies rather than groundbreaking scientific discoveries are driving progress in vaccine development for diseases like MHF. Furthermore, the complexity of MHF's viral structure suggests that a vaccine might be developed through meticulous engineering and testing rather than a eureka moment. This implies that the occurrence of significant scientific breakthroughs may not be as crucial for vaccine development as previously thought. In fact, a more evolutionary approach to vaccine development might yield results sooner.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'scientific_breakthroughs' suggests that the edge from 'scientific_breakthroughs' to 'vaccine_development_progress' is less critical than initially thought. Instead, incremental improvements and meticulous engineering might play a more significant role. This reduces the dependency on rare, groundbreaking discoveries, potentially stabilizing and speeding up the development process. The impact of 'research_funding' on 'vaccine_development_progress' might become more direct and influential, as funding can support the incremental improvements and engineering efforts. Given that a more evolutionary approach could yield results sooner, the overall probability of meeting the deadline increases, albeit moderately, reflecting a somewhat more predictable and potentially accelerated development path.",
+      "raw_response": "{\"updated_probability\": 0.62, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'scientific_breakthroughs' suggests that the edge from 'scientific_breakthroughs' to 'vaccine_development_progress' is less critical than initially thought. Instead, incremental improvements and meticulous engineering might play a more significant role. This reduces the dependency on rare, groundbreaking discoveries, potentially stabilizing and speeding up the development process. The impact of 'research_funding' on 'vaccine_development_progress' might become more direct and influential, as funding can support the incremental improvements and engineering efforts. Given that a more evolutionary approach could yield results sooner, the overall probability of meeting the deadline increases, albeit moderately, reflecting a somewhat more predictable and potentially accelerated development path.\"}",
+      "target_id": "scientific_breakthroughs",
+      "target_type": "node",
+      "target_importance": 0.3685,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that several major pharmaceutical companies have shifted their focus towards more profitable vaccine development projects, such as those for COVID-19 variants, due to the high production costs and limited market demand for an MHF vaccine. As a result, it is likely that industry involvement in MHF vaccine development will be significantly lower than initially anticipated. This shift in priorities may be driven by the need for pharmaceutical companies to maximize returns on investment and allocate resources to projects with higher potential revenue. This change could hinder the development progress of an MHF vaccine.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'industry_involvement' significantly affects the edge from 'industry_involvement' to 'vaccine_development_progress', as reduced involvement from major pharmaceutical companies is likely to hinder development due to decreased resource allocation and expertise contribution. This change also impacts the edge from 'regulatory_support' to 'industry_involvement', as supportive regulations may not be enough to incentivize companies to participate in a less profitable project. The overall effect is a substantial decrease in the probability of meeting the deadline, reflecting the critical role industry resources and expertise play in vaccine development. The shift in industry priorities towards more profitable projects exacerbates the challenge, making it more difficult for MHF vaccine development to progress at a pace that would meet the 2025-12-28 target.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'industry_involvement' significantly affects the edge from 'industry_involvement' to 'vaccine_development_progress', as reduced involvement from major pharmaceutical companies is likely to hinder development due to decreased resource allocation and expertise contribution. This change also impacts the edge from 'regulatory_support' to 'industry_involvement', as supportive regulations may not be enough to incentivize companies to participate in a less profitable project. The overall effect is a substantial decrease in the probability of meeting the deadline, reflecting the critical role industry resources and expertise play in vaccine development. The shift in industry priorities towards more profitable projects exacerbates the challenge, making it more difficult for MHF vaccine development to progress at a pace that would meet the 2025-12-28 target.\"}",
+      "target_id": "industry_involvement",
+      "target_type": "node",
+      "target_importance": 0.2905,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that global health organizations have shifted their focus towards more prevalent diseases, and as a result, Marburg hemorrhagic fever has been deprioritized. This shift in focus has not led to a significant decrease in research funding, as private donors and philanthropic efforts have filled the gap. In fact, some experts argue that the reduced bureaucratic burden from global health organizations has allowed researchers to work more efficiently. This change suggests that the priority given to MHF by global health organizations may not be as crucial for research funding as previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.48,
+      "absolute_shift": 0.02999999999999997,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'global_health_priority' affects the edge from 'global_health_priority' to 'research_funding', suggesting that this relationship is less influential than initially thought. The fact that private donors and philanthropic efforts have maintained research funding levels despite the deprioritization of MHF by global health organizations indicates a degree of resilience in funding. Additionally, the potential for reduced bureaucratic burden allowing researchers to work more efficiently could slightly accelerate development. However, the overall increase in probability is moderate, as the deprioritization might still have some negative effects on awareness, coordination, and resource allocation. The impact is somewhat mitigated by the existence of alternative funding sources and potential efficiencies in research efforts, leading to a small increase in the probability of meeting the deadline.",
+      "raw_response": "{\"updated_probability\": 0.48, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'global_health_priority' affects the edge from 'global_health_priority' to 'research_funding', suggesting that this relationship is less influential than initially thought. The fact that private donors and philanthropic efforts have maintained research funding levels despite the deprioritization of MHF by global health organizations indicates a degree of resilience in funding. Additionally, the potential for reduced bureaucratic burden allowing researchers to work more efficiently could slightly accelerate development. However, the overall increase in probability is moderate, as the deprioritization might still have some negative effects on awareness, coordination, and resource allocation. The impact is somewhat mitigated by the existence of alternative funding sources and potential efficiencies in research efforts, leading to a small increase in the probability of meeting the deadline.\"}",
+      "target_id": "global_health_priority",
+      "target_type": "node",
+      "target_importance": 0.2111,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent press release from a leading pharmaceutical company announced the successful completion of Phase II clinical trials for a Marburg hemorrhagic fever vaccine candidate, with results showing a high level of efficacy and safety. The company has indicated plans to proceed with large-scale manufacturing and regulatory submissions, anticipating potential emergency use authorization by late 2025. This development has been hailed by global health experts as a significant milestone in the fight against MHF, underscoring the rapid progress being made in vaccine development. As a result, several major health organizations have expressed increased confidence in the likelihood of a licensed vaccine being available by the end of 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.37,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'vaccine_development_progress' significantly strengthens the edge from 'vaccine_development_progress' to 'outcome', as the successful completion of Phase II clinical trials and plans for large-scale manufacturing and regulatory submissions provide concrete evidence of substantial progress. This development effectively addresses previous concerns about the reliability of traditional progress metrics and the potential need for a fundamentally different development approach. The announcement also reinforces the edges from 'research_funding', 'scientific_breakthroughs', and 'industry_involvement' to 'vaccine_development_progress', as it demonstrates the tangible results of investments in research and development. Furthermore, the increased confidence expressed by global health organizations and the potential for emergency use authorization by late 2025 suggest a high likelihood of meeting the 2025-12-28 deadline, leading to a substantial increase in the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.85, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'vaccine_development_progress' significantly strengthens the edge from 'vaccine_development_progress' to 'outcome', as the successful completion of Phase II clinical trials and plans for large-scale manufacturing and regulatory submissions provide concrete evidence of substantial progress. This development effectively addresses previous concerns about the reliability of traditional progress metrics and the potential need for a fundamentally different development approach. The announcement also reinforces the edges from 'research_funding', 'scientific_breakthroughs', and 'industry_involvement' to 'vaccine_development_progress', as it demonstrates the tangible results of investments in research and development. Furthermore, the increased confidence expressed by global health organizations and the potential for emergency use authorization by late 2025 suggest a high likelihood of meeting the 2025-12-28 deadline, leading to a substantial increase in the probability estimate.\"}",
+      "target_id": "vaccine_development_progress",
+      "target_type": "node",
+      "target_importance": 0.5527,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent publication in the journal Nature reports a groundbreaking discovery of a novel vaccine candidate for Marburg hemorrhagic fever, which has shown unprecedented efficacy in animal models. This breakthrough was achieved through a collaborative effort between leading researchers in the field, leveraging cutting-edge technologies and innovative approaches. Experts in the scientific community have hailed this finding as a major milestone in the quest for an MHF vaccine, significantly enhancing the prospects for successful vaccine development. The study's lead author, a renowned virologist, has expressed optimism about the potential for this discovery to accelerate vaccine development timelines.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.95,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'scientific_breakthroughs' dramatically reinforces the edge from 'scientific_breakthroughs' to 'vaccine_development_progress', as the discovery of a novel vaccine candidate with unprecedented efficacy in animal models provides a significant boost to development prospects. This breakthrough effectively addresses previous concerns about the need for incremental improvements versus groundbreaking discoveries, demonstrating that major scientific advancements can still play a crucial role in accelerating vaccine development. The collaborative effort and cutting-edge technologies involved in this discovery also underscore the importance of 'research_funding' and 'industry_involvement' in facilitating such breakthroughs. Given the lead author's optimism about the potential to accelerate development timelines, and considering the already advanced stage of vaccine development (as indicated by the recent Phase II clinical trials announcement), the probability of meeting the 2025-12-28 deadline increases substantially, reflecting the heightened likelihood of successful vaccine development and regulatory approval.",
+      "raw_response": "{\"updated_probability\": 0.95, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'scientific_breakthroughs' dramatically reinforces the edge from 'scientific_breakthroughs' to 'vaccine_development_progress', as the discovery of a novel vaccine candidate with unprecedented efficacy in animal models provides a significant boost to development prospects. This breakthrough effectively addresses previous concerns about the need for incremental improvements versus groundbreaking discoveries, demonstrating that major scientific advancements can still play a crucial role in accelerating vaccine development. The collaborative effort and cutting-edge technologies involved in this discovery also underscore the importance of 'research_funding' and 'industry_involvement' in facilitating such breakthroughs. Given the lead author's optimism about the potential to accelerate development timelines, and considering the already advanced stage of vaccine development (as indicated by the recent Phase II clinical trials announcement), the probability of meeting the 2025-12-28 deadline increases substantially, reflecting the heightened likelihood of successful vaccine development and regulatory approval.\"}",
+      "target_id": "scientific_breakthroughs",
+      "target_type": "node",
+      "target_importance": 0.3685,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that increased funding for Marburg hemorrhagic fever research has led to a surge in low-quality, redundant, or unfocused projects, potentially diluting the impact of funding on actual scientific breakthroughs. Furthermore, the complexity of MHF may require innovative, out-of-the-box thinking rather than merely throwing more resources at the problem. It's possible that the relationship between research funding and scientific breakthroughs is weaker than assumed, especially if the funding is not strategically allocated. This could limit the effectiveness of increased funding in driving meaningful progress towards a vaccine.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.92,
+      "absolute_shift": 0.029999999999999916,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'esearch_funding->scientific_breakthroughs' introduces uncertainty about the effectiveness of increased funding in driving scientific breakthroughs. While the recent groundbreaking discovery of a novel vaccine candidate is a significant positive development, the potential for low-quality or redundant projects to dilute the impact of funding could limit the sustainability of this progress. However, given the already advanced stage of vaccine development and the recent successes in Phase II clinical trials and the discovery of a novel vaccine candidate, the overall probability of meeting the 2025-12-28 deadline remains high. The decrease in probability is moderate, reflecting the possibility that future funding may not be as effective in driving breakthroughs as previously thought, but it does not significantly undermine the substantial progress already made. The network's robustness, due to the cumulative effect of multiple positive developments, absorbs some of the uncertainty introduced by this challenge.",
+      "raw_response": "{\"updated_probability\": 0.92, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'esearch_funding->scientific_breakthroughs' introduces uncertainty about the effectiveness of increased funding in driving scientific breakthroughs. While the recent groundbreaking discovery of a novel vaccine candidate is a significant positive development, the potential for low-quality or redundant projects to dilute the impact of funding could limit the sustainability of this progress. However, given the already advanced stage of vaccine development and the recent successes in Phase II clinical trials and the discovery of a novel vaccine candidate, the overall probability of meeting the 2025-12-28 deadline remains high. The decrease in probability is moderate, reflecting the possibility that future funding may not be as effective in driving breakthroughs as previously thought, but it does not significantly undermine the substantial progress already made. The network's robustness, due to the cumulative effect of multiple positive developments, absorbs some of the uncertainty introduced by this challenge.\"}",
+      "target_id": "research_funding->scientific_breakthroughs",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that while scientific breakthroughs in understanding the Marburg virus have been significant, the translation of these discoveries into effective vaccine candidates has been slower than anticipated due to the complex nature of the virus and the challenges in inducing a strong, lasting immune response. Moreover, historical data on vaccine development for similar hemorrhagic fevers suggests that breakthroughs in basic science do not always correlate with accelerated development timelines. This discrepancy raises questions about the direct impact of scientific breakthroughs on vaccine development progress. The relationship between breakthroughs and development speed may be more nuanced than previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.88,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'scientific_breakthroughs->vaccine_development_progress' introduces a nuanced understanding of how breakthroughs translate into development progress. While the recent groundbreaking discovery of a novel vaccine candidate is still a significant positive development, the historical data and the complex nature of the Marburg virus suggest that the path from breakthroughs to viable vaccines is not as straightforward as assumed. This nuance affects the edge from 'scientific_breakthroughs' to 'vaccine_development_progress', potentially weakening the direct impact of breakthroughs on development speed. However, considering the advanced stage of vaccine development, including the successful Phase II clinical trials and the recent discovery, the probability of meeting the 2025-12-28 deadline remains relatively high. The decrease in probability reflects a more cautious interpretation of how scientific advancements contribute to development timelines, acknowledging the potential for delays or complexities in translating breakthroughs into effective vaccines.",
+      "raw_response": "{\"updated_probability\": 0.88, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'scientific_breakthroughs->vaccine_development_progress' introduces a nuanced understanding of how breakthroughs translate into development progress. While the recent groundbreaking discovery of a novel vaccine candidate is still a significant positive development, the historical data and the complex nature of the Marburg virus suggest that the path from breakthroughs to viable vaccines is not as straightforward as assumed. This nuance affects the edge from 'scientific_breakthroughs' to 'vaccine_development_progress', potentially weakening the direct impact of breakthroughs on development speed. However, considering the advanced stage of vaccine development, including the successful Phase II clinical trials and the recent discovery, the probability of meeting the 2025-12-28 deadline remains relatively high. The decrease in probability reflects a more cautious interpretation of how scientific advancements contribute to development timelines, acknowledging the potential for delays or complexities in translating breakthroughs into effective vaccines.\"}",
+      "target_id": "scientific_breakthroughs->vaccine_development_progress",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recently, several pharmaceutical companies have expressed concerns that even with supportive regulatory environments, the financial risks and logistical challenges associated with developing vaccines for rare diseases like Marburg hemorrhagic fever outweigh the potential benefits, suggesting that regulatory support alone may not be sufficient to encourage industry involvement. Furthermore, companies might prioritize more profitable ventures over participating in MHF vaccine development, regardless of regulatory incentives. This could indicate that the relationship between regulatory support and industry involvement is more complex than initially thought. As a result, the impact of regulatory support on industry involvement might be less direct than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'regulatory_support->industry_involvement' suggests that the relationship between these factors is more complex and potentially weaker than initially thought. While regulatory support is important, it may not be sufficient on its own to overcome the financial and logistical challenges associated with developing vaccines for rare diseases like MHF. This nuance affects the edge from 'regulatory_support' to 'industry_involvement', potentially reducing the direct impact of regulatory incentives on encouraging pharmaceutical companies to participate in MHF vaccine development. However, given the recent advancements in vaccine development, including the successful Phase II clinical trials and the discovery of a novel vaccine candidate, the overall probability of meeting the 2025-12-28 deadline remains relatively high. The decrease in probability is moderate, reflecting the introduction of additional uncertainty regarding the willingness of pharmaceutical companies to invest in MHF vaccine development, despite supportive regulatory environments.",
+      "raw_response": "{\"updated_probability\": 0.85, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'regulatory_support->industry_involvement' suggests that the relationship between these factors is more complex and potentially weaker than initially thought. While regulatory support is important, it may not be sufficient on its own to overcome the financial and logistical challenges associated with developing vaccines for rare diseases like MHF. This nuance affects the edge from 'regulatory_support' to 'industry_involvement', potentially reducing the direct impact of regulatory incentives on encouraging pharmaceutical companies to participate in MHF vaccine development. However, given the recent advancements in vaccine development, including the successful Phase II clinical trials and the discovery of a novel vaccine candidate, the overall probability of meeting the 2025-12-28 deadline remains relatively high. The decrease in probability is moderate, reflecting the introduction of additional uncertainty regarding the willingness of pharmaceutical companies to invest in MHF vaccine development, despite supportive regulatory environments.\"}",
+      "target_id": "regulatory_support->industry_involvement",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that scientific breakthroughs in Marburg hemorrhagic fever research often attract additional funding, as investors and governments are more willing to allocate resources to projects with proven potential. For instance, a breakthrough in understanding the virus's genetic structure could lead to a surge in funding for further research. This suggests that the relationship between research funding and scientific breakthroughs may be reversed, with breakthroughs driving increased funding. Could a significant discovery in MHF research lead to a substantial increase in funding, rather than the other way around?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.87,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'research_funding->scientific_breakthroughs' introduces a potential reversal of the relationship, where scientific breakthroughs drive increased funding rather than the other way around. This could create a positive feedback loop, where significant discoveries in MHF research attract more funding, which in turn facilitates further breakthroughs. Given the recent groundbreaking discovery of a novel vaccine candidate, this dynamic could amplify the impact of such breakthroughs, leading to a surge in funding and resources for MHF vaccine development. The increase in probability reflects the potential for this feedback loop to accelerate development, as additional funding could support the scaling up of production, regulatory approvals, and distribution efforts, ultimately increasing the likelihood of meeting the 2025-12-28 deadline. The network's robustness, combined with the potential for increased funding to drive further progress, supports a moderate increase in the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.87, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'research_funding->scientific_breakthroughs' introduces a potential reversal of the relationship, where scientific breakthroughs drive increased funding rather than the other way around. This could create a positive feedback loop, where significant discoveries in MHF research attract more funding, which in turn facilitates further breakthroughs. Given the recent groundbreaking discovery of a novel vaccine candidate, this dynamic could amplify the impact of such breakthroughs, leading to a surge in funding and resources for MHF vaccine development. The increase in probability reflects the potential for this feedback loop to accelerate development, as additional funding could support the scaling up of production, regulatory approvals, and distribution efforts, ultimately increasing the likelihood of meeting the 2025-12-28 deadline. The network's robustness, combined with the potential for increased funding to drive further progress, supports a moderate increase in the probability estimate.\"}",
+      "target_id": "research_funding->scientific_breakthroughs",
+      "target_type": "edge",
+      "target_importance": 0.1429,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that the World Health Organization (WHO) has been actively engaging with regulatory bodies to expedite the review process for vaccines targeting high-priority diseases, suggesting that increased regulatory support for vaccine development could lead to a higher priority ranking for Marburg hemorrhagic fever by global health organizations. This collaboration implies a potential direct relationship between regulatory support and global health priority setting. If regulatory bodies demonstrate a strong commitment to facilitating vaccine development, global health organizations may be more likely to allocate resources and attention to diseases with promising vaccine candidates. Could this interplay influence the development of a Marburg hemorrhagic fever vaccine by 2025-12-28?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.9,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'regulatory_support->global_health_priority' introduces a potential direct relationship between regulatory support and global health priority setting. This suggests that increased regulatory support for vaccine development could lead to a higher priority ranking for Marburg hemorrhagic fever by global health organizations, such as the WHO. As a result, the edge from 'regulatory_support' to 'global_health_priority' becomes more relevant, potentially strengthening the overall network. The collaboration between regulatory bodies and global health organizations could create a synergistic effect, where regulatory support accelerates vaccine development and, in turn, increases the priority given to MHF by global health organizations. This interplay could lead to increased resource allocation, attention, and coordination, ultimately enhancing the likelihood of developing a Marburg hemorrhagic fever vaccine by 2025-12-28. The increase in probability reflects the potential for this collaborative dynamic to facilitate a more responsive and supportive environment for vaccine development, further solidifying the prospects for meeting the deadline.",
+      "raw_response": "{\"updated_probability\": 0.90, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'regulatory_support->global_health_priority' introduces a potential direct relationship between regulatory support and global health priority setting. This suggests that increased regulatory support for vaccine development could lead to a higher priority ranking for Marburg hemorrhagic fever by global health organizations, such as the WHO. As a result, the edge from 'regulatory_support' to 'global_health_priority' becomes more relevant, potentially strengthening the overall network. The collaboration between regulatory bodies and global health organizations could create a synergistic effect, where regulatory support accelerates vaccine development and, in turn, increases the priority given to MHF by global health organizations. This interplay could lead to increased resource allocation, attention, and coordination, ultimately enhancing the likelihood of developing a Marburg hemorrhagic fever vaccine by 2025-12-28. The increase in probability reflects the potential for this collaborative dynamic to facilitate a more responsive and supportive environment for vaccine development, further solidifying the prospects for meeting the deadline.\"}",
+      "target_id": "regulatory_support->global_health_priority",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that the FDA has implemented a fast-track approval process for vaccines targeting high-priority diseases, including Marburg hemorrhagic fever, potentially expediting the development timeline. This change suggests that heightened regulatory support could directly accelerate vaccine development progress by reducing bureaucratic hurdles and allowing for more flexible clinical trial designs. Considering this update, how might the probability of a vaccine being developed by 2025-12-28 change? Would an increase in regulatory support now have a more direct impact on the development progress?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.96,
+      "absolute_shift": 0.05999999999999994,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'regulatory_support->vaccine_development_progress' significantly strengthens the direct relationship between regulatory support and vaccine development progress. The implementation of a fast-track approval process by the FDA for high-priority diseases, including Marburg hemorrhagic fever, potentially expedites the development timeline by reducing bureaucratic hurdles and allowing for more flexible clinical trial designs. This update suggests that increased regulatory support could now have a more substantial and direct impact on accelerating vaccine development. Given the already advanced stage of vaccine development, including the successful Phase II clinical trials and the discovery of a novel vaccine candidate, the fast-track approval process could be the catalyst that ensures the vaccine meets the 2025-12-28 deadline. The increase in probability reflects the enhanced potential for regulatory support to directly influence development progress, effectively streamlining the path to vaccine approval and distribution. The network's overall robustness, combined with this updated dynamic, supports a substantial increase in the probability estimate, indicating a high likelihood of meeting the deadline.",
+      "raw_response": "{\"updated_probability\": 0.96, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'regulatory_support->vaccine_development_progress' significantly strengthens the direct relationship between regulatory support and vaccine development progress. The implementation of a fast-track approval process by the FDA for high-priority diseases, including Marburg hemorrhagic fever, potentially expedites the development timeline by reducing bureaucratic hurdles and allowing for more flexible clinical trial designs. This update suggests that increased regulatory support could now have a more substantial and direct impact on accelerating vaccine development. Given the already advanced stage of vaccine development, including the successful Phase II clinical trials and the discovery of a novel vaccine candidate, the fast-track approval process could be the catalyst that ensures the vaccine meets the 2025-12-28 deadline. The increase in probability reflects the enhanced potential for regulatory support to directly influence development progress, effectively streamlining the path to vaccine approval and distribution. The network's overall robustness, combined with this updated dynamic, supports a substantial increase in the probability estimate, indicating a high likelihood of meeting the deadline.\"}",
+      "target_id": "regulatory_support->vaccine_development_progress",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if international collaboration and data sharing among researchers, facilitated by global health organizations, significantly accelerated the discovery of effective vaccine candidates, thus potentially impacting the development timeline? This factor, 'international_collaboration', could influence 'scientific_breakthroughs' and 'vaccine_development_progress' by fostering a more coordinated and efficient global research effort. The absence of this node in the original causal network overlooks the potential benefits of collaborative research in expediting vaccine development. How would this omission affect your estimated probability of a vaccine being developed for Marburg hemorrhagic fever by 2025-12-28?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.98,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "increased",
+      "reasoning": "The introduction of 'international_collaboration' as a structural challenge to the causal model reveals a critical omission in the original network. The addition of this node and its potential influence on 'scientific_breakthroughs' and 'vaccine_development_progress' underscores the importance of global cooperation in accelerating vaccine development. International collaboration can facilitate the sharing of data, expertise, and resources, thereby enhancing the efficiency and effectiveness of research efforts. This, in turn, could lead to a more rapid discovery of effective vaccine candidates and an accelerated development timeline. Given the already high estimate of 0.96, the inclusion of 'international_collaboration' as a positive influence on the network suggests that the probability of meeting the 2025-12-28 deadline could be even higher than initially thought. The increase in probability reflects the potential for enhanced collaboration to further expedite vaccine development, thereby strengthening the overall case for a timely completion of the vaccine development process.",
+      "raw_response": "{\"updated_probability\": 0.98, \"shift_direction\": \"increased\", \"reasoning\": \"The introduction of 'international_collaboration' as a structural challenge to the causal model reveals a critical omission in the original network. The addition of this node and its potential influence on 'scientific_breakthroughs' and 'vaccine_development_progress' underscores the importance of global cooperation in accelerating vaccine development. International collaboration can facilitate the sharing of data, expertise, and resources, thereby enhancing the efficiency and effectiveness of research efforts. This, in turn, could lead to a more rapid discovery of effective vaccine candidates and an accelerated development timeline. Given the already high estimate of 0.96, the inclusion of 'international_collaboration' as a positive influence on the network suggests that the probability of meeting the 2025-12-28 deadline could be even higher than initially thought. The increase in probability reflects the potential for enhanced collaboration to further expedite vaccine development, thereby strengthening the overall case for a timely completion of the vaccine development process.\"}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if public awareness and concern about Marburg hemorrhagic fever significantly increases due to a recent outbreak, leading to a surge in donations and volunteer efforts for vaccine research, potentially accelerating vaccine development progress? How would this impact your estimate of a vaccine being developed by 2025-12-28? This increased public awareness could lead to more funding, increased industry involvement, and higher priority given by global health organizations. Would this new information update your belief about the development of a vaccine for MHF?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.99,
+      "absolute_shift": 0.010000000000000009,
+      "shift_direction": "increased",
+      "reasoning": "The introduction of 'public_awareness' as a structural challenge to the causal model highlights the potential for increased donations, volunteer efforts, and funding for vaccine research, driven by a surge in public concern about Marburg hemorrhagic fever. This heightened awareness could lead to a cascade of positive effects, including increased 'research_funding', 'industry_involvement', and 'global_health_priority', all of which would accelerate 'vaccine_development_progress'. The impact of this new information is to further reinforce the already strong likelihood of meeting the 2025-12-28 deadline. With public awareness and concern driving additional resources and attention towards MHF vaccine development, the probability of success increases, reflecting the potential for this collective effort to overcome remaining challenges and ensure timely completion of the vaccine development process. The update to the probability estimate acknowledges the amplifying effect of public awareness on the various factors influencing vaccine development, pushing the estimated probability closer to certainty.",
+      "raw_response": "{\"updated_probability\": 0.99, \"shift_direction\": \"increased\", \"reasoning\": \"The introduction of 'public_awareness' as a structural challenge to the causal model highlights the potential for increased donations, volunteer efforts, and funding for vaccine research, driven by a surge in public concern about Marburg hemorrhagic fever. This heightened awareness could lead to a cascade of positive effects, including increased 'research_funding', 'industry_involvement', and 'global_health_priority', all of which would accelerate 'vaccine_development_progress'. The impact of this new information is to further reinforce the already strong likelihood of meeting the 2025-12-28 deadline. With public awareness and concern driving additional resources and attention towards MHF vaccine development, the probability of success increases, reflecting the potential for this collective effort to overcome remaining challenges and ensure timely completion of the vaccine development process. The update to the probability estimate acknowledges the amplifying effect of public awareness on the various factors influencing vaccine development, pushing the estimated probability closer to certainty.\"}",
+      "target_id": "public_awareness_and_concern",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent study published in a reputable medical journal found that the genetic diversity of Marburg virus strains in West Africa is higher than previously thought, which may have implications for the long-term efficacy of potential vaccines. However, the study's findings are based on samples collected before 2020 and do not account for recent developments in vaccine technology. The research team behind the study has announced plans to conduct further investigations into the genetic evolution of the virus. This new information has sparked a debate among researchers about the potential challenges of creating a vaccine that can provide broad protection against different Marburg virus strains.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.98,
+      "absolute_shift": 0.010000000000000009,
+      "shift_direction": "decreased",
+      "reasoning": "The introduction of the genetic diversity of Marburg virus strains as a structural challenge to the causal model raises a potential concern about the long-term efficacy of vaccines. However, the study's limitations, including its reliance on pre-2020 samples and the lack of consideration for recent advancements in vaccine technology, mitigate the impact of this new information. The plans for further investigation into the genetic evolution of the virus also suggest that researchers are aware of the potential challenges and are actively working to address them. Given the high estimate of 0.99, which already accounts for the advanced stage of vaccine development and the various factors supporting its progress, the decrease in probability is moderate. The update reflects a slight increase in uncertainty due to the potential complexity of developing a vaccine that provides broad protection against different Marburg virus strains, but it does not significantly alter the overall assessment that a vaccine will be developed by 2025-12-28.",
+      "raw_response": "{\"updated_probability\": 0.98, \"shift_direction\": \"decreased\", \"reasoning\": \"The introduction of the genetic diversity of Marburg virus strains as a structural challenge to the causal model raises a potential concern about the long-term efficacy of vaccines. However, the study's limitations, including its reliance on pre-2020 samples and the lack of consideration for recent advancements in vaccine technology, mitigate the impact of this new information. The plans for further investigation into the genetic evolution of the virus also suggest that researchers are aware of the potential challenges and are actively working to address them. Given the high estimate of 0.99, which already accounts for the advanced stage of vaccine development and the various factors supporting its progress, the decrease in probability is moderate. The update reflects a slight increase in uncertainty due to the potential complexity of developing a vaccine that provides broad protection against different Marburg virus strains, but it does not significantly alter the overall assessment that a vaccine will be developed by 2025-12-28.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "According to recent reports, the World Health Organization (WHO) has launched a new public awareness campaign about the importance of hand hygiene in preventing the spread of infectious diseases, including Marburg hemorrhagic fever. This campaign aims to educate the general public about simple yet effective measures to reduce the risk of transmission. The campaign's budget is substantial, and it is expected to reach millions of people worldwide. However, the campaign's focus is solely on public health education and does not involve any research or development activities.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.98,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The introduction of the WHO's public awareness campaign on hand hygiene as a structural challenge to the causal model does not significantly impact the estimated probability of a vaccine being developed for Marburg hemorrhagic fever by 2025-12-28. The campaign's focus on public health education, while important for preventing the spread of infectious diseases, does not directly influence the research and development activities related to vaccine creation. The campaign's budget and reach may contribute to a reduction in the incidence of MHF, but this does not affect the timeline for vaccine development. Given that the current estimate of 0.98 already accounts for the advanced stage of vaccine development and the various factors supporting its progress, the new information about the public awareness campaign does not provide a reason to update the probability estimate. The campaign's impact is orthogonal to the vaccine development process, and therefore, the probability remains unchanged.",
+      "raw_response": "{\"updated_probability\": 0.98, \"shift_direction\": \"unchanged\", \"reasoning\": \"The introduction of the WHO's public awareness campaign on hand hygiene as a structural challenge to the causal model does not significantly impact the estimated probability of a vaccine being developed for Marburg hemorrhagic fever by 2025-12-28. The campaign's focus on public health education, while important for preventing the spread of infectious diseases, does not directly influence the research and development activities related to vaccine creation. The campaign's budget and reach may contribute to a reduction in the incidence of MHF, but this does not affect the timeline for vaccine development. Given that the current estimate of 0.98 already accounts for the advanced stage of vaccine development and the various factors supporting its progress, the new information about the public awareness campaign does not provide a reason to update the probability estimate. The campaign's impact is orthogonal to the vaccine development process, and therefore, the probability remains unchanged.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "975d02beef1ceddee5c08e950f851f87e0544a43acf3a0b2d21c2e2eac16c3c5",
+    "question_text": "According to Wikipedia, will a vaccine have been developed for Marburg hemorrhagic fever (MHF) by 2025-12-28?",
+    "source": "wikipedia",
+    "condition": "multi-turn",
+    "initial_probability": 0.67,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.065625,
+    "max_absolute_shift": 0.37
+  }
+}

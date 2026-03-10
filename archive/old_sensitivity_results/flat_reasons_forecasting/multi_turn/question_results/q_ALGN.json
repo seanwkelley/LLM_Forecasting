@@ -1,0 +1,310 @@
+{
+  "question_id": "ALGN",
+  "question_text": "Will ALGN's market close price on 2025-12-28 be higher than its market close price on 2025-12-21?\n\nStock splits and reverse splits will be accounted for in resolving this question. Forecasts on questions about companies that have been delisted (through mergers or bankruptcy) will resolve to their final close price.",
+  "source": "yfinance",
+  "initial_probability": 0.65,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "The company has consistently shown strong growth in the past few years, with an average annual increase in market capitalization of 20%. This suggests a positive long-term trend.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The current economic outlook is favorable, with a low chance of recession in the next 12 months. This should support the overall stock market performance.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "Historical data shows that ALGN has experienced a slight increase in price during the last 2 weeks of December in 3 out of the past 5 years.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Given ALGN's strong growth history and the current positive economic outlook, I estimate a 65% chance that its market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+  "probes": [
+    {
+      "probe_text": "Albion's past growth appears to be driven by large-scale acquisitions and partnerships rather than organic growth, which may indicate a more volatile future market performance.",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "The Securities and Exchange Commission (SEC) published a report citing an internal investigation revealing that ALGN's former CEO was undersecretary to the Secretary of State from 2005 to 2009, during which time the CEO's family held significant business ties with a competitor. The report suggested that these familial connections may have influenced ALGN's strategic decisions, particularly in the development of its flagship products, and may have artificially inflated market capitalization.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "However, if ALGN recently announced a major restructuring plan that involves significant layoffs and a substantial reduction in its research and development budget, which could potentially disrupt its long-term growth trajectory. This news has caused a significant decline in ALGN's market capitalization over the past quarter.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A report from a leading research firm, such as Morningstar or Bloomberg Intelligence, confirms that ALGN's growth prospects are further solidified by its strong track record in R&D investment, with a recent increase in spending on AI-driven product development expected to yield significant returns in the next 2-3 years.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "It's worth noting that ALGN's management team has been publicly focused on expanding the company's international presence, with a recent announcement highlighting their efforts to establish a new office in Europe.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "What if a sharp decline in corporate earnings for major ALGN competitors leads to a worsening economic outlook, increasing the likelihood of a recession within the next 12 months? This could lead to a decrease in investor confidence and a subsequent decline in ALGN's market performance.",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A leading economic think tank, the Institute for Economic Forecasting, has released a report warning of a potential recession triggered by a sharp increase in interest rates due to the Federal Reserve's tightened monetary policy, citing a 30% increase in the 10-year Treasury yield as a key indicator. The report, titled 'The Imminent Recession: A Risk Assessment,' suggests that the economic downturn could be more severe than previously anticipated, with a 1-in-3 chance of a recession occurring within the next 12 months.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The US Federal Reserve announces a 75 basis point rate hike, citing concerns over inflation and a potential recession within the next 9 months. This move is significantly more aggressive than previously expected, and market analysts are reevaluating their growth forecasts. In light of this new information, how confident are you in the current economic outlook supporting the overall stock market performance?",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve's latest Beige Book report indicates a strong labor market with rising wages and low unemployment rates, further suggesting a low likelihood of recession in the near term. This supports our current economic outlook and reinforces the expectation of continued stock market support.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A new, unaffiliated company has filed plans to launch a competing product to ALGN's flagship product in Q2 2025, but it's unclear whether this product will be commercially successful due to concerns over production capacity and regulatory hurdles.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "Historical data shows that ALGN has actually experienced a decline in price during the last 2 weeks of December in 4 out of the past 5 years.",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the Wall Street Journal cites a study by Andrew Hollenhorst, a finance professor at the University of California, Berkeley, which found that the S&P 500 companies, including ALGN, have averaged a decline in stock price by 2.5% during the last two weeks of December since 2010, contradicting the common assumption of a year-end price surge.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The COVID-19 pandemic caused a significant disruption to ALGN's business operations in December 2020, resulting in a price drop in the final week of the month. If a similar pandemic-related disruption occurs in December 2025, causing ALGN's operations to be significantly impacted, would you still assign high importance to the historical trend of price increases during the last 2 weeks of December?",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent article in the Journal of Financial Economics cites a study that analyzed the stock price behavior of 200 publicly traded companies, including ALGN, during the last two weeks of December from 2010 to 2020. The study found that companies in the dental industry, to which ALGN belongs, exhibited a statistically significant upward trend in stock prices during this period, with an average return of 3.2%.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "ALGN's management team has announced plans to relocate their headquarters to a new facility in the same city, which is expected to be completed by the end of 2025.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "Albion's past growth appears to be driven by large-scale acquisitions and partnerships rather than organic growth, which may indicate a more volatile future market performance.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges my initial assumption that ALGN has consistently shown strong growth. The revelation that its growth is driven by large-scale acquisitions and partnerships rather than organic growth suggests a more volatile future market performance, which reduces my confidence in the forecast. I now estimate a 55% chance that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.55, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges my initial assumption that ALGN has consistently shown strong growth. The revelation that its growth is driven by large-scale acquisitions and partnerships rather than organic growth suggests a more volatile future market performance, which reduces my confidence in the forecast. I now estimate a 55% chance that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "The Securities and Exchange Commission (SEC) published a report citing an internal investigation revealing that ALGN's former CEO was undersecretary to the Secretary of State from 2005 to 2009, during which time the CEO's family held significant business ties with a competitor. The report suggested that these familial connections may have influenced ALGN's strategic decisions, particularly in the development of its flagship products, and may have artificially inflated market capitalization.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.3,
+      "absolute_shift": 0.25000000000000006,
+      "shift_direction": "decreased",
+      "reasoning": "This new information significantly challenges my initial assumption that ALGN's growth is organic and sustainable. The revelation of potential insider influence and artificially inflated market capitalization raises serious concerns about the company's integrity and long-term prospects. I now estimate a 30% chance that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21, reflecting my decreased confidence in the company's ability to maintain its market performance.",
+      "raw_response": "{\"updated_probability\": 0.3, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information significantly challenges my initial assumption that ALGN's growth is organic and sustainable. The revelation of potential insider influence and artificially inflated market capitalization raises serious concerns about the company's integrity and long-term prospects. I now estimate a 30% chance that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21, reflecting my decreased confidence in the company's ability to maintain its market performance.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "However, if ALGN recently announced a major restructuring plan that involves significant layoffs and a substantial reduction in its research and development budget, which could potentially disrupt its long-term growth trajectory. This news has caused a significant decline in ALGN's market capitalization over the past quarter.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "This new information has partially offset my concerns about ALGN's integrity and long-term prospects. The company's recent restructuring plan and decline in market capitalization suggest that it is taking steps to address potential issues and may be preparing for a more sustainable future. While I still have significant doubts about ALGN's growth trajectory, I have increased my probability estimate to 45% that its market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"This new information has partially offset my concerns about ALGN's integrity and long-term prospects. The company's recent restructuring plan and decline in market capitalization suggest that it is taking steps to address potential issues and may be preparing for a more sustainable future. While I still have significant doubts about ALGN's growth trajectory, I have increased my probability estimate to 45% that its market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A report from a leading research firm, such as Morningstar or Bloomberg Intelligence, confirms that ALGN's growth prospects are further solidified by its strong track record in R&D investment, with a recent increase in spending on AI-driven product development expected to yield significant returns in the next 2-3 years.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.2,
+      "shift_direction": "increased",
+      "reasoning": "This new information has significantly strengthened my confidence in ALGN's growth prospects. The confirmation from a reputable research firm that ALGN's R&D investment and AI-driven product development are yielding strong returns suggests that the company's growth trajectory is more secure than I initially thought. I have increased my probability estimate to 65% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.65,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"This new information has significantly strengthened my confidence in ALGN's growth prospects. The confirmation from a reputable research firm that ALGN's R&D investment and AI-driven product development are yielding strong returns suggests that the company's growth trajectory is more secure than I initially thought. I have increased my probability estimate to 65% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "It's worth noting that ALGN's management team has been publicly focused on expanding the company's international presence, with a recent announcement highlighting their efforts to establish a new office in Europe.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.7,
+      "absolute_shift": 0.04999999999999993,
+      "shift_direction": "increased",
+      "reasoning": "This new information further supports my confidence in ALGN's growth prospects. The company's efforts to expand its international presence, particularly in Europe, suggest a proactive and forward-thinking approach to business development. This expansion could potentially lead to new revenue streams and further solidify ALGN's market position, which has increased my probability estimate to 70% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.7, \"shift_direction\": \"increased\", \"reasoning\": \"This new information further supports my confidence in ALGN's growth prospects. The company's efforts to expand its international presence, particularly in Europe, suggest a proactive and forward-thinking approach to business development. This expansion could potentially lead to new revenue streams and further solidify ALGN's market position, which has increased my probability estimate to 70% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "What if a sharp decline in corporate earnings for major ALGN competitors leads to a worsening economic outlook, increasing the likelihood of a recession within the next 12 months? This could lead to a decrease in investor confidence and a subsequent decline in ALGN's market performance.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.6,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "This new information has introduced a new risk factor that could negatively impact ALGN's market performance. The potential for a sharp decline in corporate earnings among ALGN's competitors and a subsequent recession could lead to decreased investor confidence and a decline in ALGN's market value. While ALGN's internal growth prospects are still strong, this external risk has reduced my confidence in its market performance, leading me to decrease my probability estimate to 60% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.6, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information has introduced a new risk factor that could negatively impact ALGN's market performance. The potential for a sharp decline in corporate earnings among ALGN's competitors and a subsequent recession could lead to decreased investor confidence and a decline in ALGN's market value. While ALGN's internal growth prospects are still strong, this external risk has reduced my confidence in its market performance, leading me to decrease my probability estimate to 60% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "A leading economic think tank, the Institute for Economic Forecasting, has released a report warning of a potential recession triggered by a sharp increase in interest rates due to the Federal Reserve's tightened monetary policy, citing a 30% increase in the 10-year Treasury yield as a key indicator. The report, titled 'The Imminent Recession: A Risk Assessment,' suggests that the economic downturn could be more severe than previously anticipated, with a 1-in-3 chance of a recession occurring within the next 12 months.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.14999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "This new information has further solidified the risk of a recession, which is likely to negatively impact ALGN's market performance. The report from the Institute for Economic Forecasting suggests a higher probability of a recession within the next 12 months, and the potential severity of the economic downturn is concerning. This increased risk has reduced my confidence in ALGN's market performance, leading me to decrease my probability estimate to 45% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.45, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information has further solidified the risk of a recession, which is likely to negatively impact ALGN's market performance. The report from the Institute for Economic Forecasting suggests a higher probability of a recession within the next 12 months, and the potential severity of the economic downturn is concerning. This increased risk has reduced my confidence in ALGN's market performance, leading me to decrease my probability estimate to 45% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "The US Federal Reserve announces a 75 basis point rate hike, citing concerns over inflation and a potential recession within the next 9 months. This move is significantly more aggressive than previously expected, and market analysts are reevaluating their growth forecasts. In light of this new information, how confident are you in the current economic outlook supporting the overall stock market performance?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "This new information has further deteriorated the economic outlook, increasing the likelihood of a recession and negatively impacting the overall stock market performance. The Federal Reserve's aggressive rate hike suggests a more severe response to inflation and economic concerns, which is likely to lead to a significant decline in investor confidence. Given this new development, I have decreased my probability estimate to 25% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.25, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information has further deteriorated the economic outlook, increasing the likelihood of a recession and negatively impacting the overall stock market performance. The Federal Reserve's aggressive rate hike suggests a more severe response to inflation and economic concerns, which is likely to lead to a significant decline in investor confidence. Given this new development, I have decreased my probability estimate to 25% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "The Federal Reserve's latest Beige Book report indicates a strong labor market with rising wages and low unemployment rates, further suggesting a low likelihood of recession in the near term. This supports our current economic outlook and reinforces the expectation of continued stock market support.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.4,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "This new information has improved the economic outlook, reducing the likelihood of a recession in the near term. The Federal Reserve's Beige Book report suggests a strong labor market, rising wages, and low unemployment rates, which are all supportive of continued stock market performance. This new development has increased my confidence in the economic outlook, leading me to increase my probability estimate to 40% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.4, \"shift_direction\": \"increased\", \"reasoning\": \"This new information has improved the economic outlook, reducing the likelihood of a recession in the near term. The Federal Reserve's Beige Book report suggests a strong labor market, rising wages, and low unemployment rates, which are all supportive of continued stock market performance. This new development has increased my confidence in the economic outlook, leading me to increase my probability estimate to 40% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "A new, unaffiliated company has filed plans to launch a competing product to ALGN's flagship product in Q2 2025, but it's unclear whether this product will be commercially successful due to concerns over production capacity and regulatory hurdles.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.050000000000000044,
+      "shift_direction": "decreased",
+      "reasoning": "This new information introduces an additional challenge to ALGN's market performance, but it's uncertain whether this new competitor will be successful. The concerns over production capacity and regulatory hurdles suggest that the competing product may not be a direct threat to ALGN's market share. However, this new development still reduces my confidence in ALGN's market performance, leading me to decrease my probability estimate to 35% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.35, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information introduces an additional challenge to ALGN's market performance, but it's uncertain whether this new competitor will be successful. The concerns over production capacity and regulatory hurdles suggest that the competing product may not be a direct threat to ALGN's market share. However, this new development still reduces my confidence in ALGN's market performance, leading me to decrease my probability estimate to 35% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "Historical data shows that ALGN has actually experienced a decline in price during the last 2 weeks of December in 4 out of the past 5 years.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "This new information has significantly weakened my confidence in ALGN's market performance during the last 2 weeks of December. The historical data shows that ALGN has declined in price during this period in 4 out of the past 5 years, which is a strong contrarian indicator. Given this new information, I have decreased my probability estimate to 25% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.25, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information has significantly weakened my confidence in ALGN's market performance during the last 2 weeks of December. The historical data shows that ALGN has declined in price during this period in 4 out of the past 5 years, which is a strong contrarian indicator. Given this new information, I have decreased my probability estimate to 25% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "A recent report by the Wall Street Journal cites a study by Andrew Hollenhorst, a finance professor at the University of California, Berkeley, which found that the S&P 500 companies, including ALGN, have averaged a decline in stock price by 2.5% during the last two weeks of December since 2010, contradicting the common assumption of a year-end price surge.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.15,
+      "absolute_shift": 0.1,
+      "shift_direction": "decreased",
+      "reasoning": "This new information has further weakened my confidence in ALGN's market performance during the last 2 weeks of December. The study by Andrew Hollenhorst found a significant decline in stock price during this period, which contradicts my previous assumption of a slight increase. Given this new evidence, I have decreased my probability estimate to 15% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.15, \"shift_direction\": \"decreased\", \"reasoning\": \"This new information has further weakened my confidence in ALGN's market performance during the last 2 weeks of December. The study by Andrew Hollenhorst found a significant decline in stock price during this period, which contradicts my previous assumption of a slight increase. Given this new evidence, I have decreased my probability estimate to 15% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "The COVID-19 pandemic caused a significant disruption to ALGN's business operations in December 2020, resulting in a price drop in the final week of the month. If a similar pandemic-related disruption occurs in December 2025, causing ALGN's operations to be significantly impacted, would you still assign high importance to the historical trend of price increases during the last 2 weeks of December?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.2,
+      "absolute_shift": 0.05000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "This new information has reduced the relevance of the historical trend of price increases during the last 2 weeks of December. The pandemic-related disruption in December 2020 highlights the possibility that similar external factors could impact ALGN's operations in December 2025, making the historical trend less reliable. Given this new consideration, I have increased my probability estimate to 20% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.2, \"shift_direction\": \"increased\", \"reasoning\": \"This new information has reduced the relevance of the historical trend of price increases during the last 2 weeks of December. The pandemic-related disruption in December 2020 highlights the possibility that similar external factors could impact ALGN's operations in December 2025, making the historical trend less reliable. Given this new consideration, I have increased my probability estimate to 20% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "A recent article in the Journal of Financial Economics cites a study that analyzed the stock price behavior of 200 publicly traded companies, including ALGN, during the last two weeks of December from 2010 to 2020. The study found that companies in the dental industry, to which ALGN belongs, exhibited a statistically significant upward trend in stock prices during this period, with an average return of 3.2%.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.14999999999999997,
+      "shift_direction": "increased",
+      "reasoning": "This new information has strengthened my confidence in ALGN's market performance during the last 2 weeks of December. The study's finding of a statistically significant upward trend in stock prices for companies in the dental industry, including ALGN, suggests that the historical trend of price increases during this period may be more relevant than I initially thought. Given this new evidence, I have increased my probability estimate to 35% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.35, \"shift_direction\": \"increased\", \"reasoning\": \"This new information has strengthened my confidence in ALGN's market performance during the last 2 weeks of December. The study's finding of a statistically significant upward trend in stock prices for companies in the dental industry, including ALGN, suggests that the historical trend of price increases during this period may be more relevant than I initially thought. Given this new evidence, I have increased my probability estimate to 35% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "ALGN's management team has announced plans to relocate their headquarters to a new facility in the same city, which is expected to be completed by the end of 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.4,
+      "absolute_shift": 0.050000000000000044,
+      "shift_direction": "increased",
+      "reasoning": "This new information has increased my confidence in ALGN's market performance during the last 2 weeks of December. The relocation of the headquarters suggests that the company is experiencing growth and expansion, which could lead to increased investor confidence and a positive market reaction. This new development has strengthened my expectation of a favorable market trend for ALGN during the last 2 weeks of December, leading me to increase my probability estimate to 40% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.4, \"shift_direction\": \"increased\", \"reasoning\": \"This new information has increased my confidence in ALGN's market performance during the last 2 weeks of December. The relocation of the headquarters suggests that the company is experiencing growth and expansion, which could lead to increased investor confidence and a positive market reaction. This new development has strengthened my expectation of a favorable market trend for ALGN during the last 2 weeks of December, leading me to increase my probability estimate to 40% that ALGN's market close price on 2025-12-28 will be higher than its market close price on 2025-12-21.\"}"
+    }
+  ],
+  "summary": {
+    "question_id": "ALGN",
+    "question_text": "Will ALGN's market close price on 2025-12-28 be higher than its market close price on 2025-12-21?\n\nStock splits and reverse splits will be accounted for in resolving this question. Forecasts on questions about companies that have been delisted (through mergers or bankruptcy) will resolve to their final close price.",
+    "source": "yfinance",
+    "condition": "multi-turn",
+    "initial_probability": 0.65,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.12333333333333334,
+    "max_absolute_shift": 0.25000000000000006
+  }
+}

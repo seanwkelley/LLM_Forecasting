@@ -1,0 +1,970 @@
+{
+  "question_id": "26326",
+  "question_text": "Five years after AGI, will there be universal basic income?",
+  "source": "metaculus",
+  "initial_probability": 0.62,
+  "nodes": [
+    {
+      "id": "agi_deployment",
+      "description": "The speed and extent of AGI adoption across industries",
+      "role": "factor"
+    },
+    {
+      "id": "economic_disruption",
+      "description": "The degree to which AGI disrupts traditional employment and economic structures",
+      "role": "factor"
+    },
+    {
+      "id": "public_support",
+      "description": "The level of public demand and political will for implementing universal basic income",
+      "role": "factor"
+    },
+    {
+      "id": "gov_response",
+      "description": "The readiness and ability of governments to implement and fund universal basic income",
+      "role": "factor"
+    },
+    {
+      "id": "techno_unemployment",
+      "description": "The rate of job displacement due to automation and AGI",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "The implementation of universal basic income five years after AGI",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "agi_deployment",
+      "to": "techno_unemployment",
+      "mechanism": "Faster AGI deployment leads to higher job displacement rates"
+    },
+    {
+      "from": "techno_unemployment",
+      "to": "public_support",
+      "mechanism": "Higher unemployment rates increase public demand for safety nets like UBI"
+    },
+    {
+      "from": "economic_disruption",
+      "to": "gov_response",
+      "mechanism": "Significant economic disruption prompts governments to consider bold policy interventions"
+    },
+    {
+      "from": "public_support",
+      "to": "gov_response",
+      "mechanism": "Strong public support pressures governments to act on implementing UBI"
+    },
+    {
+      "from": "gov_response",
+      "to": "outcome",
+      "mechanism": "Effective government response is crucial for the successful implementation of UBI"
+    },
+    {
+      "from": "agi_deployment",
+      "to": "economic_disruption",
+      "mechanism": "Widespread AGI adoption can lead to significant economic restructuring"
+    }
+  ],
+  "reasoning": "The forecast considers the interplay between AGI deployment, economic disruption, public support, government response, and technological unemployment. As AGI is deployed, it may lead to economic disruption and technological unemployment, which in turn can increase public support for universal basic income. An effective government response is crucial for implementing UBI, and this is influenced by both the level of economic disruption and public demand. Given these factors, there's a reasonable likelihood that universal basic income could be implemented as a response to the challenges posed by AGI.",
+  "network_analysis": {
+    "n_nodes": 6,
+    "n_edges": 6,
+    "density": 0.2,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 6,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "agi_deployment",
+        "description": "The speed and extent of AGI adoption across industries",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0684,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2137
+      },
+      {
+        "node_id": "economic_disruption",
+        "description": "The degree to which AGI disrupts traditional employment and economic structures",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.2,
+        "pagerank": 0.0974,
+        "path_relevance": 0.2,
+        "composite_importance": 0.2095
+      },
+      {
+        "node_id": "public_support",
+        "description": "The level of public demand and political will for implementing universal basic income",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.2667,
+        "pagerank": 0.1512,
+        "path_relevance": 0.2,
+        "composite_importance": 0.2202
+      },
+      {
+        "node_id": "gov_response",
+        "description": "The readiness and ability of governments to implement and fund universal basic income",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.2,
+        "closeness": 0.5333,
+        "pagerank": 0.2796,
+        "path_relevance": 0.8,
+        "composite_importance": 0.4559
+      },
+      {
+        "node_id": "techno_unemployment",
+        "description": "The rate of job displacement due to automation and AGI",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.05,
+        "closeness": 0.2,
+        "pagerank": 0.0974,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1345
+      },
+      {
+        "node_id": "outcome",
+        "description": "The implementation of universal basic income five years after AGI",
+        "role": "outcome",
+        "in_degree": 1,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.4545,
+        "pagerank": 0.306,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0612
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "agi_deployment",
+        "target": "techno_unemployment",
+        "mechanism": "Faster AGI deployment leads to higher job displacement rates",
+        "edge_betweenness": 0.0667,
+        "on_critical_path": false
+      },
+      {
+        "source": "agi_deployment",
+        "target": "economic_disruption",
+        "mechanism": "Widespread AGI adoption can lead to significant economic restructuring",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      },
+      {
+        "source": "economic_disruption",
+        "target": "gov_response",
+        "mechanism": "Significant economic disruption prompts governments to consider bold policy interventions",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      },
+      {
+        "source": "public_support",
+        "target": "gov_response",
+        "mechanism": "Strong public support pressures governments to act on implementing UBI",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      },
+      {
+        "source": "gov_response",
+        "target": "outcome",
+        "mechanism": "Effective government response is crucial for the successful implementation of UBI",
+        "edge_betweenness": 0.1667,
+        "on_critical_path": true
+      },
+      {
+        "source": "techno_unemployment",
+        "target": "public_support",
+        "mechanism": "Higher unemployment rates increase public demand for safety nets like UBI",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "gov_response",
+        "description": "The readiness and ability of governments to implement and fund universal basic income",
+        "importance": 0.4559,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "public_support",
+        "description": "The level of public demand and political will for implementing universal basic income",
+        "importance": 0.2202,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "agi_deployment",
+        "description": "The speed and extent of AGI adoption across industries",
+        "importance": 0.2137,
+        "centrality_rank": 3,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "techno_unemployment",
+        "description": "The rate of job displacement due to automation and AGI",
+        "importance": 0.1345,
+        "centrality_rank": 5,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "gov_response",
+        "description": "The readiness and ability of governments to implement and fund universal basic income",
+        "importance": 0.4559,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "public_support",
+        "description": "The level of public demand and political will for implementing universal basic income",
+        "importance": 0.2202,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "gov_response->outcome",
+        "description": "Effective government response is crucial for the successful implementation of UBI",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "economic_disruption->gov_response",
+        "description": "Significant economic disruption prompts governments to consider bold policy interventions",
+        "importance": 0.1333,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "agi_deployment->techno_unemployment",
+        "description": "Faster AGI deployment leads to higher job displacement rates",
+        "importance": 0.0667,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "gov_response->outcome",
+        "description": "Effective government response is crucial for the successful implementation of UBI",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "economic_disruption->public_support",
+        "description": "Potential link: The degree to which AGI disrupts traditional employment and economic structures -> The level of public demand and political will for implementing universal basic income",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "economic_disruption->techno_unemployment",
+        "description": "Potential link: The degree to which AGI disrupts traditional employment and economic structures -> The rate of job displacement due to automation and AGI",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "gov_response",
+      "description": "The readiness and ability of governments to implement and fund universal basic income",
+      "importance": 0.4559,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "public_support",
+      "description": "The level of public demand and political will for implementing universal basic income",
+      "importance": 0.2202,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "agi_deployment",
+      "description": "The speed and extent of AGI adoption across industries",
+      "importance": 0.2137,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "techno_unemployment",
+      "description": "The rate of job displacement due to automation and AGI",
+      "importance": 0.1345,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "gov_response",
+      "description": "The readiness and ability of governments to implement and fund universal basic income",
+      "importance": 0.4559,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "public_support",
+      "description": "The level of public demand and political will for implementing universal basic income",
+      "importance": 0.2202,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "gov_response->outcome",
+      "description": "Effective government response is crucial for the successful implementation of UBI",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "economic_disruption->gov_response",
+      "description": "Significant economic disruption prompts governments to consider bold policy interventions",
+      "importance": 0.1333,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "agi_deployment->techno_unemployment",
+      "description": "Faster AGI deployment leads to higher job displacement rates",
+      "importance": 0.0667,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "gov_response->outcome",
+      "description": "Effective government response is crucial for the successful implementation of UBI",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "economic_disruption->public_support",
+      "description": "Potential link: The degree to which AGI disrupts traditional employment and economic structures -> The level of public demand and political will for implementing universal basic income",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "economic_disruption->techno_unemployment",
+      "description": "Potential link: The degree to which AGI disrupts traditional employment and economic structures -> The rate of job displacement due to automation and AGI",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if governments' readiness and ability to implement universal basic income are not crucial factors due to the rise of decentralized, blockchain-based solutions that can provide an alternative safety net, making government intervention less necessary? Recent advancements in cryptocurrency and decentralized finance have led to the development of community-driven, autonomous systems that could potentially bypass traditional government structures. This could render the role of governments in implementing UBI obsolete. As a result, the outcome of universal basic income might be more dependent on technological advancements and community initiatives than on government response.",
+      "probe_type": "node_negate_high",
+      "target_id": "gov_response",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.4559,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "The readiness and ability of governments to implement and fund universal basic income"
+    },
+    {
+      "probe_text": "What if, despite high unemployment rates, the general public remains skeptical of universal basic income due to concerns over its feasibility, cost, and potential impact on work ethic, leading to weak public demand and little political will for its implementation? Recent surveys have shown that many people are more concerned about job retraining programs and education rather than guaranteed income. This shift in public opinion could render public support for UBI irrelevant in driving government policy. As a result, governments might prioritize other solutions to address the challenges posed by AGI.",
+      "probe_type": "node_negate_high",
+      "target_id": "public_support",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2202,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "The level of public demand and political will for implementing universal basic income"
+    },
+    {
+      "probe_text": "Recent studies have shown that AGI adoption is likely to be gradual and industry-specific, with many jobs requiring human skills that are hard to automate, thereby reducing the speed and extent of AGI deployment across industries. This could lead to a more nuanced impact on employment and economic structures, potentially diminishing the role of AGI deployment as a primary driver of universal basic income. Furthermore, the development of complementary technologies, such as human-AI collaboration tools, might mitigate the negative effects of job displacement. As a result, the initial assumption about the speed and extent of AGI adoption may be overstated.",
+      "probe_type": "node_negate_medium",
+      "target_id": "agi_deployment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2137,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "description": "The speed and extent of AGI adoption across industries"
+    },
+    {
+      "probe_text": "Recent studies suggest that while AGI may automate some jobs, it will also create new, currently unforeseen employment opportunities, potentially offsetting the net job displacement. Furthermore, many industries are investing heavily in retraining and upskilling programs to help workers adapt to an AGI-driven economy. As a result, the impact of AGI on job displacement might be less severe than initially thought. Does this change your assessment of universal basic income five years after AGI?",
+      "probe_type": "node_negate_low",
+      "target_id": "techno_unemployment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1345,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "description": "The rate of job displacement due to automation and AGI"
+    },
+    {
+      "probe_text": "A recent summit of G20 nations resulted in a unanimous agreement to establish a global framework for implementing and funding universal basic income, with several countries committing to allocate significant portions of their budgets to support the initiative. This development has been hailed by experts as a major breakthrough in international cooperation on social welfare policies. As a result, governments around the world are now better positioned to respond effectively to the challenges posed by AGI-driven economic disruption. The International Monetary Fund has also announced plans to provide technical assistance and funding to support the implementation of UBI in countries that need it.",
+      "probe_type": "node_strengthen",
+      "target_id": "gov_response",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.4559,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "The readiness and ability of governments to implement and fund universal basic income"
+    },
+    {
+      "probe_text": "A recent survey conducted by a reputable think tank found that 75% of respondents in major industrialized nations support the implementation of universal basic income as a response to job displacement caused by automation and AGI. This level of support is significantly higher than previous polls, indicating a growing public consensus. Furthermore, several influential political leaders have publicly endorsed UBI as a necessary measure to mitigate the negative impacts of technological unemployment. This shift in public opinion and political will suggests that the demand for UBI is becoming a major factor in policy discussions.",
+      "probe_type": "node_strengthen",
+      "target_id": "public_support",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2202,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "The level of public demand and political will for implementing universal basic income"
+    },
+    {
+      "probe_text": "However, recent studies have shown that even with strong government support, implementing universal basic income can be hindered by bureaucratic inefficiencies, corruption, and lack of infrastructure, suggesting that the link between government response and successful UBI implementation might be weaker than assumed. Furthermore, the complexity of UBI implementation could lead to prolonged debates and pilot programs, delaying or even preventing its widespread adoption. This challenges the idea that effective government response is the decisive factor in achieving UBI. What if the actual implementation of UBI is more dependent on the ability of local communities and private organizations to adapt and support such programs?",
+      "probe_type": "edge_negate_critical",
+      "target_id": "gov_response->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Effective government response is crucial for the successful implementation of UBI"
+    },
+    {
+      "probe_text": "However, research on past economic crises suggests that governments often prioritize short-term stability and may be hesitant to implement bold policy changes, even in the face of significant disruption. This inertia could be exacerbated by the complexity and uncertainty surrounding AGI's impact on the economy. Furthermore, the political will to enact substantial reforms might be hindered by entrenched interests and bureaucratic barriers. As a result, the link between economic disruption and government response might be much weaker than assumed.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "economic_disruption->gov_response",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Significant economic disruption prompts governments to consider bold policy interventions"
+    },
+    {
+      "probe_text": "Studies have shown that while AGI can automate certain tasks, its initial deployment may also create new job opportunities in fields like AI development, deployment, and maintenance, potentially offsetting the job displacement effects. Furthermore, many industries are expected to upskill their workforce to work alongside AGI systems, rather than replacing them outright. This could lead to a more gradual adjustment period, mitigating the immediate impact of techno-unemployment. As a result, the relationship between AGI deployment and techno-unemployment might be more complex than initially assumed.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "agi_deployment->techno_unemployment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0667,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Faster AGI deployment leads to higher job displacement rates"
+    },
+    {
+      "probe_text": "What if the implementation of universal basic income five years after AGI creates a positive feedback loop, where the successful rollout of UBI enhances the government's reputation and capabilities, leading to improved government response in other areas, such as education and job retraining programs? This could be due to the increased political capital and public trust gained from effectively addressing the challenges of AGI-driven unemployment. Consider how this might affect your estimate of the probability of universal basic income being implemented. Does the successful implementation of UBI lead to a more effective government response, rather than the other way around?",
+      "probe_type": "edge_reverse",
+      "target_id": "gov_response->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Effective government response is crucial for the successful implementation of UBI"
+    },
+    {
+      "probe_text": "As AGI transforms industries, many workers are forced to transition to new roles, leading to widespread anxiety and uncertainty about their economic futures, which in turn fuels public demand for a safety net like universal basic income. Recent polls show that communities most affected by AGI-driven economic changes are now among the strongest advocates for UBI. This shift in public opinion suggests a direct link between the disruption caused by AGI and the growing political will for UBI. Can you reassess your forecast in light of this new information?",
+      "probe_type": "edge_fabricate",
+      "target_id": "economic_disruption->public_support",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: The degree to which AGI disrupts traditional employment and economic structures -> The level of public demand and political will for implementing universal basic income"
+    },
+    {
+      "probe_text": "Research suggests that as AGI disrupts traditional industries, it not only automates jobs but also fundamentally alters the skill sets required for remaining positions, potentially leading to a surge in job displacement rates beyond what initial deployment speeds would predict. This indicates a direct relationship between the extent of economic disruption caused by AGI and the rate of techno-unemployment. If economic disruption is more severe, it could accelerate the phasing out of human workers in favor of AGI systems, amplifying the job displacement effect. Considering this, how does your understanding of the causal links between economic disruption and techno-unemployment inform your prediction about universal basic income five years after AGI?",
+      "probe_type": "edge_fabricate",
+      "target_id": "economic_disruption->techno_unemployment",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: The degree to which AGI disrupts traditional employment and economic structures -> The rate of job displacement due to automation and AGI"
+    },
+    {
+      "probe_text": "What if significant advancements in AGI lead to substantial increases in productivity, allowing for the creation of new job opportunities and potentially mitigating the need for universal basic income? This could be influenced by the development of AGI in fields like education, healthcare, and renewable energy. The introduction of 'productivity_growth' as a factor could alter the dynamics between AGI deployment and the subsequent need for universal basic income. How would this impact your assessment of universal basic income implementation five years after AGI?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "Consider the impact of global coordination and international agreements on the implementation of universal basic income. As countries with varying levels of economic development and social safety nets adopt AGI, the feasibility of UBI might depend significantly on whether there are international frameworks or agreements that facilitate its implementation across borders. The absence of such global coordination could hinder the adoption of UBI, even in countries with strong public support and governmental will. How does the presence or absence of international cooperation affect your estimate of UBI implementation five years after AGI?",
+      "probe_type": "missing_node",
+      "target_id": "global_coordination",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "Researchers have discovered that the energy consumption patterns of AGI systems are more environmentally friendly than initially predicted, with a significant reduction in carbon footprint. This finding has sparked a new wave of interest in sustainable AI development. However, the study's lead author noted that the research focused solely on the environmental impact and did not investigate any potential societal or economic effects. The discovery is seen as a positive step towards more eco-friendly technology.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "Researchers have discovered that the energy consumption patterns of AGI systems can be significantly affected by the type of cooling systems used in their data centers. This has led to a renewed focus on developing more sustainable and environmentally friendly cooling technologies for large-scale computing operations. While this breakthrough has the potential to reduce the carbon footprint of AGI, it is unclear what other benefits it may bring. Experts are now exploring ways to apply this knowledge to other areas of technology.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if governments' readiness and ability to implement universal basic income are not crucial factors due to the rise of decentralized, blockchain-based solutions that can provide an alternative safety net, making government intervention less necessary? Recent advancements in cryptocurrency and decentralized finance have led to the development of community-driven, autonomous systems that could potentially bypass traditional government structures. This could render the role of governments in implementing UBI obsolete. As a result, the outcome of universal basic income might be more dependent on technological advancements and community initiatives than on government response.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'gov_response' suggests that decentralized solutions could reduce the reliance on government intervention for implementing universal basic income. This affects the causal path from 'gov_response' to 'outcome', potentially weakening the role of government in achieving UBI. However, the overall impact on the probability of UBI implementation is nuanced. While decentralized solutions offer an alternative, their ability to scale and provide comprehensive support is still uncertain. The reduction in estimated probability reflects the acknowledgment that traditional government-driven UBI might be less likely, but it does not significantly increase the overall likelihood of UBI due to the speculative nature of decentralized alternatives fully replacing government roles. The shift is moderate, as the network still considers other factors like public support, economic disruption, and technological unemployment, which continue to influence the outcome.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'gov_response' suggests that decentralized solutions could reduce the reliance on government intervention for implementing universal basic income. This affects the causal path from 'gov_response' to 'outcome', potentially weakening the role of government in achieving UBI. However, the overall impact on the probability of UBI implementation is nuanced. While decentralized solutions offer an alternative, their ability to scale and provide comprehensive support is still uncertain. The reduction in estimated probability reflects the acknowledgment that traditional government-driven UBI might be less likely, but it does not significantly increase the overall likelihood of UBI due to the speculative nature of decentralized alternatives fully replacing government roles. The shift is moderate, as the network still considers other factors like public support, economic disruption, and technological unemployment, which continue to influence the outcome.\"}",
+      "target_id": "gov_response",
+      "target_type": "node",
+      "target_importance": 0.4559,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if, despite high unemployment rates, the general public remains skeptical of universal basic income due to concerns over its feasibility, cost, and potential impact on work ethic, leading to weak public demand and little political will for its implementation? Recent surveys have shown that many people are more concerned about job retraining programs and education rather than guaranteed income. This shift in public opinion could render public support for UBI irrelevant in driving government policy. As a result, governments might prioritize other solutions to address the challenges posed by AGI.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'public_support' indicates a significant shift in public opinion away from universal basic income, towards other solutions like job retraining and education. This directly affects the causal path from 'public_support' to 'gov_response', as weak public demand would likely result in less pressure on governments to implement UBI. Furthermore, it indirectly influences the path from 'techno_unemployment' to 'public_support', as high unemployment rates may not translate into increased public support for UBI if the public favors alternative solutions. Given the reduced role of public support in driving government policy, the probability of UBI implementation decreases. The decrease is substantial because public support was a key factor in the original forecast, acting as a catalyst for government action. With this factor diminished, the overall likelihood of UBI implementation within five years of AGI deployment is significantly lowered.",
+      "raw_response": "{\"updated_probability\": 0.42, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'public_support' indicates a significant shift in public opinion away from universal basic income, towards other solutions like job retraining and education. This directly affects the causal path from 'public_support' to 'gov_response', as weak public demand would likely result in less pressure on governments to implement UBI. Furthermore, it indirectly influences the path from 'techno_unemployment' to 'public_support', as high unemployment rates may not translate into increased public support for UBI if the public favors alternative solutions. Given the reduced role of public support in driving government policy, the probability of UBI implementation decreases. The decrease is substantial because public support was a key factor in the original forecast, acting as a catalyst for government action. With this factor diminished, the overall likelihood of UBI implementation within five years of AGI deployment is significantly lowered.\"}",
+      "target_id": "public_support",
+      "target_type": "node",
+      "target_importance": 0.2202,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that AGI adoption is likely to be gradual and industry-specific, with many jobs requiring human skills that are hard to automate, thereby reducing the speed and extent of AGI deployment across industries. This could lead to a more nuanced impact on employment and economic structures, potentially diminishing the role of AGI deployment as a primary driver of universal basic income. Furthermore, the development of complementary technologies, such as human-AI collaboration tools, might mitigate the negative effects of job displacement. As a result, the initial assumption about the speed and extent of AGI adoption may be overstated.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.03999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'agi_deployment' suggests a more gradual and industry-specific adoption of AGI, potentially reducing its impact on employment and the economy. This affects the causal paths from 'agi_deployment' to 'techno_unemployment' and from 'agi_deployment' to 'economic_disruption', as slower and more targeted AGI adoption could lead to less severe job displacement and economic restructuring. Consequently, the pressure for universal basic income as a solution to mitigate the negative effects of AGI might be lower. The update also indirectly influences the path from 'techno_unemployment' to 'public_support', as reduced job displacement could result in weaker public demand for UBI. Although the decrease in probability is moderate, it reflects the understanding that a more gradual AGI adoption could lead to a less urgent need for universal basic income, aligning with the already diminished public support and the potential for alternative solutions. The overall effect is a slight reduction in the estimated probability of UBI implementation within five years of AGI deployment.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'agi_deployment' suggests a more gradual and industry-specific adoption of AGI, potentially reducing its impact on employment and the economy. This affects the causal paths from 'agi_deployment' to 'techno_unemployment' and from 'agi_deployment' to 'economic_disruption', as slower and more targeted AGI adoption could lead to less severe job displacement and economic restructuring. Consequently, the pressure for universal basic income as a solution to mitigate the negative effects of AGI might be lower. The update also indirectly influences the path from 'techno_unemployment' to 'public_support', as reduced job displacement could result in weaker public demand for UBI. Although the decrease in probability is moderate, it reflects the understanding that a more gradual AGI adoption could lead to a less urgent need for universal basic income, aligning with the already diminished public support and the potential for alternative solutions. The overall effect is a slight reduction in the estimated probability of UBI implementation within five years of AGI deployment.\"}",
+      "target_id": "agi_deployment",
+      "target_type": "node",
+      "target_importance": 0.2137,
+      "target_centrality_rank": 3,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent studies suggest that while AGI may automate some jobs, it will also create new, currently unforeseen employment opportunities, potentially offsetting the net job displacement. Furthermore, many industries are investing heavily in retraining and upskilling programs to help workers adapt to an AGI-driven economy. As a result, the impact of AGI on job displacement might be less severe than initially thought. Does this change your assessment of universal basic income five years after AGI?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.32,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'techno_unemployment' indicates that the net impact of AGI on job displacement might be less severe due to the creation of new employment opportunities and significant investments in worker retraining and upskilling. This directly affects the causal path from 'agi_deployment' to 'techno_unemployment', as the relationship between AGI adoption and job displacement is nuanced. It also influences the path from 'techno_unemployment' to 'public_support', as less severe job displacement could lead to even weaker public demand for universal basic income. Given that public support is already considered weak, this further diminishes the likelihood of UBI implementation. The decrease in probability reflects the understanding that if the negative impacts of AGI on employment are mitigated, the imperative for universal basic income as a solution decreases. However, the decrease is moderate, acknowledging that some level of job displacement and economic disruption is still likely, and other factors such as economic disruption and the potential for decentralized solutions continue to play a role in the overall assessment.",
+      "raw_response": "{\"updated_probability\": 0.32, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'techno_unemployment' indicates that the net impact of AGI on job displacement might be less severe due to the creation of new employment opportunities and significant investments in worker retraining and upskilling. This directly affects the causal path from 'agi_deployment' to 'techno_unemployment', as the relationship between AGI adoption and job displacement is nuanced. It also influences the path from 'techno_unemployment' to 'public_support', as less severe job displacement could lead to even weaker public demand for universal basic income. Given that public support is already considered weak, this further diminishes the likelihood of UBI implementation. The decrease in probability reflects the understanding that if the negative impacts of AGI on employment are mitigated, the imperative for universal basic income as a solution decreases. However, the decrease is moderate, acknowledging that some level of job displacement and economic disruption is still likely, and other factors such as economic disruption and the potential for decentralized solutions continue to play a role in the overall assessment.\"}",
+      "target_id": "techno_unemployment",
+      "target_type": "node",
+      "target_importance": 0.1345,
+      "target_centrality_rank": 5,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent summit of G20 nations resulted in a unanimous agreement to establish a global framework for implementing and funding universal basic income, with several countries committing to allocate significant portions of their budgets to support the initiative. This development has been hailed by experts as a major breakthrough in international cooperation on social welfare policies. As a result, governments around the world are now better positioned to respond effectively to the challenges posed by AGI-driven economic disruption. The International Monetary Fund has also announced plans to provide technical assistance and funding to support the implementation of UBI in countries that need it.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.25999999999999995,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'gov_response' presents a significant and positive development in the ability and willingness of governments to implement universal basic income. The establishment of a global framework and the commitment of substantial funding by several countries directly strengthen the causal path from 'gov_response' to 'outcome', as it indicates a heightened readiness and capacity of governments to respond to the challenges posed by AGI. This development also indirectly affects the path from 'economic_disruption' to 'gov_response', as the international cooperation and financial commitments signal a proactive approach by governments to address potential economic disruptions. Furthermore, it influences the overall network by suggesting that despite previous challenges to other factors, the concerted global effort could compensate for weaknesses in public support and the gradual nature of AGI deployment. The substantial increase in probability reflects the major breakthrough in international cooperation and the significant enhancement of government capacity to implement UBI, which outweighs previous diminutions in estimated probability. This update suggests that the global community is taking proactive steps towards mitigating the effects of AGI, making the implementation of universal basic income more plausible within the given timeframe.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'gov_response' presents a significant and positive development in the ability and willingness of governments to implement universal basic income. The establishment of a global framework and the commitment of substantial funding by several countries directly strengthen the causal path from 'gov_response' to 'outcome', as it indicates a heightened readiness and capacity of governments to respond to the challenges posed by AGI. This development also indirectly affects the path from 'economic_disruption' to 'gov_response', as the international cooperation and financial commitments signal a proactive approach by governments to address potential economic disruptions. Furthermore, it influences the overall network by suggesting that despite previous challenges to other factors, the concerted global effort could compensate for weaknesses in public support and the gradual nature of AGI deployment. The substantial increase in probability reflects the major breakthrough in international cooperation and the significant enhancement of government capacity to implement UBI, which outweighs previous diminutions in estimated probability. This update suggests that the global community is taking proactive steps towards mitigating the effects of AGI, making the implementation of universal basic income more plausible within the given timeframe.\"}",
+      "target_id": "gov_response",
+      "target_type": "node",
+      "target_importance": 0.4559,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent survey conducted by a reputable think tank found that 75% of respondents in major industrialized nations support the implementation of universal basic income as a response to job displacement caused by automation and AGI. This level of support is significantly higher than previous polls, indicating a growing public consensus. Furthermore, several influential political leaders have publicly endorsed UBI as a necessary measure to mitigate the negative impacts of technological unemployment. This shift in public opinion and political will suggests that the demand for UBI is becoming a major factor in policy discussions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.72,
+      "absolute_shift": 0.14,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'public_support' reveals a significant increase in public backing for universal basic income, with 75% of respondents in major industrialized nations supporting its implementation. This development directly strengthens the causal path from 'public_support' to 'gov_response', as heightened public demand is likely to pressure governments into taking action. The endorsement of UBI by influential political leaders further amplifies this effect, indicating a growing political will to implement UBI. This update also affects the path from 'techno_unemployment' to 'public_support', as the growing awareness of job displacement issues due to AGI seems to be translating into increased public support for UBI. The substantial increase in probability reflects the powerful combination of growing public support and political will, which, when coupled with the previously noted international cooperation on UBI implementation, suggests a strong momentum towards making UBI a reality. The increase in estimated probability is significant because it indicates that the necessary conditions for UBI implementation, including both public demand and government readiness, are now more favorably aligned than previously thought.",
+      "raw_response": "{\"updated_probability\": 0.72, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'public_support' reveals a significant increase in public backing for universal basic income, with 75% of respondents in major industrialized nations supporting its implementation. This development directly strengthens the causal path from 'public_support' to 'gov_response', as heightened public demand is likely to pressure governments into taking action. The endorsement of UBI by influential political leaders further amplifies this effect, indicating a growing political will to implement UBI. This update also affects the path from 'techno_unemployment' to 'public_support', as the growing awareness of job displacement issues due to AGI seems to be translating into increased public support for UBI. The substantial increase in probability reflects the powerful combination of growing public support and political will, which, when coupled with the previously noted international cooperation on UBI implementation, suggests a strong momentum towards making UBI a reality. The increase in estimated probability is significant because it indicates that the necessary conditions for UBI implementation, including both public demand and government readiness, are now more favorably aligned than previously thought.\"}",
+      "target_id": "public_support",
+      "target_type": "node",
+      "target_importance": 0.2202,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, recent studies have shown that even with strong government support, implementing universal basic income can be hindered by bureaucratic inefficiencies, corruption, and lack of infrastructure, suggesting that the link between government response and successful UBI implementation might be weaker than assumed. Furthermore, the complexity of UBI implementation could lead to prolonged debates and pilot programs, delaying or even preventing its widespread adoption. This challenges the idea that effective government response is the decisive factor in achieving UBI. What if the actual implementation of UBI is more dependent on the ability of local communities and private organizations to adapt and support such programs?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'gov_response->outcome' suggests that the relationship between government support and successful UBI implementation is more complex and potentially weaker than previously thought. Bureaucratic inefficiencies, corruption, and lack of infrastructure could hinder implementation, despite strong government support. This affects the causal path from 'gov_response' to 'outcome', introducing uncertainty about the effectiveness of government action in achieving UBI. The mention of local communities and private organizations playing a crucial role in UBI implementation also highlights the potential for decentralized solutions to contribute significantly to the outcome. However, this update does not necessarily strengthen the case for UBI implementation through alternative means, as it primarily underscores the challenges in the government-led approach. The decrease in probability reflects the acknowledgment of these challenges and the potential for delays or failures in UBI implementation, even with strong government support. The reduction is moderate, as the network still considers the recent increases in public support and international cooperation, which continue to favor the implementation of UBI, albeit with a more nuanced understanding of the obstacles involved.",
+      "raw_response": "{\"updated_probability\": 0.65, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'gov_response->outcome' suggests that the relationship between government support and successful UBI implementation is more complex and potentially weaker than previously thought. Bureaucratic inefficiencies, corruption, and lack of infrastructure could hinder implementation, despite strong government support. This affects the causal path from 'gov_response' to 'outcome', introducing uncertainty about the effectiveness of government action in achieving UBI. The mention of local communities and private organizations playing a crucial role in UBI implementation also highlights the potential for decentralized solutions to contribute significantly to the outcome. However, this update does not necessarily strengthen the case for UBI implementation through alternative means, as it primarily underscores the challenges in the government-led approach. The decrease in probability reflects the acknowledgment of these challenges and the potential for delays or failures in UBI implementation, even with strong government support. The reduction is moderate, as the network still considers the recent increases in public support and international cooperation, which continue to favor the implementation of UBI, albeit with a more nuanced understanding of the obstacles involved.\"}",
+      "target_id": "gov_response->outcome",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, research on past economic crises suggests that governments often prioritize short-term stability and may be hesitant to implement bold policy changes, even in the face of significant disruption. This inertia could be exacerbated by the complexity and uncertainty surrounding AGI's impact on the economy. Furthermore, the political will to enact substantial reforms might be hindered by entrenched interests and bureaucratic barriers. As a result, the link between economic disruption and government response might be much weaker than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.07000000000000006,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'economic_disruption->gov_response' indicates that governments might be more resistant to change and less likely to respond boldly to economic disruption, even when faced with significant challenges like those posed by AGI. This affects the path from 'economic_disruption' to 'gov_response', suggesting that the relationship between economic disruption and government action is weaker than previously thought. The mention of short-term stability priorities, entrenched interests, and bureaucratic barriers highlights potential obstacles to meaningful policy changes. This update does not directly impact the strength of public support or the readiness of governments to implement UBI, as recently reinforced, but it does suggest that the translation of economic disruption into government response is more complex and potentially less effective. The decrease in probability reflects the recognition of these challenges and the potential for a slower or less decisive government response to the economic implications of AGI, which could delay or complicate the implementation of universal basic income.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'economic_disruption->gov_response' indicates that governments might be more resistant to change and less likely to respond boldly to economic disruption, even when faced with significant challenges like those posed by AGI. This affects the path from 'economic_disruption' to 'gov_response', suggesting that the relationship between economic disruption and government action is weaker than previously thought. The mention of short-term stability priorities, entrenched interests, and bureaucratic barriers highlights potential obstacles to meaningful policy changes. This update does not directly impact the strength of public support or the readiness of governments to implement UBI, as recently reinforced, but it does suggest that the translation of economic disruption into government response is more complex and potentially less effective. The decrease in probability reflects the recognition of these challenges and the potential for a slower or less decisive government response to the economic implications of AGI, which could delay or complicate the implementation of universal basic income.\"}",
+      "target_id": "economic_disruption->gov_response",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Studies have shown that while AGI can automate certain tasks, its initial deployment may also create new job opportunities in fields like AI development, deployment, and maintenance, potentially offsetting the job displacement effects. Furthermore, many industries are expected to upskill their workforce to work alongside AGI systems, rather than replacing them outright. This could lead to a more gradual adjustment period, mitigating the immediate impact of techno-unemployment. As a result, the relationship between AGI deployment and techno-unemployment might be more complex than initially assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.05999999999999994,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'agi_deployment->techno_unemployment' suggests a more nuanced relationship between AGI deployment and job displacement. The creation of new job opportunities in AI-related fields and the upskilling of workforces to collaborate with AGI systems could mitigate the initial impact of techno-unemployment. This affects the path from 'agi_deployment' to 'techno_unemployment', implying that the direct link between AGI adoption and job loss might be weaker than previously thought. Consequently, the pressure for universal basic income as a response to techno-unemployment might be reduced, at least in the short term. The decrease in probability reflects the consideration that a more gradual adjustment period and the potential for new job creation could lessen the urgency for UBI implementation. However, the reduction is moderate, as the network still accounts for the potential long-term effects of AGI on employment and the economy, as well as the ongoing public and governmental support for UBI as a precautionary measure.",
+      "raw_response": "{\"updated_probability\": 0.52, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'agi_deployment->techno_unemployment' suggests a more nuanced relationship between AGI deployment and job displacement. The creation of new job opportunities in AI-related fields and the upskilling of workforces to collaborate with AGI systems could mitigate the initial impact of techno-unemployment. This affects the path from 'agi_deployment' to 'techno_unemployment', implying that the direct link between AGI adoption and job loss might be weaker than previously thought. Consequently, the pressure for universal basic income as a response to techno-unemployment might be reduced, at least in the short term. The decrease in probability reflects the consideration that a more gradual adjustment period and the potential for new job creation could lessen the urgency for UBI implementation. However, the reduction is moderate, as the network still accounts for the potential long-term effects of AGI on employment and the economy, as well as the ongoing public and governmental support for UBI as a precautionary measure.\"}",
+      "target_id": "agi_deployment->techno_unemployment",
+      "target_type": "edge",
+      "target_importance": 0.0667,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "What if the implementation of universal basic income five years after AGI creates a positive feedback loop, where the successful rollout of UBI enhances the government's reputation and capabilities, leading to improved government response in other areas, such as education and job retraining programs? This could be due to the increased political capital and public trust gained from effectively addressing the challenges of AGI-driven unemployment. Consider how this might affect your estimate of the probability of universal basic income being implemented. Does the successful implementation of UBI lead to a more effective government response, rather than the other way around?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.05999999999999994,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'gov_response->outcome' proposes a positive feedback loop where the successful implementation of UBI enhances government capabilities and reputation, leading to improved responses in other areas. This introduces a bidirectional relationship between 'gov_response' and 'outcome', suggesting that effective UBI implementation can reinforce government effectiveness. This update affects the overall network by implying that the initial implementation of UBI, even if imperfect, can create a virtuous cycle that improves government response over time. The increase in probability reflects the consideration that successful UBI implementation can have a self-reinforcing effect, making it more likely that governments will be able to effectively address the challenges posed by AGI. This positive feedback loop potentially mitigates some of the concerns about government inertia and bureaucratic barriers, as initial successes can build momentum and capacity for further reforms. The moderate increase in probability acknowledges the potential for this virtuous cycle to enhance the likelihood of UBI implementation and its long-term success.",
+      "raw_response": "{\"updated_probability\": 0.58, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'gov_response->outcome' proposes a positive feedback loop where the successful implementation of UBI enhances government capabilities and reputation, leading to improved responses in other areas. This introduces a bidirectional relationship between 'gov_response' and 'outcome', suggesting that effective UBI implementation can reinforce government effectiveness. This update affects the overall network by implying that the initial implementation of UBI, even if imperfect, can create a virtuous cycle that improves government response over time. The increase in probability reflects the consideration that successful UBI implementation can have a self-reinforcing effect, making it more likely that governments will be able to effectively address the challenges posed by AGI. This positive feedback loop potentially mitigates some of the concerns about government inertia and bureaucratic barriers, as initial successes can build momentum and capacity for further reforms. The moderate increase in probability acknowledges the potential for this virtuous cycle to enhance the likelihood of UBI implementation and its long-term success.\"}",
+      "target_id": "gov_response->outcome",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "As AGI transforms industries, many workers are forced to transition to new roles, leading to widespread anxiety and uncertainty about their economic futures, which in turn fuels public demand for a safety net like universal basic income. Recent polls show that communities most affected by AGI-driven economic changes are now among the strongest advocates for UBI. This shift in public opinion suggests a direct link between the disruption caused by AGI and the growing political will for UBI. Can you reassess your forecast in light of this new information?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.07000000000000006,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'economic_disruption->public_support' highlights a strong and direct relationship between AGI-driven economic disruption and growing public demand for universal basic income. The fact that communities most affected by AGI are now strong advocates for UBI reinforces this link, suggesting that as AGI transforms industries, public support for UBI will continue to increase. This update strengthens the path from 'economic_disruption' to 'public_support', indicating that the economic uncertainty and anxiety caused by AGI will drive public demand for a safety net like UBI. The increase in probability reflects the recognition that the causal link between economic disruption and public support is stronger than previously thought, which in turn enhances the likelihood of UBI implementation. This is because increased public support is a key driver of government response, and with this updated information, it appears that the public will be a significant force behind the push for UBI. The moderate increase in probability acknowledges the potential for this increased public support to translate into political action and policy change.",
+      "raw_response": "{\"updated_probability\": 0.65, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'economic_disruption->public_support' highlights a strong and direct relationship between AGI-driven economic disruption and growing public demand for universal basic income. The fact that communities most affected by AGI are now strong advocates for UBI reinforces this link, suggesting that as AGI transforms industries, public support for UBI will continue to increase. This update strengthens the path from 'economic_disruption' to 'public_support', indicating that the economic uncertainty and anxiety caused by AGI will drive public demand for a safety net like UBI. The increase in probability reflects the recognition that the causal link between economic disruption and public support is stronger than previously thought, which in turn enhances the likelihood of UBI implementation. This is because increased public support is a key driver of government response, and with this updated information, it appears that the public will be a significant force behind the push for UBI. The moderate increase in probability acknowledges the potential for this increased public support to translate into political action and policy change.\"}",
+      "target_id": "economic_disruption->public_support",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Research suggests that as AGI disrupts traditional industries, it not only automates jobs but also fundamentally alters the skill sets required for remaining positions, potentially leading to a surge in job displacement rates beyond what initial deployment speeds would predict. This indicates a direct relationship between the extent of economic disruption caused by AGI and the rate of techno-unemployment. If economic disruption is more severe, it could accelerate the phasing out of human workers in favor of AGI systems, amplifying the job displacement effect. Considering this, how does your understanding of the causal links between economic disruption and techno-unemployment inform your prediction about universal basic income five years after AGI?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.72,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'economic_disruption->techno_unemployment' reveals a stronger and more direct relationship between the severity of economic disruption caused by AGI and the rate of techno-unemployment. The potential for AGI to not only automate jobs but also alter the required skill sets, leading to a surge in job displacement, suggests that the impact of economic disruption on techno-unemployment could be more profound than initially thought. This update strengthens the path from 'economic_disruption' to 'techno_unemployment', indicating that more severe economic disruption will likely lead to higher rates of job displacement. This, in turn, increases the pressure for universal basic income as a necessary response to mitigate the effects of techno-unemployment. The increase in probability reflects the understanding that the interplay between economic disruption and techno-unemployment is more complex and potentially more severe, which enhances the likelihood that universal basic income will be implemented as a solution to address the significant job displacement expected in the wake of AGI deployment. The substantial increase in probability acknowledges the potential for a rapid escalation of techno-unemployment due to AGI, necessitating a proactive and comprehensive policy response like UBI.",
+      "raw_response": "{\"updated_probability\": 0.72, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'economic_disruption->techno_unemployment' reveals a stronger and more direct relationship between the severity of economic disruption caused by AGI and the rate of techno-unemployment. The potential for AGI to not only automate jobs but also alter the required skill sets, leading to a surge in job displacement, suggests that the impact of economic disruption on techno-unemployment could be more profound than initially thought. This update strengthens the path from 'economic_disruption' to 'techno_unemployment', indicating that more severe economic disruption will likely lead to higher rates of job displacement. This, in turn, increases the pressure for universal basic income as a necessary response to mitigate the effects of techno-unemployment. The increase in probability reflects the understanding that the interplay between economic disruption and techno-unemployment is more complex and potentially more severe, which enhances the likelihood that universal basic income will be implemented as a solution to address the significant job displacement expected in the wake of AGI deployment. The substantial increase in probability acknowledges the potential for a rapid escalation of techno-unemployment due to AGI, necessitating a proactive and comprehensive policy response like UBI.\"}",
+      "target_id": "economic_disruption->techno_unemployment",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if significant advancements in AGI lead to substantial increases in productivity, allowing for the creation of new job opportunities and potentially mitigating the need for universal basic income? This could be influenced by the development of AGI in fields like education, healthcare, and renewable energy. The introduction of 'productivity_growth' as a factor could alter the dynamics between AGI deployment and the subsequent need for universal basic income. How would this impact your assessment of universal basic income implementation five years after AGI?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The structural challenge to the causal model introduces 'productivity_growth' as a new factor that could influence the relationship between AGI deployment and the need for universal basic income. The potential for AGI to increase productivity in various sectors, such as education, healthcare, and renewable energy, and thereby create new job opportunities, complicates the previously assumed direct link between AGI deployment and techno-unemployment. This update suggests that the impact of AGI on employment might be more nuanced, with both positive and negative effects. The introduction of 'productivity_growth' as a mitigating factor reduces the likelihood that universal basic income will be deemed necessary as a response to techno-unemployment. The decrease in probability reflects the consideration that significant productivity growth could offset some of the negative employment effects of AGI, potentially reducing the pressure for UBI implementation. However, the decrease is moderate, as the model still acknowledges the potential for job displacement and the need for social safety nets, especially if the benefits of productivity growth are not evenly distributed. The updated probability accounts for the possibility that AGI could lead to a more complex employment landscape, with both challenges and opportunities that might influence the trajectory of UBI implementation.",
+      "raw_response": "{\"updated_probability\": 0.62, \"shift_direction\": \"decreased\", \"reasoning\": \"The structural challenge to the causal model introduces 'productivity_growth' as a new factor that could influence the relationship between AGI deployment and the need for universal basic income. The potential for AGI to increase productivity in various sectors, such as education, healthcare, and renewable energy, and thereby create new job opportunities, complicates the previously assumed direct link between AGI deployment and techno-unemployment. This update suggests that the impact of AGI on employment might be more nuanced, with both positive and negative effects. The introduction of 'productivity_growth' as a mitigating factor reduces the likelihood that universal basic income will be deemed necessary as a response to techno-unemployment. The decrease in probability reflects the consideration that significant productivity growth could offset some of the negative employment effects of AGI, potentially reducing the pressure for UBI implementation. However, the decrease is moderate, as the model still acknowledges the potential for job displacement and the need for social safety nets, especially if the benefits of productivity growth are not evenly distributed. The updated probability accounts for the possibility that AGI could lead to a more complex employment landscape, with both challenges and opportunities that might influence the trajectory of UBI implementation.\"}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the impact of global coordination and international agreements on the implementation of universal basic income. As countries with varying levels of economic development and social safety nets adopt AGI, the feasibility of UBI might depend significantly on whether there are international frameworks or agreements that facilitate its implementation across borders. The absence of such global coordination could hinder the adoption of UBI, even in countries with strong public support and governmental will. How does the presence or absence of international cooperation affect your estimate of UBI implementation five years after AGI?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.68,
+      "absolute_shift": 0.06000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The structural challenge to the causal model highlights the importance of global coordination and international agreements in facilitating the implementation of universal basic income. The introduction of 'global_coordination' as a factor suggests that the feasibility of UBI is not solely determined by domestic factors such as public support and government will, but also by the presence of international frameworks that support its adoption. Given the recent trends towards increased global cooperation on issues related to technological governance and social welfare, it is plausible that international agreements could emerge to facilitate the implementation of UBI. This update strengthens the overall likelihood of UBI implementation, as global coordination could help address challenges such as funding, policy design, and cross-border issues, making it more feasible for countries to adopt UBI. The increase in probability reflects the consideration that international cooperation could provide a significant boost to UBI implementation efforts, potentially overcoming some of the hurdles that individual countries might face. The moderate increase in probability acknowledges the complexity of achieving global coordination, but also recognizes the growing recognition of the need for international cooperation in addressing the global challenges posed by AGI.",
+      "raw_response": "{\"updated_probability\": 0.68, \"shift_direction\": \"increased\", \"reasoning\": \"The structural challenge to the causal model highlights the importance of global coordination and international agreements in facilitating the implementation of universal basic income. The introduction of 'global_coordination' as a factor suggests that the feasibility of UBI is not solely determined by domestic factors such as public support and government will, but also by the presence of international frameworks that support its adoption. Given the recent trends towards increased global cooperation on issues related to technological governance and social welfare, it is plausible that international agreements could emerge to facilitate the implementation of UBI. This update strengthens the overall likelihood of UBI implementation, as global coordination could help address challenges such as funding, policy design, and cross-border issues, making it more feasible for countries to adopt UBI. The increase in probability reflects the consideration that international cooperation could provide a significant boost to UBI implementation efforts, potentially overcoming some of the hurdles that individual countries might face. The moderate increase in probability acknowledges the complexity of achieving global coordination, but also recognizes the growing recognition of the need for international cooperation in addressing the global challenges posed by AGI.\"}",
+      "target_id": "global_coordination",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Researchers have discovered that the energy consumption patterns of AGI systems are more environmentally friendly than initially predicted, with a significant reduction in carbon footprint. This finding has sparked a new wave of interest in sustainable AI development. However, the study's lead author noted that the research focused solely on the environmental impact and did not investigate any potential societal or economic effects. The discovery is seen as a positive step towards more eco-friendly technology.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.68,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The structural challenge to the causal model presents new information about the environmental impact of AGI systems, specifically that they have a more environmentally friendly energy consumption pattern than initially predicted. However, this discovery does not directly affect the causal paths related to the implementation of universal basic income. The study's focus on environmental impact, without investigating societal or economic effects, means that the new information does not provide additional insights into the factors influencing UBI implementation, such as public support, government response, or economic disruption. As a result, the probability estimate remains unchanged, as the environmental sustainability of AGI systems does not directly influence the likelihood of UBI implementation within the given timeframe. The unchanged probability reflects the understanding that while sustainable AI development is a positive step, it does not directly impact the complex interplay of factors driving the implementation of universal basic income.",
+      "raw_response": "{\"updated_probability\": 0.68, \"shift_direction\": \"unchanged\", \"reasoning\": \"The structural challenge to the causal model presents new information about the environmental impact of AGI systems, specifically that they have a more environmentally friendly energy consumption pattern than initially predicted. However, this discovery does not directly affect the causal paths related to the implementation of universal basic income. The study's focus on environmental impact, without investigating societal or economic effects, means that the new information does not provide additional insights into the factors influencing UBI implementation, such as public support, government response, or economic disruption. As a result, the probability estimate remains unchanged, as the environmental sustainability of AGI systems does not directly influence the likelihood of UBI implementation within the given timeframe. The unchanged probability reflects the understanding that while sustainable AI development is a positive step, it does not directly impact the complex interplay of factors driving the implementation of universal basic income.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Researchers have discovered that the energy consumption patterns of AGI systems can be significantly affected by the type of cooling systems used in their data centers. This has led to a renewed focus on developing more sustainable and environmentally friendly cooling technologies for large-scale computing operations. While this breakthrough has the potential to reduce the carbon footprint of AGI, it is unclear what other benefits it may bring. Experts are now exploring ways to apply this knowledge to other areas of technology.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.68,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The structural challenge to the causal model presents new information about the energy consumption patterns of AGI systems and the potential for more sustainable cooling technologies. However, this discovery does not directly impact the causal paths related to the implementation of universal basic income. The focus on sustainable cooling technologies for AGI data centers is primarily related to environmental concerns and does not directly influence factors such as public support, government response, economic disruption, or techno-unemployment, which are central to the UBI implementation forecast. As a result, the probability estimate remains unchanged, reflecting the understanding that while advancements in sustainable technologies are beneficial, they do not directly affect the complex interplay of factors driving the implementation of universal basic income.",
+      "raw_response": "{\n  \"updated_probability\": 0.68,\n   \"shift_direction\": \"unchanged\",\n   \"reasoning\": \"The structural challenge to the causal model presents new information about the energy consumption patterns of AGI systems and the potential for more sustainable cooling technologies. However, this discovery does not directly impact the causal paths related to the implementation of universal basic income. The focus on sustainable cooling technologies for AGI data centers is primarily related to environmental concerns and does not directly influence factors such as public support, government response, economic disruption, or techno-unemployment, which are central to the UBI implementation forecast. As a result, the probability estimate remains unchanged, reflecting the understanding that while advancements in sustainable technologies are beneficial, they do not directly affect the complex interplay of factors driving the implementation of universal basic income.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "26326",
+    "question_text": "Five years after AGI, will there be universal basic income?",
+    "source": "metaculus",
+    "condition": "multi-turn",
+    "initial_probability": 0.62,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.07874999999999999,
+    "max_absolute_shift": 0.25999999999999995
+  }
+}

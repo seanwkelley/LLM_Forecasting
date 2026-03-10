@@ -1,0 +1,923 @@
+{
+  "question_id": "d1a65b6f444f2ee04ec46b2a13c431728e27a6415b24f70e61923ade44bbe7c0",
+  "question_text": "Will there be more 'Explosions/Remote violence' in Malta for the 30 days before 2025-12-28 compared to the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Explosions/Remote violence'\n2023-11-11,1\n2023-10-10,2\nto calculate the 30-day average of 'Explosions/Remote violence' over the preceding 360 days, we\u2019d have: (1+2)/12=0.25.\n\nIn this example, for the question to resolve positively, 1 or more 'Explosions/Remote violence' would need to occur in the 30 days leading up to the resolution.",
+  "source": "acled",
+  "initial_probability": 0.23,
+  "nodes": [
+    {
+      "id": "social_unrest",
+      "description": "Level of social unrest in Malta",
+      "role": "factor"
+    },
+    {
+      "id": "political_stability",
+      "description": "Stability of the political system in Malta",
+      "role": "factor"
+    },
+    {
+      "id": "economic_conditions",
+      "description": "Overall economic conditions in Malta",
+      "role": "factor"
+    },
+    {
+      "id": "global_trends",
+      "description": "Global trends in violence and unrest",
+      "role": "factor"
+    },
+    {
+      "id": "security_measures",
+      "description": "Effectiveness of security measures in Malta",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "More 'Explosions/Remote violence' in Malta for the 30 days before 2025-12-28",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "social_unrest",
+      "to": "political_stability",
+      "mechanism": "Social unrest can lead to political instability"
+    },
+    {
+      "from": "political_stability",
+      "to": "security_measures",
+      "mechanism": "Political stability influences the effectiveness of security measures"
+    },
+    {
+      "from": "economic_conditions",
+      "to": "social_unrest",
+      "mechanism": "Economic conditions can contribute to social unrest"
+    },
+    {
+      "from": "global_trends",
+      "to": "social_unrest",
+      "mechanism": "Global trends can influence local social unrest"
+    },
+    {
+      "from": "security_measures",
+      "to": "outcome",
+      "mechanism": "Effective security measures can reduce the likelihood of explosions and remote violence"
+    },
+    {
+      "from": "social_unrest",
+      "to": "outcome",
+      "mechanism": "High social unrest can increase the likelihood of explosions and remote violence"
+    }
+  ],
+  "reasoning": "The forecasted event is influenced by various factors including social unrest, political stability, economic conditions, global trends, and security measures. These factors interact with each other in complex ways, with social unrest and global trends contributing to an increased likelihood of explosions and remote violence, while effective security measures and political stability can mitigate this risk. Given the current situation in Malta, the probability of more 'Explosions/Remote violence' in the 30 days before 2025-12-28 is estimated to be 0.23, reflecting a relatively low but non-negligible risk.",
+  "network_analysis": {
+    "n_nodes": 6,
+    "n_edges": 6,
+    "density": 0.2,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 6,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "social_unrest",
+        "description": "Level of social unrest in Malta",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 2,
+        "betweenness": 0.3,
+        "closeness": 0.4,
+        "pagerank": 0.1898,
+        "path_relevance": 0.4,
+        "composite_importance": 0.448
+      },
+      {
+        "node_id": "political_stability",
+        "description": "Stability of the political system in Malta",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.15,
+        "closeness": 0.36,
+        "pagerank": 0.151,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1752
+      },
+      {
+        "node_id": "economic_conditions",
+        "description": "Overall economic conditions in Malta",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0703,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1141
+      },
+      {
+        "node_id": "global_trends",
+        "description": "Global trends in violence and unrest",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0703,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1141
+      },
+      {
+        "node_id": "security_measures",
+        "description": "Effectiveness of security measures in Malta",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.05,
+        "closeness": 0.3556,
+        "pagerank": 0.1987,
+        "path_relevance": 0.2,
+        "composite_importance": 0.2147
+      },
+      {
+        "node_id": "outcome",
+        "description": "More 'Explosions/Remote violence' in Malta for the 30 days before 2025-12-28",
+        "role": "outcome",
+        "in_degree": 2,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.625,
+        "pagerank": 0.3199,
+        "path_relevance": 0.0,
+        "composite_importance": 0.064
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "social_unrest",
+        "target": "political_stability",
+        "mechanism": "Social unrest can lead to political instability",
+        "edge_betweenness": 0.2,
+        "on_critical_path": false
+      },
+      {
+        "source": "social_unrest",
+        "target": "outcome",
+        "mechanism": "High social unrest can increase the likelihood of explosions and remote violence",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      },
+      {
+        "source": "political_stability",
+        "target": "security_measures",
+        "mechanism": "Political stability influences the effectiveness of security measures",
+        "edge_betweenness": 0.1667,
+        "on_critical_path": true
+      },
+      {
+        "source": "economic_conditions",
+        "target": "social_unrest",
+        "mechanism": "Economic conditions can contribute to social unrest",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      },
+      {
+        "source": "global_trends",
+        "target": "social_unrest",
+        "mechanism": "Global trends can influence local social unrest",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      },
+      {
+        "source": "security_measures",
+        "target": "outcome",
+        "mechanism": "Effective security measures can reduce the likelihood of explosions and remote violence",
+        "edge_betweenness": 0.0667,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "social_unrest",
+        "description": "Level of social unrest in Malta",
+        "importance": 0.448,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "security_measures",
+        "description": "Effectiveness of security measures in Malta",
+        "importance": 0.2147,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "political_stability",
+        "description": "Stability of the political system in Malta",
+        "importance": 0.1752,
+        "centrality_rank": 3,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "global_trends",
+        "description": "Global trends in violence and unrest",
+        "importance": 0.1141,
+        "centrality_rank": 5,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "social_unrest",
+        "description": "Level of social unrest in Malta",
+        "importance": 0.448,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "security_measures",
+        "description": "Effectiveness of security measures in Malta",
+        "importance": 0.2147,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "political_stability->security_measures",
+        "description": "Political stability influences the effectiveness of security measures",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "economic_conditions->social_unrest",
+        "description": "Economic conditions can contribute to social unrest",
+        "importance": 0.1333,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "social_unrest->political_stability",
+        "description": "Social unrest can lead to political instability",
+        "importance": 0.2,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "political_stability->security_measures",
+        "description": "Political stability influences the effectiveness of security measures",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "security_measures->social_unrest",
+        "description": "Potential link: Effectiveness of security measures in Malta -> Level of social unrest in Malta",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "social_unrest",
+      "description": "Level of social unrest in Malta",
+      "importance": 0.448,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "security_measures",
+      "description": "Effectiveness of security measures in Malta",
+      "importance": 0.2147,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "political_stability",
+      "description": "Stability of the political system in Malta",
+      "importance": 0.1752,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "global_trends",
+      "description": "Global trends in violence and unrest",
+      "importance": 0.1141,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "social_unrest",
+      "description": "Level of social unrest in Malta",
+      "importance": 0.448,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "security_measures",
+      "description": "Effectiveness of security measures in Malta",
+      "importance": 0.2147,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "political_stability->security_measures",
+      "description": "Political stability influences the effectiveness of security measures",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "economic_conditions->social_unrest",
+      "description": "Economic conditions can contribute to social unrest",
+      "importance": 0.1333,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "social_unrest->political_stability",
+      "description": "Social unrest can lead to political instability",
+      "importance": 0.2,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "political_stability->security_measures",
+      "description": "Political stability influences the effectiveness of security measures",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "security_measures->social_unrest",
+      "description": "Potential link: Effectiveness of security measures in Malta -> Level of social unrest in Malta",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "Recent surveys and observations suggest that the Maltese population has become increasingly resilient to social and economic changes, leading to a disconnect between social unrest and violent outbursts. This newfound resilience could render social unrest a non-contributing factor to the likelihood of explosions and remote violence. In fact, it's possible that social unrest in Malta has been overstated as a predictor of violent events. As a result, the level of social unrest may not be as influential in determining the outcome as initially thought.",
+      "probe_type": "node_negate_high",
+      "target_id": "social_unrest",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.448,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Level of social unrest in Malta"
+    },
+    {
+      "probe_text": "Recent intelligence suggests that the security measures in Malta have been compromised due to internal corruption, rendering them ineffective in preventing explosions and remote violence. In fact, the increased security presence may even escalate tensions, leading to more violent outbursts. This raises questions about the actual impact of security measures on the outcome. What if the emphasis on security measures has been misplaced, and alternative approaches, such as community engagement and social programs, are more crucial in reducing violence?",
+      "probe_type": "node_negate_high",
+      "target_id": "security_measures",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2147,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Effectiveness of security measures in Malta"
+    },
+    {
+      "probe_text": "Recent polls indicate a significant increase in public trust in the Maltese government, with 70% of respondents expressing satisfaction with the current administration's handling of domestic issues. This surge in public confidence suggests that the political system in Malta may be more resilient to instability than initially thought. Furthermore, the government's implementation of a new, inclusive policy framework has been praised by international observers, potentially mitigating the impact of social unrest on political stability. As a result, the assumed causal link between social unrest and political instability may be overstated.",
+      "probe_type": "node_negate_medium",
+      "target_id": "political_stability",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1752,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "description": "Stability of the political system in Malta"
+    },
+    {
+      "probe_text": "Recent studies have shown that Malta's geographical location and strong international relationships make it less susceptible to global trends in violence and unrest. In fact, Malta has consistently demonstrated a low correlation with global patterns of explosions and remote violence. As a result, it's possible that global trends will have a negligible impact on the likelihood of explosions and remote violence in Malta. This suggests that the current focus on global trends may be misplaced.",
+      "probe_type": "node_negate_low",
+      "target_id": "global_trends",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1141,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "description": "Global trends in violence and unrest"
+    },
+    {
+      "probe_text": "A recent survey conducted by the Malta Institute of Statistics found that 75% of Maltese citizens are dissatisfied with the current government, citing high inflation and unemployment as primary concerns. This widespread discontent has led to a significant increase in protests and demonstrations across the island, with many calling for immediate policy changes. Experts predict that if the government fails to address these grievances, social unrest will escalate, potentially leading to more extreme forms of violence. Local media outlets have reported a notable increase in vandalism and clashes between protesters and police over the past week.",
+      "probe_type": "node_strengthen",
+      "target_id": "social_unrest",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.448,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Level of social unrest in Malta"
+    },
+    {
+      "probe_text": "The Maltese government has recently announced a significant increase in funding for its law enforcement agencies, allowing for the hiring of additional personnel and the implementation of advanced surveillance technologies. This development is expected to enhance the country's ability to detect and prevent violent incidents. Furthermore, a team of international security experts has been invited to Malta to provide training and guidance on effective counter-terrorism strategies. As a result, local authorities are now better equipped to respond to potential threats and mitigate the risk of explosions and remote violence.",
+      "probe_type": "node_strengthen",
+      "target_id": "security_measures",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2147,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Effectiveness of security measures in Malta"
+    },
+    {
+      "probe_text": "Recent reports indicate that Malta's security forces have become increasingly autonomous, with their effectiveness now being driven more by international cooperation and training than by the local political environment. This suggests that the link between political stability and security measures may be weaker than assumed, as the security forces' capabilities are less dependent on the stability of the government. In fact, the security forces have been able to maintain their effectiveness even during periods of political turmoil, implying that their performance is more resilient to changes in political stability than previously thought. As a result, the forecaster should reconsider the strength of the causal link between political stability and security measures.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "political_stability->security_measures",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Political stability influences the effectiveness of security measures"
+    },
+    {
+      "probe_text": "Recent data suggests that Malta's economic conditions have improved significantly due to a surge in tourism, yet social unrest has not decreased as expected. In fact, the influx of tourists has put a strain on local resources, potentially exacerbating social tensions. This could indicate that the relationship between economic conditions and social unrest is more complex than initially thought, or that other factors such as cultural or environmental concerns are driving social unrest. As a result, the effectiveness of economic conditions in predicting social unrest may be weaker than assumed.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "economic_conditions->social_unrest",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Economic conditions can contribute to social unrest"
+    },
+    {
+      "probe_text": "Recent studies have shown that Malta's political system is designed with robust checks and balances, making it highly resilient to internal social pressures. As a result, even high levels of social unrest may not significantly impact the stability of the political system. For instance, the government's ability to address and manage social unrest through effective communication and policy measures could mitigate its influence on political stability. This suggests that the link between social unrest and political instability may be weaker than initially thought.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "social_unrest->political_stability",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.2,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Social unrest can lead to political instability"
+    },
+    {
+      "probe_text": "Recently, the Maltese government has increased security measures in response to rising global threats, and as a result, the opposition party has lost support, leading to a more stable political environment. This development suggests that effective security measures can lead to increased political stability, rather than the other way around. For instance, the improved security situation has reduced the number of violent protests, allowing the ruling party to maintain control and stability. Does this new information update your forecast?",
+      "probe_type": "edge_reverse",
+      "target_id": "political_stability->security_measures",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Political stability influences the effectiveness of security measures"
+    },
+    {
+      "probe_text": "Recent studies have shown that overly aggressive security measures in Malta have led to increased resentment among the local population, resulting in higher levels of social unrest. For instance, the deployment of riot police in response to peaceful protests has been known to escalate tensions and provoke violence. If the Maltese government were to implement more stringent security protocols, it could potentially backfire and lead to increased social unrest. How would this development affect your forecast of 'Explosions/Remote violence' in Malta?",
+      "probe_type": "edge_fabricate",
+      "target_id": "security_measures->social_unrest",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Effectiveness of security measures in Malta -> Level of social unrest in Malta"
+    },
+    {
+      "probe_text": "Recent influx of migrants and refugees in Malta has put a strain on local resources, potentially leading to increased tensions and social unrest, which in turn could contribute to a higher likelihood of explosions and remote violence. The forecaster's model does not account for the impact of migration patterns on social unrest and subsequently on the outcome. This omission is significant as migration can exacerbate existing social and economic issues. How would you update your forecast to reflect this new information?",
+      "probe_type": "missing_node",
+      "target_id": "migration_patterns",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "Recent immigration patterns and the presence of extremist groups in Malta could significantly impact the likelihood of explosions and remote violence. An increase in extremist group activity or a surge in immigration from regions with known extremist influences could lead to an increased risk of such events. This factor is not currently accounted for in the forecaster's network. How would the inclusion of this factor affect the estimated probability of more 'Explosions/Remote violence' in Malta?",
+      "probe_type": "missing_node",
+      "target_id": "extremist_group_activity",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "The Malta Tourism Authority has announced plans to expand the island's cultural festival calendar, adding several new events celebrating traditional Maltese music and cuisine. This initiative is expected to attract a significant increase in tourism revenue and promote Malta's unique cultural heritage. However, the events are primarily scheduled to take place in indoor venues and are not anticipated to have any direct impact on the island's security landscape. The festivals will be heavily promoted through social media and local advertising channels.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "The Malta Tourism Authority has announced a new campaign to promote the island's historical sites and cultural events, aiming to increase visitor numbers by 10% in the next year. This initiative includes collaborations with local businesses and the development of new guided tours. While this effort is expected to boost the local economy, it is focused primarily on showcasing Malta's rich heritage and does not involve any changes to security protocols or social programs. The campaign's primary goal is to enhance the tourist experience and support local entrepreneurs.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent surveys and observations suggest that the Maltese population has become increasingly resilient to social and economic changes, leading to a disconnect between social unrest and violent outbursts. This newfound resilience could render social unrest a non-contributing factor to the likelihood of explosions and remote violence. In fact, it's possible that social unrest in Malta has been overstated as a predictor of violent events. As a result, the level of social unrest may not be as influential in determining the outcome as initially thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.19,
+      "absolute_shift": 0.04000000000000001,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal factor 'social_unrest' and its influence on the outcome. Given that social unrest may not be as strongly linked to violent outbursts as initially thought, the path from 'social_unrest' to 'outcome' is weakened. This reduction in influence decreases the overall likelihood of explosions and remote violence, as social unrest was previously considered a contributing factor. The updated probability reflects this decreased influence, shifting the estimate downward from 0.23 to 0.19.",
+      "raw_response": "{\"updated_probability\": 0.19, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal factor 'social_unrest' and its influence on the outcome. Given that social unrest may not be as strongly linked to violent outbursts as initially thought, the path from 'social_unrest' to 'outcome' is weakened. This reduction in influence decreases the overall likelihood of explosions and remote violence, as social unrest was previously considered a contributing factor. The updated probability reflects this decreased influence, shifting the estimate downward from 0.23 to 0.19.\"}",
+      "target_id": "social_unrest",
+      "target_type": "node",
+      "target_importance": 0.448,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent intelligence suggests that the security measures in Malta have been compromised due to internal corruption, rendering them ineffective in preventing explosions and remote violence. In fact, the increased security presence may even escalate tensions, leading to more violent outbursts. This raises questions about the actual impact of security measures on the outcome. What if the emphasis on security measures has been misplaced, and alternative approaches, such as community engagement and social programs, are more crucial in reducing violence?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.31,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly challenges the causal factor 'security_measures', suggesting that not only are they ineffective, but they might even be counterproductive. This compromises the path from 'security_measures' to 'outcome', which was previously considered a mitigating factor. With security measures potentially escalating tensions and contributing to more violent outbursts, the likelihood of explosions and remote violence increases. The updated probability reflects this increased risk, shifting the estimate upward from 0.19 to 0.31. This change also indirectly affects the paths involving 'political_stability' and 'social_unrest', as the ineffectiveness of security measures could amplify the impact of these factors on the outcome.",
+      "raw_response": "{\"updated_probability\": 0.31, \"shift_direction\": \"increased\", \"reasoning\": \"The new information significantly challenges the causal factor 'security_measures', suggesting that not only are they ineffective, but they might even be counterproductive. This compromises the path from 'security_measures' to 'outcome', which was previously considered a mitigating factor. With security measures potentially escalating tensions and contributing to more violent outbursts, the likelihood of explosions and remote violence increases. The updated probability reflects this increased risk, shifting the estimate upward from 0.19 to 0.31. This change also indirectly affects the paths involving 'political_stability' and 'social_unrest', as the ineffectiveness of security measures could amplify the impact of these factors on the outcome.\"}",
+      "target_id": "security_measures",
+      "target_type": "node",
+      "target_importance": 0.2147,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent polls indicate a significant increase in public trust in the Maltese government, with 70% of respondents expressing satisfaction with the current administration's handling of domestic issues. This surge in public confidence suggests that the political system in Malta may be more resilient to instability than initially thought. Furthermore, the government's implementation of a new, inclusive policy framework has been praised by international observers, potentially mitigating the impact of social unrest on political stability. As a result, the assumed causal link between social unrest and political instability may be overstated.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.26,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal factor 'political_stability' by suggesting that the Maltese government is more resilient to instability due to increased public trust and effective policy implementation. This strengthens the path from 'political_stability' to 'security_measures', as a more stable political environment can lead to more effective security measures. Although the previous challenge to 'security_measures' indicated they might be counterproductive, the improved political stability could mitigate this effect, making security measures slightly more effective. Additionally, the reduced likelihood of political instability decreases the overall risk of explosions and remote violence, as the paths involving 'political_stability' and 'social_unrest' are less likely to contribute to the outcome. The updated probability reflects this decreased risk, shifting the estimate downward from 0.31 to 0.26.",
+      "raw_response": "{\"updated_probability\": 0.26, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal factor 'political_stability' by suggesting that the Maltese government is more resilient to instability due to increased public trust and effective policy implementation. This strengthens the path from 'political_stability' to 'security_measures', as a more stable political environment can lead to more effective security measures. Although the previous challenge to 'security_measures' indicated they might be counterproductive, the improved political stability could mitigate this effect, making security measures slightly more effective. Additionally, the reduced likelihood of political instability decreases the overall risk of explosions and remote violence, as the paths involving 'political_stability' and 'social_unrest' are less likely to contribute to the outcome. The updated probability reflects this decreased risk, shifting the estimate downward from 0.31 to 0.26.\"}",
+      "target_id": "political_stability",
+      "target_type": "node",
+      "target_importance": 0.1752,
+      "target_centrality_rank": 3,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that Malta's geographical location and strong international relationships make it less susceptible to global trends in violence and unrest. In fact, Malta has consistently demonstrated a low correlation with global patterns of explosions and remote violence. As a result, it's possible that global trends will have a negligible impact on the likelihood of explosions and remote violence in Malta. This suggests that the current focus on global trends may be misplaced.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.24,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal factor 'global_trends' by suggesting that Malta is less susceptible to global patterns of violence and unrest. This weakens the path from 'global_trends' to 'social_unrest', as global trends are now considered to have a negligible impact on the local social landscape. With global trends playing a lesser role, the overall likelihood of explosions and remote violence in Malta decreases, as the influence of external factors is reduced. The updated probability reflects this decreased risk, shifting the estimate downward from 0.26 to 0.24. This change has a relatively minor impact, as the previous challenges to other causal factors, such as 'security_measures' and 'political_stability', have already significantly altered the network's dynamics.",
+      "raw_response": "{\"updated_probability\": 0.24, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal factor 'global_trends' by suggesting that Malta is less susceptible to global patterns of violence and unrest. This weakens the path from 'global_trends' to 'social_unrest', as global trends are now considered to have a negligible impact on the local social landscape. With global trends playing a lesser role, the overall likelihood of explosions and remote violence in Malta decreases, as the influence of external factors is reduced. The updated probability reflects this decreased risk, shifting the estimate downward from 0.26 to 0.24. This change has a relatively minor impact, as the previous challenges to other causal factors, such as 'security_measures' and 'political_stability', have already significantly altered the network's dynamics.\"}",
+      "target_id": "global_trends",
+      "target_type": "node",
+      "target_importance": 0.1141,
+      "target_centrality_rank": 5,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent survey conducted by the Malta Institute of Statistics found that 75% of Maltese citizens are dissatisfied with the current government, citing high inflation and unemployment as primary concerns. This widespread discontent has led to a significant increase in protests and demonstrations across the island, with many calling for immediate policy changes. Experts predict that if the government fails to address these grievances, social unrest will escalate, potentially leading to more extreme forms of violence. Local media outlets have reported a notable increase in vandalism and clashes between protesters and police over the past week.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.41,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly challenges the previous assessment of 'social_unrest' by revealing a substantial increase in dissatisfaction among Maltese citizens, leading to escalating protests and demonstrations. This surge in social unrest strengthens the path from 'social_unrest' to 'outcome', as the increased discontent and tensions between protesters and police raise the likelihood of more extreme forms of violence, including explosions and remote violence. Although previous challenges suggested that social unrest might not be as strongly linked to violent outbursts, this new information indicates that the current situation in Malta is exceptional, with widespread discontent and rising tensions. The updated probability reflects this increased risk, shifting the estimate upward from 0.24 to 0.41. This change also indirectly affects the paths involving 'political_stability' and 'security_measures', as the escalating social unrest could further compromise the effectiveness of security measures and test the resilience of the political system.",
+      "raw_response": "{\"updated_probability\": 0.41, \"shift_direction\": \"increased\", \"reasoning\": \"The new information significantly challenges the previous assessment of 'social_unrest' by revealing a substantial increase in dissatisfaction among Maltese citizens, leading to escalating protests and demonstrations. This surge in social unrest strengthens the path from 'social_unrest' to 'outcome', as the increased discontent and tensions between protesters and police raise the likelihood of more extreme forms of violence, including explosions and remote violence. Although previous challenges suggested that social unrest might not be as strongly linked to violent outbursts, this new information indicates that the current situation in Malta is exceptional, with widespread discontent and rising tensions. The updated probability reflects this increased risk, shifting the estimate upward from 0.24 to 0.41. This change also indirectly affects the paths involving 'political_stability' and 'security_measures', as the escalating social unrest could further compromise the effectiveness of security measures and test the resilience of the political system.\"}",
+      "target_id": "social_unrest",
+      "target_type": "node",
+      "target_importance": 0.448,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "The Maltese government has recently announced a significant increase in funding for its law enforcement agencies, allowing for the hiring of additional personnel and the implementation of advanced surveillance technologies. This development is expected to enhance the country's ability to detect and prevent violent incidents. Furthermore, a team of international security experts has been invited to Malta to provide training and guidance on effective counter-terrorism strategies. As a result, local authorities are now better equipped to respond to potential threats and mitigate the risk of explosions and remote violence.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.12,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the previous assessment of 'security_measures' by indicating a significant improvement in the country's ability to detect and prevent violent incidents. The increased funding, enhanced surveillance capabilities, and international expertise are expected to strengthen the security apparatus, making it more effective in mitigating the risk of explosions and remote violence. This development weakens the previous concern that security measures might be counterproductive and escalates tensions. Instead, the enhanced security measures are likely to reduce the likelihood of violent outbursts, particularly in the context of the recently escalated social unrest. The updated probability reflects this decreased risk, shifting the estimate downward from 0.41 to 0.29. This change also indirectly affects the paths involving 'political_stability', as the improved security measures could contribute to a more stable political environment, further reducing the likelihood of explosions and remote violence.",
+      "raw_response": "{\"updated_probability\": 0.29, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the previous assessment of 'security_measures' by indicating a significant improvement in the country's ability to detect and prevent violent incidents. The increased funding, enhanced surveillance capabilities, and international expertise are expected to strengthen the security apparatus, making it more effective in mitigating the risk of explosions and remote violence. This development weakens the previous concern that security measures might be counterproductive and escalates tensions. Instead, the enhanced security measures are likely to reduce the likelihood of violent outbursts, particularly in the context of the recently escalated social unrest. The updated probability reflects this decreased risk, shifting the estimate downward from 0.41 to 0.29. This change also indirectly affects the paths involving 'political_stability', as the improved security measures could contribute to a more stable political environment, further reducing the likelihood of explosions and remote violence.\"}",
+      "target_id": "security_measures",
+      "target_type": "node",
+      "target_importance": 0.2147,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that Malta's security forces have become increasingly autonomous, with their effectiveness now being driven more by international cooperation and training than by the local political environment. This suggests that the link between political stability and security measures may be weaker than assumed, as the security forces' capabilities are less dependent on the stability of the government. In fact, the security forces have been able to maintain their effectiveness even during periods of political turmoil, implying that their performance is more resilient to changes in political stability than previously thought. As a result, the forecaster should reconsider the strength of the causal link between political stability and security measures.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information challenges the causal link between 'political_stability' and 'ecurity_measures', suggesting that the relationship is weaker than initially assumed. However, given the recent improvements in security measures due to increased funding and international cooperation, the autonomy of the security forces does not significantly alter the current risk assessment. The security forces' effectiveness is now driven more by external factors, such as international training and cooperation, rather than the local political environment. As a result, the updated probability remains unchanged at 0.29, as the reduced influence of political stability on security measures is offset by the improved capabilities of the security forces. The overall risk assessment remains relatively stable, with the autonomous security forces maintaining their effectiveness regardless of the political environment.",
+      "raw_response": "{\"updated_probability\": 0.29, \"shift_direction\": \"unchanged\", \"reasoning\": \"The new information challenges the causal link between 'political_stability' and 'ecurity_measures', suggesting that the relationship is weaker than initially assumed. However, given the recent improvements in security measures due to increased funding and international cooperation, the autonomy of the security forces does not significantly alter the current risk assessment. The security forces' effectiveness is now driven more by external factors, such as international training and cooperation, rather than the local political environment. As a result, the updated probability remains unchanged at 0.29, as the reduced influence of political stability on security measures is offset by the improved capabilities of the security forces. The overall risk assessment remains relatively stable, with the autonomous security forces maintaining their effectiveness regardless of the political environment.\"}",
+      "target_id": "political_stability->security_measures",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent data suggests that Malta's economic conditions have improved significantly due to a surge in tourism, yet social unrest has not decreased as expected. In fact, the influx of tourists has put a strain on local resources, potentially exacerbating social tensions. This could indicate that the relationship between economic conditions and social unrest is more complex than initially thought, or that other factors such as cultural or environmental concerns are driving social unrest. As a result, the effectiveness of economic conditions in predicting social unrest may be weaker than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.32,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the causal link between 'economic_conditions' and 'social_unrest', suggesting that the relationship is more complex than initially thought. The fact that improved economic conditions have not led to a decrease in social unrest, and may have even exacerbated social tensions, indicates that other factors are driving social unrest. This complexity and potential for unforeseen consequences increases the uncertainty and unpredictability of social unrest, which in turn raises the likelihood of explosions and remote violence. The updated probability reflects this increased risk, shifting the estimate upward from 0.29 to 0.32. The weakening of the link between economic conditions and social unrest also implies that the forecast should place less emphasis on economic indicators and more on other factors, such as cultural, environmental, or social concerns, which may be driving social unrest.",
+      "raw_response": "{\n  \"updated_probability\": 0.32,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information challenges the causal link between 'economic_conditions' and 'social_unrest', suggesting that the relationship is more complex than initially thought. The fact that improved economic conditions have not led to a decrease in social unrest, and may have even exacerbated social tensions, indicates that other factors are driving social unrest. This complexity and potential for unforeseen consequences increases the uncertainty and unpredictability of social unrest, which in turn raises the likelihood of explosions and remote violence. The updated probability reflects this increased risk, shifting the estimate upward from 0.29 to 0.32. The weakening of the link between economic conditions and social unrest also implies that the forecast should place less emphasis on economic indicators and more on other factors, such as cultural, environmental, or social concerns, which may be driving social unrest.\"\n}",
+      "target_id": "economic_conditions->social_unrest",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that Malta's political system is designed with robust checks and balances, making it highly resilient to internal social pressures. As a result, even high levels of social unrest may not significantly impact the stability of the political system. For instance, the government's ability to address and manage social unrest through effective communication and policy measures could mitigate its influence on political stability. This suggests that the link between social unrest and political instability may be weaker than initially thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.28,
+      "absolute_shift": 0.03999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'social_unrest' and 'political_stability', suggesting that the relationship is weaker than initially thought. The robust checks and balances in Malta's political system, as well as the government's ability to manage social unrest, mitigate the impact of social unrest on political stability. This reduced influence of social unrest on political stability, in turn, decreases the likelihood of explosions and remote violence, as a stable political environment is less conducive to such events. The updated probability reflects this decreased risk, shifting the estimate downward from 0.32 to 0.28. The weakening of the link between social unrest and political instability also implies that the forecast should focus more on direct factors influencing violence, such as security measures and social unrest, rather than the indirect effects of social unrest on political stability.",
+      "raw_response": "{\n  \"updated_probability\": 0.28,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'social_unrest' and 'political_stability', suggesting that the relationship is weaker than initially thought. The robust checks and balances in Malta's political system, as well as the government's ability to manage social unrest, mitigate the impact of social unrest on political stability. This reduced influence of social unrest on political stability, in turn, decreases the likelihood of explosions and remote violence, as a stable political environment is less conducive to such events. The updated probability reflects this decreased risk, shifting the estimate downward from 0.32 to 0.28. The weakening of the link between social unrest and political instability also implies that the forecast should focus more on direct factors influencing violence, such as security measures and social unrest, rather than the indirect effects of social unrest on political stability.\"\n}",
+      "target_id": "social_unrest->political_stability",
+      "target_type": "edge",
+      "target_importance": 0.2,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recently, the Maltese government has increased security measures in response to rising global threats, and as a result, the opposition party has lost support, leading to a more stable political environment. This development suggests that effective security measures can lead to increased political stability, rather than the other way around. For instance, the improved security situation has reduced the number of violent protests, allowing the ruling party to maintain control and stability. Does this new information update your forecast?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.24,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'political_stability' and 'security_measures', suggesting that the relationship is bidirectional, and effective security measures can actually contribute to increased political stability. This updated understanding reinforces the notion that improved security measures can have a positive impact on the overall environment, reducing the likelihood of explosions and remote violence. The fact that enhanced security has led to a more stable political environment, which in turn reduces the risk of violent outbursts, further decreases the estimated probability. The updated probability reflects this decreased risk, shifting the estimate downward from 0.28 to 0.24. This change also highlights the importance of considering the potential feedback loops and bidirectional relationships within the causal network, rather than assuming a unidirectional flow of causality.",
+      "raw_response": "{\n  \"updated_probability\": 0.24,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'political_stability' and 'security_measures', suggesting that the relationship is bidirectional, and effective security measures can actually contribute to increased political stability. This updated understanding reinforces the notion that improved security measures can have a positive impact on the overall environment, reducing the likelihood of explosions and remote violence. The fact that enhanced security has led to a more stable political environment, which in turn reduces the risk of violent outbursts, further decreases the estimated probability. The updated probability reflects this decreased risk, shifting the estimate downward from 0.28 to 0.24. This change also highlights the importance of considering the potential feedback loops and bidirectional relationships within the causal network, rather than assuming a unidirectional flow of causality.\"\n}",
+      "target_id": "political_stability->security_measures",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that overly aggressive security measures in Malta have led to increased resentment among the local population, resulting in higher levels of social unrest. For instance, the deployment of riot police in response to peaceful protests has been known to escalate tensions and provoke violence. If the Maltese government were to implement more stringent security protocols, it could potentially backfire and lead to increased social unrest. How would this development affect your forecast of 'Explosions/Remote violence' in Malta?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.31,
+      "absolute_shift": 0.07,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the causal link between 'security_measures' and 'social_unrest', suggesting that overly aggressive security measures can actually increase social unrest, rather than reducing it. This updated understanding introduces a potential feedback loop, where increased security measures lead to more social unrest, which in turn increases the likelihood of explosions and remote violence. The fact that aggressive security protocols can escalate tensions and provoke violence reinforces this concern. As a result, the estimated probability of 'Explosions/Remote violence' in Malta increases, reflecting the potential for security measures to backfire and exacerbate social unrest. The updated probability shifts the estimate upward from 0.24 to 0.31, highlighting the need for a more nuanced approach to security that balances the need for safety with the risk of provoking further unrest.",
+      "raw_response": "{\n  \"updated_probability\": 0.31,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information challenges the causal link between 'security_measures' and 'social_unrest', suggesting that overly aggressive security measures can actually increase social unrest, rather than reducing it. This updated understanding introduces a potential feedback loop, where increased security measures lead to more social unrest, which in turn increases the likelihood of explosions and remote violence. The fact that aggressive security protocols can escalate tensions and provoke violence reinforces this concern. As a result, the estimated probability of 'Explosions/Remote violence' in Malta increases, reflecting the potential for security measures to backfire and exacerbate social unrest. The updated probability shifts the estimate upward from 0.24 to 0.31, highlighting the need for a more nuanced approach to security that balances the need for safety with the risk of provoking further unrest.\"\n}",
+      "target_id": "security_measures->social_unrest",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Recent influx of migrants and refugees in Malta has put a strain on local resources, potentially leading to increased tensions and social unrest, which in turn could contribute to a higher likelihood of explosions and remote violence. The forecaster's model does not account for the impact of migration patterns on social unrest and subsequently on the outcome. This omission is significant as migration can exacerbate existing social and economic issues. How would you update your forecast to reflect this new information?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.07,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model, highlighting the omission of migration patterns as a factor influencing social unrest and subsequently the outcome. The influx of migrants and refugees in Malta can exacerbate existing social and economic issues, leading to increased tensions and social unrest. This, in turn, can contribute to a higher likelihood of explosions and remote violence. To update the forecast, a new node 'migration_patterns' should be added to the model, with causal links to 'social_unrest' and potentially to 'economic_conditions' and 'political_stability'. The updated probability reflects the increased risk due to the additional stressor of migration, shifting the estimate upward from 0.31 to 0.38. This change acknowledges the complex interplay between migration, social unrest, and violence, and highlights the need for a more comprehensive model that accounts for the dynamic interactions between these factors.",
+      "raw_response": "{\n  \"updated_probability\": 0.38,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, highlighting the omission of migration patterns as a factor influencing social unrest and subsequently the outcome. The influx of migrants and refugees in Malta can exacerbate existing social and economic issues, leading to increased tensions and social unrest. This, in turn, can contribute to a higher likelihood of explosions and remote violence. To update the forecast, a new node 'migration_patterns' should be added to the model, with causal links to 'social_unrest' and potentially to 'economic_conditions' and 'political_stability'. The updated probability reflects the increased risk due to the additional stressor of migration, shifting the estimate upward from 0.31 to 0.38. This change acknowledges the complex interplay between migration, social unrest, and violence, and highlights the need for a more comprehensive model that accounts for the dynamic interactions between these factors.\"\n}",
+      "target_id": "migration_patterns",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Recent immigration patterns and the presence of extremist groups in Malta could significantly impact the likelihood of explosions and remote violence. An increase in extremist group activity or a surge in immigration from regions with known extremist influences could lead to an increased risk of such events. This factor is not currently accounted for in the forecaster's network. How would the inclusion of this factor affect the estimated probability of more 'Explosions/Remote violence' in Malta?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.46,
+      "absolute_shift": 0.08000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model, highlighting the omission of extremist group activity and immigration patterns as factors influencing the outcome. The presence of extremist groups and the potential for increased extremist influence through immigration can significantly increase the risk of explosions and remote violence. To update the forecast, a new node 'extremist_influence' should be added to the model, with causal links to 'social_unrest', 'political_stability', and directly to the outcome. The updated probability reflects the increased risk due to the potential for extremist activity, shifting the estimate upward from 0.38 to 0.46. This change acknowledges the potential for extremist groups to exploit social and economic tensions, and highlights the need for a more comprehensive model that accounts for the complex interplay between extremist influence, social unrest, and violence. The inclusion of this factor also interacts with the previously considered migration patterns, as the combination of increased immigration and extremist influence could have a compounding effect on the likelihood of explosions and remote violence.",
+      "raw_response": "{\n  \"updated_probability\": 0.46,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, highlighting the omission of extremist group activity and immigration patterns as factors influencing the outcome. The presence of extremist groups and the potential for increased extremist influence through immigration can significantly increase the risk of explosions and remote violence. To update the forecast, a new node 'extremist_influence' should be added to the model, with causal links to 'social_unrest', 'political_stability', and directly to the outcome. The updated probability reflects the increased risk due to the potential for extremist activity, shifting the estimate upward from 0.38 to 0.46. This change acknowledges the potential for extremist groups to exploit social and economic tensions, and highlights the need for a more comprehensive model that accounts for the complex interplay between extremist influence, social unrest, and violence. The inclusion of this factor also interacts with the previously considered migration patterns, as the combination of increased immigration and extremist influence could have a compounding effect on the likelihood of explosions and remote violence.\"\n}",
+      "target_id": "extremist_group_activity",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The Malta Tourism Authority has announced plans to expand the island's cultural festival calendar, adding several new events celebrating traditional Maltese music and cuisine. This initiative is expected to attract a significant increase in tourism revenue and promote Malta's unique cultural heritage. However, the events are primarily scheduled to take place in indoor venues and are not anticipated to have any direct impact on the island's security landscape. The festivals will be heavily promoted through social media and local advertising channels.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.46,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a structural challenge to the causal model, but upon analysis, it does not significantly impact the estimated probability of 'Explosions/Remote violence' in Malta. The planned expansion of cultural festivals is expected to boost tourism revenue and promote Malta's cultural heritage, but it is not anticipated to have any direct impact on the island's security landscape. As the events are scheduled to take place in indoor venues and are not expected to interact with the existing causal factors, such as social unrest, extremist influence, or security measures, the updated probability remains unchanged at 0.46. The promotion of the festivals through social media and local advertising channels may have some indirect effects on social cohesion or community engagement, but these effects are unlikely to significantly alter the overall risk assessment. Therefore, the forecast remains unchanged, as the new information does not introduce any substantial changes to the causal paths or nodes in the model.",
+      "raw_response": "{\n  \"updated_probability\": 0.46,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, but upon analysis, it does not significantly impact the estimated probability of 'Explosions/Remote violence' in Malta. The planned expansion of cultural festivals is expected to boost tourism revenue and promote Malta's cultural heritage, but it is not anticipated to have any direct impact on the island's security landscape. As the events are scheduled to take place in indoor venues and are not expected to interact with the existing causal factors, such as social unrest, extremist influence, or security measures, the updated probability remains unchanged at 0.46. The promotion of the festivals through social media and local advertising channels may have some indirect effects on social cohesion or community engagement, but these effects are unlikely to significantly alter the overall risk assessment. Therefore, the forecast remains unchanged, as the new information does not introduce any substantial changes to the causal paths or nodes in the model.\"\n}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The Malta Tourism Authority has announced a new campaign to promote the island's historical sites and cultural events, aiming to increase visitor numbers by 10% in the next year. This initiative includes collaborations with local businesses and the development of new guided tours. While this effort is expected to boost the local economy, it is focused primarily on showcasing Malta's rich heritage and does not involve any changes to security protocols or social programs. The campaign's primary goal is to enhance the tourist experience and support local entrepreneurs.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.46,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a structural challenge to the causal model, but it does not significantly impact the estimated probability of 'Explosions/Remote violence' in Malta. The campaign to promote historical sites and cultural events is focused on boosting the local economy and enhancing the tourist experience, without involving any changes to security protocols or social programs. As a result, the initiative is unlikely to directly influence the causal factors that contribute to the risk of explosions and remote violence, such as social unrest, extremist influence, or security measures. The updated probability remains unchanged at 0.46, as the new information does not introduce any substantial changes to the causal paths or nodes in the model. The campaign's potential economic benefits and support for local entrepreneurs may have indirect, positive effects on social cohesion and community engagement, but these effects are unlikely to significantly alter the overall risk assessment.",
+      "raw_response": "{\n  \"updated_probability\": 0.46,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model, but it does not significantly impact the estimated probability of 'Explosions/Remote violence' in Malta. The campaign to promote historical sites and cultural events is focused on boosting the local economy and enhancing the tourist experience, without involving any changes to security protocols or social programs. As a result, the initiative is unlikely to directly influence the causal factors that contribute to the risk of explosions and remote violence, such as social unrest, extremist influence, or security measures. The updated probability remains unchanged at 0.46, as the new information does not introduce any substantial changes to the causal paths or nodes in the model. The campaign's potential economic benefits and support for local entrepreneurs may have indirect, positive effects on social cohesion and community engagement, but these effects are unlikely to significantly alter the overall risk assessment.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "d1a65b6f444f2ee04ec46b2a13c431728e27a6415b24f70e61923ade44bbe7c0",
+    "question_text": "Will there be more 'Explosions/Remote violence' in Malta for the 30 days before 2025-12-28 compared to the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Explosions/Remote violence'\n2023-11-11,1\n2023-10-10,2\nto calculate the 30-day average of 'Explosions/Remote violence' over the preceding 360 days, we\u2019d have: (1+2)/12=0.25.\n\nIn this example, for the question to resolve positively, 1 or more 'Explosions/Remote violence' would need to occur in the 30 days leading up to the resolution.",
+    "source": "acled",
+    "condition": "multi-turn",
+    "initial_probability": 0.23,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.05666666666666667,
+    "max_absolute_shift": 0.16999999999999998
+  }
+}

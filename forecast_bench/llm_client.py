@@ -205,6 +205,9 @@ def parse_json_response(text: str) -> dict | None:
     -------
     Parsed dict, or None if all strategies fail.
     """
+    if text is None:
+        return None
+
     # Strategy 1: direct parse
     try:
         return json.loads(text)

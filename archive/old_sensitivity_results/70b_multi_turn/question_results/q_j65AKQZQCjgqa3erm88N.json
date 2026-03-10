@@ -1,0 +1,999 @@
+{
+  "question_id": "j65AKQZQCjgqa3erm88N",
+  "question_text": "Will the 2026 FIFA World Cup champion be a first time winner?",
+  "source": "manifold",
+  "initial_probability": 0.32,
+  "nodes": [
+    {
+      "id": "team_investment",
+      "description": "The amount of money invested in a team",
+      "role": "factor"
+    },
+    {
+      "id": "player_talent",
+      "description": "The level of skill and ability of a team's players",
+      "role": "factor"
+    },
+    {
+      "id": "coaching_quality",
+      "description": "The experience and expertise of a team's coach",
+      "role": "factor"
+    },
+    {
+      "id": "tournament_experience",
+      "description": "A team's previous experience in major tournaments",
+      "role": "factor"
+    },
+    {
+      "id": "team_chemistry",
+      "description": "The level of cohesion and unity among a team's players",
+      "role": "factor"
+    },
+    {
+      "id": "competition_level",
+      "description": "The overall level of competition in the tournament",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "The 2026 FIFA World Cup champion being a first time winner",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "team_investment",
+      "to": "player_talent",
+      "mechanism": "Increased investment allows for the recruitment of more skilled players"
+    },
+    {
+      "from": "player_talent",
+      "to": "outcome",
+      "mechanism": "More skilled players increase a team's chances of winning"
+    },
+    {
+      "from": "coaching_quality",
+      "to": "team_chemistry",
+      "mechanism": "Experienced coaches can foster a more cohesive team environment"
+    },
+    {
+      "from": "team_chemistry",
+      "to": "outcome",
+      "mechanism": "A unified team is more likely to perform well under pressure"
+    },
+    {
+      "from": "tournament_experience",
+      "to": "coaching_quality",
+      "mechanism": "Coaches with tournament experience can better prepare their teams"
+    },
+    {
+      "from": "competition_level",
+      "to": "outcome",
+      "mechanism": "A higher level of competition makes it more difficult for new teams to win"
+    },
+    {
+      "from": "team_investment",
+      "to": "coaching_quality",
+      "mechanism": "Well-funded teams can attract more experienced coaches"
+    }
+  ],
+  "reasoning": "The probability of a first-time winner in the 2026 FIFA World Cup is influenced by a complex array of factors, including team investment, player talent, coaching quality, tournament experience, team chemistry, and the overall level of competition. While increased investment and skilled players can certainly contribute to a team's success, the experience and cohesion of the team, as well as the level of competition, also play significant roles. Given the historical dominance of established teams and the challenges faced by new teams in major tournaments, the probability of a first-time winner is relatively low, but not impossible.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "team_investment",
+        "description": "The amount of money invested in a team",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0658,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2132
+      },
+      {
+        "node_id": "player_talent",
+        "description": "The level of skill and ability of a team's players",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.0938,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.1788
+      },
+      {
+        "node_id": "coaching_quality",
+        "description": "The experience and expertise of a team's coach",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.3333,
+        "pagerank": 0.1498,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.21
+      },
+      {
+        "node_id": "tournament_experience",
+        "description": "A team's previous experience in major tournaments",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0658,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1132
+      },
+      {
+        "node_id": "team_chemistry",
+        "description": "The level of cohesion and unity among a team's players",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0667,
+        "closeness": 0.3,
+        "pagerank": 0.1932,
+        "path_relevance": 0.3333,
+        "composite_importance": 0.2586
+      },
+      {
+        "node_id": "competition_level",
+        "description": "The overall level of competition in the tournament",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0658,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1132
+      },
+      {
+        "node_id": "outcome",
+        "description": "The 2026 FIFA World Cup champion being a first time winner",
+        "role": "outcome",
+        "in_degree": 3,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.6,
+        "pagerank": 0.3657,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0731
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "team_investment",
+        "target": "player_talent",
+        "mechanism": "Increased investment allows for the recruitment of more skilled players",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "team_investment",
+        "target": "coaching_quality",
+        "mechanism": "Well-funded teams can attract more experienced coaches",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": false
+      },
+      {
+        "source": "player_talent",
+        "target": "outcome",
+        "mechanism": "More skilled players increase a team's chances of winning",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "coaching_quality",
+        "target": "team_chemistry",
+        "mechanism": "Experienced coaches can foster a more cohesive team environment",
+        "edge_betweenness": 0.119,
+        "on_critical_path": true
+      },
+      {
+        "source": "tournament_experience",
+        "target": "coaching_quality",
+        "mechanism": "Coaches with tournament experience can better prepare their teams",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "team_chemistry",
+        "target": "outcome",
+        "mechanism": "A unified team is more likely to perform well under pressure",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      },
+      {
+        "source": "competition_level",
+        "target": "outcome",
+        "mechanism": "A higher level of competition makes it more difficult for new teams to win",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "team_chemistry",
+        "description": "The level of cohesion and unity among a team's players",
+        "importance": 0.2586,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "team_investment",
+        "description": "The amount of money invested in a team",
+        "importance": 0.2132,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "player_talent",
+        "description": "The level of skill and ability of a team's players",
+        "importance": 0.1788,
+        "centrality_rank": 4,
+        "on_critical_path": true,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "competition_level",
+        "description": "The overall level of competition in the tournament",
+        "importance": 0.1132,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "team_chemistry",
+        "description": "The level of cohesion and unity among a team's players",
+        "importance": 0.2586,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "team_investment",
+        "description": "The amount of money invested in a team",
+        "importance": 0.2132,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "coaching_quality->team_chemistry",
+        "description": "Experienced coaches can foster a more cohesive team environment",
+        "importance": 0.119,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "tournament_experience->coaching_quality",
+        "description": "Coaches with tournament experience can better prepare their teams",
+        "importance": 0.0714,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "team_investment->coaching_quality",
+        "description": "Well-funded teams can attract more experienced coaches",
+        "importance": 0.0476,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "coaching_quality->team_chemistry",
+        "description": "Experienced coaches can foster a more cohesive team environment",
+        "importance": 0.119,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "team_chemistry->competition_level",
+        "description": "Potential link: The level of cohesion and unity among a team's players -> The overall level of competition in the tournament",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "team_chemistry->player_talent",
+        "description": "Potential link: The level of cohesion and unity among a team's players -> The level of skill and ability of a team's players",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "team_chemistry",
+      "description": "The level of cohesion and unity among a team's players",
+      "importance": 0.2586,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "team_investment",
+      "description": "The amount of money invested in a team",
+      "importance": 0.2132,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "player_talent",
+      "description": "The level of skill and ability of a team's players",
+      "importance": 0.1788,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "competition_level",
+      "description": "The overall level of competition in the tournament",
+      "importance": 0.1132,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "team_chemistry",
+      "description": "The level of cohesion and unity among a team's players",
+      "importance": 0.2586,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "team_investment",
+      "description": "The amount of money invested in a team",
+      "importance": 0.2132,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "coaching_quality->team_chemistry",
+      "description": "Experienced coaches can foster a more cohesive team environment",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "tournament_experience->coaching_quality",
+      "description": "Coaches with tournament experience can better prepare their teams",
+      "importance": 0.0714,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "team_investment->coaching_quality",
+      "description": "Well-funded teams can attract more experienced coaches",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "coaching_quality->team_chemistry",
+      "description": "Experienced coaches can foster a more cohesive team environment",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "team_chemistry->competition_level",
+      "description": "Potential link: The level of cohesion and unity among a team's players -> The overall level of competition in the tournament",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "team_chemistry->player_talent",
+      "description": "Potential link: The level of cohesion and unity among a team's players -> The level of skill and ability of a team's players",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "Recent studies have shown that team chemistry is not as crucial to success as previously thought, and that teams with diverse and even conflicting personalities can still achieve great results through sheer talent and strategic coaching. In fact, some of the most successful teams in history have had notoriously difficult personalities and yet still managed to win major tournaments. What if the emphasis on team chemistry is misguided, and it's actually the individual brilliance of players that drives success? This could mean that teams with less cohesive units could still outperform those with stronger chemistry.",
+      "probe_type": "node_negate_high",
+      "target_id": "team_chemistry",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2586,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "The level of cohesion and unity among a team's players"
+    },
+    {
+      "probe_text": "Recent studies have shown that excessive team investment can lead to inflated player salaries, creating unrealistic expectations and disrupting team dynamics. Furthermore, the influx of money can also lead to a sense of complacency, causing teams to rely less on strategic coaching and player development. What if the amount of money invested in a team actually hinders their chances of winning, rather than helping? This could be due to the potential for over-reliance on expensive players rather than fostering a strong team culture.",
+      "probe_type": "node_negate_high",
+      "target_id": "team_investment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2132,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "The amount of money invested in a team"
+    },
+    {
+      "probe_text": "Recent studies have shown that advanced data analytics and strategic team management can significantly outweigh the importance of individual player skill in determining a team's overall performance, suggesting that the impact of player_talent on the outcome may be overstated. In fact, several recent championships have been won by teams with less skilled players but exceptional tactical prowess. This raises questions about the relative importance of player_talent in the face of other factors. Could it be that the role of player_talent is less crucial than initially thought?",
+      "probe_type": "node_negate_medium",
+      "target_id": "player_talent",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1788,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "description": "The level of skill and ability of a team's players"
+    },
+    {
+      "probe_text": "Recent changes to the tournament format have introduced a new group stage round, allowing more matchups between top-ranked teams earlier in the competition, which could lead to the elimination of several favored teams, thereby reducing the overall competition level in the later stages. Additionally, the introduction of new technologies, such as advanced player tracking and analytics, has improved team strategy and preparation, potentially leveling the playing field. This might make it easier for new teams to compete against more established ones. As a result, the competition level might not be as significant a barrier to a first-time winner as initially thought.",
+      "probe_type": "node_negate_low",
+      "target_id": "competition_level",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1132,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "The overall level of competition in the tournament"
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Sports Science found a strong correlation between team cohesion and success in high-pressure tournaments, with teams exhibiting high levels of unity and cooperation showing a significant increase in winning percentages. This study analyzed data from the past five FIFA World Cups and included interviews with coaches and players from top-performing teams. The findings suggest that team chemistry plays a crucial role in a team's ability to perform under pressure and make strategic decisions during critical moments in the game. As a result, several top teams have begun to prioritize team-building exercises and cohesion-focused training programs in preparation for the 2026 FIFA World Cup.",
+      "probe_type": "node_strengthen",
+      "target_id": "team_chemistry",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2586,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "The level of cohesion and unity among a team's players"
+    },
+    {
+      "probe_text": "A recent study by the International Centre for Sports Studies found that teams who increased their investment in player development and recruitment over the past 5 years saw a significant improvement in their tournament performance, with 75% of these teams advancing to the quarterfinals or further in their respective continental championships. This correlation is further reinforced by the success of wealthy clubs in the UEFA Champions League, where increased investment has consistently yielded better results. Furthermore, several top-tier coaches have come out in support of this finding, citing the importance of adequate funding in attracting and retaining top talent. As a result, it is likely that the 2026 FIFA World Cup will see a similar trend, where well-funded teams have a significant advantage over their less-funded counterparts.",
+      "probe_type": "node_strengthen",
+      "target_id": "team_investment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2132,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "The amount of money invested in a team"
+    },
+    {
+      "probe_text": "Recent studies have shown that team chemistry is more strongly influenced by player personalities and team culture than by coaching quality. In fact, some highly experienced coaches have been known to have poor interpersonal skills, leading to conflicts with players and disrupting team cohesion. Furthermore, the increasing use of sports psychologists and team consultants suggests that coaching quality may not be the primary driver of team chemistry. This raises questions about the assumed causal link between coaching quality and team chemistry.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "coaching_quality->team_chemistry",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Experienced coaches can foster a more cohesive team environment"
+    },
+    {
+      "probe_text": "However, recent studies have shown that the relationship between tournament experience and coaching quality may be overstated, as many successful coaches have achieved victory without prior tournament experience. In fact, some coaches have even cited the lack of tournament experience as a blessing in disguise, allowing them to approach the game with a fresh perspective. Furthermore, the increasing availability of data analytics and sports science has leveled the playing field, enabling less experienced coaches to make informed decisions. Does this new information change your estimate of the probability of a first-time winner?",
+      "probe_type": "edge_negate_critical",
+      "target_id": "tournament_experience->coaching_quality",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Coaches with tournament experience can better prepare their teams"
+    },
+    {
+      "probe_text": "Recent trends suggest that top coaches are increasingly prioritizing projects with a strong footballing vision and youth development programs over lucrative offers from wealthy teams. Moreover, many experienced coaches have been known to turn down high-paying jobs in favor of working with teams that align with their personal values and coaching philosophies. This raises questions about whether a team's investment is the primary driver of its ability to attract top coaching talent. Could it be that other factors, such as a team's reputation, ownership, and playing style, play a more significant role in attracting experienced coaches?",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "team_investment->coaching_quality",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "Well-funded teams can attract more experienced coaches"
+    },
+    {
+      "probe_text": "Recent studies have shown that teams with high levels of cohesion and unity among players tend to attract and retain experienced coaches, as these coaches value the positive team environment and are more likely to achieve success with such a team. In fact, several top coaches have publicly stated that they prioritize team chemistry when deciding where to coach next. This suggests that the causal link between coaching quality and team chemistry may be reversed, with team chemistry actually influencing the quality of coach that a team can attract. Could it be that the relationship between coaching quality and team chemistry is more complex than initially thought?",
+      "probe_type": "edge_reverse",
+      "target_id": "coaching_quality->team_chemistry",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Experienced coaches can foster a more cohesive team environment"
+    },
+    {
+      "probe_text": "Recent studies have shown that teams with high levels of cohesion and unity tend to raise the overall competitive bar in tournaments, as their harmonious dynamics often lead to more effective teamwork, strategic plays, and better adaptation to pressure situations, which in turn forces other teams to elevate their performance to keep up. This suggests a potential link between team chemistry and the overall level of competition. For instance, the presence of a highly cohesive team like the 2014 German World Cup-winning squad can drive up the competition level, as other teams must respond with improved teamwork to remain competitive. Does this mean that a first-time winner with exceptional team chemistry could actually increase the competition level, making their own path to victory more challenging?",
+      "probe_type": "edge_fabricate",
+      "target_id": "team_chemistry->competition_level",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: The level of cohesion and unity among a team's players -> The overall level of competition in the tournament"
+    },
+    {
+      "probe_text": "Research has shown that when players feel a strong sense of camaraderie and trust among teammates, they are more likely to take risks, experiment with new skills, and learn from each other, ultimately leading to improved overall player talent. In fact, many successful teams attribute their success to the strong bonds formed among players during team-building activities and training sessions. If a team's chemistry is high, players are more likely to push each other to new heights, thereby increasing the team's overall skill level. Would you revisit your forecast given this new insight?",
+      "probe_type": "edge_fabricate",
+      "target_id": "team_chemistry->player_talent",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: The level of cohesion and unity among a team's players -> The level of skill and ability of a team's players"
+    },
+    {
+      "probe_text": "What if several top teams in the 2026 FIFA World Cup are affected by a significant injury crisis, leading to a loss of key players just before the tournament? This could potentially open up opportunities for less experienced teams to advance. How would this impact your assessment of a first-time winner? Consider the role of 'injury_and_player_availability' in your model.",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "Consider the impact of home advantage on the 2026 FIFA World Cup champion. The host country often experiences a significant boost in morale and support, which could influence the outcome. This factor could interact with team_chemistry and player_talent, as a team playing at home may perform better under pressure. How would you update your probability if you took into account the potential benefits of home advantage for the participating teams?",
+      "probe_type": "missing_node",
+      "target_id": "home_advantage",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "According to recent reports, the 2026 FIFA World Cup will feature a new, environmentally friendly stadium design, with all host stadiums incorporating advanced green technology and sustainable materials. This initiative aims to reduce the tournament's carbon footprint and promote eco-friendly practices in the sports industry. The new stadium design has been praised by fans and environmental organizations alike. However, some have raised concerns about the potential impact on ticket prices.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "The 2026 FIFA World Cup organizers have announced that all participating teams will be provided with a new, state-of-the-art athletic training app to help players track their physical condition and recovery. This app is designed to give teams valuable insights into player fitness and has been hailed as a major innovation in sports technology. However, the app will not be available for use during actual tournament matches, only for training and practice sessions. The app's developers claim it will become an essential tool for team preparation in the future.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that team chemistry is not as crucial to success as previously thought, and that teams with diverse and even conflicting personalities can still achieve great results through sheer talent and strategic coaching. In fact, some of the most successful teams in history have had notoriously difficult personalities and yet still managed to win major tournaments. What if the emphasis on team chemistry is misguided, and it's actually the individual brilliance of players that drives success? This could mean that teams with less cohesive units could still outperform those with stronger chemistry.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.41,
+      "absolute_shift": 0.08999999999999997,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the 'team_chemistry' factor reduces its importance in the causal network, weakening the edge from 'coaching_quality' to 'team_chemistry' and subsequently from 'team_chemistry' to 'outcome'. This reduction in the perceived impact of team chemistry increases the relative importance of other factors, such as 'player_talent' and 'team_investment', which can drive success regardless of team cohesion. As a result, the probability of a first-time winner, who may not have the traditional advantages of strong team chemistry, increases. The shift is moderate, reflecting the ongoing importance of coaching and investment, but also acknowledging the potential for individual brilliance to overcome chemistry issues.",
+      "raw_response": "{\"updated_probability\": 0.41, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the 'team_chemistry' factor reduces its importance in the causal network, weakening the edge from 'coaching_quality' to 'team_chemistry' and subsequently from 'team_chemistry' to 'outcome'. This reduction in the perceived impact of team chemistry increases the relative importance of other factors, such as 'player_talent' and 'team_investment', which can drive success regardless of team cohesion. As a result, the probability of a first-time winner, who may not have the traditional advantages of strong team chemistry, increases. The shift is moderate, reflecting the ongoing importance of coaching and investment, but also acknowledging the potential for individual brilliance to overcome chemistry issues.\"}",
+      "target_id": "team_chemistry",
+      "target_type": "node",
+      "target_importance": 0.2586,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that excessive team investment can lead to inflated player salaries, creating unrealistic expectations and disrupting team dynamics. Furthermore, the influx of money can also lead to a sense of complacency, causing teams to rely less on strategic coaching and player development. What if the amount of money invested in a team actually hinders their chances of winning, rather than helping? This could be due to the potential for over-reliance on expensive players rather than fostering a strong team culture.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'team_investment' factor suggests that excessive investment can have negative consequences, such as disrupting team dynamics and fostering complacency. This reverses the previously assumed positive relationship between 'team_investment' and 'player_talent', as well as between 'team_investment' and 'coaching_quality'. As a result, the edges from 'team_investment' to 'player_talent' and from 'team_investment' to 'coaching_quality' may actually be negative, indicating that over-investment can hinder a team's chances of winning. This update decreases the probability of a first-time winner, as teams with lower investment might be less likely to suffer from these negative effects and could potentially focus more on strategic coaching and player development, giving traditional powerhouses an advantage.",
+      "raw_response": "{\"updated_probability\": 0.35, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'team_investment' factor suggests that excessive investment can have negative consequences, such as disrupting team dynamics and fostering complacency. This reverses the previously assumed positive relationship between 'team_investment' and 'player_talent', as well as between 'team_investment' and 'coaching_quality'. As a result, the edges from 'team_investment' to 'player_talent' and from 'team_investment' to 'coaching_quality' may actually be negative, indicating that over-investment can hinder a team's chances of winning. This update decreases the probability of a first-time winner, as teams with lower investment might be less likely to suffer from these negative effects and could potentially focus more on strategic coaching and player development, giving traditional powerhouses an advantage.\"}",
+      "target_id": "team_investment",
+      "target_type": "node",
+      "target_importance": 0.2132,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that advanced data analytics and strategic team management can significantly outweigh the importance of individual player skill in determining a team's overall performance, suggesting that the impact of player_talent on the outcome may be overstated. In fact, several recent championships have been won by teams with less skilled players but exceptional tactical prowess. This raises questions about the relative importance of player_talent in the face of other factors. Could it be that the role of player_talent is less crucial than initially thought?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'player_talent' factor suggests that its impact on the outcome may be overstated, and that other factors such as strategic team management and data analytics can play a more significant role in determining a team's performance. This update reduces the importance of the edge from 'player_talent' to 'outcome', potentially making it a less dominant factor in the causal network. As a result, the probability of a first-time winner decreases, as the advantage of traditional powerhouses with highly skilled players may be less pronounced. The decrease in probability reflects the idea that teams with less skilled players can still achieve success through exceptional tactical prowess, but this also means that the gap between traditional powerhouses and first-time winners may not be as bridgable as initially thought, making a first-time winner less likely.",
+      "raw_response": "{\"updated_probability\": 0.29, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'player_talent' factor suggests that its impact on the outcome may be overstated, and that other factors such as strategic team management and data analytics can play a more significant role in determining a team's performance. This update reduces the importance of the edge from 'player_talent' to 'outcome', potentially making it a less dominant factor in the causal network. As a result, the probability of a first-time winner decreases, as the advantage of traditional powerhouses with highly skilled players may be less pronounced. The decrease in probability reflects the idea that teams with less skilled players can still achieve success through exceptional tactical prowess, but this also means that the gap between traditional powerhouses and first-time winners may not be as bridgable as initially thought, making a first-time winner less likely.\"}",
+      "target_id": "player_talent",
+      "target_type": "node",
+      "target_importance": 0.1788,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent changes to the tournament format have introduced a new group stage round, allowing more matchups between top-ranked teams earlier in the competition, which could lead to the elimination of several favored teams, thereby reducing the overall competition level in the later stages. Additionally, the introduction of new technologies, such as advanced player tracking and analytics, has improved team strategy and preparation, potentially leveling the playing field. This might make it easier for new teams to compete against more established ones. As a result, the competition level might not be as significant a barrier to a first-time winner as initially thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.09000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the 'competition_level' factor suggests that recent changes to the tournament format and the introduction of new technologies may reduce the overall competition level in the later stages, making it easier for new teams to compete against more established ones. This update weakens the edge from 'competition_level' to 'outcome', as the barrier to entry for first-time winners may be lower than initially thought. As a result, the probability of a first-time winner increases, reflecting the potential for new teams to capitalize on the changes and compete more effectively against traditional powerhouses. The increase in probability is moderate, acknowledging that while the competition level may be reduced, other factors such as coaching quality, player talent, and team investment still play important roles in determining the outcome.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the 'competition_level' factor suggests that recent changes to the tournament format and the introduction of new technologies may reduce the overall competition level in the later stages, making it easier for new teams to compete against more established ones. This update weakens the edge from 'competition_level' to 'outcome', as the barrier to entry for first-time winners may be lower than initially thought. As a result, the probability of a first-time winner increases, reflecting the potential for new teams to capitalize on the changes and compete more effectively against traditional powerhouses. The increase in probability is moderate, acknowledging that while the competition level may be reduced, other factors such as coaching quality, player talent, and team investment still play important roles in determining the outcome.\"}",
+      "target_id": "competition_level",
+      "target_type": "node",
+      "target_importance": 0.1132,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent study published in the Journal of Sports Science found a strong correlation between team cohesion and success in high-pressure tournaments, with teams exhibiting high levels of unity and cooperation showing a significant increase in winning percentages. This study analyzed data from the past five FIFA World Cups and included interviews with coaches and players from top-performing teams. The findings suggest that team chemistry plays a crucial role in a team's ability to perform under pressure and make strategic decisions during critical moments in the game. As a result, several top teams have begun to prioritize team-building exercises and cohesion-focused training programs in preparation for the 2026 FIFA World Cup.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.28,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information strengthens the causal factor 'team_chemistry', suggesting that it plays a crucial role in a team's success, particularly in high-pressure tournaments. This update reinforces the edge from 'coaching_quality' to 'team_chemistry' and from 'team_chemistry' to 'outcome', indicating that teams with strong cohesion and unity are more likely to perform well. As a result, the probability of a first-time winner decreases, as established teams with a history of strong team chemistry may have an advantage in preparing for the 2026 FIFA World Cup. The decrease in probability reflects the idea that team chemistry is a key factor in success, and that first-time winners may struggle to replicate the level of cohesion and unity that more experienced teams have developed over time. The fact that top teams are prioritizing team-building exercises and cohesion-focused training programs further solidifies the importance of team chemistry, making it more challenging for new teams to compete.",
+      "raw_response": "{\"updated_probability\": 0.28, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information strengthens the causal factor 'team_chemistry', suggesting that it plays a crucial role in a team's success, particularly in high-pressure tournaments. This update reinforces the edge from 'coaching_quality' to 'team_chemistry' and from 'team_chemistry' to 'outcome', indicating that teams with strong cohesion and unity are more likely to perform well. As a result, the probability of a first-time winner decreases, as established teams with a history of strong team chemistry may have an advantage in preparing for the 2026 FIFA World Cup. The decrease in probability reflects the idea that team chemistry is a key factor in success, and that first-time winners may struggle to replicate the level of cohesion and unity that more experienced teams have developed over time. The fact that top teams are prioritizing team-building exercises and cohesion-focused training programs further solidifies the importance of team chemistry, making it more challenging for new teams to compete.\"}",
+      "target_id": "team_chemistry",
+      "target_type": "node",
+      "target_importance": 0.2586,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent study by the International Centre for Sports Studies found that teams who increased their investment in player development and recruitment over the past 5 years saw a significant improvement in their tournament performance, with 75% of these teams advancing to the quarterfinals or further in their respective continental championships. This correlation is further reinforced by the success of wealthy clubs in the UEFA Champions League, where increased investment has consistently yielded better results. Furthermore, several top-tier coaches have come out in support of this finding, citing the importance of adequate funding in attracting and retaining top talent. As a result, it is likely that the 2026 FIFA World Cup will see a similar trend, where well-funded teams have a significant advantage over their less-funded counterparts.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.2,
+      "absolute_shift": 0.08000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information strengthens the causal factor 'team_investment', suggesting that increased investment in player development and recruitment leads to significant improvements in tournament performance. This update reinforces the edges from 'team_investment' to 'player_talent' and from 'team_investment' to 'coaching_quality', indicating that well-funded teams have a substantial advantage in attracting and retaining top talent and hiring experienced coaches. As a result, the probability of a first-time winner decreases, as the financial disparity between established, wealthy teams and less-funded newcomers may be too great to overcome. The decrease in probability reflects the idea that the correlation between investment and success is strong, and that first-time winners may struggle to compete with the resources and talent available to more established teams. The endorsement of top-tier coaches and the historical success of wealthy clubs in the UEFA Champions League further solidify the importance of team investment, making it increasingly unlikely for a first-time winner to emerge in the 2026 FIFA World Cup.",
+      "raw_response": "{\"updated_probability\": 0.20, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information strengthens the causal factor 'team_investment', suggesting that increased investment in player development and recruitment leads to significant improvements in tournament performance. This update reinforces the edges from 'team_investment' to 'player_talent' and from 'team_investment' to 'coaching_quality', indicating that well-funded teams have a substantial advantage in attracting and retaining top talent and hiring experienced coaches. As a result, the probability of a first-time winner decreases, as the financial disparity between established, wealthy teams and less-funded newcomers may be too great to overcome. The decrease in probability reflects the idea that the correlation between investment and success is strong, and that first-time winners may struggle to compete with the resources and talent available to more established teams. The endorsement of top-tier coaches and the historical success of wealthy clubs in the UEFA Champions League further solidify the importance of team investment, making it increasingly unlikely for a first-time winner to emerge in the 2026 FIFA World Cup.\"}",
+      "target_id": "team_investment",
+      "target_type": "node",
+      "target_importance": 0.2132,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that team chemistry is more strongly influenced by player personalities and team culture than by coaching quality. In fact, some highly experienced coaches have been known to have poor interpersonal skills, leading to conflicts with players and disrupting team cohesion. Furthermore, the increasing use of sports psychologists and team consultants suggests that coaching quality may not be the primary driver of team chemistry. This raises questions about the assumed causal link between coaching quality and team chemistry.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.22,
+      "absolute_shift": 0.01999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'coaching_quality->team_chemistry' suggests that coaching quality may not be as crucial in determining team chemistry as previously thought. This update weakens the edge from 'coaching_quality' to 'team_chemistry', indicating that other factors such as player personalities and team culture may play a more significant role in shaping team cohesion. As a result, the probability of a first-time winner increases slightly, as the advantage of established teams with experienced coaches may be reduced. The increase in probability is small, reflecting the idea that while coaching quality is still an important factor, its impact on team chemistry may be overstated. The introduction of sports psychologists and team consultants as mitigating factors also suggests that teams can address chemistry issues through other means, potentially leveling the playing field for first-time winners.",
+      "raw_response": "{\"updated_probability\": 0.22, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'coaching_quality->team_chemistry' suggests that coaching quality may not be as crucial in determining team chemistry as previously thought. This update weakens the edge from 'coaching_quality' to 'team_chemistry', indicating that other factors such as player personalities and team culture may play a more significant role in shaping team cohesion. As a result, the probability of a first-time winner increases slightly, as the advantage of established teams with experienced coaches may be reduced. The increase in probability is small, reflecting the idea that while coaching quality is still an important factor, its impact on team chemistry may be overstated. The introduction of sports psychologists and team consultants as mitigating factors also suggests that teams can address chemistry issues through other means, potentially leveling the playing field for first-time winners.\"}",
+      "target_id": "coaching_quality->team_chemistry",
+      "target_type": "edge",
+      "target_importance": 0.119,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, recent studies have shown that the relationship between tournament experience and coaching quality may be overstated, as many successful coaches have achieved victory without prior tournament experience. In fact, some coaches have even cited the lack of tournament experience as a blessing in disguise, allowing them to approach the game with a fresh perspective. Furthermore, the increasing availability of data analytics and sports science has leveled the playing field, enabling less experienced coaches to make informed decisions. Does this new information change your estimate of the probability of a first-time winner?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.03,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'tournament_experience->coaching_quality' suggests that prior tournament experience may not be as essential for coaching success as previously thought. This update weakens the edge from 'tournament_experience' to 'coaching_quality', indicating that other factors such as data analytics, sports science, and innovative thinking can compensate for a lack of experience. As a result, the probability of a first-time winner increases, as less experienced coaches may be more able to compete with their more seasoned counterparts. The increase in probability reflects the idea that the playing field has been leveled, allowing new teams with fresh perspectives and access to advanced analytics to potentially outperform more established teams. This update suggests that the advantage of traditional powerhouses may be reduced, making it more plausible for a first-time winner to emerge in the 2026 FIFA World Cup.",
+      "raw_response": "{\"updated_probability\": 0.25, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'tournament_experience->coaching_quality' suggests that prior tournament experience may not be as essential for coaching success as previously thought. This update weakens the edge from 'tournament_experience' to 'coaching_quality', indicating that other factors such as data analytics, sports science, and innovative thinking can compensate for a lack of experience. As a result, the probability of a first-time winner increases, as less experienced coaches may be more able to compete with their more seasoned counterparts. The increase in probability reflects the idea that the playing field has been leveled, allowing new teams with fresh perspectives and access to advanced analytics to potentially outperform more established teams. This update suggests that the advantage of traditional powerhouses may be reduced, making it more plausible for a first-time winner to emerge in the 2026 FIFA World Cup.\"}",
+      "target_id": "tournament_experience->coaching_quality",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent trends suggest that top coaches are increasingly prioritizing projects with a strong footballing vision and youth development programs over lucrative offers from wealthy teams. Moreover, many experienced coaches have been known to turn down high-paying jobs in favor of working with teams that align with their personal values and coaching philosophies. This raises questions about whether a team's investment is the primary driver of its ability to attract top coaching talent. Could it be that other factors, such as a team's reputation, ownership, and playing style, play a more significant role in attracting experienced coaches?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.3,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'team_investment->coaching_quality' suggests that a team's investment may not be the primary factor in attracting top coaching talent. This update weakens the edge from 'team_investment' to 'coaching_quality', indicating that other factors such as a team's reputation, ownership, and playing style may play a more significant role in attracting experienced coaches. As a result, the probability of a first-time winner increases, as teams with less financial resources may still be able to attract top coaches who prioritize other factors. The increase in probability reflects the idea that the advantage of wealthy teams in attracting coaching talent may be reduced, allowing other teams to compete more effectively for top coaching talent. This update also suggests that the traditional powerhouses may not have as strong of a grip on top coaching talent, potentially creating more opportunities for first-time winners to emerge in the 2026 FIFA World Cup.",
+      "raw_response": "{\"updated_probability\": 0.30, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'team_investment->coaching_quality' suggests that a team's investment may not be the primary factor in attracting top coaching talent. This update weakens the edge from 'team_investment' to 'coaching_quality', indicating that other factors such as a team's reputation, ownership, and playing style may play a more significant role in attracting experienced coaches. As a result, the probability of a first-time winner increases, as teams with less financial resources may still be able to attract top coaches who prioritize other factors. The increase in probability reflects the idea that the advantage of wealthy teams in attracting coaching talent may be reduced, allowing other teams to compete more effectively for top coaching talent. This update also suggests that the traditional powerhouses may not have as strong of a grip on top coaching talent, potentially creating more opportunities for first-time winners to emerge in the 2026 FIFA World Cup.\"}",
+      "target_id": "team_investment->coaching_quality",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that teams with high levels of cohesion and unity among players tend to attract and retain experienced coaches, as these coaches value the positive team environment and are more likely to achieve success with such a team. In fact, several top coaches have publicly stated that they prioritize team chemistry when deciding where to coach next. This suggests that the causal link between coaching quality and team chemistry may be reversed, with team chemistry actually influencing the quality of coach that a team can attract. Could it be that the relationship between coaching quality and team chemistry is more complex than initially thought?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'coaching_quality->team_chemistry' suggests that the relationship between coaching quality and team chemistry may be reversed, with team chemistry influencing the quality of coach that a team can attract. This update introduces a new edge from 'team_chemistry' to 'coaching_quality', indicating that teams with strong cohesion and unity among players may be more attractive to experienced coaches. As a result, the probability of a first-time winner increases, as teams that can foster a positive team environment may be able to attract top coaching talent, regardless of their financial resources or prior success. The increase in probability reflects the idea that the advantage of traditional powerhouses in attracting coaching talent may be reduced, and that teams with strong team chemistry may be able to compete more effectively for top coaches. This update also suggests that the traditional powerhouses may not have a monopoly on top coaching talent, potentially creating more opportunities for first-time winners to emerge in the 2026 FIFA World Cup.",
+      "raw_response": "{\"updated_probability\": 0.35, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'coaching_quality->team_chemistry' suggests that the relationship between coaching quality and team chemistry may be reversed, with team chemistry influencing the quality of coach that a team can attract. This update introduces a new edge from 'team_chemistry' to 'coaching_quality', indicating that teams with strong cohesion and unity among players may be more attractive to experienced coaches. As a result, the probability of a first-time winner increases, as teams that can foster a positive team environment may be able to attract top coaching talent, regardless of their financial resources or prior success. The increase in probability reflects the idea that the advantage of traditional powerhouses in attracting coaching talent may be reduced, and that teams with strong team chemistry may be able to compete more effectively for top coaches. This update also suggests that the traditional powerhouses may not have a monopoly on top coaching talent, potentially creating more opportunities for first-time winners to emerge in the 2026 FIFA World Cup.\"}",
+      "target_id": "coaching_quality->team_chemistry",
+      "target_type": "edge",
+      "target_importance": 0.119,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that teams with high levels of cohesion and unity tend to raise the overall competitive bar in tournaments, as their harmonious dynamics often lead to more effective teamwork, strategic plays, and better adaptation to pressure situations, which in turn forces other teams to elevate their performance to keep up. This suggests a potential link between team chemistry and the overall level of competition. For instance, the presence of a highly cohesive team like the 2014 German World Cup-winning squad can drive up the competition level, as other teams must respond with improved teamwork to remain competitive. Does this mean that a first-time winner with exceptional team chemistry could actually increase the competition level, making their own path to victory more challenging?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.32,
+      "absolute_shift": 0.02999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'team_chemistry->competition_level' introduces a new edge from 'team_chemistry' to 'competition_level', suggesting that teams with high levels of cohesion and unity can raise the overall competitive bar in tournaments. This update indicates that a first-time winner with exceptional team chemistry may actually increase the competition level, making their own path to victory more challenging. As a result, the probability of a first-time winner decreases, as the potential benefits of strong team chemistry are offset by the increased competition level it may bring. The decrease in probability reflects the idea that a first-time winner with exceptional team chemistry may face a more difficult road to victory, as their success could drive up the competition level and force other teams to improve their performance. This update adds a layer of complexity to the relationship between team chemistry and competition level, highlighting the potential for strong team chemistry to be a double-edged sword for first-time winners.",
+      "raw_response": "{\"updated_probability\": 0.32, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'team_chemistry->competition_level' introduces a new edge from 'team_chemistry' to 'competition_level', suggesting that teams with high levels of cohesion and unity can raise the overall competitive bar in tournaments. This update indicates that a first-time winner with exceptional team chemistry may actually increase the competition level, making their own path to victory more challenging. As a result, the probability of a first-time winner decreases, as the potential benefits of strong team chemistry are offset by the increased competition level it may bring. The decrease in probability reflects the idea that a first-time winner with exceptional team chemistry may face a more difficult road to victory, as their success could drive up the competition level and force other teams to improve their performance. This update adds a layer of complexity to the relationship between team chemistry and competition level, highlighting the potential for strong team chemistry to be a double-edged sword for first-time winners.\"}",
+      "target_id": "team_chemistry->competition_level",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Research has shown that when players feel a strong sense of camaraderie and trust among teammates, they are more likely to take risks, experiment with new skills, and learn from each other, ultimately leading to improved overall player talent. In fact, many successful teams attribute their success to the strong bonds formed among players during team-building activities and training sessions. If a team's chemistry is high, players are more likely to push each other to new heights, thereby increasing the team's overall skill level. Would you revisit your forecast given this new insight?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.4,
+      "absolute_shift": 0.08000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'team_chemistry->player_talent' introduces a new edge from 'team_chemistry' to 'player_talent', suggesting that strong team chemistry can lead to improved overall player talent. This update indicates that a team's chemistry can have a positive impact on its players' skills and abilities, making them more effective and cohesive on the field. As a result, the probability of a first-time winner increases, as teams with strong chemistry may be able to develop and improve their players' talents more effectively, potentially bridging the gap with more established teams. The increase in probability reflects the idea that strong team chemistry can be a key driver of success, enabling teams to develop their players and compete more effectively against traditional powerhouses. This update suggests that a first-time winner with strong team chemistry may have a better chance of winning, as their players may be more motivated, supportive, and skilled, ultimately leading to a more competitive team.",
+      "raw_response": "{\"updated_probability\": 0.40, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'team_chemistry->player_talent' introduces a new edge from 'team_chemistry' to 'player_talent', suggesting that strong team chemistry can lead to improved overall player talent. This update indicates that a team's chemistry can have a positive impact on its players' skills and abilities, making them more effective and cohesive on the field. As a result, the probability of a first-time winner increases, as teams with strong chemistry may be able to develop and improve their players' talents more effectively, potentially bridging the gap with more established teams. The increase in probability reflects the idea that strong team chemistry can be a key driver of success, enabling teams to develop their players and compete more effectively against traditional powerhouses. This update suggests that a first-time winner with strong team chemistry may have a better chance of winning, as their players may be more motivated, supportive, and skilled, ultimately leading to a more competitive team.\"}",
+      "target_id": "team_chemistry->player_talent",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if several top teams in the 2026 FIFA World Cup are affected by a significant injury crisis, leading to a loss of key players just before the tournament? This could potentially open up opportunities for less experienced teams to advance. How would this impact your assessment of a first-time winner? Consider the role of 'injury_and_player_availability' in your model.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The introduction of 'injury_and_player_availability' as a structural challenge to the model significantly impacts the assessment of a first-time winner. The loss of key players due to injury would weaken the traditional powerhouses, creating an opportunity for less experienced teams to advance. This new factor would introduce a new node in the model, 'injury_and_player_availability', with edges to 'player_talent' and 'team_chemistry', as injuries could affect both the quality of players available and the team's overall cohesion. The updated model would reflect the increased uncertainty and potential for upsets, leading to a higher probability of a first-time winner. The significant increase in probability reflects the idea that the injury crisis would be a major disruptor, potentially leveling the playing field and allowing less experienced teams to capitalize on the misfortune of traditional powerhouses. This update highlights the importance of considering external factors, such as injuries, in assessing the likelihood of a first-time winner.",
+      "raw_response": "{\"updated_probability\": 0.55, \"shift_direction\": \"increased\", \"reasoning\": \"The introduction of 'injury_and_player_availability' as a structural challenge to the model significantly impacts the assessment of a first-time winner. The loss of key players due to injury would weaken the traditional powerhouses, creating an opportunity for less experienced teams to advance. This new factor would introduce a new node in the model, 'injury_and_player_availability', with edges to 'player_talent' and 'team_chemistry', as injuries could affect both the quality of players available and the team's overall cohesion. The updated model would reflect the increased uncertainty and potential for upsets, leading to a higher probability of a first-time winner. The significant increase in probability reflects the idea that the injury crisis would be a major disruptor, potentially leveling the playing field and allowing less experienced teams to capitalize on the misfortune of traditional powerhouses. This update highlights the importance of considering external factors, such as injuries, in assessing the likelihood of a first-time winner.\"}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the impact of home advantage on the 2026 FIFA World Cup champion. The host country often experiences a significant boost in morale and support, which could influence the outcome. This factor could interact with team_chemistry and player_talent, as a team playing at home may perform better under pressure. How would you update your probability if you took into account the potential benefits of home advantage for the participating teams?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.48,
+      "absolute_shift": 0.07000000000000006,
+      "shift_direction": "decreased",
+      "reasoning": "The introduction of 'home_advantage' as a structural challenge to the model adds a new layer of complexity to the assessment of a first-time winner. While home advantage can provide a significant boost to the host country's team, it also benefits other teams that have a strong following and support in the host country. However, since the host country is not necessarily a first-time winner, the overall effect of home advantage on the probability of a first-time winner is likely to be negative. The updated model would reflect the potential benefits of home advantage for traditional powerhouses, making it more challenging for a first-time winner to emerge. The decrease in probability reflects the idea that home advantage would give an edge to more established teams, potentially reducing the chances of a first-time winner. This update highlights the importance of considering the specific context of the tournament, including the host country and the teams participating, in assessing the likelihood of a first-time winner.",
+      "raw_response": "{\"updated_probability\": 0.48, \"shift_direction\": \"decreased\", \"reasoning\": \"The introduction of 'home_advantage' as a structural challenge to the model adds a new layer of complexity to the assessment of a first-time winner. While home advantage can provide a significant boost to the host country's team, it also benefits other teams that have a strong following and support in the host country. However, since the host country is not necessarily a first-time winner, the overall effect of home advantage on the probability of a first-time winner is likely to be negative. The updated model would reflect the potential benefits of home advantage for traditional powerhouses, making it more challenging for a first-time winner to emerge. The decrease in probability reflects the idea that home advantage would give an edge to more established teams, potentially reducing the chances of a first-time winner. This update highlights the importance of considering the specific context of the tournament, including the host country and the teams participating, in assessing the likelihood of a first-time winner.\"}",
+      "target_id": "home_advantage",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "According to recent reports, the 2026 FIFA World Cup will feature a new, environmentally friendly stadium design, with all host stadiums incorporating advanced green technology and sustainable materials. This initiative aims to reduce the tournament's carbon footprint and promote eco-friendly practices in the sports industry. The new stadium design has been praised by fans and environmental organizations alike. However, some have raised concerns about the potential impact on ticket prices.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.48,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The introduction of the new, environmentally friendly stadium design does not have a direct impact on the causal paths in the model. The factors that influence the outcome of the tournament, such as team chemistry, player talent, coaching quality, and home advantage, are not directly affected by the stadium design. While the new design may have an impact on ticket prices or fan experience, it does not change the underlying dynamics of the teams or the tournament. As a result, the probability of a first-time winner remains unchanged, as the new stadium design is not a significant factor in determining the outcome of the tournament. This update highlights the importance of distinguishing between relevant and irrelevant information when assessing the likelihood of a first-time winner.",
+      "raw_response": "{\"updated_probability\": 0.48, \"shift_direction\": \"unchanged\", \"reasoning\": \"The introduction of the new, environmentally friendly stadium design does not have a direct impact on the causal paths in the model. The factors that influence the outcome of the tournament, such as team chemistry, player talent, coaching quality, and home advantage, are not directly affected by the stadium design. While the new design may have an impact on ticket prices or fan experience, it does not change the underlying dynamics of the teams or the tournament. As a result, the probability of a first-time winner remains unchanged, as the new stadium design is not a significant factor in determining the outcome of the tournament. This update highlights the importance of distinguishing between relevant and irrelevant information when assessing the likelihood of a first-time winner.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The 2026 FIFA World Cup organizers have announced that all participating teams will be provided with a new, state-of-the-art athletic training app to help players track their physical condition and recovery. This app is designed to give teams valuable insights into player fitness and has been hailed as a major innovation in sports technology. However, the app will not be available for use during actual tournament matches, only for training and practice sessions. The app's developers claim it will become an essential tool for team preparation in the future.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.5,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "increased",
+      "reasoning": "The introduction of the new athletic training app provides all participating teams with a valuable tool to track player fitness and recovery, potentially leveling the playing field in terms of team preparation. While the app will not be used during actual tournament matches, it can still have a significant impact on team performance by allowing coaches to make more informed decisions about player selection, training, and strategy. This update introduces a new factor that can affect 'player_talent' and 'team_chemistry', as teams that effectively utilize the app may be able to optimize their player development and team cohesion. The increase in probability reflects the idea that the app can help reduce the gap between more established teams and first-time winners, making it more plausible for a new team to emerge as the champion. The app's availability to all teams reduces the advantage of traditional powerhouses, creating a more competitive environment that favors first-time winners.",
+      "raw_response": "{\"updated_probability\": 0.50, \"shift_direction\": \"increased\", \"reasoning\": \"The introduction of the new athletic training app provides all participating teams with a valuable tool to track player fitness and recovery, potentially leveling the playing field in terms of team preparation. While the app will not be used during actual tournament matches, it can still have a significant impact on team performance by allowing coaches to make more informed decisions about player selection, training, and strategy. This update introduces a new factor that can affect 'player_talent' and 'team_chemistry', as teams that effectively utilize the app may be able to optimize their player development and team cohesion. The increase in probability reflects the idea that the app can help reduce the gap between more established teams and first-time winners, making it more plausible for a new team to emerge as the champion. The app's availability to all teams reduces the advantage of traditional powerhouses, creating a more competitive environment that favors first-time winners.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "j65AKQZQCjgqa3erm88N",
+    "question_text": "Will the 2026 FIFA World Cup champion be a first time winner?",
+    "source": "manifold",
+    "condition": "multi-turn",
+    "initial_probability": 0.32,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.06125,
+    "max_absolute_shift": 0.15000000000000002
+  }
+}

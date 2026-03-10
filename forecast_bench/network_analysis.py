@@ -33,8 +33,6 @@ class NodeMetrics:
     closeness: float = 0.0
     pagerank: float = 0.0
     path_relevance: float = 0.0  # fraction of shortest paths to outcome that pass through this node
-    composite_importance: float = 0.0
-
     def to_dict(self) -> dict:
         return {
             "node_id": self.node_id,
@@ -46,7 +44,6 @@ class NodeMetrics:
             "closeness": round(self.closeness, 4),
             "pagerank": round(self.pagerank, 4),
             "path_relevance": round(self.path_relevance, 4),
-            "composite_importance": round(self.composite_importance, 4),
         }
 
 
@@ -75,7 +72,7 @@ class ProbeTarget:
     target_type: str      # "node" or "edge" or "missing_edge"
     target_id: str        # node_id, or "source->target"
     description: str      # human-readable description
-    importance: float     # composite importance (node) or edge betweenness (edge)
+    importance: float     # betweenness centrality (node or edge)
     centrality_rank: int  # rank among same-type targets (1=highest)
     on_critical_path: bool
     probe_type: str       # the specific probe to generate
@@ -213,30 +210,6 @@ def _compute_node_metrics(G: nx.DiGraph, outcome_node: str) -> list[NodeMetrics]
     return metrics
 
 
-def _compute_composite_importance(metrics: list[NodeMetrics]) -> list[NodeMetrics]:
-    """Compute composite importance score for each node.
-
-    Score = 0.3 * betweenness + 0.2 * pagerank + 0.2 * out_degree_norm + 0.3 * path_relevance
-
-    Modifies metrics in place and returns them.
-    """
-    # Normalize out_degree to [0, 1]
-    max_out = max((m.out_degree for m in metrics), default=1)
-    if max_out == 0:
-        max_out = 1
-
-    for m in metrics:
-        out_norm = m.out_degree / max_out
-        m.composite_importance = (
-            0.3 * m.betweenness
-            + 0.2 * m.pagerank
-            + 0.2 * out_norm
-            + 0.3 * m.path_relevance
-        )
-
-    return metrics
-
-
 # =============================================================================
 # EDGE METRICS
 # =============================================================================
@@ -313,10 +286,10 @@ def _select_probe_targets(
     """
     targets = []
 
-    # Sort factor nodes by composite importance (descending)
+    # Sort factor nodes by betweenness centrality (descending)
     factor_metrics = sorted(
         [m for m in node_metrics if m.role != "outcome"],
-        key=lambda m: m.composite_importance,
+        key=lambda m: m.betweenness,
         reverse=True,
     )
 
@@ -334,7 +307,7 @@ def _select_probe_targets(
             target_type="node",
             target_id=m.node_id,
             description=m.description,
-            importance=m.composite_importance,
+            importance=m.betweenness,
             centrality_rank=m._rank,
             on_critical_path=m.path_relevance > 0,
             probe_type="node_negate_high",
@@ -348,7 +321,7 @@ def _select_probe_targets(
             target_type="node",
             target_id=m.node_id,
             description=m.description,
-            importance=m.composite_importance,
+            importance=m.betweenness,
             centrality_rank=m._rank,
             on_critical_path=m.path_relevance > 0,
             probe_type="node_negate_medium",
@@ -361,7 +334,7 @@ def _select_probe_targets(
             target_type="node",
             target_id=m.node_id,
             description=m.description,
-            importance=m.composite_importance,
+            importance=m.betweenness,
             centrality_rank=m._rank,
             on_critical_path=m.path_relevance > 0,
             probe_type="node_negate_low",
@@ -373,7 +346,7 @@ def _select_probe_targets(
             target_type="node",
             target_id=m.node_id,
             description=m.description,
-            importance=m.composite_importance,
+            importance=m.betweenness,
             centrality_rank=m._rank,
             on_critical_path=m.path_relevance > 0,
             probe_type="node_strengthen",
@@ -572,7 +545,7 @@ def plot_causal_network(
     # Build importance lookup from analysis
     importance_map = {}
     for nm in analysis.node_metrics:
-        importance_map[nm.node_id] = nm.composite_importance
+        importance_map[nm.node_id] = nm.betweenness
 
     # Build critical-path edge set
     critical_edges = set()
@@ -758,7 +731,6 @@ def analyze_network(
 
     # Per-node metrics
     node_metrics = _compute_node_metrics(G, outcome_node)
-    node_metrics = _compute_composite_importance(node_metrics)
     analysis.node_metrics = node_metrics
 
     # Per-edge metrics

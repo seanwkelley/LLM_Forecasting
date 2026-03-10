@@ -1,0 +1,310 @@
+{
+  "question_id": "meteofrance_TEMPERATURE_celsius.07481.D",
+  "question_text": "What is the probability that the daily average temperature at the French weather station at Lyon\u2013Saint Exup\u00e9ry Airport will be higher on 2025-12-28 than on 2025-12-21?",
+  "source": "dbnomics",
+  "initial_probability": 0.65,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "Lyon is located in the Rhone-Alpes region, which experiences a Mediterranean climate with warm and sunny winters. Thus, it is likely to be warmer in late December than in early December.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The average high temperature in Lyon in late December is around 9\u00b0C (48\u00b0F), while in early December it is around 7\u00b0C (45\u00b0F). This suggests a 1-2\u00b0C (2-4\u00b0F) increase in temperature over the 7-day period.",
+      "importance": "high"
+    },
+    {
+      "id": 3,
+      "text": "The 2025-12-21 date falls within the typical cold spell that occurs in mid-to-late December in the region, while 2025-12-28 is on the tail end of this cold spell. As a result, the temperature difference between the two dates may be smaller than usual.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Given the Mediterranean climate of the Rhone-Alpes region and the typical temperature patterns in late December, it is more likely than not that the daily average temperature at Lyon\u2013Saint Exup\u00e9ry Airport will be higher on 2025-12-28 than on 2025-12-21. However, the proximity of 2025-12-21 to the typical cold spell in the region may reduce the temperature difference between the two dates.",
+  "probes": [
+    {
+      "probe_text": "What if the unusually cold and snowy winter of 2024-2025, which is expected to be one of the coldest on record in the region, continues into late December 2025, resulting in significantly lower temperatures at Lyon\u2013Saint Exup\u00e9ry Airport compared to early December?",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Climate Science by Dr. Sophie Dupont, a renowned climate expert, suggests that the Rhone-Alpes region is experiencing a previously unknown phenomenon known as 'winter temperature inversion due to increased snow cover.' This phenomenon occurs when heavy snowfall in the surrounding mountains traps cold air near the surface, causing a significant drop in temperatures at lower elevations, including Lyon.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A severe and prolonged cold spell is forecasted to affect Western Europe in the second half of December 2025, with temperatures dropping significantly below average.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent study published in the Journal of Applied Meteorology and Climatology, the winter of 2024-2025 in the Rhone-Alpes region was characterized by a strong negative phase of the North Atlantic Oscillation (NAO), leading to above-average temperatures in December. This is consistent with historical trends, where a negative NAO phase is associated with warmer winters in the region. Furthermore, a local expert in climatology at the University of Lyon has confirmed that this pattern is expected to continue in the 2025 winter season, citing the region's overall warming trend.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "The city of Lyon has recently invested in a new public transportation system, including a tramway and a bike-sharing program, aimed at reducing traffic congestion and promoting sustainable mobility. The new infrastructure is expected to be fully operational by 2025. The Lyon-Saint Exup\u00e9ry Airport is planning to increase its passenger capacity in the coming years to accommodate the growing demand for air travel.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the average low temperature in Lyon in late December is significantly lower than the average high temperature, potentially dropping as low as 3\u00b0C (37\u00b0F) for short periods, leading to a net decrease in temperature over the 7-day period due to increased radiative cooling at night.",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The French Ministry of Ecology and Sustainable Development announced a new climate regulation requiring all heating systems in buildings to be shut down for at least 5 hours a day from December 20th to January 5th to reduce energy consumption. This measure is expected to lower indoor temperatures by an average of 2\u00b0C (3.6\u00b0F) throughout the region, including Lyon, during this period.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "However, it's worth noting that the upcoming winter storm warning for the region, issued by the Met Office, indicates a high likelihood of sustained winds of 60-80 km/h (37-50 mph) and heavy precipitation on 2025-12-26, which could lead to a prolonged cold spell.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study by the French National Centre for Meteorological Research (CNRM) found that the average temperature trend in Lyon during the last 20 years shows a consistent 1.2\u00b0C (2.2\u00b0F) increase in temperature from early to late December. This supports our assumption of a 1-2\u00b0C (2-4\u00b0F) temperature increase over the 7-day period, and suggests that this trend is likely to continue into the future.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "Lyon\u2013Saint Exup\u00e9ry Airport is planning to expand its terminal facilities to accommodate increased passenger traffic, with construction expected to begin in 2026. The expansion will include the addition of new shops and restaurants, as well as upgraded security screening areas.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the 2025-12-21 date does not fall within a typical cold spell, but instead we are experiencing an early onset of warmer temperatures in December? This could be due to a stronger-than-expected influence from the North Atlantic Oscillation, leading to a more rapid warming trend in the region.",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The Rh\u00f4ne Valley Climate Observatory announced today that a recently analyzed dataset of historical temperature records reveals that, contrary to previous assumptions, the cold spell in mid-to-late December is actually driven by a sudden shift in the prevailing wind patterns, which brings warmer air from the Mediterranean Sea to the region. This shift is not correlated with the date, but rather with the specific atmospheric pressure systems that form over the Atlantic Ocean.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "However, recent research suggests that the cold spell in mid-to-late December is actually driven by a specific weather pattern, which may be disrupted this year due to a strong high-pressure system that is forecasted to dominate the region in early December, potentially weakening the cold spell and reducing its impact on the temperature difference between the two dates.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Climate Research, which analyzed temperature patterns at Lyon\u2013Saint Exup\u00e9ry Airport from 1980 to 2020, found that the daily average temperature difference between December 21st and December 28th is significantly smaller than the overall temperature difference between the beginning and end of December.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Lyon\u2013Saint Exup\u00e9ry Airport has recently implemented a new automated baggage handling system, which is expected to reduce processing times by 30% across all flights.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    }
+  ],
+  "condition": "one-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "What if the unusually cold and snowy winter of 2024-2025, which is expected to be one of the coldest on record in the region, continues into late December 2025, resulting in significantly lower temperatures at Lyon\u2013Saint Exup\u00e9ry Airport compared to early December?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.4,
+      "absolute_shift": 0.25,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about a potentially continued cold and snowy winter significantly undermines my initial confidence in a warmer late December compared to early December. It challenges the assumption that Lyon's Mediterranean climate would typically lead to higher temperatures in late December. If the cold winter persists, it's likely that the temperature difference between the two dates will be smaller than usual. As a result, I have reduced my initial probability estimate from 0.65 to 0.40, reflecting a 60% decrease in confidence.",
+      "raw_response": "{\"updated_probability\": 0.40, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information about a potentially continued cold and snowy winter significantly undermines my initial confidence in a warmer late December compared to early December. It challenges the assumption that Lyon's Mediterranean climate would typically lead to higher temperatures in late December. If the cold winter persists, it's likely that the temperature difference between the two dates will be smaller than usual. As a result, I have reduced my initial probability estimate from 0.65 to 0.40, reflecting a 60% decrease in confidence.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Climate Science by Dr. Sophie Dupont, a renowned climate expert, suggests that the Rhone-Alpes region is experiencing a previously unknown phenomenon known as 'winter temperature inversion due to increased snow cover.' This phenomenon occurs when heavy snowfall in the surrounding mountains traps cold air near the surface, causing a significant drop in temperatures at lower elevations, including Lyon.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.22000000000000003,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the 'winter temperature inversion due to increased snow cover' in the Rhone-Alpes region significantly challenges my initial assumption that Lyon experiences a Mediterranean climate with warm and sunny winters. This phenomenon could lead to colder temperatures in Lyon, making it less likely for the daily average temperature on 2025-12-28 to be higher than on 2025-12-21. I've updated my probability estimate accordingly, taking into account the potential impact of this phenomenon on Lyon's temperature.",
+      "raw_response": "{\n  \"updated_probability\": 0.43,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The new information about the 'winter temperature inversion due to increased snow cover' in the Rhone-Alpes region significantly challenges my initial assumption that Lyon experiences a Mediterranean climate with warm and sunny winters. This phenomenon could lead to colder temperatures in Lyon, making it less likely for the daily average temperature on 2025-12-28 to be higher than on 2025-12-21. I've updated my probability estimate accordingly, taking into account the potential impact of this phenomenon on Lyon's temperature.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "A severe and prolonged cold spell is forecasted to affect Western Europe in the second half of December 2025, with temperatures dropping significantly below average.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.30000000000000004,
+      "shift_direction": "decreased",
+      "reasoning": "The new information significantly undermines my initial assumption about the Mediterranean climate's influence on Lyon's winter temperatures. The severe and prolonged cold spell forecasted to affect Western Europe in the second half of December 2025 suggests that the region, including Lyon, may experience unusually cold temperatures even in late December. Given this new information, I now believe that it is less likely that the average temperature on 2025-12-28 will be higher than on 2025-12-21 than my initial estimate suggested.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The new information significantly undermines my initial assumption about the Mediterranean climate's influence on Lyon's winter temperatures. The severe and prolonged cold spell forecasted to affect Western Europe in the second half of December 2025 suggests that the region, including Lyon, may experience unusually cold temperatures even in late December. Given this new information, I now believe that it is less likely that the average temperature on 2025-12-28 will be higher than on 2025-12-21 than my initial estimate suggested.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "According to a recent study published in the Journal of Applied Meteorology and Climatology, the winter of 2024-2025 in the Rhone-Alpes region was characterized by a strong negative phase of the North Atlantic Oscillation (NAO), leading to above-average temperatures in December. This is consistent with historical trends, where a negative NAO phase is associated with warmer winters in the region. Furthermore, a local expert in climatology at the University of Lyon has confirmed that this pattern is expected to continue in the 2025 winter season, citing the region's overall warming trend.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.92,
+      "absolute_shift": 0.27,
+      "shift_direction": "increased",
+      "reasoning": "This new information strengthens my initial assumption that Lyon's climate is warm and sunny in late December. The study's finding that the 2024-2025 winter in the Rhone-Alpes region was characterized by above-average temperatures due to a negative NAO phase, and the local expert's confirmation that this pattern is expected to continue in the 2025 winter season, significantly increases my confidence in a warmer December 28 compared to December 21. Given the historical association between a negative NAO phase and warmer winters in the region, I now believe that the probability of warmer temperatures on December 28 is even higher than my initial estimate, reaching 92%.",
+      "raw_response": "{\n  \"updated_probability\": 0.92,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"This new information strengthens my initial assumption that Lyon's climate is warm and sunny in late December. The study's finding that the 2024-2025 winter in the Rhone-Alpes region was characterized by above-average temperatures due to a negative NAO phase, and the local expert's confirmation that this pattern is expected to continue in the 2025 winter season, significantly increases my confidence in a warmer December 28 compared to December 21. Given the historical association between a negative NAO phase and warmer winters in the region, I now believe that the probability of warmer temperatures on December 28 is even higher than my initial estimate, reaching 92%.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "The city of Lyon has recently invested in a new public transportation system, including a tramway and a bike-sharing program, aimed at reducing traffic congestion and promoting sustainable mobility. The new infrastructure is expected to be fully operational by 2025. The Lyon-Saint Exup\u00e9ry Airport is planning to increase its passenger capacity in the coming years to accommodate the growing demand for air travel.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about Lyon's public transportation system and airport expansion suggests an increase in urban activity and air travel, potentially leading to increased heat island effects. This could counterbalance the natural warming trend in late December. However, the connection between urbanization and temperature is complex, and I'm downgrading my initial probability by a small margin to reflect this uncertainty.",
+      "raw_response": "{\n  \"updated_probability\": 0.62,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about Lyon's public transportation system and airport expansion suggests an increase in urban activity and air travel, potentially leading to increased heat island effects. This could counterbalance the natural warming trend in late December. However, the connection between urbanization and temperature is complex, and I'm downgrading my initial probability by a small margin to reflect this uncertainty.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "What if the average low temperature in Lyon in late December is significantly lower than the average high temperature, potentially dropping as low as 3\u00b0C (37\u00b0F) for short periods, leading to a net decrease in temperature over the 7-day period due to increased radiative cooling at night.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new information related to reason #2 has significantly impacted my initial estimate. The potential for the average low temperature to drop as low as 3\u00b0C (37\u00b0F) for short periods and lead to a net decrease in temperature over the 7-day period due to increased radiative cooling at night has reduced my confidence in the probability of warmer temperatures on 2025-12-28 compared to 2025-12-21. The increased diurnal temperature range and potential for colder nights have made the temperature difference between the two dates less predictable, leading to a decrease in my estimated probability.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information related to reason #2 has significantly impacted my initial estimate. The potential for the average low temperature to drop as low as 3\u00b0C (37\u00b0F) for short periods and lead to a net decrease in temperature over the 7-day period due to increased radiative cooling at night has reduced my confidence in the probability of warmer temperatures on 2025-12-28 compared to 2025-12-21. The increased diurnal temperature range and potential for colder nights have made the temperature difference between the two dates less predictable, leading to a decrease in my estimated probability.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "The French Ministry of Ecology and Sustainable Development announced a new climate regulation requiring all heating systems in buildings to be shut down for at least 5 hours a day from December 20th to January 5th to reduce energy consumption. This measure is expected to lower indoor temperatures by an average of 2\u00b0C (3.6\u00b0F) throughout the region, including Lyon, during this period.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new climate regulation is expected to lower indoor temperatures by an average of 2\u00b0C throughout the region, including Lyon, during the period from December 20th to January 5th. Given that the average high temperature in Lyon in late December is around 9\u00b0C, a 2\u00b0C decrease would make the temperature around 7\u00b0C (or even lower), which is closer to the average high temperature in early December. This new information suggests that the temperature difference between December 21st and December 28th may be smaller than initially expected. Therefore, I have decreased my initial probability estimate of 0.65 to 0.45.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new climate regulation is expected to lower indoor temperatures by an average of 2\u00b0C throughout the region, including Lyon, during the period from December 20th to January 5th. Given that the average high temperature in Lyon in late December is around 9\u00b0C, a 2\u00b0C decrease would make the temperature around 7\u00b0C (or even lower), which is closer to the average high temperature in early December. This new information suggests that the temperature difference between December 21st and December 28th may be smaller than initially expected. Therefore, I have decreased my initial probability estimate of 0.65 to 0.45.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "However, it's worth noting that the upcoming winter storm warning for the region, issued by the Met Office, indicates a high likelihood of sustained winds of 60-80 km/h (37-50 mph) and heavy precipitation on 2025-12-26, which could lead to a prolonged cold spell.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the upcoming winter storm warning has led me to decrease my initial estimate. The heavy precipitation and sustained winds could indeed prolong the cold spell, potentially leading to a smaller temperature difference between 2025-12-21 and 2025-12-28 than initially anticipated. This challenge to my initial assumption that the temperature would increase by 1-2\u00b0C (2-4\u00b0F) over the 7-day period has convinced me to lower my probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the upcoming winter storm warning has led me to decrease my initial estimate. The heavy precipitation and sustained winds could indeed prolong the cold spell, potentially leading to a smaller temperature difference between 2025-12-21 and 2025-12-28 than initially anticipated. This challenge to my initial assumption that the temperature would increase by 1-2\u00b0C (2-4\u00b0F) over the 7-day period has convinced me to lower my probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "A recent study by the French National Centre for Meteorological Research (CNRM) found that the average temperature trend in Lyon during the last 20 years shows a consistent 1.2\u00b0C (2.2\u00b0F) increase in temperature from early to late December. This supports our assumption of a 1-2\u00b0C (2-4\u00b0F) temperature increase over the 7-day period, and suggests that this trend is likely to continue into the future.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.19999999999999996,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the CNRM study provides strong evidence for a consistent 1.2\u00b0C (2.2\u00b0F) temperature increase from early to late December in Lyon. This supports my initial assumption and increases my confidence in the forecast. Given the robustness of this trend, I am increasing my probability estimate from 0.65 to 0.85, as it is now more likely that the daily average temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the CNRM study provides strong evidence for a consistent 1.2\u00b0C (2.2\u00b0F) temperature increase from early to late December in Lyon. This supports my initial assumption and increases my confidence in the forecast. Given the robustness of this trend, I am increasing my probability estimate from 0.65 to 0.85, as it is now more likely that the daily average temperature on 2025-12-28 will be higher than on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "Lyon\u2013Saint Exup\u00e9ry Airport is planning to expand its terminal facilities to accommodate increased passenger traffic, with construction expected to begin in 2026. The expansion will include the addition of new shops and restaurants, as well as upgraded security screening areas.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.725,
+      "absolute_shift": 0.07499999999999996,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the airport expansion does not seem to have any direct impact on the weather patterns or temperature in Lyon. The expansion of terminal facilities is an economic development project, which does not affect the meteorological factors influencing temperature, such as solar radiation, ocean currents, or climate trends. Therefore, the initial estimate remains largely unchanged, with a slight reduction in confidence due to the lack of relevance of the new information.",
+      "raw_response": "{\n  \"updated_probability\": 0.725,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information about the airport expansion does not seem to have any direct impact on the weather patterns or temperature in Lyon. The expansion of terminal facilities is an economic development project, which does not affect the meteorological factors influencing temperature, such as solar radiation, ocean currents, or climate trends. Therefore, the initial estimate remains largely unchanged, with a slight reduction in confidence due to the lack of relevance of the new information.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if the 2025-12-21 date does not fall within a typical cold spell, but instead we are experiencing an early onset of warmer temperatures in December? This could be due to a stronger-than-expected influence from the North Atlantic Oscillation, leading to a more rapid warming trend in the region.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the potential early onset of warmer temperatures in December, driven by a stronger-than-expected influence from the North Atlantic Oscillation, significantly reduces the likelihood of a cold spell in mid-to-late December. This challenges reason #3, which previously suggested a smaller-than-usual temperature difference between the two dates. As a result, I now believe that the temperature on 2025-12-28 will be higher than on 2025-12-21 with a higher probability. I have increased my estimate from 0.65 to 0.75.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information about the potential early onset of warmer temperatures in December, driven by a stronger-than-expected influence from the North Atlantic Oscillation, significantly reduces the likelihood of a cold spell in mid-to-late December. This challenges reason #3, which previously suggested a smaller-than-usual temperature difference between the two dates. As a result, I now believe that the temperature on 2025-12-28 will be higher than on 2025-12-21 with a higher probability. I have increased my estimate from 0.65 to 0.75.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "The Rh\u00f4ne Valley Climate Observatory announced today that a recently analyzed dataset of historical temperature records reveals that, contrary to previous assumptions, the cold spell in mid-to-late December is actually driven by a sudden shift in the prevailing wind patterns, which brings warmer air from the Mediterranean Sea to the region. This shift is not correlated with the date, but rather with the specific atmospheric pressure systems that form over the Atlantic Ocean.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new information significantly challenges my initial assumption about the cold spell in mid-to-late December. The fact that the cold spell is driven by a sudden shift in wind patterns, which are not correlated with the date, implies that the temperature difference between 2025-12-21 and 2025-12-28 may be smaller than usual. This reduces the likelihood of warmer temperatures on 2025-12-28 compared to 2025-12-21. I now estimate the probability of warmer temperatures on 2025-12-28 at 45%, down from my initial estimate of 65%.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information significantly challenges my initial assumption about the cold spell in mid-to-late December. The fact that the cold spell is driven by a sudden shift in wind patterns, which are not correlated with the date, implies that the temperature difference between 2025-12-21 and 2025-12-28 may be smaller than usual. This reduces the likelihood of warmer temperatures on 2025-12-28 compared to 2025-12-21. I now estimate the probability of warmer temperatures on 2025-12-28 at 45%, down from my initial estimate of 65%.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "However, recent research suggests that the cold spell in mid-to-late December is actually driven by a specific weather pattern, which may be disrupted this year due to a strong high-pressure system that is forecasted to dominate the region in early December, potentially weakening the cold spell and reducing its impact on the temperature difference between the two dates.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.72,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests that the cold spell in mid-to-late December may be disrupted this year, potentially weakening its impact on the temperature difference between 2025-12-21 and 2025-12-28. This reduces the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21, making it more likely that the temperature on 2025-12-28 will be higher. Given the strong high-pressure system forecasted to dominate the region in early December, I increase my estimate of the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21 from 0.65 to 0.72.",
+      "raw_response": "{\n  \"updated_probability\": 0.72,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information suggests that the cold spell in mid-to-late December may be disrupted this year, potentially weakening its impact on the temperature difference between 2025-12-21 and 2025-12-28. This reduces the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21, making it more likely that the temperature on 2025-12-28 will be higher. Given the strong high-pressure system forecasted to dominate the region in early December, I increase my estimate of the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21 from 0.65 to 0.72.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "A recent study published in the Journal of Climate Research, which analyzed temperature patterns at Lyon\u2013Saint Exup\u00e9ry Airport from 1980 to 2020, found that the daily average temperature difference between December 21st and December 28th is significantly smaller than the overall temperature difference between the beginning and end of December.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The recent study's finding that the daily average temperature difference between December 21st and December 28th is significantly smaller than the overall temperature difference between the beginning and end of December challenges my initial assumption (reason #3). This suggests that the temperature difference between these two dates may be smaller than I previously thought. As a result, I have decreased my probability estimate from 0.65 to 0.55, reflecting a more cautious outlook. The study's analysis of historical temperature patterns provides a more nuanced understanding of the temperature dynamics in Lyon during this period, which has led me to update my estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The recent study's finding that the daily average temperature difference between December 21st and December 28th is significantly smaller than the overall temperature difference between the beginning and end of December challenges my initial assumption (reason #3). This suggests that the temperature difference between these two dates may be smaller than I previously thought. As a result, I have decreased my probability estimate from 0.65 to 0.55, reflecting a more cautious outlook. The study's analysis of historical temperature patterns provides a more nuanced understanding of the temperature dynamics in Lyon during this period, which has led me to update my estimate.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "Lyon\u2013Saint Exup\u00e9ry Airport has recently implemented a new automated baggage handling system, which is expected to reduce processing times by 30% across all flights.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.57,
+      "absolute_shift": 0.08000000000000007,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the automated baggage handling system at Lyon\u2013Saint Exup\u00e9ry Airport has no direct relevance to the weather forecast. The cold spell in mid-to-late December is a meteorological phenomenon, and the implementation of a new baggage handling system is unrelated. As a result, I do not see any reason to update my initial estimate. However, I do acknowledge that the challenge is an attempt to challenge one of my assumptions, so I am decreasing the probability slightly to reflect the fact that my initial estimate was not entirely based on solid evidence. Further, the challenge does not provide any new information that would change the likelihood of the cold spell occurring, and the temporal relationship between the two dates remains the same.",
+      "raw_response": "{\n  \"updated_probability\": 0.57,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the automated baggage handling system at Lyon\u2013Saint Exup\u00e9ry Airport has no direct relevance to the weather forecast. The cold spell in mid-to-late December is a meteorological phenomenon, and the implementation of a new baggage handling system is unrelated. As a result, I do not see any reason to update my initial estimate. However, I do acknowledge that the challenge is an attempt to challenge one of my assumptions, so I am decreasing the probability slightly to reflect the fact that my initial estimate was not entirely based on solid evidence. Further, the challenge does not provide any new information that would change the likelihood of the cold spell occurring, and the temporal relationship between the two dates remains the same.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "meteofrance_TEMPERATURE_celsius.07481.D",
+    "question_text": "What is the probability that the daily average temperature at the French weather station at Lyon\u2013Saint Exup\u00e9ry Airport will be higher on 2025-12-28 than on 2025-12-21?",
+    "source": "dbnomics",
+    "condition": "one-turn",
+    "initial_probability": 0.65,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.15966666666666668,
+    "max_absolute_shift": 0.30000000000000004
+  }
+}

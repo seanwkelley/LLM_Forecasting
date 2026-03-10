@@ -1,18 +1,33 @@
 """
-Belief Sensitivity Pipeline -- Main runner for the 3-stage experiment.
+Belief Sensitivity Pipeline -- Causal network probing of LLM forecasts.
+
+Four-stage pipeline:
+  1. Causal Forecast:  LLM produces probability + causal DAG
+  2. Network Analysis:  Graph metrics, probe target selection (16-18 targets)
+  3. Probe Generation: LLM generates targeted challenges for each target
+  4. Probed Forecast:   Independent LLM calls measure probability shifts
 
 Usage:
-    # Quick smoke test (2 questions, one-turn only)
+    # Quick smoke test (2 questions)
     python forecast_bench/run_sensitivity.py --max-questions 2 --condition one-turn
 
-    # Full run (50 questions, both conditions)
-    python forecast_bench/run_sensitivity.py --max-questions 50 --condition both
+    # Full run (51 questions, one-turn probing)
+    python forecast_bench/run_sensitivity.py --model llama-70b --max-questions 51 \\
+        --condition one-turn --output-dir outputs/sensitivity/causal/70b_one_turn
 
     # Resume an interrupted run
-    python forecast_bench/run_sensitivity.py --max-questions 50 --condition both --resume
+    python forecast_bench/run_sensitivity.py --model llama-70b --max-questions 51 \\
+        --condition one-turn --output-dir outputs/sensitivity/causal/70b_one_turn --resume
 
-    # Causal network mode
-    python forecast_bench/run_sensitivity.py --mode causal --max-questions 2 --condition one-turn
+Models (via OpenRouter):
+    llama       -> meta-llama/llama-3.1-8b-instruct
+    llama-70b   -> meta-llama/llama-3.3-70b-instruct
+    deepseek    -> deepseek/deepseek-chat-v3-0324
+    claude      -> anthropic/claude-sonnet-4
+    gpt4        -> openai/gpt-4-turbo
+    qwen        -> qwen/qwen-2.5-72b-instruct
+    gemini      -> google/gemini-2.5-flash
+    mistral     -> mistralai/mistral-small-3.2-24b-instruct
 """
 
 from __future__ import annotations
@@ -30,16 +45,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from forecast_bench.llm_client import LLMClient, parse_json_response
 from forecast_bench.questions import load_forecastbench_questions
-from forecast_bench.prompts import (
-    INITIAL_FORECAST_SYSTEM,
-    PROBE_GENERATION_SYSTEM,
-    PROBED_FORECAST_SYSTEM,
-    PROBE_TYPES,
-    build_initial_forecast_prompt,
-    build_probe_prompt,
-    build_probed_forecast_prompt,
-    get_probe_type,
-)
 from forecast_bench.prompts_causal import (
     CAUSAL_FORECAST_SYSTEM,
     CAUSAL_PROBE_GENERATION_SYSTEM,
@@ -55,226 +60,14 @@ from forecast_bench.network_analysis import analyze_network, plot_causal_network
 
 MODEL_MAP = {
     "llama": "meta-llama/llama-3.1-8b-instruct",
-    "deepseek": "deepseek/deepseek-v3.2",
+    "llama-70b": "meta-llama/llama-3.3-70b-instruct",
+    "deepseek": "deepseek/deepseek-chat-v3-0324",
     "claude": "anthropic/claude-sonnet-4",
     "gpt4": "openai/gpt-4-turbo",
+    "qwen": "qwen/qwen3-235b-a22b-2507",
+    "gemini": "google/gemini-2.5-flash",
+    "mistral": "mistralai/mistral-small-3.2-24b-instruct",
 }
-
-
-# =============================================================================
-# STAGE 1: INITIAL FORECAST
-# =============================================================================
-
-def run_initial_forecast(
-    client: LLMClient,
-    question: dict,
-) -> dict | None:
-    """Get initial probability + reasons for a question.
-
-    Returns
-    -------
-    Parsed response dict with probability, reasons, reasoning -- or None on failure.
-    """
-    user_prompt = build_initial_forecast_prompt(question["question"])
-    text, ok = client.call_single(INITIAL_FORECAST_SYSTEM, user_prompt)
-    if not ok:
-        return None
-
-    data = parse_json_response(text)
-    if data is None:
-        client.stats.parse_failures += 1
-        return None
-
-    # Validate required fields
-    prob = data.get("probability")
-    reasons = data.get("reasons")
-    if prob is None or not isinstance(reasons, list) or len(reasons) == 0:
-        client.stats.parse_failures += 1
-        return None
-
-    # Clamp probability
-    prob = max(0.01, min(0.99, float(prob)))
-    data["probability"] = prob
-
-    # Ensure reasons have required fields
-    for i, r in enumerate(reasons):
-        r.setdefault("id", i + 1)
-        r.setdefault("importance", "medium")
-        r.setdefault("text", "")
-
-    return data
-
-
-# =============================================================================
-# STAGE 2: PROBE GENERATION
-# =============================================================================
-
-def run_probe_generation(
-    client: LLMClient,
-    question: dict,
-    initial_prob: float,
-    reasons: list[dict],
-) -> list[dict]:
-    """Generate every probe type for every reason (full factorial).
-
-    Each reason is probed with all 5 types: negation, counterfactual,
-    weakening, strengthening, irrelevant. For a question with 4 reasons
-    this produces 20 probes.
-
-    Returns
-    -------
-    List of probe dicts, each with probe_text, probe_type, target_reason_id.
-    """
-    probes = []
-    for reason in reasons:
-        for probe_type in PROBE_TYPES:
-            probe = _generate_single_probe(
-                client, question, initial_prob, reason, probe_type,
-            )
-            probes.append(probe)
-
-    return probes
-
-
-def _generate_single_probe(
-    client: LLMClient,
-    question: dict,
-    initial_prob: float,
-    reason: dict,
-    probe_type: str,
-) -> dict:
-    """Generate a single probe for one reason."""
-    user_prompt = build_probe_prompt(
-        question["question"], initial_prob, reason, probe_type,
-    )
-
-    text, ok = client.call_single(PROBE_GENERATION_SYSTEM, user_prompt)
-    client.rate_limit_wait()
-
-    if not ok:
-        return {
-            "probe_text": f"What if your reason '{reason['text']}' is wrong?",
-            "probe_type": probe_type,
-            "target_reason_id": reason["id"],
-            "generated": False,
-        }
-
-    data = parse_json_response(text)
-    if data is None:
-        client.stats.parse_failures += 1
-        return {
-            "probe_text": f"What if your reason '{reason['text']}' is wrong?",
-            "probe_type": probe_type,
-            "target_reason_id": reason["id"],
-            "generated": False,
-        }
-
-    data.setdefault("probe_type", probe_type)
-    data.setdefault("target_reason_id", reason["id"])
-    data["generated"] = True
-    return data
-
-
-# =============================================================================
-# STAGE 3: PROBED FORECASTS
-# =============================================================================
-
-def run_independent_probing(
-    client: LLMClient,
-    question: dict,
-    initial_prob: float,
-    reasons: list[dict],
-    probes: list[dict],
-) -> list[dict]:
-    """Independent condition: fresh 2-message call per probe.
-
-    Returns
-    -------
-    List of result dicts per probe.
-    """
-    results = []
-    for probe in probes:
-        user_prompt = build_probed_forecast_prompt(
-            question["question"], initial_prob, reasons, probe,
-        )
-
-        text, ok = client.call_single(PROBED_FORECAST_SYSTEM, user_prompt)
-        client.rate_limit_wait()
-
-        result = _parse_probe_result(client, probe, initial_prob, text, ok)
-        results.append(result)
-
-    return results
-
-
-def run_conversational_probing(
-    client: LLMClient,
-    question: dict,
-    initial_prob: float,
-    reasons: list[dict],
-    probes: list[dict],
-) -> list[dict]:
-    """Conversational condition: growing messages array.
-
-    The model sees all prior probes and its own responses, simulating a
-    multi-turn conversation where challenges accumulate.
-
-    Returns
-    -------
-    List of result dicts per probe.
-    """
-    # Build initial messages: system + synthetic first turn
-    reasons_text = "\n".join(
-        f"  {r['id']}. [{r['importance']}] {r['text']}" for r in reasons
-    )
-    initial_assistant = json.dumps({
-        "probability": initial_prob,
-        "reasons": reasons,
-        "reasoning": f"Initial forecast for: {question['question']}",
-    })
-
-    messages = [
-        {"role": "system", "content": PROBED_FORECAST_SYSTEM},
-        {
-            "role": "user",
-            "content": (
-                f'Forecast this question: "{question["question"]}"\n\n'
-                f"Provide your probability estimate and key reasons."
-            ),
-        },
-        {"role": "assistant", "content": initial_assistant},
-    ]
-
-    results = []
-    current_prob = initial_prob
-
-    for probe in probes:
-        # Add the probe as a new user message
-        probe_user_msg = (
-            f"New information (related to reason #{probe.get('target_reason_id', '?')}):\n\n"
-            f'"{probe.get("probe_text", "")}"\n\n'
-            f"Given this new information, update your probability estimate. "
-            f"Your current estimate is {current_prob:.2f}.\n\n"
-            f"Respond as JSON: "
-            f'{{"updated_probability": <float>, "shift_direction": "increased"|"decreased"|"unchanged", '
-            f'"reasoning": "<explanation>"}}'
-        )
-        messages.append({"role": "user", "content": probe_user_msg})
-
-        text, ok = client.call(messages)
-        client.rate_limit_wait()
-
-        result = _parse_probe_result(client, probe, current_prob, text, ok)
-        results.append(result)
-
-        # Add assistant response to conversation history
-        if ok and text:
-            messages.append({"role": "assistant", "content": text})
-            # Update current_prob for next iteration
-            if result.get("updated_probability") is not None:
-                current_prob = result["updated_probability"]
-
-    return results
 
 
 def _parse_probe_result(
@@ -627,44 +420,11 @@ CAUSAL_CSV_FIELDS = [
     "n_nodes", "n_edges", "graph_density",
 ]
 
-SENSITIVITY_CSV_FIELDS = [
-    "question_id", "question_text", "condition", "initial_probability",
-    "probe_index", "probe_type", "target_reason_id", "target_reason_text",
-    "target_reason_importance", "probe_text", "probe_generated",
-    "updated_probability", "absolute_shift", "shift_direction",
-    "success", "reasoning",
-]
-
 QUESTION_SUMMARY_FIELDS = [
     "question_id", "question_text", "source", "condition",
     "initial_probability", "n_probes", "n_successful",
     "mean_absolute_shift", "max_absolute_shift",
 ]
-
-
-def save_sensitivity_row(writer, question, condition, initial_prob, reasons, probe, result, probe_idx):
-    """Write one row to the sensitivity CSV."""
-    target_id = probe.get("target_reason_id")
-    target_reason = next((r for r in reasons if r.get("id") == target_id), {})
-
-    writer.writerow({
-        "question_id": question["id"],
-        "question_text": question["question"][:200],
-        "condition": condition,
-        "initial_probability": f"{initial_prob:.4f}",
-        "probe_index": probe_idx,
-        "probe_type": result.get("probe_type", ""),
-        "target_reason_id": target_id,
-        "target_reason_text": target_reason.get("text", "")[:200],
-        "target_reason_importance": target_reason.get("importance", ""),
-        "probe_text": result.get("probe_text", "")[:300],
-        "probe_generated": result.get("probe_generated", True),
-        "updated_probability": f"{result['updated_probability']:.4f}" if result.get("updated_probability") is not None else "",
-        "absolute_shift": f"{result['absolute_shift']:.4f}" if result.get("absolute_shift") is not None else "",
-        "shift_direction": result.get("shift_direction", ""),
-        "success": result.get("success", False),
-        "reasoning": result.get("reasoning", "")[:300],
-    })
 
 
 def save_causal_sensitivity_row(
@@ -739,172 +499,6 @@ def _get_api_key() -> str:
 
 
 def run_pipeline(args):
-    """Run the full sensitivity pipeline (reasons or causal mode)."""
-    mode = getattr(args, "mode", "reasons")
-    if mode == "causal":
-        return _run_causal_pipeline(args)
-    return _run_reasons_pipeline(args)
-
-
-def _run_reasons_pipeline(args):
-    """Run the flat-reasons 3-stage sensitivity pipeline."""
-    # Resolve model
-    model = MODEL_MAP.get(args.model, args.model)
-
-    api_key = _get_api_key()
-    if not api_key:
-        print("[ERROR] OPENROUTER_API_KEY not set. Set the environment variable or create forecasting/config.py")
-        sys.exit(1)
-
-    # Load questions
-    print(f"\n{'='*60}")
-    print(f"BELIEF SENSITIVITY ANALYSIS (reasons mode)")
-    print(f"{'='*60}")
-    print(f"Model: {model}")
-    print(f"Temperature: {args.temperature}")
-    print(f"Condition: {args.condition}")
-    print(f"Max questions: {args.max_questions}")
-    print(f"Seed: {args.seed}")
-
-    questions = load_forecastbench_questions(
-        max_questions=args.max_questions,
-        seed=args.seed,
-        questions_file=args.questions_file,
-    )
-    print(f"Loaded {len(questions)} questions\n")
-
-    if not questions:
-        print("[ERROR] No questions loaded.")
-        sys.exit(1)
-
-    # Determine conditions to run
-    conditions = []
-    if args.condition in ("one-turn", "both"):
-        conditions.append("one-turn")
-    if args.condition in ("multi-turn", "both"):
-        conditions.append("multi-turn")
-
-    # Create client
-    client = LLMClient(
-        api_key=api_key,
-        model=model,
-        temperature=args.temperature,
-        max_tokens=800,
-    )
-
-    # Run shared stages (1 & 2) once, then stage 3 per condition
-    shared_results = _run_shared_stages(client, questions, args)
-
-    # Then run stage 3 per condition
-    for condition in conditions:
-        model_short = args.model if args.model in MODEL_MAP else model.split("/")[-1]
-        output_dir = Path(args.output_dir or f"outputs/sensitivity_{model_short}_{condition}")
-        output_dir.mkdir(parents=True, exist_ok=True)
-
-        print(f"\n{'-'*60}")
-        print(f"CONDITION: {condition.upper()}")
-        print(f"Output: {output_dir}")
-        print(f"{'-'*60}")
-
-        completed = get_completed_questions(output_dir) if args.resume else set()
-        if completed:
-            print(f"Resuming: {len(completed)} questions already complete")
-
-        csv_path = output_dir / "sensitivity_results.csv"
-        csv_mode = "a" if args.resume and csv_path.exists() else "w"
-
-        with open(csv_path, csv_mode, newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=SENSITIVITY_CSV_FIELDS)
-            if csv_mode == "w":
-                writer.writeheader()
-
-            question_summaries = []
-
-            for q_idx, question in enumerate(questions):
-                if question["id"] in completed:
-                    print(f"  [{q_idx+1}/{len(questions)}] {question['id']} -- skipped (resume)")
-                    continue
-
-                shared = shared_results.get(question["id"])
-                if shared is None:
-                    print(f"  [{q_idx+1}/{len(questions)}] {question['id']} -- skipped (stage 1/2 failed)")
-                    continue
-
-                initial_prob = shared["initial_probability"]
-                reasons = shared["reasons"]
-                probes = shared["probes"]
-
-                print(f"  [{q_idx+1}/{len(questions)}] {question['id']} "
-                      f"(p={initial_prob:.2f}, {len(probes)} probes) ...", end=" ")
-
-                # Stage 3
-                if condition == "one-turn":
-                    probe_results = run_independent_probing(
-                        client, question, initial_prob, reasons, probes,
-                    )
-                else:
-                    probe_results = run_conversational_probing(
-                        client, question, initial_prob, reasons, probes,
-                    )
-
-                # Save rows to CSV
-                for pi, result in enumerate(probe_results):
-                    save_sensitivity_row(
-                        writer, question, condition, initial_prob,
-                        reasons, probes[pi], result, pi,
-                    )
-                f.flush()
-
-                # Compute question summary
-                successful = [r for r in probe_results if r.get("success")]
-                shifts = [r["absolute_shift"] for r in successful if r.get("absolute_shift") is not None]
-
-                summary = {
-                    "question_id": question["id"],
-                    "question_text": question["question"],
-                    "source": question.get("source", ""),
-                    "condition": condition,
-                    "initial_probability": initial_prob,
-                    "n_probes": len(probe_results),
-                    "n_successful": len(successful),
-                    "mean_absolute_shift": sum(shifts) / len(shifts) if shifts else None,
-                    "max_absolute_shift": max(shifts) if shifts else None,
-                }
-                question_summaries.append(summary)
-
-                # Save per-question JSON
-                q_detail = {
-                    **shared,
-                    "condition": condition,
-                    "probe_results": probe_results,
-                    "summary": summary,
-                }
-                save_question_json(output_dir, question["id"], q_detail)
-
-                n_ok = len(successful)
-                mean_s = summary["mean_absolute_shift"]
-                print(f"{n_ok}/{len(probe_results)} ok, "
-                      f"mean shift={mean_s:.3f}" if mean_s is not None else "no shifts")
-
-        # Save question summary CSV
-        _save_question_summary(output_dir, question_summaries)
-
-        print(f"\nCondition '{condition}' complete.")
-        print(f"  Sensitivity CSV: {csv_path}")
-        print(f"  Question summaries: {output_dir / 'question_summary.csv'}")
-
-    # Final stats
-    print(f"\n{'='*60}")
-    print("API CALL STATISTICS")
-    print(json.dumps(client.stats.to_dict(), indent=2))
-    print(f"{'='*60}")
-
-
-# =============================================================================
-# CAUSAL PIPELINE
-# =============================================================================
-
-def _run_causal_pipeline(args):
     """Run the causal network belief sensitivity pipeline."""
     model = MODEL_MAP.get(args.model, args.model)
 
@@ -1165,76 +759,6 @@ def _run_shared_stages_causal(
     return results
 
 
-def _run_shared_stages(
-    client: LLMClient,
-    questions: list[dict],
-    args,
-) -> dict[str, dict]:
-    """Run Stages 1 & 2 for all questions (shared across conditions).
-
-    Returns
-    -------
-    Dict mapping question_id to {initial_probability, reasons, probes, ...}.
-    """
-    print("STAGE 1 & 2: Initial forecasts + probe generation")
-    print("-" * 60)
-
-    # Check for cached shared results
-    cache_dir = Path(args.output_dir or "outputs") / "_shared_stages"
-    cache_dir.mkdir(parents=True, exist_ok=True)
-
-    results = {}
-
-    for q_idx, question in enumerate(questions):
-        cache_path = cache_dir / f"q_{question['id']}.json"
-
-        # Resume: check cache
-        if args.resume and cache_path.exists():
-            try:
-                cached = json.loads(cache_path.read_text(encoding="utf-8"))
-                results[question["id"]] = cached
-                print(f"  [{q_idx+1}/{len(questions)}] {question['id']} -- cached")
-                continue
-            except (json.JSONDecodeError, KeyError):
-                pass
-
-        print(f"  [{q_idx+1}/{len(questions)}] {question['id'][:40]}...", end=" ")
-
-        # Stage 1: Initial forecast
-        forecast = run_initial_forecast(client, question)
-        client.rate_limit_wait()
-
-        if forecast is None:
-            print("FAILED (stage 1)")
-            continue
-
-        initial_prob = forecast["probability"]
-        reasons = forecast["reasons"]
-        print(f"p={initial_prob:.2f}, {len(reasons)} reasons", end=" -> ")
-
-        # Stage 2: Probe generation
-        probes = run_probe_generation(client, question, initial_prob, reasons)
-        print(f"{len(probes)} probes")
-
-        shared = {
-            "question_id": question["id"],
-            "question_text": question["question"],
-            "source": question.get("source", ""),
-            "initial_probability": initial_prob,
-            "reasons": reasons,
-            "reasoning": forecast.get("reasoning", ""),
-            "probes": probes,
-        }
-
-        results[question["id"]] = shared
-
-        # Cache for resume
-        cache_path.write_text(json.dumps(shared, indent=2), encoding="utf-8")
-
-    print(f"\nStages 1-2 complete: {len(results)}/{len(questions)} questions ready\n")
-    return results
-
-
 def _save_question_summary(output_dir: Path, summaries: list[dict]):
     """Save question-level summary CSV."""
     if not summaries:
@@ -1262,21 +786,16 @@ def _save_question_summary(output_dir: Path, summaries: list[dict]):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Belief Sensitivity Analysis -- test LLM forecast robustness",
-    )
-    parser.add_argument(
-        "--mode", default="reasons",
-        choices=["reasons", "causal"],
-        help="Pipeline mode: 'reasons' (flat 3-5 reasons) or 'causal' (causal network) (default: reasons)",
+        description="Belief Sensitivity Analysis -- causal network probing of LLM forecasts",
     )
     parser.add_argument(
         "--model", default="llama",
         help="Model name or OpenRouter model ID (default: llama)",
     )
     parser.add_argument(
-        "--condition", default="both",
+        "--condition", default="one-turn",
         choices=["one-turn", "multi-turn", "both"],
-        help="Experimental condition (default: both)",
+        help="Experimental condition (default: one-turn)",
     )
     parser.add_argument(
         "--max-questions", type=int, default=50,

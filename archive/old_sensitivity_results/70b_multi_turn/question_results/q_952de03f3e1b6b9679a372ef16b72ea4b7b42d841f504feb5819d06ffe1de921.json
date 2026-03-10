@@ -1,0 +1,970 @@
+{
+  "question_id": "952de03f3e1b6b9679a372ef16b72ea4b7b42d841f504feb5819d06ffe1de921",
+  "question_text": "Will there be more than ten times as many 'Explosions/Remote violence' in Lebanon for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Explosions/Remote violence'\n2023-11-11,1\n2023-10-10,2\nto calculate one plus the 30-day average of 'Explosions/Remote violence' over the preceding 360 days, we\u2019d have: 1+(1+2)/12=1.25.\n\nIn this example, for the question to resolve positively, 13 (10 x 1.25) or more 'Explosions/Remote violence' would need to occur in the 30 days leading up to the resolution.",
+  "source": "acled",
+  "initial_probability": 0.23,
+  "nodes": [
+    {
+      "id": "lebanon_unrest",
+      "description": "Level of unrest and instability in Lebanon",
+      "role": "factor"
+    },
+    {
+      "id": "regional_tensions",
+      "description": "Tensions between Lebanon and neighboring countries",
+      "role": "factor"
+    },
+    {
+      "id": "economic_conditions",
+      "description": "Economic situation in Lebanon, including poverty and unemployment",
+      "role": "factor"
+    },
+    {
+      "id": "political_instability",
+      "description": "Stability of the Lebanese government and political system",
+      "role": "factor"
+    },
+    {
+      "id": "explosions_history",
+      "description": "Recent history of explosions and remote violence in Lebanon",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "More than ten times as many 'Explosions/Remote violence' in the 30 days before 2025-12-28",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "lebanon_unrest",
+      "to": "explosions_history",
+      "mechanism": "Unrest and instability can lead to an increased likelihood of explosions and remote violence"
+    },
+    {
+      "from": "regional_tensions",
+      "to": "lebanon_unrest",
+      "mechanism": "Tensions with neighboring countries can exacerbate unrest in Lebanon"
+    },
+    {
+      "from": "economic_conditions",
+      "to": "lebanon_unrest",
+      "mechanism": "Poor economic conditions can contribute to social unrest and instability"
+    },
+    {
+      "from": "political_instability",
+      "to": "lebanon_unrest",
+      "mechanism": "A unstable government can lead to increased unrest and instability"
+    },
+    {
+      "from": "explosions_history",
+      "to": "outcome",
+      "mechanism": "A recent history of explosions and remote violence can indicate a higher likelihood of future incidents"
+    },
+    {
+      "from": "lebanon_unrest",
+      "to": "outcome",
+      "mechanism": "Unrest and instability can directly contribute to an increased number of explosions and remote violence"
+    }
+  ],
+  "reasoning": "The forecasted event is influenced by a combination of factors, including the level of unrest and instability in Lebanon, regional tensions, economic conditions, and political instability. These factors can contribute to an increased likelihood of explosions and remote violence, both directly and indirectly, through their impact on the recent history of such incidents. Given the complex interplay of these factors, the probability of the outcome is estimated to be 0.23, reflecting a low to moderate likelihood of the event occurring.",
+  "network_analysis": {
+    "n_nodes": 6,
+    "n_edges": 6,
+    "density": 0.2,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 6,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "lebanon_unrest",
+        "description": "Level of unrest and instability in Lebanon",
+        "role": "factor",
+        "in_degree": 3,
+        "out_degree": 2,
+        "betweenness": 0.3,
+        "closeness": 0.6,
+        "pagerank": 0.2591,
+        "path_relevance": 0.6,
+        "composite_importance": 0.5218
+      },
+      {
+        "node_id": "regional_tensions",
+        "description": "Tensions between Lebanon and neighboring countries",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.073,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1146
+      },
+      {
+        "node_id": "economic_conditions",
+        "description": "Economic situation in Lebanon, including poverty and unemployment",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.073,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1146
+      },
+      {
+        "node_id": "political_instability",
+        "description": "Stability of the Lebanese government and political system",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.073,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1146
+      },
+      {
+        "node_id": "explosions_history",
+        "description": "Recent history of explosions and remote violence in Lebanon",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.4571,
+        "pagerank": 0.1831,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1366
+      },
+      {
+        "node_id": "outcome",
+        "description": "More than ten times as many 'Explosions/Remote violence' in the 30 days before 2025-12-28",
+        "role": "outcome",
+        "in_degree": 2,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.625,
+        "pagerank": 0.3388,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0678
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "lebanon_unrest",
+        "target": "explosions_history",
+        "mechanism": "Unrest and instability can lead to an increased likelihood of explosions and remote violence",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": false
+      },
+      {
+        "source": "lebanon_unrest",
+        "target": "outcome",
+        "mechanism": "Unrest and instability can directly contribute to an increased number of explosions and remote violence",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      },
+      {
+        "source": "regional_tensions",
+        "target": "lebanon_unrest",
+        "mechanism": "Tensions with neighboring countries can exacerbate unrest in Lebanon",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      },
+      {
+        "source": "economic_conditions",
+        "target": "lebanon_unrest",
+        "mechanism": "Poor economic conditions can contribute to social unrest and instability",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      },
+      {
+        "source": "political_instability",
+        "target": "lebanon_unrest",
+        "mechanism": "A unstable government can lead to increased unrest and instability",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      },
+      {
+        "source": "explosions_history",
+        "target": "outcome",
+        "mechanism": "A recent history of explosions and remote violence can indicate a higher likelihood of future incidents",
+        "edge_betweenness": 0.0333,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "lebanon_unrest",
+        "description": "Level of unrest and instability in Lebanon",
+        "importance": 0.5218,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "explosions_history",
+        "description": "Recent history of explosions and remote violence in Lebanon",
+        "importance": 0.1366,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "regional_tensions",
+        "description": "Tensions between Lebanon and neighboring countries",
+        "importance": 0.1146,
+        "centrality_rank": 3,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "political_instability",
+        "description": "Stability of the Lebanese government and political system",
+        "importance": 0.1146,
+        "centrality_rank": 5,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "lebanon_unrest",
+        "description": "Level of unrest and instability in Lebanon",
+        "importance": 0.5218,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "explosions_history",
+        "description": "Recent history of explosions and remote violence in Lebanon",
+        "importance": 0.1366,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "lebanon_unrest->outcome",
+        "description": "Unrest and instability can directly contribute to an increased number of explosions and remote violence",
+        "importance": 0.1333,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "regional_tensions->lebanon_unrest",
+        "description": "Tensions with neighboring countries can exacerbate unrest in Lebanon",
+        "importance": 0.1,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "lebanon_unrest->explosions_history",
+        "description": "Unrest and instability can lead to an increased likelihood of explosions and remote violence",
+        "importance": 0.1333,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "lebanon_unrest->outcome",
+        "description": "Unrest and instability can directly contribute to an increased number of explosions and remote violence",
+        "importance": 0.1333,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "political_instability->economic_conditions",
+        "description": "Potential link: Stability of the Lebanese government and political system -> Economic situation in Lebanon, including poverty and unemployment",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "political_instability->regional_tensions",
+        "description": "Potential link: Stability of the Lebanese government and political system -> Tensions between Lebanon and neighboring countries",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "lebanon_unrest",
+      "description": "Level of unrest and instability in Lebanon",
+      "importance": 0.5218,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "explosions_history",
+      "description": "Recent history of explosions and remote violence in Lebanon",
+      "importance": 0.1366,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "regional_tensions",
+      "description": "Tensions between Lebanon and neighboring countries",
+      "importance": 0.1146,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "political_instability",
+      "description": "Stability of the Lebanese government and political system",
+      "importance": 0.1146,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "lebanon_unrest",
+      "description": "Level of unrest and instability in Lebanon",
+      "importance": 0.5218,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "explosions_history",
+      "description": "Recent history of explosions and remote violence in Lebanon",
+      "importance": 0.1366,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "lebanon_unrest->outcome",
+      "description": "Unrest and instability can directly contribute to an increased number of explosions and remote violence",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "regional_tensions->lebanon_unrest",
+      "description": "Tensions with neighboring countries can exacerbate unrest in Lebanon",
+      "importance": 0.1,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "lebanon_unrest->explosions_history",
+      "description": "Unrest and instability can lead to an increased likelihood of explosions and remote violence",
+      "importance": 0.1333,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "lebanon_unrest->outcome",
+      "description": "Unrest and instability can directly contribute to an increased number of explosions and remote violence",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "political_instability->economic_conditions",
+      "description": "Potential link: Stability of the Lebanese government and political system -> Economic situation in Lebanon, including poverty and unemployment",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "political_instability->regional_tensions",
+      "description": "Potential link: Stability of the Lebanese government and political system -> Tensions between Lebanon and neighboring countries",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if the current level of unrest and instability in Lebanon is actually a result of external factors and not a driving force behind the increase in explosions and remote violence? Recent diplomatic efforts have led to a significant reduction in regional tensions, which could potentially reduce the impact of unrest on explosions. Furthermore, the Lebanese government has implemented new security measures that might mitigate the effects of unrest on violence. This could render the level of unrest and instability in Lebanon less relevant to the outcome.",
+      "probe_type": "node_negate_high",
+      "target_id": "lebanon_unrest",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.5218,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Level of unrest and instability in Lebanon"
+    },
+    {
+      "probe_text": "Recent studies have shown that the frequency of explosions and remote violence in Lebanon has been decreasing over the past year, despite a continued high level of unrest and instability. Additionally, new security measures have been implemented, significantly reducing the impact of past incidents on future violence. This suggests that the recent history of explosions and remote violence may not be a reliable indicator of future incidents. In fact, a history of explosions might even lead to increased vigilance and prevention efforts, reducing the likelihood of future explosions.",
+      "probe_type": "node_negate_high",
+      "target_id": "explosions_history",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1366,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Recent history of explosions and remote violence in Lebanon"
+    },
+    {
+      "probe_text": "Recently, Lebanon and neighboring countries have engaged in successful diplomatic efforts, resulting in a significant decrease in regional tensions. This easing of tensions has been marked by increased economic cooperation and joint security initiatives, suggesting that the historical causal link between regional tensions and unrest in Lebanon may no longer be relevant. Furthermore, the Lebanese government has implemented policies to reduce its dependence on regional relationships, potentially mitigating the impact of external tensions on internal stability. As a result, it is possible that regional tensions no longer play a substantial role in contributing to unrest and explosions in Lebanon.",
+      "probe_type": "node_negate_medium",
+      "target_id": "regional_tensions",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1146,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "description": "Tensions between Lebanon and neighboring countries"
+    },
+    {
+      "probe_text": "Recent developments in Lebanon's political landscape have led to a significant increase in governmental stability, with key factions reaching a power-sharing agreement and the formation of a new, broadly-supported cabinet. As a result, the risk of political instability-driven unrest has substantially decreased. This shift in the political environment suggests that the current level of political instability may not be a significant contributor to the likelihood of explosions and remote violence. In light of this, it is possible that the forecaster's initial assessment of political instability's impact on the outcome may need to be revised.",
+      "probe_type": "node_negate_low",
+      "target_id": "political_instability",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1146,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "description": "Stability of the Lebanese government and political system"
+    },
+    {
+      "probe_text": "According to a recent report by a reputable international organization, Lebanon has seen a significant surge in protests and demonstrations over the past quarter, with thousands of citizens taking to the streets to express dissatisfaction with the current government and economic conditions. This uptick in unrest has been marked by increased clashes between protesters and security forces, resulting in numerous injuries and arrests. Experts warn that this escalation in tensions could further destabilize the already fragile political landscape, creating an environment conducive to more frequent and intense explosions and remote violence. The report's findings have been endorsed by multiple high-ranking officials and analysts, who agree that the situation in Lebanon is rapidly deteriorating.",
+      "probe_type": "node_strengthen",
+      "target_id": "lebanon_unrest",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.5218,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Level of unrest and instability in Lebanon"
+    },
+    {
+      "probe_text": "A recent study published by a reputable think tank has found a strong correlation between the frequency of explosions and remote violence in Lebanon over the past year and the likelihood of such incidents occurring in the near future. The study analyzed data from various sources, including government reports and eyewitness accounts, and concluded that areas with a higher history of explosions and remote violence are significantly more likely to experience future incidents. This finding has been endorsed by several leading experts in the field of conflict analysis, who argue that it highlights the importance of considering recent history when assessing the risk of future explosions and remote violence. As a result, the Lebanese government has announced plans to increase security measures in areas with a high history of explosions and remote violence.",
+      "probe_type": "node_strengthen",
+      "target_id": "explosions_history",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1366,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Recent history of explosions and remote violence in Lebanon"
+    },
+    {
+      "probe_text": "Recent studies have shown that increased security measures in Lebanon have been effective in reducing the incidence of explosions and remote violence, even in times of high unrest and instability. Furthermore, international pressure has led to a decrease in the number of violent incidents, suggesting that unrest does not directly translate to an increased number of explosions. This implies that the link between lebanon_unrest and outcome may be weaker than assumed, as other factors such as security measures and international diplomacy can mitigate the effects of unrest. Additionally, historical data suggests that periods of high unrest have not always led to a significant increase in explosions and remote violence.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "lebanon_unrest->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Unrest and instability can directly contribute to an increased number of explosions and remote violence"
+    },
+    {
+      "probe_text": "Recent diplomatic efforts between Lebanon and its neighboring countries have led to a significant decrease in tensions, with multiple high-level meetings and agreements signed in the past quarter. Additionally, historical analysis shows that regional tensions have not always been a reliable predictor of unrest in Lebanon, with some periods of high tensions coinciding with relative calm. This suggests that the relationship between regional tensions and Lebanese unrest may be more nuanced than previously thought. Could the current lull in regional tensions potentially decouple from the expected increase in unrest?",
+      "probe_type": "edge_negate_critical",
+      "target_id": "regional_tensions->lebanon_unrest",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Tensions with neighboring countries can exacerbate unrest in Lebanon"
+    },
+    {
+      "probe_text": "Recent studies have shown that in Lebanon, unrest and instability can actually lead to increased security measures, making it more difficult for explosions and remote violence to occur. Additionally, international organizations have been working to improve community resilience and conflict resolution skills, potentially reducing the likelihood of violence. This suggests that the relationship between unrest and explosions may be more complex than initially thought. As a result, the link between lebanon_unrest and explosions_history may not be as strong as previously assumed.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "lebanon_unrest->explosions_history",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Unrest and instability can lead to an increased likelihood of explosions and remote violence"
+    },
+    {
+      "probe_text": "Recent studies have shown that a surge in explosions and remote violence can create a perception of increased unrest and instability among the Lebanese population, even if the underlying social and economic conditions have not changed. This can lead to a self-reinforcing cycle where the outcome itself influences the level of unrest. For instance, widespread media coverage of explosions can amplify public fear and mistrust, thereby increasing perceived unrest. Is it possible that the relationship between unrest and explosions is reversed, with explosions directly contributing to increased unrest?",
+      "probe_type": "edge_reverse",
+      "target_id": "lebanon_unrest->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Unrest and instability can directly contribute to an increased number of explosions and remote violence"
+    },
+    {
+      "probe_text": "Recent reports indicate that the Lebanese government's inability to pass a budget has led to a delay in disbursement of funds for social welfare programs, exacerbating poverty and unemployment. This development suggests that the stability of the government has a direct impact on the country's economic conditions. If the government's instability continues to hinder economic decision-making, it could further worsen the economic situation. Will the forecasted probability of more than ten times as many 'Explosions/Remote violence' in the 30 days before 2025-12-28 change in light of this new information?",
+      "probe_type": "edge_fabricate",
+      "target_id": "political_instability->economic_conditions",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Stability of the Lebanese government and political system -> Economic situation in Lebanon, including poverty and unemployment"
+    },
+    {
+      "probe_text": "Recent news reports indicate that the Lebanese government's inability to form a cohesive cabinet has led to increased rhetoric from neighboring countries, with some officials publicly questioning Lebanon's ability to maintain stability in the region. This development suggests that political instability within Lebanon may directly contribute to heightened regional tensions. If true, this would imply a previously underappreciated link between the stability of the Lebanese government and the tensions with its neighbors. How does this new information affect your estimate of the outcome?",
+      "probe_type": "edge_fabricate",
+      "target_id": "political_instability->regional_tensions",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Stability of the Lebanese government and political system -> Tensions between Lebanon and neighboring countries"
+    },
+    {
+      "probe_text": "What if a significant increase in extremist group activity is observed in Lebanon, with several groups publicly announcing their intentions to escalate violence in the region? This development could be attributed to the growing influence of extremist ideologies and the presence of militant organizations in the country. Would this new information lead you to reassess your forecast, considering the potential for increased explosions and remote violence? The presence of extremist groups could be a crucial factor influencing the outcome.",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "New information suggests that the current drought in Lebanon has led to a significant increase in food and water prices, exacerbating social tensions and unrest. How would you update your forecast given that this drought is expected to continue until the end of 2025, potentially amplifying the effects of poor economic conditions on the level of unrest and instability? The ongoing drought could further strain the country's resources, contributing to a higher likelihood of explosions and remote violence. Would this new information change your estimated probability of the outcome?",
+      "probe_type": "missing_node",
+      "target_id": "environmental_factors",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "The Lebanese Ministry of Tourism has announced a new campaign to promote cultural heritage sites in the country, aiming to increase tourism revenue by 15% in the next year. The campaign will focus on highlighting Lebanon's rich history and natural beauty, and will include a series of festivals and events. While this initiative is expected to have a positive impact on the country's economy, it is not directly related to the current levels of unrest or explosions. The ministry has allocated a significant budget for the campaign, which will be launched in early 2025.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "The Lebanese Ministry of Tourism has announced plans to launch a new marketing campaign aimed at attracting more international visitors to the country's historic sites and cultural events. The campaign, which is set to begin in early 2025, will focus on promoting Lebanon's rich cultural heritage and natural beauty. While the campaign is expected to boost the country's tourism industry, it is unclear how it will impact the overall security situation. The ministry has allocated a significant budget for the campaign, which will include social media advertising and partnerships with international tour operators.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the current level of unrest and instability in Lebanon is actually a result of external factors and not a driving force behind the increase in explosions and remote violence? Recent diplomatic efforts have led to a significant reduction in regional tensions, which could potentially reduce the impact of unrest on explosions. Furthermore, the Lebanese government has implemented new security measures that might mitigate the effects of unrest on violence. This could render the level of unrest and instability in Lebanon less relevant to the outcome.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal factor 'lebanon_unrest' by suggesting that the current level of unrest and instability in Lebanon may be a result of external factors rather than a driving force behind the increase in explosions and remote violence. This reduces the importance of the 'lebanon_unrest' node in the causal network. The reduction in regional tensions and the implementation of new security measures by the Lebanese government further mitigate the impact of unrest on explosions, making the 'lebanon_unrest' node less relevant to the outcome. As a result, the causal paths leading from 'lebanon_unrest' to 'explosions_history' and 'outcome' are weakened, decreasing the overall probability estimate. The updated probability of 0.17 reflects this decreased relevance of 'lebanon_unrest' in the causal network.",
+      "raw_response": "{\"updated_probability\": 0.17, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal factor 'lebanon_unrest' by suggesting that the current level of unrest and instability in Lebanon may be a result of external factors rather than a driving force behind the increase in explosions and remote violence. This reduces the importance of the 'lebanon_unrest' node in the causal network. The reduction in regional tensions and the implementation of new security measures by the Lebanese government further mitigate the impact of unrest on explosions, making the 'lebanon_unrest' node less relevant to the outcome. As a result, the causal paths leading from 'lebanon_unrest' to 'explosions_history' and 'outcome' are weakened, decreasing the overall probability estimate. The updated probability of 0.17 reflects this decreased relevance of 'lebanon_unrest' in the causal network.\"}",
+      "target_id": "lebanon_unrest",
+      "target_type": "node",
+      "target_importance": 0.5218,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the frequency of explosions and remote violence in Lebanon has been decreasing over the past year, despite a continued high level of unrest and instability. Additionally, new security measures have been implemented, significantly reducing the impact of past incidents on future violence. This suggests that the recent history of explosions and remote violence may not be a reliable indicator of future incidents. In fact, a history of explosions might even lead to increased vigilance and prevention efforts, reducing the likelihood of future explosions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.09000000000000001,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal factor 'explosions_history' by suggesting that the recent history of explosions and remote violence in Lebanon may not be a reliable indicator of future incidents. The decreasing frequency of explosions and remote violence over the past year, despite ongoing unrest, and the implementation of new security measures reducing the impact of past incidents, weaken the causal path from 'explosions_history' to 'outcome'. Furthermore, the possibility that a history of explosions might lead to increased vigilance and prevention efforts, reducing the likelihood of future explosions, introduces a potential negative feedback loop. This further decreases the relevance of 'explosions_history' in predicting future incidents. As a result, the probability estimate is significantly decreased to 0.08, reflecting the reduced importance of 'explosions_history' in the causal network and the potential for past explosions to actually decrease the likelihood of future incidents.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal factor 'explosions_history' by suggesting that the recent history of explosions and remote violence in Lebanon may not be a reliable indicator of future incidents. The decreasing frequency of explosions and remote violence over the past year, despite ongoing unrest, and the implementation of new security measures reducing the impact of past incidents, weaken the causal path from 'explosions_history' to 'outcome'. Furthermore, the possibility that a history of explosions might lead to increased vigilance and prevention efforts, reducing the likelihood of future explosions, introduces a potential negative feedback loop. This further decreases the relevance of 'explosions_history' in predicting future incidents. As a result, the probability estimate is significantly decreased to 0.08, reflecting the reduced importance of 'explosions_history' in the causal network and the potential for past explosions to actually decrease the likelihood of future incidents.\"}",
+      "target_id": "explosions_history",
+      "target_type": "node",
+      "target_importance": 0.1366,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recently, Lebanon and neighboring countries have engaged in successful diplomatic efforts, resulting in a significant decrease in regional tensions. This easing of tensions has been marked by increased economic cooperation and joint security initiatives, suggesting that the historical causal link between regional tensions and unrest in Lebanon may no longer be relevant. Furthermore, the Lebanese government has implemented policies to reduce its dependence on regional relationships, potentially mitigating the impact of external tensions on internal stability. As a result, it is possible that regional tensions no longer play a substantial role in contributing to unrest and explosions in Lebanon.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.05,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal factor 'regional_tensions' by suggesting that the historical link between regional tensions and unrest in Lebanon may no longer be relevant due to successful diplomatic efforts and decreased dependence on regional relationships. This weakening of the causal path from 'regional_tensions' to 'lebanon_unrest' further reduces the already diminished importance of 'lebanon_unrest' in the network, given the previous challenges to its relevance. With 'regional_tensions' playing a less substantial role, the overall network's ability to predict an increase in explosions and remote violence is decreased. The updated probability of 0.05 reflects this additional weakening of the causal paths, as the reduction in regional tensions and its mitigated impact on internal stability make it even less likely that the conditions for a significant increase in explosions and remote violence are met.",
+      "raw_response": "{\"updated_probability\": 0.05, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information challenges the causal factor 'regional_tensions' by suggesting that the historical link between regional tensions and unrest in Lebanon may no longer be relevant due to successful diplomatic efforts and decreased dependence on regional relationships. This weakening of the causal path from 'regional_tensions' to 'lebanon_unrest' further reduces the already diminished importance of 'lebanon_unrest' in the network, given the previous challenges to its relevance. With 'regional_tensions' playing a less substantial role, the overall network's ability to predict an increase in explosions and remote violence is decreased. The updated probability of 0.05 reflects this additional weakening of the causal paths, as the reduction in regional tensions and its mitigated impact on internal stability make it even less likely that the conditions for a significant increase in explosions and remote violence are met.\"}",
+      "target_id": "regional_tensions",
+      "target_type": "node",
+      "target_importance": 0.1146,
+      "target_centrality_rank": 3,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent developments in Lebanon's political landscape have led to a significant increase in governmental stability, with key factions reaching a power-sharing agreement and the formation of a new, broadly-supported cabinet. As a result, the risk of political instability-driven unrest has substantially decreased. This shift in the political environment suggests that the current level of political instability may not be a significant contributor to the likelihood of explosions and remote violence. In light of this, it is possible that the forecaster's initial assessment of political instability's impact on the outcome may need to be revised.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.02,
+      "absolute_shift": 0.030000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal factor 'political_instability' by indicating a significant increase in governmental stability in Lebanon. This development weakens the causal path from 'political_instability' to 'lebanon_unrest' and subsequently to 'outcome', as the risk of political instability-driven unrest has decreased. Given that previous challenges have already diminished the importance of 'lebanon_unrest' and 'explosions_history' in the network, the reduction in political instability further decreases the likelihood of explosions and remote violence. With the political environment becoming more stable, one of the last remaining significant potential drivers of unrest and explosions is mitigated, leading to a revised probability estimate of 0.02. This reflects the decreased relevance of political instability in the context of the current Lebanese political landscape and its impact on the forecasted outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.02,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The new information challenges the causal factor 'political_instability' by indicating a significant increase in governmental stability in Lebanon. This development weakens the causal path from 'political_instability' to 'lebanon_unrest' and subsequently to 'outcome', as the risk of political instability-driven unrest has decreased. Given that previous challenges have already diminished the importance of 'lebanon_unrest' and 'explosions_history' in the network, the reduction in political instability further decreases the likelihood of explosions and remote violence. With the political environment becoming more stable, one of the last remaining significant potential drivers of unrest and explosions is mitigated, leading to a revised probability estimate of 0.02. This reflects the decreased relevance of political instability in the context of the current Lebanese political landscape and its impact on the forecasted outcome.\"\n}",
+      "target_id": "political_instability",
+      "target_type": "node",
+      "target_importance": 0.1146,
+      "target_centrality_rank": 5,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "According to a recent report by a reputable international organization, Lebanon has seen a significant surge in protests and demonstrations over the past quarter, with thousands of citizens taking to the streets to express dissatisfaction with the current government and economic conditions. This uptick in unrest has been marked by increased clashes between protesters and security forces, resulting in numerous injuries and arrests. Experts warn that this escalation in tensions could further destabilize the already fragile political landscape, creating an environment conducive to more frequent and intense explosions and remote violence. The report's findings have been endorsed by multiple high-ranking officials and analysts, who agree that the situation in Lebanon is rapidly deteriorating.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.15,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the previous assessments of 'lebanon_unrest' by revealing a significant surge in protests and demonstrations, accompanied by increased clashes between protesters and security forces. This escalation in unrest and tensions contradicts the earlier notion that the level of unrest in Lebanon was diminishing or less relevant. Instead, it suggests that the situation is rapidly deteriorating, which could create an environment more conducive to explosions and remote violence. Given the network's structure, the increased unrest in Lebanon strengthens the causal path from 'lebanon_unrest' to 'outcome', potentially outweighing the mitigating effects of decreased regional tensions and political instability. Although previous challenges had diminished the importance of 'lebanon_unrest', this new information revitalizes its role as a significant contributor to the likelihood of explosions and remote violence, leading to a revised probability estimate of 0.15. This increase reflects the heightened risk associated with the escalating unrest and its potential to destabilize the Lebanese political landscape further.",
+      "raw_response": "{\n  \"updated_probability\": 0.15,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information challenges the previous assessments of 'lebanon_unrest' by revealing a significant surge in protests and demonstrations, accompanied by increased clashes between protesters and security forces. This escalation in unrest and tensions contradicts the earlier notion that the level of unrest in Lebanon was diminishing or less relevant. Instead, it suggests that the situation is rapidly deteriorating, which could create an environment more conducive to explosions and remote violence. Given the network's structure, the increased unrest in Lebanon strengthens the causal path from 'lebanon_unrest' to 'outcome', potentially outweighing the mitigating effects of decreased regional tensions and political instability. Although previous challenges had diminished the importance of 'lebanon_unrest', this new information revitalizes its role as a significant contributor to the likelihood of explosions and remote violence, leading to a revised probability estimate of 0.15. This increase reflects the heightened risk associated with the escalating unrest and its potential to destabilize the Lebanese political landscape further.\"\n}",
+      "target_id": "lebanon_unrest",
+      "target_type": "node",
+      "target_importance": 0.5218,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent study published by a reputable think tank has found a strong correlation between the frequency of explosions and remote violence in Lebanon over the past year and the likelihood of such incidents occurring in the near future. The study analyzed data from various sources, including government reports and eyewitness accounts, and concluded that areas with a higher history of explosions and remote violence are significantly more likely to experience future incidents. This finding has been endorsed by several leading experts in the field of conflict analysis, who argue that it highlights the importance of considering recent history when assessing the risk of future explosions and remote violence. As a result, the Lebanese government has announced plans to increase security measures in areas with a high history of explosions and remote violence.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.3,
+      "absolute_shift": 0.15,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the previous assessment of 'explosions_history' by presenting a strong correlation between the frequency of past explosions and remote violence in Lebanon and the likelihood of future incidents. This finding directly contradicts the earlier challenge to 'explosions_history', which suggested that the recent history of explosions might not be a reliable indicator of future incidents. The study's conclusion, endorsed by leading experts, revitalizes the importance of 'explosions_history' as a predictor of future explosions and remote violence. As a result, the causal path from 'explosions_history' to 'outcome' is strengthened, increasing the overall likelihood of the outcome. Furthermore, the Lebanese government's decision to increase security measures in areas with a high history of explosions and remote violence may not be sufficient to mitigate the risk, given the study's findings. This new information significantly increases the probability estimate to 0.30, reflecting the renewed importance of 'explosions_history' in predicting future incidents and the potential for a higher likelihood of explosions and remote violence in Lebanon.",
+      "raw_response": "{\n  \"updated_probability\": 0.30,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information challenges the previous assessment of 'explosions_history' by presenting a strong correlation between the frequency of past explosions and remote violence in Lebanon and the likelihood of future incidents. This finding directly contradicts the earlier challenge to 'explosions_history', which suggested that the recent history of explosions might not be a reliable indicator of future incidents. The study's conclusion, endorsed by leading experts, revitalizes the importance of 'explosions_history' as a predictor of future explosions and remote violence. As a result, the causal path from 'explosions_history' to 'outcome' is strengthened, increasing the overall likelihood of the outcome. Furthermore, the Lebanese government's decision to increase security measures in areas with a high history of explosions and remote violence may not be sufficient to mitigate the risk, given the study's findings. This new information significantly increases the probability estimate to 0.30, reflecting the renewed importance of 'explosions_history' in predicting future incidents and the potential for a higher likelihood of explosions and remote violence in Lebanon.\"\n}",
+      "target_id": "explosions_history",
+      "target_type": "node",
+      "target_importance": 0.1366,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that increased security measures in Lebanon have been effective in reducing the incidence of explosions and remote violence, even in times of high unrest and instability. Furthermore, international pressure has led to a decrease in the number of violent incidents, suggesting that unrest does not directly translate to an increased number of explosions. This implies that the link between lebanon_unrest and outcome may be weaker than assumed, as other factors such as security measures and international diplomacy can mitigate the effects of unrest. Additionally, historical data suggests that periods of high unrest have not always led to a significant increase in explosions and remote violence.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.12,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'lebanon_unrest' and 'outcome' by suggesting that increased security measures and international pressure can mitigate the effects of unrest, reducing the incidence of explosions and remote violence. This implies that the relationship between unrest and explosions is not as direct as previously assumed. Historical data supporting this claim further weakens the link between 'lebanon_unrest' and 'outcome'. As a result, the causal path from 'lebanon_unrest' to 'outcome' is diminished, reducing the overall likelihood of the outcome. However, the previously strengthened link between 'explosions_history' and 'outcome' remains, which is why the probability does not decrease further. The updated probability estimate of 0.18 reflects the reduced importance of 'lebanon_unrest' as a direct contributor to the outcome, while still considering the influence of 'explosions_history' and other factors in the network.",
+      "raw_response": "{\n  \"updated_probability\": 0.18,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'lebanon_unrest' and 'outcome' by suggesting that increased security measures and international pressure can mitigate the effects of unrest, reducing the incidence of explosions and remote violence. This implies that the relationship between unrest and explosions is not as direct as previously assumed. Historical data supporting this claim further weakens the link between 'lebanon_unrest' and 'outcome'. As a result, the causal path from 'lebanon_unrest' to 'outcome' is diminished, reducing the overall likelihood of the outcome. However, the previously strengthened link between 'explosions_history' and 'outcome' remains, which is why the probability does not decrease further. The updated probability estimate of 0.18 reflects the reduced importance of 'lebanon_unrest' as a direct contributor to the outcome, while still considering the influence of 'explosions_history' and other factors in the network.\"\n}",
+      "target_id": "lebanon_unrest->outcome",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent diplomatic efforts between Lebanon and its neighboring countries have led to a significant decrease in tensions, with multiple high-level meetings and agreements signed in the past quarter. Additionally, historical analysis shows that regional tensions have not always been a reliable predictor of unrest in Lebanon, with some periods of high tensions coinciding with relative calm. This suggests that the relationship between regional tensions and Lebanese unrest may be more nuanced than previously thought. Could the current lull in regional tensions potentially decouple from the expected increase in unrest?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'regional_tensions' and 'lebanon_unrest' by highlighting the recent decrease in tensions and the nuanced historical relationship between the two factors. This suggests that the link between 'regional_tensions' and 'lebanon_unrest' may be weaker than previously assumed, potentially decoupling the current lull in regional tensions from the expected increase in unrest. Given that the network's probability estimate is already influenced more strongly by the 'explosions_history' node, the weakening of this link has a moderate impact on the overall probability. However, as 'lebanon_unrest' is still a factor in the network, albeit with reduced importance due to previous challenges, the decreased relevance of 'regional_tensions' in predicting 'lebanon_unrest' contributes to a slight decrease in the probability estimate. The updated probability of 0.12 reflects this adjustment, acknowledging the more complex relationship between regional tensions and Lebanese unrest.",
+      "raw_response": "{\n  \"updated_probability\": 0.12,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'regional_tensions' and 'lebanon_unrest' by highlighting the recent decrease in tensions and the nuanced historical relationship between the two factors. This suggests that the link between 'regional_tensions' and 'lebanon_unrest' may be weaker than previously assumed, potentially decoupling the current lull in regional tensions from the expected increase in unrest. Given that the network's probability estimate is already influenced more strongly by the 'explosions_history' node, the weakening of this link has a moderate impact on the overall probability. However, as 'lebanon_unrest' is still a factor in the network, albeit with reduced importance due to previous challenges, the decreased relevance of 'regional_tensions' in predicting 'lebanon_unrest' contributes to a slight decrease in the probability estimate. The updated probability of 0.12 reflects this adjustment, acknowledging the more complex relationship between regional tensions and Lebanese unrest.\"\n}",
+      "target_id": "regional_tensions->lebanon_unrest",
+      "target_type": "edge",
+      "target_importance": 0.1,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that in Lebanon, unrest and instability can actually lead to increased security measures, making it more difficult for explosions and remote violence to occur. Additionally, international organizations have been working to improve community resilience and conflict resolution skills, potentially reducing the likelihood of violence. This suggests that the relationship between unrest and explosions may be more complex than initially thought. As a result, the link between lebanon_unrest and explosions_history may not be as strong as previously assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.039999999999999994,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the causal link between 'lebanon_unrest' and 'explosions_history' by suggesting that unrest and instability can lead to increased security measures and community resilience, potentially reducing the likelihood of explosions and remote violence. This complexity in the relationship between unrest and explosions weakens the link between 'lebanon_unrest' and 'explosions_history'. Given that 'explosions_history' is a significant predictor of the outcome, the diminishment of this link reduces the overall likelihood of the outcome. The network's probability estimate, already adjusted for the nuanced relationships between other factors, is further decreased to reflect this new understanding. The updated probability of 0.08 acknowledges the potential for unrest to have a mitigating effect on explosions, rather than solely contributing to an increased risk, and incorporates this complexity into the forecast.",
+      "raw_response": "{\n  \"updated_probability\": 0.08,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the causal link between 'lebanon_unrest' and 'explosions_history' by suggesting that unrest and instability can lead to increased security measures and community resilience, potentially reducing the likelihood of explosions and remote violence. This complexity in the relationship between unrest and explosions weakens the link between 'lebanon_unrest' and 'explosions_history'. Given that 'explosions_history' is a significant predictor of the outcome, the diminishment of this link reduces the overall likelihood of the outcome. The network's probability estimate, already adjusted for the nuanced relationships between other factors, is further decreased to reflect this new understanding. The updated probability of 0.08 acknowledges the potential for unrest to have a mitigating effect on explosions, rather than solely contributing to an increased risk, and incorporates this complexity into the forecast.\"\n}",
+      "target_id": "lebanon_unrest->explosions_history",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that a surge in explosions and remote violence can create a perception of increased unrest and instability among the Lebanese population, even if the underlying social and economic conditions have not changed. This can lead to a self-reinforcing cycle where the outcome itself influences the level of unrest. For instance, widespread media coverage of explosions can amplify public fear and mistrust, thereby increasing perceived unrest. Is it possible that the relationship between unrest and explosions is reversed, with explosions directly contributing to increased unrest?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information challenges the causal link between 'lebanon_unrest' and 'outcome' by suggesting a potential reversal in the relationship, where explosions contribute to increased unrest. However, this reversal does not necessarily alter the overall probability estimate, as the network already accounts for the complex interplay between various factors. The introduction of a potential self-reinforcing cycle, where explosions influence unrest, which in turn can affect the likelihood of future explosions, does not provide a clear direction for updating the probability. The network's current structure and the previous challenges to the links between 'lebanon_unrest' and other nodes have already diminished the importance of 'lebanon_unrest' as a direct contributor to the outcome. Given the lack of clear evidence to significantly adjust the probability, and considering the network's existing complexities, the probability estimate remains unchanged at 0.08. This reflects the ongoing uncertainty and the need for further information to refine the forecast.",
+      "raw_response": "{\n  \"updated_probability\": 0.08,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information challenges the causal link between 'lebanon_unrest' and 'outcome' by suggesting a potential reversal in the relationship, where explosions contribute to increased unrest. However, this reversal does not necessarily alter the overall probability estimate, as the network already accounts for the complex interplay between various factors. The introduction of a potential self-reinforcing cycle, where explosions influence unrest, which in turn can affect the likelihood of future explosions, does not provide a clear direction for updating the probability. The network's current structure and the previous challenges to the links between 'lebanon_unrest' and other nodes have already diminished the importance of 'lebanon_unrest' as a direct contributor to the outcome. Given the lack of clear evidence to significantly adjust the probability, and considering the network's existing complexities, the probability estimate remains unchanged at 0.08. This reflects the ongoing uncertainty and the need for further information to refine the forecast.\"\n}",
+      "target_id": "lebanon_unrest->outcome",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that the Lebanese government's inability to pass a budget has led to a delay in disbursement of funds for social welfare programs, exacerbating poverty and unemployment. This development suggests that the stability of the government has a direct impact on the country's economic conditions. If the government's instability continues to hinder economic decision-making, it could further worsen the economic situation. Will the forecasted probability of more than ten times as many 'Explosions/Remote violence' in the 30 days before 2025-12-28 change in light of this new information?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information highlights the impact of political instability on economic conditions in Lebanon, which could potentially contribute to increased unrest and explosions. However, the network's current structure and previous challenges have already diminished the importance of 'political_instability' and 'lebanon_unrest' as direct contributors to the outcome. The link between 'political_instability' and 'economic_conditions' is not a primary driver of the forecasted probability, as the network's estimate is more heavily influenced by the 'explosions_history' node. Given that the new information does not provide a direct challenge to the 'explosions_history' node or its links, and considering the network's existing complexities, the probability estimate remains unchanged at 0.08. This reflects the ongoing uncertainty and the need for further information to refine the forecast, particularly with regard to the 'explosions_history' node and its potential impact on the outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.08,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information highlights the impact of political instability on economic conditions in Lebanon, which could potentially contribute to increased unrest and explosions. However, the network's current structure and previous challenges have already diminished the importance of 'political_instability' and 'lebanon_unrest' as direct contributors to the outcome. The link between 'political_instability' and 'economic_conditions' is not a primary driver of the forecasted probability, as the network's estimate is more heavily influenced by the 'explosions_history' node. Given that the new information does not provide a direct challenge to the 'explosions_history' node or its links, and considering the network's existing complexities, the probability estimate remains unchanged at 0.08. This reflects the ongoing uncertainty and the need for further information to refine the forecast, particularly with regard to the 'explosions_history' node and its potential impact on the outcome.\"\n}",
+      "target_id": "political_instability->economic_conditions",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent news reports indicate that the Lebanese government's inability to form a cohesive cabinet has led to increased rhetoric from neighboring countries, with some officials publicly questioning Lebanon's ability to maintain stability in the region. This development suggests that political instability within Lebanon may directly contribute to heightened regional tensions. If true, this would imply a previously underappreciated link between the stability of the Lebanese government and the tensions with its neighbors. How does this new information affect your estimate of the outcome?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information highlights a potential link between 'political_instability' and 'regional_tensions', suggesting that the instability of the Lebanese government could contribute to increased tensions with neighboring countries. However, given the previous challenges to the network, the importance of 'regional_tensions' as a predictor of the outcome has already been diminished. The network's estimate is more heavily influenced by the 'explosions_history' node, and the links between 'political_instability', 'regional_tensions', and 'lebanon_unrest' have been weakened by previous challenges. As a result, the introduction of a potential link between 'political_instability' and 'regional_tensions' does not significantly alter the overall probability estimate. The network's complexities and the diminished importance of these nodes in predicting the outcome mean that the probability estimate remains unchanged at 0.08, reflecting the ongoing uncertainty and the need for further information to refine the forecast.",
+      "raw_response": "{\n  \"updated_probability\": 0.08,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information highlights a potential link between 'political_instability' and 'regional_tensions', suggesting that the instability of the Lebanese government could contribute to increased tensions with neighboring countries. However, given the previous challenges to the network, the importance of 'regional_tensions' as a predictor of the outcome has already been diminished. The network's estimate is more heavily influenced by the 'explosions_history' node, and the links between 'political_instability', 'regional_tensions', and 'lebanon_unrest' have been weakened by previous challenges. As a result, the introduction of a potential link between 'political_instability' and 'regional_tensions' does not significantly alter the overall probability estimate. The network's complexities and the diminished importance of these nodes in predicting the outcome mean that the probability estimate remains unchanged at 0.08, reflecting the ongoing uncertainty and the need for further information to refine the forecast.\"\n}",
+      "target_id": "political_instability->regional_tensions",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a significant increase in extremist group activity is observed in Lebanon, with several groups publicly announcing their intentions to escalate violence in the region? This development could be attributed to the growing influence of extremist ideologies and the presence of militant organizations in the country. Would this new information lead you to reassess your forecast, considering the potential for increased explosions and remote violence? The presence of extremist groups could be a crucial factor influencing the outcome.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model by introducing a significant increase in extremist group activity in Lebanon. This development has the potential to substantially impact the outcome, as the presence of extremist groups can be a major driver of explosions and remote violence. The introduction of this new factor requires a reassessment of the forecast, as it adds a critical element that was not previously accounted for in the model. The growing influence of extremist ideologies and the presence of militant organizations in the country can lead to an increased likelihood of violent incidents, which in turn can contribute to a higher probability of the outcome. Given the potential impact of this new information, the probability estimate is significantly increased to 0.25, reflecting the heightened risk of explosions and remote violence due to the increased activity of extremist groups. This update acknowledges the importance of considering the role of extremist groups in the causal model and their potential influence on the outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model by introducing a significant increase in extremist group activity in Lebanon. This development has the potential to substantially impact the outcome, as the presence of extremist groups can be a major driver of explosions and remote violence. The introduction of this new factor requires a reassessment of the forecast, as it adds a critical element that was not previously accounted for in the model. The growing influence of extremist ideologies and the presence of militant organizations in the country can lead to an increased likelihood of violent incidents, which in turn can contribute to a higher probability of the outcome. Given the potential impact of this new information, the probability estimate is significantly increased to 0.25, reflecting the heightened risk of explosions and remote violence due to the increased activity of extremist groups. This update acknowledges the importance of considering the role of extremist groups in the causal model and their potential influence on the outcome.\"\n}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "New information suggests that the current drought in Lebanon has led to a significant increase in food and water prices, exacerbating social tensions and unrest. How would you update your forecast given that this drought is expected to continue until the end of 2025, potentially amplifying the effects of poor economic conditions on the level of unrest and instability? The ongoing drought could further strain the country's resources, contributing to a higher likelihood of explosions and remote violence. Would this new information change your estimated probability of the outcome?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information presents a structural challenge to the causal model by introducing the impact of the ongoing drought on social tensions, unrest, and economic conditions in Lebanon. The expected continuation of the drought until the end of 2025 amplifies the potential effects on the country's resources, contributing to a higher likelihood of explosions and remote violence. This development adds a new layer of complexity to the model, as the drought's impact on food and water prices, social tensions, and economic conditions can exacerbate unrest and instability. The introduction of this environmental factor requires a reassessment of the forecast, as it can interact with existing nodes in the network, such as 'economic_conditions' and 'lebanon_unrest', to increase the probability of the outcome. Given the potential for the drought to further strain the country's resources and contribute to a higher likelihood of violent incidents, the probability estimate is increased to 0.35. This update reflects the consideration of the drought's impact on the causal model and its potential to amplify the effects of poor economic conditions on unrest and instability.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model by introducing the impact of the ongoing drought on social tensions, unrest, and economic conditions in Lebanon. The expected continuation of the drought until the end of 2025 amplifies the potential effects on the country's resources, contributing to a higher likelihood of explosions and remote violence. This development adds a new layer of complexity to the model, as the drought's impact on food and water prices, social tensions, and economic conditions can exacerbate unrest and instability. The introduction of this environmental factor requires a reassessment of the forecast, as it can interact with existing nodes in the network, such as 'economic_conditions' and 'lebanon_unrest', to increase the probability of the outcome. Given the potential for the drought to further strain the country's resources and contribute to a higher likelihood of violent incidents, the probability estimate is increased to 0.35. This update reflects the consideration of the drought's impact on the causal model and its potential to amplify the effects of poor economic conditions on unrest and instability.\"\n}",
+      "target_id": "environmental_factors",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The Lebanese Ministry of Tourism has announced a new campaign to promote cultural heritage sites in the country, aiming to increase tourism revenue by 15% in the next year. The campaign will focus on highlighting Lebanon's rich history and natural beauty, and will include a series of festivals and events. While this initiative is expected to have a positive impact on the country's economy, it is not directly related to the current levels of unrest or explosions. The ministry has allocated a significant budget for the campaign, which will be launched in early 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a structural challenge to the causal model by introducing a potential positive economic development in Lebanon, namely the tourism promotion campaign. However, this initiative is not directly related to the current levels of unrest or explosions, and its impact on the outcome is likely to be indirect and limited. While the campaign may have a positive effect on the country's economy, it is unlikely to significantly reduce the likelihood of explosions and remote violence, which is driven by more complex and deeply ingrained factors, such as extremist group activity, political instability, and social tensions. The network's estimate is more heavily influenced by these factors, and the introduction of a potential positive economic development does not substantially alter the overall probability estimate. Therefore, the probability estimate remains unchanged at 0.35, reflecting the ongoing uncertainty and the need for further information to refine the forecast.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model by introducing a potential positive economic development in Lebanon, namely the tourism promotion campaign. However, this initiative is not directly related to the current levels of unrest or explosions, and its impact on the outcome is likely to be indirect and limited. While the campaign may have a positive effect on the country's economy, it is unlikely to significantly reduce the likelihood of explosions and remote violence, which is driven by more complex and deeply ingrained factors, such as extremist group activity, political instability, and social tensions. The network's estimate is more heavily influenced by these factors, and the introduction of a potential positive economic development does not substantially alter the overall probability estimate. Therefore, the probability estimate remains unchanged at 0.35, reflecting the ongoing uncertainty and the need for further information to refine the forecast.\"\n}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "The Lebanese Ministry of Tourism has announced plans to launch a new marketing campaign aimed at attracting more international visitors to the country's historic sites and cultural events. The campaign, which is set to begin in early 2025, will focus on promoting Lebanon's rich cultural heritage and natural beauty. While the campaign is expected to boost the country's tourism industry, it is unclear how it will impact the overall security situation. The ministry has allocated a significant budget for the campaign, which will include social media advertising and partnerships with international tour operators.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information presents a structural challenge to the causal model by introducing a potential positive development in Lebanon's tourism industry. However, the impact of this marketing campaign on the overall security situation and the likelihood of explosions and remote violence is unclear and indirect. The campaign's focus on promoting cultural heritage and natural beauty does not address the underlying factors driving unrest and instability in the country, such as extremist group activity, political instability, and social tensions. The network's estimate is more heavily influenced by these factors, and the introduction of a potential positive economic development in the tourism industry does not substantially alter the overall probability estimate. Therefore, the probability estimate remains unchanged at 0.35, reflecting the ongoing uncertainty and the need for further information to refine the forecast. The campaign's potential benefits to the economy and international reputation of Lebanon are not directly linked to the causal paths driving the outcome, and thus do not warrant a revision to the probability estimate at this time.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information presents a structural challenge to the causal model by introducing a potential positive development in Lebanon's tourism industry. However, the impact of this marketing campaign on the overall security situation and the likelihood of explosions and remote violence is unclear and indirect. The campaign's focus on promoting cultural heritage and natural beauty does not address the underlying factors driving unrest and instability in the country, such as extremist group activity, political instability, and social tensions. The network's estimate is more heavily influenced by these factors, and the introduction of a potential positive economic development in the tourism industry does not substantially alter the overall probability estimate. Therefore, the probability estimate remains unchanged at 0.35, reflecting the ongoing uncertainty and the need for further information to refine the forecast. The campaign's potential benefits to the economy and international reputation of Lebanon are not directly linked to the causal paths driving the outcome, and thus do not warrant a revision to the probability estimate at this time.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "952de03f3e1b6b9679a372ef16b72ea4b7b42d841f504feb5819d06ffe1de921",
+    "question_text": "Will there be more than ten times as many 'Explosions/Remote violence' in Lebanon for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Explosions/Remote violence'\n2023-11-11,1\n2023-10-10,2\nto calculate one plus the 30-day average of 'Explosions/Remote violence' over the preceding 360 days, we\u2019d have: 1+(1+2)/12=1.25.\n\nIn this example, for the question to resolve positively, 13 (10 x 1.25) or more 'Explosions/Remote violence' would need to occur in the 30 days leading up to the resolution.",
+    "source": "acled",
+    "condition": "multi-turn",
+    "initial_probability": 0.23,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.06125,
+    "max_absolute_shift": 0.16999999999999998
+  }
+}

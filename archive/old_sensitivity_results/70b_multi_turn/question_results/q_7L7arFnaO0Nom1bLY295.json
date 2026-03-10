@@ -1,0 +1,987 @@
+{
+  "question_id": "7L7arFnaO0Nom1bLY295",
+  "question_text": "Will Elon Musk step down from being Tesla CEO by the end of 2025?",
+  "source": "manifold",
+  "initial_probability": 0.27,
+  "nodes": [
+    {
+      "id": "tesla_performance",
+      "description": "Tesla's financial and production performance",
+      "role": "factor"
+    },
+    {
+      "id": "elon_musk_health",
+      "description": "Elon Musk's physical and mental health",
+      "role": "factor"
+    },
+    {
+      "id": "regulatory_pressure",
+      "description": "Government regulations and investigations affecting Tesla",
+      "role": "factor"
+    },
+    {
+      "id": "succession_planning",
+      "description": "Tesla's board and management succession planning efforts",
+      "role": "factor"
+    },
+    {
+      "id": "market_sentiment",
+      "description": "Investor and market sentiment towards Tesla and Elon Musk",
+      "role": "factor"
+    },
+    {
+      "id": "outcomes_expectations",
+      "description": "Expected outcomes of Elon Musk stepping down",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Elon Musk stepping down as Tesla CEO by the end of 2025",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "tesla_performance",
+      "to": "market_sentiment",
+      "mechanism": "Poor performance leads to negative market sentiment"
+    },
+    {
+      "from": "elon_musk_health",
+      "to": "succession_planning",
+      "mechanism": "Health concerns prompt succession planning"
+    },
+    {
+      "from": "regulatory_pressure",
+      "to": "outcomes_expectations",
+      "mechanism": "Regulatory issues increase expected benefits of a change in leadership"
+    },
+    {
+      "from": "succession_planning",
+      "to": "outcome",
+      "mechanism": "Succession planning increases likelihood of a leadership change"
+    },
+    {
+      "from": "market_sentiment",
+      "to": "outcome",
+      "mechanism": "Negative market sentiment pressures Elon Musk to step down"
+    },
+    {
+      "from": "outcomes_expectations",
+      "to": "outcome",
+      "mechanism": "Expected positive outcomes of a change in leadership increase likelihood of Elon Musk stepping down"
+    }
+  ],
+  "reasoning": "The forecasted probability of Elon Musk stepping down as Tesla CEO by the end of 2025 is influenced by a combination of factors, including Tesla's performance, Elon Musk's health, regulatory pressure, succession planning, market sentiment, and expected outcomes of a change in leadership. While Tesla's performance and market sentiment are currently strong, regulatory pressure and concerns about Elon Musk's health may prompt succession planning and increase the likelihood of a leadership change. The expected outcomes of a change in leadership, such as improved regulatory compliance and renewed investor confidence, also play a role in the decision. Overall, the interplay of these factors suggests a probability of 0.27 that Elon Musk will step down by the end of 2025.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 6,
+    "density": 0.1429,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "tesla_performance",
+        "description": "Tesla's financial and production performance",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0701,
+        "path_relevance": 0.0,
+        "composite_importance": 0.214
+      },
+      {
+        "node_id": "elon_musk_health",
+        "description": "Elon Musk's physical and mental health",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0701,
+        "path_relevance": 0.0,
+        "composite_importance": 0.214
+      },
+      {
+        "node_id": "regulatory_pressure",
+        "description": "Government regulations and investigations affecting Tesla",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0701,
+        "path_relevance": 0.0,
+        "composite_importance": 0.214
+      },
+      {
+        "node_id": "succession_planning",
+        "description": "Tesla's board and management succession planning efforts",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.1297,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2859
+      },
+      {
+        "node_id": "market_sentiment",
+        "description": "Investor and market sentiment towards Tesla and Elon Musk",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.1297,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2859
+      },
+      {
+        "node_id": "outcomes_expectations",
+        "description": "Expected outcomes of Elon Musk stepping down",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.1297,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.2859
+      },
+      {
+        "node_id": "outcome",
+        "description": "Elon Musk stepping down as Tesla CEO by the end of 2025",
+        "role": "outcome",
+        "in_degree": 3,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.6667,
+        "pagerank": 0.4007,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0801
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "tesla_performance",
+        "target": "market_sentiment",
+        "mechanism": "Poor performance leads to negative market sentiment",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "elon_musk_health",
+        "target": "succession_planning",
+        "mechanism": "Health concerns prompt succession planning",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "regulatory_pressure",
+        "target": "outcomes_expectations",
+        "mechanism": "Regulatory issues increase expected benefits of a change in leadership",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "succession_planning",
+        "target": "outcome",
+        "mechanism": "Succession planning increases likelihood of a leadership change",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "market_sentiment",
+        "target": "outcome",
+        "mechanism": "Negative market sentiment pressures Elon Musk to step down",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "outcomes_expectations",
+        "target": "outcome",
+        "mechanism": "Expected positive outcomes of a change in leadership increase likelihood of Elon Musk stepping down",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "succession_planning",
+        "description": "Tesla's board and management succession planning efforts",
+        "importance": 0.2859,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "market_sentiment",
+        "description": "Investor and market sentiment towards Tesla and Elon Musk",
+        "importance": 0.2859,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "tesla_performance",
+        "description": "Tesla's financial and production performance",
+        "importance": 0.214,
+        "centrality_rank": 4,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "regulatory_pressure",
+        "description": "Government regulations and investigations affecting Tesla",
+        "importance": 0.214,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "succession_planning",
+        "description": "Tesla's board and management succession planning efforts",
+        "importance": 0.2859,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "market_sentiment",
+        "description": "Investor and market sentiment towards Tesla and Elon Musk",
+        "importance": 0.2859,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "tesla_performance->market_sentiment",
+        "description": "Poor performance leads to negative market sentiment",
+        "importance": 0.0476,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "elon_musk_health->succession_planning",
+        "description": "Health concerns prompt succession planning",
+        "importance": 0.0476,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "outcomes_expectations->outcome",
+        "description": "Expected positive outcomes of a change in leadership increase likelihood of Elon Musk stepping down",
+        "importance": 0.0476,
+        "centrality_rank": 6,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "tesla_performance->market_sentiment",
+        "description": "Poor performance leads to negative market sentiment",
+        "importance": 0.0476,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "outcomes_expectations->succession_planning",
+        "description": "Potential link: Expected outcomes of Elon Musk stepping down -> Tesla's board and management succession planning efforts",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "outcomes_expectations->market_sentiment",
+        "description": "Potential link: Expected outcomes of Elon Musk stepping down -> Investor and market sentiment towards Tesla and Elon Musk",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "succession_planning",
+      "description": "Tesla's board and management succession planning efforts",
+      "importance": 0.2859,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "market_sentiment",
+      "description": "Investor and market sentiment towards Tesla and Elon Musk",
+      "importance": 0.2859,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "tesla_performance",
+      "description": "Tesla's financial and production performance",
+      "importance": 0.214,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "regulatory_pressure",
+      "description": "Government regulations and investigations affecting Tesla",
+      "importance": 0.214,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "succession_planning",
+      "description": "Tesla's board and management succession planning efforts",
+      "importance": 0.2859,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "market_sentiment",
+      "description": "Investor and market sentiment towards Tesla and Elon Musk",
+      "importance": 0.2859,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "tesla_performance->market_sentiment",
+      "description": "Poor performance leads to negative market sentiment",
+      "importance": 0.0476,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "elon_musk_health->succession_planning",
+      "description": "Health concerns prompt succession planning",
+      "importance": 0.0476,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "outcomes_expectations->outcome",
+      "description": "Expected positive outcomes of a change in leadership increase likelihood of Elon Musk stepping down",
+      "importance": 0.0476,
+      "centrality_rank": 6,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "tesla_performance->market_sentiment",
+      "description": "Poor performance leads to negative market sentiment",
+      "importance": 0.0476,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "outcomes_expectations->succession_planning",
+      "description": "Potential link: Expected outcomes of Elon Musk stepping down -> Tesla's board and management succession planning efforts",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "outcomes_expectations->market_sentiment",
+      "description": "Potential link: Expected outcomes of Elon Musk stepping down -> Investor and market sentiment towards Tesla and Elon Musk",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if Tesla's board has secretly decided to maintain continuity and stability by not actively pursuing succession planning, instead choosing to focus on supporting Elon Musk's vision and leadership, making succession planning efforts irrelevant to the decision of Elon Musk stepping down? Recent insider reports suggest that the board is more focused on short-term stock performance than long-term leadership transitions. This shift in priorities could render succession planning a non-factor in the equation. As a result, the presence or absence of succession planning might not influence Elon Musk's decision to step down as Tesla CEO.",
+      "probe_type": "node_negate_high",
+      "target_id": "succession_planning",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2859,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Tesla's board and management succession planning efforts"
+    },
+    {
+      "probe_text": "What if investor and market sentiment towards Tesla and Elon Musk has become increasingly disconnected from the company's actual performance, with investors now prioritizing long-term vision over short-term gains, thereby rendering market sentiment an unreliable indicator of Elon Musk's likelihood to step down? Recent trends suggest that investors are more focused on the electric vehicle market's growth potential than on Elon Musk's personal leadership. As a result, even if Tesla's stock price were to decline, investors might still support Elon Musk's continued leadership. This could make market sentiment a non-factor in the decision for him to step down.",
+      "probe_type": "node_negate_high",
+      "target_id": "market_sentiment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2859,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Investor and market sentiment towards Tesla and Elon Musk"
+    },
+    {
+      "probe_text": "Recent reports indicate that despite initial concerns, Tesla has successfully streamlined its manufacturing process, resulting in significant cost savings and improved production efficiency. Furthermore, the company has announced several major new projects and partnerships, suggesting a strong and growing financial position. This newfound stability could render concerns over Tesla's performance moot, potentially decoupling it from market sentiment. As a result, poor performance may no longer be a driver of negative market sentiment towards the company.",
+      "probe_type": "node_negate_medium",
+      "target_id": "tesla_performance",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.214,
+      "centrality_rank": 4,
+      "on_critical_path": false,
+      "description": "Tesla's financial and production performance"
+    },
+    {
+      "probe_text": "Recent reports indicate that the government has decided to relax its regulatory oversight on the automotive industry, and Tesla is no longer under intense scrutiny. Additionally, Elon Musk has established a good working relationship with key regulatory bodies, reducing the likelihood of stringent investigations. As a result, the impact of government regulations on Tesla's operations is expected to be minimal. This development suggests that regulatory pressure may not be a significant factor in Elon Musk's decision to step down as CEO.",
+      "probe_type": "node_negate_low",
+      "target_id": "regulatory_pressure",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.214,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Government regulations and investigations affecting Tesla"
+    },
+    {
+      "probe_text": "In a recent interview, a Tesla board member confirmed that the company has accelerated its succession planning efforts, citing a desire to ensure a smooth transition of leadership in the near future. This confirmation comes on the heels of a comprehensive review of Tesla's corporate governance structure, which recommended strengthening the company's succession planning protocols. Additionally, several high-profile investors have publicly expressed support for Tesla's succession planning efforts, suggesting that a well-planned transition could have numerous benefits for the company's long-term health. As a result, Tesla's board is now reportedly working closely with external consultants to identify and develop potential successors to Elon Musk.",
+      "probe_type": "node_strengthen",
+      "target_id": "succession_planning",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2859,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Tesla's board and management succession planning efforts"
+    },
+    {
+      "probe_text": "A recent survey of institutional investors revealed that 75% of respondents believe Elon Musk's leadership style has become a significant liability for Tesla, citing concerns over his Twitter antics and perceived detachment from the company's core operations. This sentiment is echoed by several high-profile investors, who have publicly stated their intention to reevaluate their Tesla holdings if Musk remains at the helm. As a result, Tesla's stock price has begun to show increased volatility in response to Musk's public statements, underscoring the growing influence of market sentiment on the company's fortunes. This shift in investor sentiment has prompted some analysts to speculate that the Tesla board may face mounting pressure to consider a change in leadership.",
+      "probe_type": "node_strengthen",
+      "target_id": "market_sentiment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2859,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Investor and market sentiment towards Tesla and Elon Musk"
+    },
+    {
+      "probe_text": "Recent studies have shown that institutional investors, who hold a significant portion of Tesla's shares, prioritize long-term sustainability and innovation over short-term financial performance, potentially decoupling market sentiment from Tesla's financial and production performance. Furthermore, the electric vehicle market is expected to continue growing, making Tesla's stock attractive regardless of minor performance fluctuations. This could weaken the link between Tesla's performance and market sentiment. Additionally, Elon Musk's personal brand and vision for the future of energy and transportation may also insulate the company from negative market reactions to minor performance issues.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "tesla_performance->market_sentiment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Poor performance leads to negative market sentiment"
+    },
+    {
+      "probe_text": "Recent reports suggest that Elon Musk has a robust health support system in place, including access to top medical professionals and a strong support network, which could mitigate the impact of any health concerns on his leadership role, potentially rendering health-related succession planning less urgent. Furthermore, Tesla's board has historically been supportive of Musk, even in times of personal turmoil, indicating that health issues may not necessarily trigger succession planning. This raises questions about the strength of the relationship between Elon Musk's health and the company's succession planning efforts. If true, this could significantly weaken the causal link between Elon Musk's health and succession planning.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "elon_musk_health->succession_planning",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Health concerns prompt succession planning"
+    },
+    {
+      "probe_text": "Recent studies have shown that Tesla's board of directors tends to prioritize short-term stability over long-term strategic planning, suggesting that even if expected outcomes of Elon Musk stepping down are positive, the board may still be hesitant to act on them. Furthermore, the complexity of Tesla's operational structure and the lack of a clear successor could outweigh any potential benefits of a change in leadership. This raises questions about whether the expected positive outcomes of Elon Musk stepping down would actually increase the likelihood of him doing so. In light of this, how does your estimate change?",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "outcomes_expectations->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 6,
+      "on_critical_path": true,
+      "description": "Expected positive outcomes of a change in leadership increase likelihood of Elon Musk stepping down"
+    },
+    {
+      "probe_text": "Recent studies have shown that negative market sentiment can lead to decreased investor confidence, resulting in reduced demand for Tesla's products and ultimately affecting the company's financial performance. This suggests that market sentiment may actually drive Tesla's performance, rather than the other way around. For instance, if investors expect Tesla to underperform, they may sell their shares, leading to a decrease in the company's stock price and subsequently impacting its ability to secure funding for future projects. Could it be that the true causal relationship is that market sentiment influences Tesla's performance?",
+      "probe_type": "edge_reverse",
+      "target_id": "tesla_performance->market_sentiment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0476,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Poor performance leads to negative market sentiment"
+    },
+    {
+      "probe_text": "Recent surveys suggest that Tesla's board members and investors are increasingly optimistic about the company's future prospects under new leadership, expecting significant improvements in stock performance and reduced regulatory scrutiny. As a result, the board has begun quietly accelerating succession planning efforts, citing the potential for a smoother transition and better positioning for future growth. This development implies that the expected outcomes of Elon Musk stepping down are directly influencing Tesla's succession planning. How does this new information affect your estimate of Elon Musk stepping down as Tesla CEO by the end of 2025?",
+      "probe_type": "edge_fabricate",
+      "target_id": "outcomes_expectations->succession_planning",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Expected outcomes of Elon Musk stepping down -> Tesla's board and management succession planning efforts"
+    },
+    {
+      "probe_text": "A recent survey of major Tesla investors reveals that most believe Elon Musk's departure would lead to increased stock prices due to the perception of more stable and predictable leadership, which in turn could improve overall market sentiment towards the company. This suggests that the expected outcomes of Elon Musk stepping down may directly influence investor and market sentiment. If true, this would imply a previously unconsidered causal link between outcomes expectations and market sentiment. How would this new information affect your initial probability estimate?",
+      "probe_type": "edge_fabricate",
+      "target_id": "outcomes_expectations->market_sentiment",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Expected outcomes of Elon Musk stepping down -> Investor and market sentiment towards Tesla and Elon Musk"
+    },
+    {
+      "probe_text": "What if Elon Musk were to announce a significant new project or initiative for Tesla, potentially altering the trajectory of the company and his role within it? This could include a major expansion into a new market or technology sector. How would this development impact your assessment of the likelihood that Elon Musk will step down as Tesla CEO by the end of 2025? Consider how such an announcement might affect market sentiment, regulatory pressure, and succession planning efforts.",
+      "probe_type": "missing_node",
+      "target_id": "major_new_project",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if Elon Musk were to announce a major breakthrough in Tesla's autonomous driving technology, significantly boosting the company's stock price and public image? This development could potentially reduce the pressure on him to step down, despite other factors. How would this new information affect your estimate of Elon Musk stepping down as Tesla CEO by the end of 2025? Consider the potential impact on market sentiment and the board's succession planning efforts.",
+      "probe_type": "missing_node",
+      "target_id": "technological_advancements",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "A recent study found that the average tenure of CEOs in the technology sector has increased by 12 months over the past decade, potentially indicating a shift in industry norms. This trend is attributed to the growing complexity of technology companies and the need for longer-term strategic planning. However, the study did not account for the specific circumstances of individual companies like Tesla. The findings have sparked debate among industry experts about the ideal CEO tenure.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "A recent documentary about the history of electric vehicles has sparked a renewed interest in the early days of Tesla, with many fans of the company sharing stories about the first Roadster model on social media. The documentary has been well-received by critics and the public alike, and has inspired a new generation of entrepreneurs to pursue careers in the tech industry. However, the documentary does not mention Elon Musk's current role or future plans at Tesla. The film's director has announced plans to create a sequel, focusing on the impact of Tesla's manufacturing processes on local communities.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if Tesla's board has secretly decided to maintain continuity and stability by not actively pursuing succession planning, instead choosing to focus on supporting Elon Musk's vision and leadership, making succession planning efforts irrelevant to the decision of Elon Musk stepping down? Recent insider reports suggest that the board is more focused on short-term stock performance than long-term leadership transitions. This shift in priorities could render succession planning a non-factor in the equation. As a result, the presence or absence of succession planning might not influence Elon Musk's decision to step down as Tesla CEO.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.21,
+      "absolute_shift": 0.060000000000000026,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'succession_planning' factor reduces the influence of this node on the outcome. With the board focusing on short-term stock performance and not actively pursuing succession planning, the mechanism by which succession planning affects the outcome ('Succession planning increases likelihood of a leadership change') is weakened. This change primarily affects the path from 'elon_musk_health' to 'outcome' through 'succession_planning', reducing the overall probability of Elon Musk stepping down as Tesla CEO by the end of 2025. The updated probability reflects a decreased likelihood due to the diminished role of succession planning in the decision-making process.",
+      "raw_response": "{\"updated_probability\": 0.21, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the 'succession_planning' factor reduces the influence of this node on the outcome. With the board focusing on short-term stock performance and not actively pursuing succession planning, the mechanism by which succession planning affects the outcome ('Succession planning increases likelihood of a leadership change') is weakened. This change primarily affects the path from 'elon_musk_health' to 'outcome' through 'succession_planning', reducing the overall probability of Elon Musk stepping down as Tesla CEO by the end of 2025. The updated probability reflects a decreased likelihood due to the diminished role of succession planning in the decision-making process.\"}",
+      "target_id": "succession_planning",
+      "target_type": "node",
+      "target_importance": 0.2859,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if investor and market sentiment towards Tesla and Elon Musk has become increasingly disconnected from the company's actual performance, with investors now prioritizing long-term vision over short-term gains, thereby rendering market sentiment an unreliable indicator of Elon Musk's likelihood to step down? Recent trends suggest that investors are more focused on the electric vehicle market's growth potential than on Elon Musk's personal leadership. As a result, even if Tesla's stock price were to decline, investors might still support Elon Musk's continued leadership. This could make market sentiment a non-factor in the decision for him to step down.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.03999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'market_sentiment' factor significantly reduces its influence on the outcome. With investors prioritizing long-term vision over short-term gains and focusing on the electric vehicle market's growth potential, the mechanism by which 'market_sentiment' affects the outcome ('Negative market sentiment pressures Elon Musk to step down') is severely weakened. This change primarily affects the path from 'tesla_performance' to 'outcome' through 'market_sentiment', which was a key factor in the initial estimate. Given that market sentiment is now a less reliable indicator of pressure on Elon Musk to step down, the overall probability of him stepping down as Tesla CEO by the end of 2025 decreases. The updated probability reflects this reduced likelihood.",
+      "raw_response": "{\n  \"updated_probability\": 0.17,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to the 'market_sentiment' factor significantly reduces its influence on the outcome. With investors prioritizing long-term vision over short-term gains and focusing on the electric vehicle market's growth potential, the mechanism by which 'market_sentiment' affects the outcome ('Negative market sentiment pressures Elon Musk to step down') is severely weakened. This change primarily affects the path from 'tesla_performance' to 'outcome' through 'market_sentiment', which was a key factor in the initial estimate. Given that market sentiment is now a less reliable indicator of pressure on Elon Musk to step down, the overall probability of him stepping down as Tesla CEO by the end of 2025 decreases. The updated probability reflects this reduced likelihood.\"\n}",
+      "target_id": "market_sentiment",
+      "target_type": "node",
+      "target_importance": 0.2859,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that despite initial concerns, Tesla has successfully streamlined its manufacturing process, resulting in significant cost savings and improved production efficiency. Furthermore, the company has announced several major new projects and partnerships, suggesting a strong and growing financial position. This newfound stability could render concerns over Tesla's performance moot, potentially decoupling it from market sentiment. As a result, poor performance may no longer be a driver of negative market sentiment towards the company.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.14,
+      "absolute_shift": 0.03,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'tesla_performance' factor further diminishes the paths leading to the outcome. With Tesla's improved manufacturing efficiency and new projects, the likelihood of poor performance impacting market sentiment is reduced. The mechanism by which 'tesla_performance' affects 'market_sentiment' ('Poor performance leads to negative market sentiment') is weakened, and since 'market_sentiment' was already deemed a less reliable indicator due to previous challenges, this update has a compounding effect. Although the direct impact of 'tesla_performance' on the outcome is not significant, its influence through 'market_sentiment' is now minimal. Given the cumulative effect of challenges to multiple factors, the probability of Elon Musk stepping down as Tesla CEO by the end of 2025 decreases, reflecting the reduced pressure from both market sentiment and performance-related concerns.",
+      "raw_response": "{\n  \"updated_probability\": 0.14,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The challenge to the 'tesla_performance' factor further diminishes the paths leading to the outcome. With Tesla's improved manufacturing efficiency and new projects, the likelihood of poor performance impacting market sentiment is reduced. The mechanism by which 'tesla_performance' affects 'market_sentiment' ('Poor performance leads to negative market sentiment') is weakened, and since 'market_sentiment' was already deemed a less reliable indicator due to previous challenges, this update has a compounding effect. Although the direct impact of 'tesla_performance' on the outcome is not significant, its influence through 'market_sentiment' is now minimal. Given the cumulative effect of challenges to multiple factors, the probability of Elon Musk stepping down as Tesla CEO by the end of 2025 decreases, reflecting the reduced pressure from both market sentiment and performance-related concerns.\"\n}",
+      "target_id": "tesla_performance",
+      "target_type": "node",
+      "target_importance": 0.214,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that the government has decided to relax its regulatory oversight on the automotive industry, and Tesla is no longer under intense scrutiny. Additionally, Elon Musk has established a good working relationship with key regulatory bodies, reducing the likelihood of stringent investigations. As a result, the impact of government regulations on Tesla's operations is expected to be minimal. This development suggests that regulatory pressure may not be a significant factor in Elon Musk's decision to step down as CEO.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.1,
+      "absolute_shift": 0.04000000000000001,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the 'regulatory_pressure' factor eliminates a key potential driver of Elon Musk's decision to step down. With reduced regulatory oversight and improved relationships with regulatory bodies, the mechanism by which 'regulatory_pressure' affects 'outcomes_expectations' ('Regulatory issues increase expected benefits of a change in leadership') is no longer relevant. This update significantly weakens one of the remaining paths to the outcome, as the expected benefits of a change in leadership due to regulatory issues are now minimal. Considering the previous challenges have already weakened other factors, this update further decreases the overall probability of Elon Musk stepping down as Tesla CEO by the end of 2025, reflecting the diminished pressure from regulatory concerns.",
+      "raw_response": "{\n  \"updated_probability\": 0.10,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The challenge to the 'regulatory_pressure' factor eliminates a key potential driver of Elon Musk's decision to step down. With reduced regulatory oversight and improved relationships with regulatory bodies, the mechanism by which 'regulatory_pressure' affects 'outcomes_expectations' ('Regulatory issues increase expected benefits of a change in leadership') is no longer relevant. This update significantly weakens one of the remaining paths to the outcome, as the expected benefits of a change in leadership due to regulatory issues are now minimal. Considering the previous challenges have already weakened other factors, this update further decreases the overall probability of Elon Musk stepping down as Tesla CEO by the end of 2025, reflecting the diminished pressure from regulatory concerns.\"\n}",
+      "target_id": "regulatory_pressure",
+      "target_type": "node",
+      "target_importance": 0.214,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "In a recent interview, a Tesla board member confirmed that the company has accelerated its succession planning efforts, citing a desire to ensure a smooth transition of leadership in the near future. This confirmation comes on the heels of a comprehensive review of Tesla's corporate governance structure, which recommended strengthening the company's succession planning protocols. Additionally, several high-profile investors have publicly expressed support for Tesla's succession planning efforts, suggesting that a well-planned transition could have numerous benefits for the company's long-term health. As a result, Tesla's board is now reportedly working closely with external consultants to identify and develop potential successors to Elon Musk.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.15,
+      "shift_direction": "increased",
+      "reasoning": "The new information directly contradicts and overturns the previous challenge to the 'succession_planning' factor, which had suggested that Tesla's board was not actively pursuing succession planning. This update significantly strengthens the path from 'elon_musk_health' to 'outcome' through 'succession_planning', as well as the direct influence of 'succession_planning' on the outcome. The confirmation of accelerated succession planning efforts, combined with the support from high-profile investors and the involvement of external consultants, suggests that Tesla is now proactively preparing for a potential transition in leadership. This renewed focus on succession planning increases the likelihood that Elon Musk may step down as Tesla CEO by the end of 2025, either by choice or due to a well-planned succession process. The updated probability reflects this increased likelihood, reversing some of the previous decreases in probability due to other challenges.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information directly contradicts and overturns the previous challenge to the 'succession_planning' factor, which had suggested that Tesla's board was not actively pursuing succession planning. This update significantly strengthens the path from 'elon_musk_health' to 'outcome' through 'succession_planning', as well as the direct influence of 'succession_planning' on the outcome. The confirmation of accelerated succession planning efforts, combined with the support from high-profile investors and the involvement of external consultants, suggests that Tesla is now proactively preparing for a potential transition in leadership. This renewed focus on succession planning increases the likelihood that Elon Musk may step down as Tesla CEO by the end of 2025, either by choice or due to a well-planned succession process. The updated probability reflects this increased likelihood, reversing some of the previous decreases in probability due to other challenges.\"\n}",
+      "target_id": "succession_planning",
+      "target_type": "node",
+      "target_importance": 0.2859,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent survey of institutional investors revealed that 75% of respondents believe Elon Musk's leadership style has become a significant liability for Tesla, citing concerns over his Twitter antics and perceived detachment from the company's core operations. This sentiment is echoed by several high-profile investors, who have publicly stated their intention to reevaluate their Tesla holdings if Musk remains at the helm. As a result, Tesla's stock price has begun to show increased volatility in response to Musk's public statements, underscoring the growing influence of market sentiment on the company's fortunes. This shift in investor sentiment has prompted some analysts to speculate that the Tesla board may face mounting pressure to consider a change in leadership.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.4,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges and overturns the previous assessment that market sentiment had become disconnected from Elon Musk's leadership. The survey of institutional investors and public statements from high-profile investors indicate a strong negative sentiment towards Musk's leadership style, which is now being reflected in Tesla's stock price volatility. This update strengthens the path from 'tesla_performance' to 'outcome' through 'market_sentiment', as well as the direct influence of 'market_sentiment' on the outcome. The growing influence of market sentiment on Tesla's fortunes and the potential pressure on the board to consider a change in leadership suggest that Elon Musk may face increasing scrutiny and pressure to step down. The updated probability reflects this increased likelihood, as the combination of negative market sentiment and accelerated succession planning efforts (as reported in the previous update) creates a more favorable environment for a potential transition in leadership.",
+      "raw_response": "{\n  \"updated_probability\": 0.40,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information challenges and overturns the previous assessment that market sentiment had become disconnected from Elon Musk's leadership. The survey of institutional investors and public statements from high-profile investors indicate a strong negative sentiment towards Musk's leadership style, which is now being reflected in Tesla's stock price volatility. This update strengthens the path from 'tesla_performance' to 'outcome' through 'market_sentiment', as well as the direct influence of 'market_sentiment' on the outcome. The growing influence of market sentiment on Tesla's fortunes and the potential pressure on the board to consider a change in leadership suggest that Elon Musk may face increasing scrutiny and pressure to step down. The updated probability reflects this increased likelihood, as the combination of negative market sentiment and accelerated succession planning efforts (as reported in the previous update) creates a more favorable environment for a potential transition in leadership.\"\n}",
+      "target_id": "market_sentiment",
+      "target_type": "node",
+      "target_importance": 0.2859,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that institutional investors, who hold a significant portion of Tesla's shares, prioritize long-term sustainability and innovation over short-term financial performance, potentially decoupling market sentiment from Tesla's financial and production performance. Furthermore, the electric vehicle market is expected to continue growing, making Tesla's stock attractive regardless of minor performance fluctuations. This could weaken the link between Tesla's performance and market sentiment. Additionally, Elon Musk's personal brand and vision for the future of energy and transportation may also insulate the company from negative market reactions to minor performance issues.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the link between 'tesla_performance' and 'market_sentiment', suggesting that institutional investors prioritize long-term sustainability and innovation over short-term financial performance. This decoupling weakens the path from 'tesla_performance' to 'outcome' through 'market_sentiment', as minor performance fluctuations may not significantly impact market sentiment. However, the recent update on negative market sentiment towards Elon Musk's leadership style (which increased the probability to 0.40) is not directly affected by this challenge, as it is driven by concerns over Musk's leadership and personal brand rather than Tesla's performance. The decrease in probability is relatively small, reflecting the ongoing influence of market sentiment on the outcome, albeit through a more nuanced and complex relationship with Tesla's performance. The overall probability remains higher than previous estimates, as the accelerated succession planning efforts and negative market sentiment towards Musk's leadership continue to contribute to the likelihood of him stepping down.",
+      "raw_response": "{\n  \"updated_probability\": 0.38,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the link between 'tesla_performance' and 'market_sentiment', suggesting that institutional investors prioritize long-term sustainability and innovation over short-term financial performance. This decoupling weakens the path from 'tesla_performance' to 'outcome' through 'market_sentiment', as minor performance fluctuations may not significantly impact market sentiment. However, the recent update on negative market sentiment towards Elon Musk's leadership style (which increased the probability to 0.40) is not directly affected by this challenge, as it is driven by concerns over Musk's leadership and personal brand rather than Tesla's performance. The decrease in probability is relatively small, reflecting the ongoing influence of market sentiment on the outcome, albeit through a more nuanced and complex relationship with Tesla's performance. The overall probability remains higher than previous estimates, as the accelerated succession planning efforts and negative market sentiment towards Musk's leadership continue to contribute to the likelihood of him stepping down.\"\n}",
+      "target_id": "tesla_performance->market_sentiment",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent reports suggest that Elon Musk has a robust health support system in place, including access to top medical professionals and a strong support network, which could mitigate the impact of any health concerns on his leadership role, potentially rendering health-related succession planning less urgent. Furthermore, Tesla's board has historically been supportive of Musk, even in times of personal turmoil, indicating that health issues may not necessarily trigger succession planning. This raises questions about the strength of the relationship between Elon Musk's health and the company's succession planning efforts. If true, this could significantly weaken the causal link between Elon Musk's health and succession planning.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.32,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the link between 'elon_musk_health' and 'succession_planning', suggesting that Elon Musk's health support system and the board's historical support could mitigate the impact of health concerns on succession planning. This weakening of the causal link reduces the influence of 'elon_musk_health' on the outcome, as health-related issues may not trigger succession planning efforts. The path from 'elon_musk_health' to 'outcome' through 'succession_planning' is now less significant, contributing to a decrease in the overall probability. However, the recent updates on accelerated succession planning efforts and negative market sentiment towards Musk's leadership style continue to support a higher probability of him stepping down. The decrease in probability is moderate, reflecting the ongoing influence of other factors, such as market sentiment and succession planning, on the outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.32,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the link between 'elon_musk_health' and 'succession_planning', suggesting that Elon Musk's health support system and the board's historical support could mitigate the impact of health concerns on succession planning. This weakening of the causal link reduces the influence of 'elon_musk_health' on the outcome, as health-related issues may not trigger succession planning efforts. The path from 'elon_musk_health' to 'outcome' through 'succession_planning' is now less significant, contributing to a decrease in the overall probability. However, the recent updates on accelerated succession planning efforts and negative market sentiment towards Musk's leadership style continue to support a higher probability of him stepping down. The decrease in probability is moderate, reflecting the ongoing influence of other factors, such as market sentiment and succession planning, on the outcome.\"\n}",
+      "target_id": "elon_musk_health->succession_planning",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that Tesla's board of directors tends to prioritize short-term stability over long-term strategic planning, suggesting that even if expected outcomes of Elon Musk stepping down are positive, the board may still be hesitant to act on them. Furthermore, the complexity of Tesla's operational structure and the lack of a clear successor could outweigh any potential benefits of a change in leadership. This raises questions about whether the expected positive outcomes of Elon Musk stepping down would actually increase the likelihood of him doing so. In light of this, how does your estimate change?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.07,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges the link between 'outcomes_expectations' and 'outcome', suggesting that Tesla's board prioritizes short-term stability and may be hesitant to act on expected positive outcomes of Elon Musk stepping down. This weakening of the causal link reduces the influence of 'outcomes_expectations' on the outcome, as the board's decision-making process may not be driven by long-term strategic considerations. The path from 'regulatory_pressure' to 'outcome' through 'outcomes_expectations' is now less significant, contributing to a decrease in the overall probability. Additionally, the complexity of Tesla's operational structure and the lack of a clear successor may further reduce the likelihood of Elon Musk stepping down, even if expected outcomes are positive. The decrease in probability reflects the reduced impact of expected outcomes on the board's decision-making process, highlighting the importance of other factors, such as market sentiment and succession planning, in driving the outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges the link between 'outcomes_expectations' and 'outcome', suggesting that Tesla's board prioritizes short-term stability and may be hesitant to act on expected positive outcomes of Elon Musk stepping down. This weakening of the causal link reduces the influence of 'outcomes_expectations' on the outcome, as the board's decision-making process may not be driven by long-term strategic considerations. The path from 'regulatory_pressure' to 'outcome' through 'outcomes_expectations' is now less significant, contributing to a decrease in the overall probability. Additionally, the complexity of Tesla's operational structure and the lack of a clear successor may further reduce the likelihood of Elon Musk stepping down, even if expected outcomes are positive. The decrease in probability reflects the reduced impact of expected outcomes on the board's decision-making process, highlighting the importance of other factors, such as market sentiment and succession planning, in driving the outcome.\"\n}",
+      "target_id": "outcomes_expectations->outcome",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that negative market sentiment can lead to decreased investor confidence, resulting in reduced demand for Tesla's products and ultimately affecting the company's financial performance. This suggests that market sentiment may actually drive Tesla's performance, rather than the other way around. For instance, if investors expect Tesla to underperform, they may sell their shares, leading to a decrease in the company's stock price and subsequently impacting its ability to secure funding for future projects. Could it be that the true causal relationship is that market sentiment influences Tesla's performance?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.3,
+      "absolute_shift": 0.04999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges the direction of the causal link between 'tesla_performance' and 'market_sentiment', suggesting that market sentiment may actually drive Tesla's performance. This reversal of the causal link introduces a new path from 'market_sentiment' to 'outcome' through 'tesla_performance', as negative market sentiment can lead to decreased investor confidence, reduced demand, and ultimately affect Tesla's financial performance. The recent update on negative market sentiment towards Elon Musk's leadership style takes on new significance, as it may not only directly pressure Musk to step down but also indirectly affect Tesla's performance, creating a self-reinforcing cycle. The updated probability reflects the increased likelihood of Elon Musk stepping down, driven by the potential for market sentiment to influence Tesla's performance and exacerbate existing pressures on Musk's leadership.",
+      "raw_response": "{\n  \"updated_probability\": 0.30,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information challenges the direction of the causal link between 'tesla_performance' and 'market_sentiment', suggesting that market sentiment may actually drive Tesla's performance. This reversal of the causal link introduces a new path from 'market_sentiment' to 'outcome' through 'tesla_performance', as negative market sentiment can lead to decreased investor confidence, reduced demand, and ultimately affect Tesla's financial performance. The recent update on negative market sentiment towards Elon Musk's leadership style takes on new significance, as it may not only directly pressure Musk to step down but also indirectly affect Tesla's performance, creating a self-reinforcing cycle. The updated probability reflects the increased likelihood of Elon Musk stepping down, driven by the potential for market sentiment to influence Tesla's performance and exacerbate existing pressures on Musk's leadership.\"\n}",
+      "target_id": "tesla_performance->market_sentiment",
+      "target_type": "edge",
+      "target_importance": 0.0476,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Recent surveys suggest that Tesla's board members and investors are increasingly optimistic about the company's future prospects under new leadership, expecting significant improvements in stock performance and reduced regulatory scrutiny. As a result, the board has begun quietly accelerating succession planning efforts, citing the potential for a smoother transition and better positioning for future growth. This development implies that the expected outcomes of Elon Musk stepping down are directly influencing Tesla's succession planning. How does this new information affect your estimate of Elon Musk stepping down as Tesla CEO by the end of 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the link between 'outcomes_expectations' and 'succession_planning', suggesting that the expected positive outcomes of Elon Musk stepping down are directly driving the board's succession planning efforts. This reinforcement of the causal link increases the influence of 'outcomes_expectations' on the outcome, as the board's actions are now more closely tied to the anticipated benefits of a transition in leadership. The path from 'outcomes_expectations' to 'outcome' through 'succession_planning' is now more significant, contributing to a substantial increase in the overall probability. The combination of this new information with the previously established negative market sentiment towards Musk's leadership style and the potential for market sentiment to influence Tesla's performance creates a powerful confluence of factors suggesting that Elon Musk may step down as Tesla CEO by the end of 2025. The updated probability reflects this increased likelihood, driven by the accelerating succession planning efforts and the board's growing optimism about the company's future prospects under new leadership.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information strengthens the link between 'outcomes_expectations' and 'succession_planning', suggesting that the expected positive outcomes of Elon Musk stepping down are directly driving the board's succession planning efforts. This reinforcement of the causal link increases the influence of 'outcomes_expectations' on the outcome, as the board's actions are now more closely tied to the anticipated benefits of a transition in leadership. The path from 'outcomes_expectations' to 'outcome' through 'succession_planning' is now more significant, contributing to a substantial increase in the overall probability. The combination of this new information with the previously established negative market sentiment towards Musk's leadership style and the potential for market sentiment to influence Tesla's performance creates a powerful confluence of factors suggesting that Elon Musk may step down as Tesla CEO by the end of 2025. The updated probability reflects this increased likelihood, driven by the accelerating succession planning efforts and the board's growing optimism about the company's future prospects under new leadership.\"\n}",
+      "target_id": "outcomes_expectations->succession_planning",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "A recent survey of major Tesla investors reveals that most believe Elon Musk's departure would lead to increased stock prices due to the perception of more stable and predictable leadership, which in turn could improve overall market sentiment towards the company. This suggests that the expected outcomes of Elon Musk stepping down may directly influence investor and market sentiment. If true, this would imply a previously unconsidered causal link between outcomes expectations and market sentiment. How would this new information affect your initial probability estimate?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.13000000000000006,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a previously unconsidered causal link between 'outcomes_expectations' and 'market_sentiment', suggesting that the expected positive outcomes of Elon Musk stepping down could directly improve market sentiment. This new path reinforces the overall probability, as the expected benefits of a transition in leadership (e.g., more stable and predictable leadership) could lead to increased investor confidence and, in turn, more positive market sentiment. The combination of this new link with the existing paths from 'outcomes_expectations' to 'outcome' through 'succession_planning' and from 'market_sentiment' to 'outcome' creates a robust network of causal relationships supporting the likelihood of Elon Musk stepping down. The updated probability reflects this increased likelihood, driven by the growing body of evidence suggesting that various stakeholders (including investors and the board) are aligning in their expectations and actions to facilitate a potential transition in leadership.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information introduces a previously unconsidered causal link between 'outcomes_expectations' and 'market_sentiment', suggesting that the expected positive outcomes of Elon Musk stepping down could directly improve market sentiment. This new path reinforces the overall probability, as the expected benefits of a transition in leadership (e.g., more stable and predictable leadership) could lead to increased investor confidence and, in turn, more positive market sentiment. The combination of this new link with the existing paths from 'outcomes_expectations' to 'outcome' through 'succession_planning' and from 'market_sentiment' to 'outcome' creates a robust network of causal relationships supporting the likelihood of Elon Musk stepping down. The updated probability reflects this increased likelihood, driven by the growing body of evidence suggesting that various stakeholders (including investors and the board) are aligning in their expectations and actions to facilitate a potential transition in leadership.\"\n}",
+      "target_id": "outcomes_expectations->market_sentiment",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if Elon Musk were to announce a significant new project or initiative for Tesla, potentially altering the trajectory of the company and his role within it? This could include a major expansion into a new market or technology sector. How would this development impact your assessment of the likelihood that Elon Musk will step down as Tesla CEO by the end of 2025? Consider how such an announcement might affect market sentiment, regulatory pressure, and succession planning efforts.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.20000000000000007,
+      "shift_direction": "decreased",
+      "reasoning": "The announcement of a significant new project or initiative by Elon Musk could potentially alter the trajectory of Tesla and his role within it, affecting various causal paths in the network. Such an announcement could lead to a surge in positive market sentiment, as investors and analysts become excited about the company's new direction and potential for growth. This, in turn, could reduce the pressure on Elon Musk to step down, as the focus shifts from his leadership style to the company's promising future prospects. Additionally, the announcement could also lead to a decrease in regulatory pressure, as the company is seen as innovating and pushing boundaries in a new area. Succession planning efforts might also be put on hold, as the board and investors become more focused on supporting Musk's new vision for the company. The combination of these effects would likely decrease the likelihood of Elon Musk stepping down as Tesla CEO by the end of 2025, as the announcement would have distracted from the existing pressures and created a new narrative around the company's future. The updated probability reflects this decreased likelihood, as the potential for a significant new project or initiative introduces a new variable that could alter the course of events and reduce the pressure on Musk to step down.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The announcement of a significant new project or initiative by Elon Musk could potentially alter the trajectory of Tesla and his role within it, affecting various causal paths in the network. Such an announcement could lead to a surge in positive market sentiment, as investors and analysts become excited about the company's new direction and potential for growth. This, in turn, could reduce the pressure on Elon Musk to step down, as the focus shifts from his leadership style to the company's promising future prospects. Additionally, the announcement could also lead to a decrease in regulatory pressure, as the company is seen as innovating and pushing boundaries in a new area. Succession planning efforts might also be put on hold, as the board and investors become more focused on supporting Musk's new vision for the company. The combination of these effects would likely decrease the likelihood of Elon Musk stepping down as Tesla CEO by the end of 2025, as the announcement would have distracted from the existing pressures and created a new narrative around the company's future. The updated probability reflects this decreased likelihood, as the potential for a significant new project or initiative introduces a new variable that could alter the course of events and reduce the pressure on Musk to step down.\"\n}",
+      "target_id": "major_new_project",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if Elon Musk were to announce a major breakthrough in Tesla's autonomous driving technology, significantly boosting the company's stock price and public image? This development could potentially reduce the pressure on him to step down, despite other factors. How would this new information affect your estimate of Elon Musk stepping down as Tesla CEO by the end of 2025? Consider the potential impact on market sentiment and the board's succession planning efforts.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.2,
+      "absolute_shift": 0.14999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "The announcement of a major breakthrough in Tesla's autonomous driving technology would likely have a significant impact on the causal paths in the network. A substantial boost to the company's stock price and public image would lead to a marked improvement in market sentiment, reducing the pressure on Elon Musk to step down. The board, investors, and the public would likely view this breakthrough as a testament to Musk's vision and leadership, increasing their confidence in his ability to drive the company's success. As a result, the board's succession planning efforts might be put on hold, as they become more focused on supporting Musk's continued leadership and the company's newfound momentum. The positive market sentiment and reduced pressure on Musk would also diminish the influence of other factors, such as regulatory pressure and outcomes expectations, on the likelihood of him stepping down. The updated probability reflects this decreased likelihood, as the breakthrough in autonomous driving technology would have introduced a new variable that has significantly altered the dynamics of the situation, making it less likely that Elon Musk will step down as Tesla CEO by the end of 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.20,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The announcement of a major breakthrough in Tesla's autonomous driving technology would likely have a significant impact on the causal paths in the network. A substantial boost to the company's stock price and public image would lead to a marked improvement in market sentiment, reducing the pressure on Elon Musk to step down. The board, investors, and the public would likely view this breakthrough as a testament to Musk's vision and leadership, increasing their confidence in his ability to drive the company's success. As a result, the board's succession planning efforts might be put on hold, as they become more focused on supporting Musk's continued leadership and the company's newfound momentum. The positive market sentiment and reduced pressure on Musk would also diminish the influence of other factors, such as regulatory pressure and outcomes expectations, on the likelihood of him stepping down. The updated probability reflects this decreased likelihood, as the breakthrough in autonomous driving technology would have introduced a new variable that has significantly altered the dynamics of the situation, making it less likely that Elon Musk will step down as Tesla CEO by the end of 2025.\"\n}",
+      "target_id": "technological_advancements",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent study found that the average tenure of CEOs in the technology sector has increased by 12 months over the past decade, potentially indicating a shift in industry norms. This trend is attributed to the growing complexity of technology companies and the need for longer-term strategic planning. However, the study did not account for the specific circumstances of individual companies like Tesla. The findings have sparked debate among industry experts about the ideal CEO tenure.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the increasing average tenure of CEOs in the technology sector introduces a broader industry trend that could influence the dynamics of CEO succession. However, the study's findings are not directly applicable to Tesla's specific circumstances, and the debate among industry experts highlights the complexity of the issue. While the trend might suggest that CEOs are staying longer in their roles, it does not necessarily imply that Elon Musk will follow this pattern. In fact, Tesla's unique circumstances, including its innovative culture and Musk's dominant leadership style, may still drive a different outcome. The updated probability reflects a slight decrease in the likelihood of Elon Musk stepping down, as the industry trend could potentially contribute to a longer tenure for Musk. Nevertheless, the decrease is modest, as the specific factors driving the likelihood of Musk's departure, such as market sentiment and succession planning efforts, remain more influential in determining the outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.18,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the increasing average tenure of CEOs in the technology sector introduces a broader industry trend that could influence the dynamics of CEO succession. However, the study's findings are not directly applicable to Tesla's specific circumstances, and the debate among industry experts highlights the complexity of the issue. While the trend might suggest that CEOs are staying longer in their roles, it does not necessarily imply that Elon Musk will follow this pattern. In fact, Tesla's unique circumstances, including its innovative culture and Musk's dominant leadership style, may still drive a different outcome. The updated probability reflects a slight decrease in the likelihood of Elon Musk stepping down, as the industry trend could potentially contribute to a longer tenure for Musk. Nevertheless, the decrease is modest, as the specific factors driving the likelihood of Musk's departure, such as market sentiment and succession planning efforts, remain more influential in determining the outcome.\"\n}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent documentary about the history of electric vehicles has sparked a renewed interest in the early days of Tesla, with many fans of the company sharing stories about the first Roadster model on social media. The documentary has been well-received by critics and the public alike, and has inspired a new generation of entrepreneurs to pursue careers in the tech industry. However, the documentary does not mention Elon Musk's current role or future plans at Tesla. The film's director has announced plans to create a sequel, focusing on the impact of Tesla's manufacturing processes on local communities.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the documentary on the history of electric vehicles and its impact on the public's perception of Tesla does not have a significant effect on the causal paths in the network. The documentary's focus on the early days of Tesla and its inspirational impact on a new generation of entrepreneurs is unlikely to influence Elon Musk's decision to step down as CEO or the board's succession planning efforts. The announcement of a sequel focusing on the impact of Tesla's manufacturing processes on local communities is also unrelated to Musk's role or future plans at the company. As a result, the updated probability remains unchanged, as the documentary and its sequel do not introduce any new factors that would increase or decrease the likelihood of Elon Musk stepping down as Tesla CEO by the end of 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.18,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information about the documentary on the history of electric vehicles and its impact on the public's perception of Tesla does not have a significant effect on the causal paths in the network. The documentary's focus on the early days of Tesla and its inspirational impact on a new generation of entrepreneurs is unlikely to influence Elon Musk's decision to step down as CEO or the board's succession planning efforts. The announcement of a sequel focusing on the impact of Tesla's manufacturing processes on local communities is also unrelated to Musk's role or future plans at the company. As a result, the updated probability remains unchanged, as the documentary and its sequel do not introduce any new factors that would increase or decrease the likelihood of Elon Musk stepping down as Tesla CEO by the end of 2025.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "7L7arFnaO0Nom1bLY295",
+    "question_text": "Will Elon Musk step down from being Tesla CEO by the end of 2025?",
+    "source": "manifold",
+    "condition": "multi-turn",
+    "initial_probability": 0.27,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.080625,
+    "max_absolute_shift": 0.20000000000000007
+  }
+}

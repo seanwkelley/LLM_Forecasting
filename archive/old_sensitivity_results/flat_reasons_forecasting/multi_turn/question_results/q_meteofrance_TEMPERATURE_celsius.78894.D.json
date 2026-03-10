@@ -1,0 +1,310 @@
+{
+  "question_id": "meteofrance_TEMPERATURE_celsius.78894.D",
+  "question_text": "What is the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+  "source": "dbnomics",
+  "initial_probability": 0.62,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "Saint Barth\u00e9lemy is generally warmer in December than in early December, with average high temperatures around 28\u00b0C.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The North Atlantic Oscillation (NAO) index has been trending towards a positive phase in recent years, which tends to bring warmer temperatures to the region.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "There is a moderate El Ni\u00f1o event predicted for late 2025, which may contribute to warmer temperatures in the northern hemisphere.",
+      "importance": "medium"
+    }
+  ],
+  "reasoning": "Based on historical climate data and forecasts, I estimate a 62% chance that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21.",
+  "probes": [
+    {
+      "probe_text": "Saint Barth\u00e9lemy experiences a prolonged period of cooler weather in December due to a persistent high-pressure system, resulting in average high temperatures around 22\u00b0C.",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent study published in the Journal of Tropical Meteorology, researchers found that a significant warming trend in the North Atlantic has led to a decrease in temperature gradients between early and late December in the French Lesser Antilles, including Saint Barth\u00e9lemy. Specifically, the study found that the average temperature difference between the 21st and the 28th of December has decreased by 2.5\u00b0C over the past decade. This trend is attributed to changes in ocean currents and atmospheric circulation patterns. The study's lead author, Dr. Sophie Dupont, a renowned expert in tropical meteorology, notes that this shift may have significant implications for temperature predictions in the region.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "There is a chance of a prolonged cold snap affecting the entire eastern Caribbean, starting from 2025-12-20 and lasting for several days, with temperatures potentially dropping to as low as 20\u00b0C on several nights.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Climate and Atmospheric Sciences (Volume 12, Issue 3, 2023) found that the North Atlantic Oscillation (NAO) index, which significantly influences temperature patterns in the North Atlantic region, was positively correlated with warmer-than-average December temperatures at tropical island stations, including those near the French Caribbean island of Saint Barth\u00e9lemy.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "Saint Barth\u00e9lemy has a growing expat community with a significant number of residents from Northern Europe, who have been known to organize cultural events and festivals throughout the year.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the North Atlantic Oscillation (NAO) index has actually been trending towards a negative phase in recent years, which tends to bring colder temperatures to the region due to increased meridional flow and a stronger polar jet stream?",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, the correlation between positive NAO phases and warmer temperatures in the North Atlantic region has actually weakened over the past 10 years, particularly during the winter months. The research, led by Dr. Maria Rodriguez, a climate scientist at the University of Bergen, suggests that other climate drivers, such as the Arctic Oscillation, may be taking on a more significant role in shaping regional temperature patterns. This finding has significant implications for seasonal forecasting models, including those used by M\u00e9t\u00e9o-France. The study's authors warn that relying solely on the NAO index for temperature predictions may lead to inaccurate forecasts.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "It has been reported that a strong hurricane is expected to make landfall in the northeastern Caribbean on 2025-12-20, which could disrupt normal atmospheric circulation patterns and lead to a prolonged negative NAO phase, potentially bringing cooler temperatures to the region for the remainder of the month.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A new study published in the Journal of Atmospheric Science has found that the 2025 spring NAO index was significantly higher than the 30-year average, and this trend has continued into the summer months, suggesting a prolonged period of warm temperatures in the North Atlantic region.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The French government has announced plans to establish a new marine protected area around the island of Saint Barth\u00e9lemy, which will come into effect on 2025-01-01, and is expected to have significant environmental and conservation benefits.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the predicted El Ni\u00f1o event is actually a weak La Ni\u00f1a event, leading to cooler-than-average temperatures in the northern hemisphere, and therefore reducing the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report from the International Research Institute for Climate and Society suggests that a strong La Ni\u00f1a event is now predicted to develop in the eastern Pacific Ocean by late autumn 2025, which could potentially lead to cooler-than-average temperatures in the northern hemisphere.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Recent climate models suggest that the predicted El Ni\u00f1o event may be weaker than initially thought, potentially resulting in a milder impact on global temperatures. Additionally, a strong high-pressure system is forecasted to dominate the North Atlantic region during the same period, which could counteract any warming effect from El Ni\u00f1o.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The International Research Institute for Climate and Society (IRI) has released a new climate outlook for late 2025, indicating a 70% chance of a moderate to strong El Ni\u00f1o event, with a 50% chance of peak conditions occurring in December. This aligns with the forecast models used by the National Oceanic and Atmospheric Administration (NOAA) and the European Centre for Medium-Range Weather Forecasts (ECMWF), further solidifying the expectation of a warmer-than-normal winter in the northern hemisphere.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Saint Barth\u00e9lemy has been investing in efforts to reduce its reliance on fossil fuels and increase its use of renewable energy sources, aiming to be carbon neutral by 2035. This shift towards sustainability is part of an ongoing initiative to promote eco-tourism and preserve the island's unique ecosystem. The island's government has partnered with several international organizations to support this goal, with a focus on reducing waste and increasing energy efficiency. The island's strategic location in the heart of the Caribbean makes it an attractive destination for environmentally conscious travelers.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "Saint Barth\u00e9lemy experiences a prolonged period of cooler weather in December due to a persistent high-pressure system, resulting in average high temperatures around 22\u00b0C.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.24,
+      "shift_direction": "decreased",
+      "reasoning": "The new information contradicts my initial assumption that Saint Barth\u00e9lemy is generally warmer in December than in early December. With average high temperatures around 22\u00b0C, it is likely that the daily average temperature on 2025-12-28 will be lower than on 2025-12-21, reducing the probability of the event.",
+      "raw_response": "{\"updated_probability\": 0.38, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information contradicts my initial assumption that Saint Barth\\u00e9lemy is generally warmer in December than in early December. With average high temperatures around 22\\u00b0C, it is likely that the daily average temperature on 2025-12-28 will be lower than on 2025-12-21, reducing the probability of the event.\"}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "According to a recent study published in the Journal of Tropical Meteorology, researchers found that a significant warming trend in the North Atlantic has led to a decrease in temperature gradients between early and late December in the French Lesser Antilles, including Saint Barth\u00e9lemy. Specifically, the study found that the average temperature difference between the 21st and the 28th of December has decreased by 2.5\u00b0C over the past decade. This trend is attributed to changes in ocean currents and atmospheric circulation patterns. The study's lead author, Dr. Sophie Dupont, a renowned expert in tropical meteorology, notes that this shift may have significant implications for temperature predictions in the region.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.56,
+      "absolute_shift": 0.18000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests that the temperature difference between early and late December in Saint Barth\u00e9lemy has decreased, making it less likely that the temperature on 2025-12-28 will be lower than on 2025-12-21. Although the temperature gradient has decreased, it still seems likely that the temperature on the 21st will be higher than on the 28th, given the general trend of cooler temperatures in late December. The updated probability reflects a moderate increase, acknowledging the shift in the temperature gradient, but still accounting for the overall seasonal pattern.",
+      "raw_response": "{\"updated_probability\": 0.56, \"shift_direction\": \"increased\", \"reasoning\": \"The new information suggests that the temperature difference between early and late December in Saint Barth\\u00e9lemy has decreased, making it less likely that the temperature on 2025-12-28 will be lower than on 2025-12-21. Although the temperature gradient has decreased, it still seems likely that the temperature on the 21st will be higher than on the 28th, given the general trend of cooler temperatures in late December. The updated probability reflects a moderate increase, acknowledging the shift in the temperature gradient, but still accounting for the overall seasonal pattern.\"}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "There is a chance of a prolonged cold snap affecting the entire eastern Caribbean, starting from 2025-12-20 and lasting for several days, with temperatures potentially dropping to as low as 20\u00b0C on several nights.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.14000000000000007,
+      "shift_direction": "decreased",
+      "reasoning": "The new information introduces a significant risk of a prolonged cold snap affecting the eastern Caribbean, which could lead to temperatures dropping below average even in late December. This increases the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21, reducing the probability of the original event. The cold snap could also exacerbate the temperature gradient decrease mentioned in the previous study, further reducing the likelihood of a warmer-than-average late December.",
+      "raw_response": "{\"updated_probability\": 0.42, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information introduces a significant risk of a prolonged cold snap affecting the eastern Caribbean, which could lead to temperatures dropping below average even in late December. This increases the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21, reducing the probability of the original event. The cold snap could also exacerbate the temperature gradient decrease mentioned in the previous study, further reducing the likelihood of a warmer-than-average late December.\"}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Climate and Atmospheric Sciences (Volume 12, Issue 3, 2023) found that the North Atlantic Oscillation (NAO) index, which significantly influences temperature patterns in the North Atlantic region, was positively correlated with warmer-than-average December temperatures at tropical island stations, including those near the French Caribbean island of Saint Barth\u00e9lemy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.13000000000000006,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests that a positive NAO index is associated with warmer-than-average December temperatures at tropical island stations, including Saint Barth\u00e9lemy. Given that a positive NAO index is currently trending, this suggests that temperatures at Saint Barth\u00e9lemy in late December are more likely to be above average, increasing the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\"updated_probability\": 0.55, \"shift_direction\": \"increased\", \"reasoning\": \"The new information suggests that a positive NAO index is associated with warmer-than-average December temperatures at tropical island stations, including Saint Barth\\u00e9lemy. Given that a positive NAO index is currently trending, this suggests that temperatures at Saint Barth\\u00e9lemy in late December are more likely to be above average, increasing the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "Saint Barth\u00e9lemy has a growing expat community with a significant number of residents from Northern Europe, who have been known to organize cultural events and festivals throughout the year.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about Saint Barth\u00e9lemy's expat community and cultural events does not appear to have any direct relevance to temperature patterns or climate trends in the region. The probability estimate remains unchanged.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n   \"shift_direction\": \"unchanged\",\n   \"reasoning\": \"The new information about Saint Barth\\u00e9lemy's expat community and cultural events does not appear to have any direct relevance to temperature patterns or climate trends in the region. The probability estimate remains unchanged.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "What if the North Atlantic Oscillation (NAO) index has actually been trending towards a negative phase in recent years, which tends to bring colder temperatures to the region due to increased meridional flow and a stronger polar jet stream?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.34,
+      "absolute_shift": 0.21000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information contradicts my initial assumption about the NAO index, which I used to support a moderate increase in temperature in late December. If the NAO index has actually been trending towards a negative phase, it could lead to colder temperatures in the region, increasing the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21. This reduces the probability of the original event.",
+      "raw_response": "{\n  \"updated_probability\": 0.34,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information contradicts my initial assumption about the NAO index, which I used to support a moderate increase in temperature in late December. If the NAO index has actually been trending towards a negative phase, it could lead to colder temperatures in the region, increasing the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21. This reduces the probability of the original event.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "According to a recent study published in the Journal of Atmospheric Science, the correlation between positive NAO phases and warmer temperatures in the North Atlantic region has actually weakened over the past 10 years, particularly during the winter months. The research, led by Dr. Maria Rodriguez, a climate scientist at the University of Bergen, suggests that other climate drivers, such as the Arctic Oscillation, may be taking on a more significant role in shaping regional temperature patterns. This finding has significant implications for seasonal forecasting models, including those used by M\u00e9t\u00e9o-France. The study's authors warn that relying solely on the NAO index for temperature predictions may lead to inaccurate forecasts.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.24,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "decreased",
+      "reasoning": "The new information undermines my confidence in the predictive power of the NAO index for temperature patterns in the North Atlantic region. If the correlation between positive NAO phases and warmer temperatures has weakened over the past decade, it suggests that other climate drivers may be more significant in shaping regional temperature patterns. This reduces the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21, making the original event less likely.",
+      "raw_response": "{\n  \"updated_probability\": 0.24,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The new information undermines my confidence in the predictive power of the NAO index for temperature patterns in the North Atlantic region. If the correlation between positive NAO phases and warmer temperatures has weakened over the past decade, it suggests that other climate drivers may be more significant in shaping regional temperature patterns. This reduces the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21, making the original event less likely.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "It has been reported that a strong hurricane is expected to make landfall in the northeastern Caribbean on 2025-12-20, which could disrupt normal atmospheric circulation patterns and lead to a prolonged negative NAO phase, potentially bringing cooler temperatures to the region for the remainder of the month.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.14,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that a strong hurricane will disrupt normal atmospheric circulation patterns, leading to a prolonged negative NAO phase and potentially cooler temperatures in the region. This further increases the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21, making the original event even less likely. The probability estimate is decreased to reflect this increased likelihood of cooler temperatures.",
+      "raw_response": "{\n  \"updated_probability\": 0.14,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that a strong hurricane will disrupt normal atmospheric circulation patterns, leading to a prolonged negative NAO phase and potentially cooler temperatures in the region. This further increases the likelihood that the temperature on 2025-12-28 will be lower than on 2025-12-21, making the original event even less likely. The probability estimate is decreased to reflect this increased likelihood of cooler temperatures.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "A new study published in the Journal of Atmospheric Science has found that the 2025 spring NAO index was significantly higher than the 30-year average, and this trend has continued into the summer months, suggesting a prolonged period of warm temperatures in the North Atlantic region.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.28,
+      "absolute_shift": 0.14,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests that the North Atlantic Oscillation (NAO) index has been in a prolonged positive phase, which typically leads to warmer temperatures in the region. Although this positive phase is expected to be disrupted by the hurricane on 2025-12-20, the prolonged warm temperature trend may still have a lingering effect on the region. This increases the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21, making the original event slightly more likely.",
+      "raw_response": "{\n  \"updated_probability\": 0.28,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information suggests that the North Atlantic Oscillation (NAO) index has been in a prolonged positive phase, which typically leads to warmer temperatures in the region. Although this positive phase is expected to be disrupted by the hurricane on 2025-12-20, the prolonged warm temperature trend may still have a lingering effect on the region. This increases the probability that the temperature on 2025-12-28 will be higher than on 2025-12-21, making the original event slightly more likely.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "The French government has announced plans to establish a new marine protected area around the island of Saint Barth\u00e9lemy, which will come into effect on 2025-01-01, and is expected to have significant environmental and conservation benefits.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.28,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the marine protected area has no apparent connection to temperature patterns or climate trends in the region, and therefore does not provide any relevant information to update the probability estimate. The probability remains unchanged.",
+      "raw_response": "{\n  \"updated_probability\": 0.28,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information about the marine protected area has no apparent connection to temperature patterns or climate trends in the region, and therefore does not provide any relevant information to update the probability estimate. The probability remains unchanged.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if the predicted El Ni\u00f1o event is actually a weak La Ni\u00f1a event, leading to cooler-than-average temperatures in the northern hemisphere, and therefore reducing the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.16,
+      "absolute_shift": 0.12000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that the predicted El Ni\u00f1o event may actually be a weak La Ni\u00f1a event, leading to cooler-than-average temperatures in the northern hemisphere. This would reduce the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event even less likely.",
+      "raw_response": "{\n  \"updated_probability\": 0.16,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that the predicted El Ni\u00f1o event may actually be a weak La Ni\u00f1a event, leading to cooler-than-average temperatures in the northern hemisphere. This would reduce the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event even less likely.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "A recent report from the International Research Institute for Climate and Society suggests that a strong La Ni\u00f1a event is now predicted to develop in the eastern Pacific Ocean by late autumn 2025, which could potentially lead to cooler-than-average temperatures in the northern hemisphere.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.08,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that a strong La Ni\u00f1a event is now predicted to develop in the eastern Pacific Ocean, which could potentially lead to cooler-than-average temperatures in the northern hemisphere. This further increases the likelihood of cooler temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event even less likely.",
+      "raw_response": "{\n  \"updated_probability\": 0.08,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that a strong La Ni\u00f1a event is now predicted to develop in the eastern Pacific Ocean, which could potentially lead to cooler-than-average temperatures in the northern hemisphere. This further increases the likelihood of cooler temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event even less likely.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "Recent climate models suggest that the predicted El Ni\u00f1o event may be weaker than initially thought, potentially resulting in a milder impact on global temperatures. Additionally, a strong high-pressure system is forecasted to dominate the North Atlantic region during the same period, which could counteract any warming effect from El Ni\u00f1o.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.09999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests that the predicted El Ni\u00f1o event may be weaker than initially thought, potentially resulting in a milder impact on global temperatures. Additionally, a strong high-pressure system is forecasted to dominate the North Atlantic region, which could counteract any warming effect from El Ni\u00f1o. This reduces the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event slightly more likely.",
+      "raw_response": "{\n  \"updated_probability\": 0.18,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information suggests that the predicted El Ni\u00f1o event may be weaker than initially thought, potentially resulting in a milder impact on global temperatures. Additionally, a strong high-pressure system is forecasted to dominate the North Atlantic region, which could counteract any warming effect from El Ni\u00f1o. This reduces the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event slightly more likely.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "The International Research Institute for Climate and Society (IRI) has released a new climate outlook for late 2025, indicating a 70% chance of a moderate to strong El Ni\u00f1o event, with a 50% chance of peak conditions occurring in December. This aligns with the forecast models used by the National Oceanic and Atmospheric Administration (NOAA) and the European Centre for Medium-Range Weather Forecasts (ECMWF), further solidifying the expectation of a warmer-than-normal winter in the northern hemisphere.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.32,
+      "absolute_shift": 0.14,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the International Research Institute for Climate and Society (IRI) and other forecast models suggests a high probability of a moderate to strong El Ni\u00f1o event, which is expected to lead to a warmer-than-normal winter in the northern hemisphere. This increases the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event more likely.",
+      "raw_response": "{\n  \"updated_probability\": 0.32,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the International Research Institute for Climate and Society (IRI) and other forecast models suggests a high probability of a moderate to strong El Ni\u00f1o event, which is expected to lead to a warmer-than-normal winter in the northern hemisphere. This increases the likelihood of warmer temperatures at the French weather station at Saint Barth\u00e9lemy, making the original event more likely.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "Saint Barth\u00e9lemy has been investing in efforts to reduce its reliance on fossil fuels and increase its use of renewable energy sources, aiming to be carbon neutral by 2035. This shift towards sustainability is part of an ongoing initiative to promote eco-tourism and preserve the island's unique ecosystem. The island's government has partnered with several international organizations to support this goal, with a focus on reducing waste and increasing energy efficiency. The island's strategic location in the heart of the Caribbean makes it an attractive destination for environmentally conscious travelers.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.32,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about Saint Barth\u00e9lemy's efforts to reduce its carbon footprint and increase its use of renewable energy does not appear to have any direct relevance to temperature patterns or climate trends in the region. The probability estimate remains unchanged as the information does not provide any new insights into the likelihood of warmer or colder temperatures at the French weather station at Saint Barth\u00e9lemy.",
+      "raw_response": "{\n  \"updated_probability\": 0.32,\n  \"shift_direction\": \"unchanged\",\n  \"reasoning\": \"The new information about Saint Barth\u00e9lemy's efforts to reduce its carbon footprint and increase its use of renewable energy does not appear to have any direct relevance to temperature patterns or climate trends in the region. The probability estimate remains unchanged as the information does not provide any new insights into the likelihood of warmer or colder temperatures at the French weather station at Saint Barth\u00e9lemy.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "meteofrance_TEMPERATURE_celsius.78894.D",
+    "question_text": "What is the probability that the daily average temperature at the French weather station at Saint Barth\u00e9lemy will be higher on 2025-12-28 than on 2025-12-21?",
+    "source": "dbnomics",
+    "condition": "multi-turn",
+    "initial_probability": 0.62,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.11200000000000002,
+    "max_absolute_shift": 0.24
+  }
+}

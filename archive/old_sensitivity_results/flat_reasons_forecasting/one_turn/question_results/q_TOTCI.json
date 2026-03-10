@@ -1,0 +1,405 @@
+{
+  "question_id": "TOTCI",
+  "question_text": "Will the total dollar amount representing all commercial and industrial loans made by commercial banks in the US have increased by 2025-12-28 as compared to its value on 2025-12-21?",
+  "source": "fred",
+  "initial_probability": 0.62,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "The US economy is expected to experience a moderate growth rate in 2025, driven by a combination of factors including low unemployment rates and steady GDP growth.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "Commercial banks in the US have been gradually increasing their lending activity in recent years, indicating a trend towards expansion.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "The average interest rates on commercial and industrial loans have been relatively stable in 2025, which could lead to increased borrowing activity as businesses take advantage of favorable financing conditions.",
+      "importance": "medium"
+    },
+    {
+      "id": 4,
+      "text": "However, there are also signs of economic uncertainty, including rising inflation rates and potential trade tensions, which could impact business confidence and lead to decreased lending activity.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Based on the expected moderate growth rate of the US economy and the gradual increase in lending activity by commercial banks, it is likely that the total dollar amount of commercial and industrial loans will have increased by 2025-12-28 as compared to its value on 2025-12-21. However, the potential economic uncertainty also needs to be taken into account, which is why the probability estimate is not 100%.",
+  "probes": [
+    {
+      "probe_text": "What if the US economy experiences a recession in 2025, triggered by a sudden surge in interest rates and a decline in consumer spending, leading to a sharp decrease in commercial and industrial loan demand?",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a report by the Economic Policy Institute, a new study by a team of economists at the University of Michigan suggests that a significant portion of the US labor market's strength in recent years is attributed to an influx of foreign workers entering the US through a previously under-enforced visa program. This development, which has been dubbed the 'hidden workforce,' is expected to be phased out by the end of 2025 as the government begins enforcement, potentially leading to a more pronounced economic downturn than previously anticipated.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A new, highly contagious and severe strain of COVID-19 has been identified in the US, which could potentially lead to a significant increase in hospitalizations and deaths, resulting in an economic contraction rather than a moderate growth rate in 2025.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve's latest Economic Projections survey indicates that 14 out of 18 Federal Open Market Committee members expect the GDP growth rate in the US to be between 2.5% and 3.5% in 2025, a range that is consistent with the moderate growth rate assumption.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve has announced plans to launch a new series of commemorative coins to celebrate the 50th anniversary of the Community Reinvestment Act, a landmark legislation aimed at promoting community development and financial inclusion.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the commercial banks in the US have actually been reducing their lending activity in recent years due to increasing regulatory scrutiny and capital requirements, making it more expensive for them to originate new loans?",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a statement from the American Bankers Association, the association's quarterly survey of member banks revealed that a significant portion of respondents are scaling back lending to commercial and industrial customers due to increased regulatory scrutiny and tightening of credit standards, contradicting the trend of expansion.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A major US commercial bank recently announced a significant restructuring of its business model, shifting its focus from traditional lending to a more diversified portfolio of financial products and services. This move could potentially lead to a reduction in the bank's commercial and industrial loan portfolio, casting doubt on the trend of increasing lending activity.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent report by the American Bankers Association, commercial bank lending growth accelerated in the third quarter of 2025, with a 4.2% increase in commercial and industrial loans compared to the same period in the previous year. This uptick in lending activity aligns with the trend of expansion noted by the forecaster, suggesting that commercial banks continue to increase their lending activity.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "There has been a significant increase in the number of commercial banks in the US issuing sustainability-focused reports, highlighting their environmental and social commitments.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the recent increase in interest rates on commercial and industrial loans, which were previously low, is actually a sign that lenders are becoming more cautious and tightening their lending standards, leading to a decrease in borrowing activity among businesses?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve announced plans to increase reserve requirements for commercial banks in 2025, citing growing concerns about inflationary pressures from rising business borrowing rates. This move is expected to reduce the availability of credit for businesses, potentially slowing the anticipated increase in commercial and industrial loans.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "However, recent announcements by the Federal Reserve indicate that it may raise interest rates more aggressively than previously anticipated to combat inflation, which could lead to a sharp increase in borrowing costs and potentially slow down commercial and industrial loan growth.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve's Senior Loan Officer Survey for Q2 2025 reported that 75% of respondents indicated they plan to maintain or increase their lending standards for commercial and industrial loans, citing 'favorable economic outlook' as a primary driver. This aligns with the forecasters' assumption that businesses will take advantage of stable interest rates to increase borrowing.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The US Federal Reserve has announced plans to hold its annual 'Community Banking in the 21st Century' conference in 2026, focusing on the role of community banks in rural economic development. The conference will feature keynote speakers from the Federal Reserve and the Office of the Comptroller of the Currency. The event is expected to draw attendees from across the country, with a focus on community banking practices and their impact on local economies. Registration for the conference will open in early 2026.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Despite economic uncertainty, the low-interest-rate environment and accommodative monetary policies implemented by the Federal Reserve could actually boost business confidence, leading to increased lending activity and a higher total dollar amount of commercial and industrial loans by 2025-12-28.",
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent statement from the Federal Reserve Bank of New York, a survey of 500 small and medium-sized business owners found that 75% of respondents reported increased confidence in their company's financial prospects over the next 6-12 months, citing a stable interest rate environment and government support for small businesses.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "The US government announces a comprehensive package of economic stimulus measures, including tax breaks for small businesses and investments in infrastructure, which aims to boost economic growth and confidence in the near term.",
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent survey by the National Association for Business Economics (NABE) found that 71% of its members expect inflation to continue rising in the next quarter, with 45% citing it as a major concern for their businesses. This sentiment is echoed by the Federal Reserve's own Beige Book, which reported that several districts have noted 'cautionary tone' among business leaders due to inflationary pressures. Such widespread concern about inflation's impact on business confidence is likely to lead to decreased lending activity, supporting our initial assessment.",
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "The US Securities and Exchange Commission has announced plans to expand its division dedicated to processing and reviewing foreign investment disclosures, with the goal of improving transparency and reducing processing times by 2026.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "generated": true
+    }
+  ],
+  "condition": "one-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "What if the US economy experiences a recession in 2025, triggered by a sudden surge in interest rates and a decline in consumer spending, leading to a sharp decrease in commercial and industrial loan demand?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.5,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about a potential recession in 2025 triggered by a sudden surge in interest rates and a decline in consumer spending significantly challenges my initial estimate. The recession would likely lead to a sharp decrease in commercial and industrial loan demand, making it less likely for the total dollar amount of commercial and industrial loans to increase by 2025-12-28. I am updating my estimate from 0.62 to 0.12, a decrease of 48.39% in probability, as this new information makes the initial conditions for economic growth much less probable.",
+      "raw_response": "{\n  \"updated_probability\": 0.12,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about a potential recession in 2025 triggered by a sudden surge in interest rates and a decline in consumer spending significantly challenges my initial estimate. The recession would likely lead to a sharp decrease in commercial and industrial loan demand, making it less likely for the total dollar amount of commercial and industrial loans to increase by 2025-12-28. I am updating my estimate from 0.62 to 0.12, a decrease of 48.39% in probability, as this new information makes the initial conditions for economic growth much less probable.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "According to a report by the Economic Policy Institute, a new study by a team of economists at the University of Michigan suggests that a significant portion of the US labor market's strength in recent years is attributed to an influx of foreign workers entering the US through a previously under-enforced visa program. This development, which has been dubbed the 'hidden workforce,' is expected to be phased out by the end of 2025 as the government begins enforcement, potentially leading to a more pronounced economic downturn than previously anticipated.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges my initial assumption about the US economy experiencing a moderate growth rate in 2025. The revelation of a 'hidden workforce' that is expected to be phased out by the end of 2025 suggests that the labor market's strength may be less resilient than I initially thought. This development could lead to a more pronounced economic downturn than previously anticipated, which in turn could result in decreased commercial and industrial lending activity. As a result, I have decreased my estimated probability of an increase in commercial and industrial loans by the end of 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges my initial assumption about the US economy experiencing a moderate growth rate in 2025. The revelation of a 'hidden workforce' that is expected to be phased out by the end of 2025 suggests that the labor market's strength may be less resilient than I initially thought. This development could lead to a more pronounced economic downturn than previously anticipated, which in turn could result in decreased commercial and industrial lending activity. As a result, I have decreased my estimated probability of an increase in commercial and industrial loans by the end of 2025.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "A new, highly contagious and severe strain of COVID-19 has been identified in the US, which could potentially lead to a significant increase in hospitalizations and deaths, resulting in an economic contraction rather than a moderate growth rate in 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.24,
+      "shift_direction": "decreased",
+      "reasoning": "The emergence of a highly contagious and severe strain of COVID-19 could significantly impact the US economy, potentially leading to an economic contraction. This challenge directly addresses one of my initial reasons for an increased lending activity, which was based on a moderate growth rate. Given the potential severity of this new strain, I have decreased my probability estimate to reflect the increased uncertainty and risk of a downturn. The other factors I initially considered, such as commercial banks' trend towards expansion and stable interest rates, remain relevant but are now overshadowed by this new challenge.",
+      "raw_response": "{\n  \"updated_probability\": 0.38,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The emergence of a highly contagious and severe strain of COVID-19 could significantly impact the US economy, potentially leading to an economic contraction. This challenge directly addresses one of my initial reasons for an increased lending activity, which was based on a moderate growth rate. Given the potential severity of this new strain, I have decreased my probability estimate to reflect the increased uncertainty and risk of a downturn. The other factors I initially considered, such as commercial banks' trend towards expansion and stable interest rates, remain relevant but are now overshadowed by this new challenge.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "The Federal Reserve's latest Economic Projections survey indicates that 14 out of 18 Federal Open Market Committee members expect the GDP growth rate in the US to be between 2.5% and 3.5% in 2025, a range that is consistent with the moderate growth rate assumption.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.74,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the Federal Reserve's Economic Projections survey strengthens my confidence in the moderate growth rate assumption, which is a key factor supporting my initial forecast. The fact that a majority of Federal Open Market Committee members expect GDP growth within a range consistent with my assumption increases the likelihood of commercial and industrial loan growth. I have therefore increased my probability estimate from 0.62 to 0.74, reflecting a moderate increase in confidence.",
+      "raw_response": "{\n  \"updated_probability\": 0.74,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the Federal Reserve's Economic Projections survey strengthens my confidence in the moderate growth rate assumption, which is a key factor supporting my initial forecast. The fact that a majority of Federal Open Market Committee members expect GDP growth within a range consistent with my assumption increases the likelihood of commercial and industrial loan growth. I have therefore increased my probability estimate from 0.62 to 0.74, reflecting a moderate increase in confidence.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "The Federal Reserve has announced plans to launch a new series of commemorative coins to celebrate the 50th anniversary of the Community Reinvestment Act, a landmark legislation aimed at promoting community development and financial inclusion.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.27,
+      "shift_direction": "decreased",
+      "reasoning": "The unexpected announcement by the Federal Reserve regarding commemorative coins seems unrelated to the overall economic growth rate or commercial banking activity. This new information does not provide any relevant insight into the factors that influence the US economy or commercial lending activity. Therefore, I reduce my initial estimate of a 62% chance of increased commercial and industrial loans by 2025-12-28 as compared to 2025-12-21 to 35%, acknowledging that this event is an outlier and does not contribute to the economy's growth prospects.",
+      "raw_response": "{\"updated_probability\": 0.35, \"shift_direction\": \"decreased\", \"reasoning\": \"The unexpected announcement by the Federal Reserve regarding commemorative coins seems unrelated to the overall economic growth rate or commercial banking activity. This new information does not provide any relevant insight into the factors that influence the US economy or commercial lending activity. Therefore, I reduce my initial estimate of a 62% chance of increased commercial and industrial loans by 2025-12-28 as compared to 2025-12-21 to 35%, acknowledging that this event is an outlier and does not contribute to the economy's growth prospects.\"}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "What if the commercial banks in the US have actually been reducing their lending activity in recent years due to increasing regulatory scrutiny and capital requirements, making it more expensive for them to originate new loans?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges my initial estimate because it suggests that commercial banks in the US may not be expanding their lending activity as I previously thought. Instead, they may be reducing it due to regulatory scrutiny and capital requirements. This changes my perspective on the likelihood of increased lending activity by 2025-12-28. While I still expect some moderate growth in the US economy, the reduced lending activity by commercial banks could temper this growth. As a result, I have decreased my initial probability estimate from 0.62 to 0.45, reflecting a more cautious outlook.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges my initial estimate because it suggests that commercial banks in the US may not be expanding their lending activity as I previously thought. Instead, they may be reducing it due to regulatory scrutiny and capital requirements. This changes my perspective on the likelihood of increased lending activity by 2025-12-28. While I still expect some moderate growth in the US economy, the reduced lending activity by commercial banks could temper this growth. As a result, I have decreased my initial probability estimate from 0.62 to 0.45, reflecting a more cautious outlook.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "According to a statement from the American Bankers Association, the association's quarterly survey of member banks revealed that a significant portion of respondents are scaling back lending to commercial and industrial customers due to increased regulatory scrutiny and tightening of credit standards, contradicting the trend of expansion.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.19,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the American Bankers Association's quarterly survey significantly challenges my initial assumption of a trend towards expansion in commercial banking lending. The revelation that a significant portion of respondents are scaling back lending due to increased regulatory scrutiny and tightening of credit standards directly contradicts the medium-weight reasoning I initially assigned to this point. This new information has led me to reassess the likelihood of increased lending activity, and I now estimate a lower probability of this event occurring by 2025-12-28. While the US economy's moderate growth rate and stable interest rates remain supportive of business lending, the increased regulatory scrutiny and credit tightening are strong headwinds that reduce the likelihood of increased commercial and industrial loans.",
+      "raw_response": "{\n  \"updated_probability\": 0.43,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information from the American Bankers Association's quarterly survey significantly challenges my initial assumption of a trend towards expansion in commercial banking lending. The revelation that a significant portion of respondents are scaling back lending due to increased regulatory scrutiny and tightening of credit standards directly contradicts the medium-weight reasoning I initially assigned to this point. This new information has led me to reassess the likelihood of increased lending activity, and I now estimate a lower probability of this event occurring by 2025-12-28. While the US economy's moderate growth rate and stable interest rates remain supportive of business lending, the increased regulatory scrutiny and credit tightening are strong headwinds that reduce the likelihood of increased commercial and industrial loans.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "A major US commercial bank recently announced a significant restructuring of its business model, shifting its focus from traditional lending to a more diversified portfolio of financial products and services. This move could potentially lead to a reduction in the bank's commercial and industrial loan portfolio, casting doubt on the trend of increasing lending activity.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "This new information significantly challenges my initial assumption that commercial banks in the US have been gradually increasing their lending activity in recent years. The bank's restructuring plan, which includes a shift away from traditional lending, introduces uncertainty into the trend of increasing lending activity. While the other factors I initially considered (moderate economic growth, stable interest rates, and economic uncertainty) remain in place, this new information has led me to reduce my confidence in the forecast. I now believe that the trend of increasing lending activity may be overstated, and that the commercial and industrial loan portfolio may not increase as significantly as I initially thought.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"This new information significantly challenges my initial assumption that commercial banks in the US have been gradually increasing their lending activity in recent years. The bank's restructuring plan, which includes a shift away from traditional lending, introduces uncertainty into the trend of increasing lending activity. While the other factors I initially considered (moderate economic growth, stable interest rates, and economic uncertainty) remain in place, this new information has led me to reduce my confidence in the forecast. I now believe that the trend of increasing lending activity may be overstated, and that the commercial and industrial loan portfolio may not increase as significantly as I initially thought.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "According to a recent report by the American Bankers Association, commercial bank lending growth accelerated in the third quarter of 2025, with a 4.2% increase in commercial and industrial loans compared to the same period in the previous year. This uptick in lending activity aligns with the trend of expansion noted by the forecaster, suggesting that commercial banks continue to increase their lending activity.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The recent report by the American Bankers Association indicates a stronger trend of expansion in commercial bank lending activity, which supports my initial assumption. This new information suggests that the trend of increased lending activity is more robust than I initially thought, leading me to increase my probability estimate. In particular, the 4.2% increase in commercial and industrial loans in the third quarter of 2025 provides further evidence that businesses are taking advantage of favorable financing conditions, which in turn supports my forecast of increased commercial and industrial loans by 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The recent report by the American Bankers Association indicates a stronger trend of expansion in commercial bank lending activity, which supports my initial assumption. This new information suggests that the trend of increased lending activity is more robust than I initially thought, leading me to increase my probability estimate. In particular, the 4.2% increase in commercial and industrial loans in the third quarter of 2025 provides further evidence that businesses are taking advantage of favorable financing conditions, which in turn supports my forecast of increased commercial and industrial loans by 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "There has been a significant increase in the number of commercial banks in the US issuing sustainability-focused reports, highlighting their environmental and social commitments.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about commercial banks issuing sustainability-focused reports suggests that their lending activity might be more focused on environmentally responsible projects, potentially leading to slower growth in commercial and industrial loans. This development seems to contradict the trend of gradual lending expansion, and I am reducing my confidence in the initial estimate. However, the overall impact on the economy and lending activity is still uncertain, so I'm not updating the probability by a large margin.",
+      "raw_response": "{\n  \"updated_probability\": 0.58,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about commercial banks issuing sustainability-focused reports suggests that their lending activity might be more focused on environmentally responsible projects, potentially leading to slower growth in commercial and industrial loans. This development seems to contradict the trend of gradual lending expansion, and I am reducing my confidence in the initial estimate. However, the overall impact on the economy and lending activity is still uncertain, so I'm not updating the probability by a large margin.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if the recent increase in interest rates on commercial and industrial loans, which were previously low, is actually a sign that lenders are becoming more cautious and tightening their lending standards, leading to a decrease in borrowing activity among businesses?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges my initial assumption that stable interest rates would lead to increased borrowing activity. If lenders are indeed tightening their lending standards, it would likely lead to a decrease in commercial and industrial loans. I've reduced my probability estimate to reflect this new information, as it suggests a less favorable lending environment for businesses. While the exact impact is uncertain, I believe this development would likely offset the positive effects of moderate economic growth and increasing lending activity, leading to a lower probability of increased loan amounts by 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges my initial assumption that stable interest rates would lead to increased borrowing activity. If lenders are indeed tightening their lending standards, it would likely lead to a decrease in commercial and industrial loans. I've reduced my probability estimate to reflect this new information, as it suggests a less favorable lending environment for businesses. While the exact impact is uncertain, I believe this development would likely offset the positive effects of moderate economic growth and increasing lending activity, leading to a lower probability of increased loan amounts by 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "The Federal Reserve announced plans to increase reserve requirements for commercial banks in 2025, citing growing concerns about inflationary pressures from rising business borrowing rates. This move is expected to reduce the availability of credit for businesses, potentially slowing the anticipated increase in commercial and industrial loans.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The Federal Reserve's plan to increase reserve requirements for commercial banks in 2025, aimed at reducing inflationary pressures, significantly challenges my initial assumption that favorable financing conditions would lead to increased borrowing activity. This development suggests that businesses may face reduced credit availability, potentially slowing the anticipated increase in commercial and industrial loans. As a result, I have decreased my probability estimate from 0.62 to 0.45, reflecting a more cautious outlook on the lending environment.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The Federal Reserve's plan to increase reserve requirements for commercial banks in 2025, aimed at reducing inflationary pressures, significantly challenges my initial assumption that favorable financing conditions would lead to increased borrowing activity. This development suggests that businesses may face reduced credit availability, potentially slowing the anticipated increase in commercial and industrial loans. As a result, I have decreased my probability estimate from 0.62 to 0.45, reflecting a more cautious outlook on the lending environment.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "However, recent announcements by the Federal Reserve indicate that it may raise interest rates more aggressively than previously anticipated to combat inflation, which could lead to a sharp increase in borrowing costs and potentially slow down commercial and industrial loan growth.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "This new information significantly challenges my previous assumption that stable interest rates would lead to increased borrowing activity. The potential for more aggressive interest rate hikes by the Federal Reserve could indeed slow down commercial and industrial loan growth. As a result, I have decreased my probability estimate from 0.62 to 0.45, acknowledging a higher degree of uncertainty and the potential for decreased lending activity.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"This new information significantly challenges my previous assumption that stable interest rates would lead to increased borrowing activity. The potential for more aggressive interest rate hikes by the Federal Reserve could indeed slow down commercial and industrial loan growth. As a result, I have decreased my probability estimate from 0.62 to 0.45, acknowledging a higher degree of uncertainty and the potential for decreased lending activity.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "The Federal Reserve's Senior Loan Officer Survey for Q2 2025 reported that 75% of respondents indicated they plan to maintain or increase their lending standards for commercial and industrial loans, citing 'favorable economic outlook' as a primary driver. This aligns with the forecasters' assumption that businesses will take advantage of stable interest rates to increase borrowing.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.22999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the Federal Reserve's Senior Loan Officer Survey provides additional support for the assumption that businesses will take advantage of stable interest rates to increase borrowing. The strong majority of respondents (75%) planning to maintain or increase their lending standards further solidifies the expectation of increased commercial and industrial lending activity. This new evidence reinforces reason #3, which was already a significant factor in my initial estimate. As a result, I am increasing my confidence in the forecast, from the initial 62% to 85%.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the Federal Reserve's Senior Loan Officer Survey provides additional support for the assumption that businesses will take advantage of stable interest rates to increase borrowing. The strong majority of respondents (75%) planning to maintain or increase their lending standards further solidifies the expectation of increased commercial and industrial lending activity. This new evidence reinforces reason #3, which was already a significant factor in my initial estimate. As a result, I am increasing my confidence in the forecast, from the initial 62% to 85%.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "The US Federal Reserve has announced plans to hold its annual 'Community Banking in the 21st Century' conference in 2026, focusing on the role of community banks in rural economic development. The conference will feature keynote speakers from the Federal Reserve and the Office of the Comptroller of the Currency. The event is expected to draw attendees from across the country, with a focus on community banking practices and their impact on local economies. Registration for the conference will open in early 2026.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The announcement of the Federal Reserve's conference on community banking practices in 2026 does not directly impact the short-term lending activity of commercial banks. However, it does suggest a focus on community banking and rural economic development, which could potentially lead to a decrease in commercial and industrial lending as banks shift their attention towards more community-oriented activities. While this is not a direct challenge to my previous assumption about interest rates, it does introduce some uncertainty about the future direction of banking practices, leading me to slightly decrease my confidence in the likelihood of increased lending activity by 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The announcement of the Federal Reserve's conference on community banking practices in 2026 does not directly impact the short-term lending activity of commercial banks. However, it does suggest a focus on community banking and rural economic development, which could potentially lead to a decrease in commercial and industrial lending as banks shift their attention towards more community-oriented activities. While this is not a direct challenge to my previous assumption about interest rates, it does introduce some uncertainty about the future direction of banking practices, leading me to slightly decrease my confidence in the likelihood of increased lending activity by 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "probe_text": "Despite economic uncertainty, the low-interest-rate environment and accommodative monetary policies implemented by the Federal Reserve could actually boost business confidence, leading to increased lending activity and a higher total dollar amount of commercial and industrial loans by 2025-12-28.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.73,
+      "absolute_shift": 0.10999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "This new information provides a more nuanced view of the economic uncertainty factor, suggesting that accommodative monetary policies could actually boost business confidence and lead to increased lending activity. This increases the plausibility of my initial forecast, as the factors driving moderate economic growth in 2025 (reason #1) and the trend towards expansion in commercial bank lending (reason #2) are now further supported by a potential increase in business confidence. While the risk of decreased lending activity due to economic uncertainty is still present, the likelihood of this occurring has decreased in light of the Federal Reserve's accommodative policies.",
+      "raw_response": "{\n  \"updated_probability\": 0.73,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"This new information provides a more nuanced view of the economic uncertainty factor, suggesting that accommodative monetary policies could actually boost business confidence and lead to increased lending activity. This increases the plausibility of my initial forecast, as the factors driving moderate economic growth in 2025 (reason #1) and the trend towards expansion in commercial bank lending (reason #2) are now further supported by a potential increase in business confidence. While the risk of decreased lending activity due to economic uncertainty is still present, the likelihood of this occurring has decreased in light of the Federal Reserve's accommodative policies.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "probe_text": "According to a recent statement from the Federal Reserve Bank of New York, a survey of 500 small and medium-sized business owners found that 75% of respondents reported increased confidence in their company's financial prospects over the next 6-12 months, citing a stable interest rate environment and government support for small businesses.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "This new information from the Federal Reserve Bank of New York's survey suggests that small and medium-sized business owners are increasingly optimistic about their financial prospects, primarily due to a stable interest rate environment and government support. This contradicts my previous concerns about economic uncertainty (reason #4) and, as a result, I have increased my probability estimate. The fact that 75% of respondents reported increased confidence indicates a significant shift in sentiment, which I believe will likely lead to increased commercial and industrial lending activity in the near future.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"This new information from the Federal Reserve Bank of New York's survey suggests that small and medium-sized business owners are increasingly optimistic about their financial prospects, primarily due to a stable interest rate environment and government support. This contradicts my previous concerns about economic uncertainty (reason #4) and, as a result, I have increased my probability estimate. The fact that 75% of respondents reported increased confidence indicates a significant shift in sentiment, which I believe will likely lead to increased commercial and industrial lending activity in the near future.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "probe_text": "The US government announces a comprehensive package of economic stimulus measures, including tax breaks for small businesses and investments in infrastructure, which aims to boost economic growth and confidence in the near term.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.22999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The newly announced economic stimulus package reduces the likelihood of economic uncertainty and potential trade tensions, which were previously cited as a potential reason for decreased lending activity. This new information increases my confidence in the US economy's moderate growth rate and, consequently, the likelihood of increased commercial and industrial lending activity by the end of 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The newly announced economic stimulus package reduces the likelihood of economic uncertainty and potential trade tensions, which were previously cited as a potential reason for decreased lending activity. This new information increases my confidence in the US economy's moderate growth rate and, consequently, the likelihood of increased commercial and industrial lending activity by the end of 2025.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "probe_text": "A recent survey by the National Association for Business Economics (NABE) found that 71% of its members expect inflation to continue rising in the next quarter, with 45% citing it as a major concern for their businesses. This sentiment is echoed by the Federal Reserve's own Beige Book, which reported that several districts have noted 'cautionary tone' among business leaders due to inflationary pressures. Such widespread concern about inflation's impact on business confidence is likely to lead to decreased lending activity, supporting our initial assessment.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about widespread concern over inflation's impact on business confidence has strengthened my initial assessment that the total dollar amount representing all commercial and industrial loans made by commercial banks in the US will not increase by 2025-12-28 compared to its value on 2025-12-21. Given that 71% of NABE members and 45% of them citing inflation as a major concern, the expected decrease in business confidence is more pronounced than I initially considered. This supports the notion that lending activity may be curtailed, leading to a lower probability of an increase in the total dollar amount of commercial and industrial loans by the end of the year.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about widespread concern over inflation's impact on business confidence has strengthened my initial assessment that the total dollar amount representing all commercial and industrial loans made by commercial banks in the US will not increase by 2025-12-28 compared to its value on 2025-12-21. Given that 71% of NABE members and 45% of them citing inflation as a major concern, the expected decrease in business confidence is more pronounced than I initially considered. This supports the notion that lending activity may be curtailed, leading to a lower probability of an increase in the total dollar amount of commercial and industrial loans by the end of the year.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "probe_text": "The US Securities and Exchange Commission has announced plans to expand its division dedicated to processing and reviewing foreign investment disclosures, with the goal of improving transparency and reducing processing times by 2026.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.06999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The announcement by the US Securities and Exchange Commission to improve transparency and reduce processing times for foreign investment disclosures is a positive sign for business confidence. This move is likely to alleviate some of the economic uncertainty related to trade tensions, which was previously a concern for commercial lending activity. As a result, I have decreased my estimate of the likelihood of an increase in commercial and industrial loans by the end of 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The announcement by the US Securities and Exchange Commission to improve transparency and reduce processing times for foreign investment disclosures is a positive sign for business confidence. This move is likely to alleviate some of the economic uncertainty related to trade tensions, which was previously a concern for commercial lending activity. As a result, I have decreased my estimate of the likelihood of an increase in commercial and industrial loans by the end of 2025.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "TOTCI",
+    "question_text": "Will the total dollar amount representing all commercial and industrial loans made by commercial banks in the US have increased by 2025-12-28 as compared to its value on 2025-12-21?",
+    "source": "fred",
+    "condition": "one-turn",
+    "initial_probability": 0.62,
+    "n_probes": 20,
+    "n_successful": 20,
+    "mean_absolute_shift": 0.17099999999999999,
+    "max_absolute_shift": 0.5
+  }
+}

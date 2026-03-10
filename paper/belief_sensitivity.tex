@@ -1,0 +1,328 @@
+% Belief Sensitivity Paper — targeting EMNLP 2026 (ARR May cycle)
+% ACL format (long paper, 8 pages + references)
+\documentclass[11pt]{article}
+\usepackage{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{hyperref}
+
+\title{Probing Belief Sensitivity in LLM Forecasters:\\
+Do Causal Structure and Importance Predict Belief Updates?}
+
+\author{
+  Sean Wilkerson \\
+  Northeastern University \\
+  \texttt{wilkerson.s@northeastern.edu}
+}
+
+\begin{document}
+\maketitle
+
+% ============================================================================
+\begin{abstract}
+Large language models (LLMs) are increasingly used for probabilistic forecasting, yet little is known about the structural coherence of their belief updates. When an LLM produces a probability estimate alongside a causal model of the forecasting question, does it update its beliefs in proportion to the importance of challenged causal factors? We introduce a four-stage pipeline that (1) elicits a probability and causal directed acyclic graph (DAG) from the LLM, (2) analyzes the network to identify nodes and edges of varying structural importance, (3) generates targeted probes that challenge specific network elements, and (4) measures the resulting probability shifts. Across \textit{N} forecasting questions from ForecastBench and three LLMs (Llama 3.1 8B, Llama 3.3 70B, DeepSeek V3), we find that [RESULTS PLACEHOLDER]. We introduce several metrics for quantifying structural belief sensitivity, including the Structural Sensitivity Ratio (SSR), Spurious Acceptance Rate (SAR), and importance--sensitivity correlation. Our results suggest that [KEY FINDING PLACEHOLDER], with implications for the reliability of LLM-based forecasting systems.
+\end{abstract}
+
+% ============================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Large language models have demonstrated surprising capability at probabilistic forecasting, approaching or matching human forecaster performance on prediction market questions \cite{halawi2024approaching, zou2024forecastbench}. This has motivated their deployment in automated forecasting pipelines, decision-support systems, and superforecasting aggregation platforms \cite{aia2025forecaster}. Yet a critical question remains underexplored: when an LLM produces a probability estimate, how robust and structurally coherent are the beliefs underlying that estimate?
+
+Consider a forecaster---human or artificial---who estimates a 65\% probability that a geopolitical event will occur, citing factors such as diplomatic tensions, economic incentives, and historical precedent. A well-calibrated forecaster should update substantially when a \textit{central} causal factor is challenged (e.g., ``diplomatic tensions have actually eased'') but update minimally when a \textit{peripheral} factor is questioned or when \textit{irrelevant} information is introduced. In other words, the magnitude of belief revision should be proportional to the structural importance of the challenged element within the forecaster's causal model.
+
+This desideratum connects to several known failure modes of LLMs. \textbf{Sycophancy}---the tendency to agree with user assertions regardless of their validity \cite{sharma2024towards, cheng2025elephant}---suggests that LLMs may shift beliefs indiscriminately when challenged. \textbf{Anchoring effects} in LLM reasoning \cite{li2025anchoring, echterhoff2024anchoring} raise questions about whether probability updates reflect genuine belief revision or superficial numerical adjustment. And growing evidence of \textbf{prompt sensitivity} \cite{sclar2024quantifying, jia2024prosa} indicates that small changes in how information is presented can produce large changes in LLM outputs.
+
+We propose a methodology for systematically testing whether LLM belief updates respect the causal structure of the forecasting problem. Our approach leverages the LLM's own causal model: we first ask the model to produce both a probability estimate and a causal DAG, then use graph-theoretic analysis to identify elements of varying structural importance, generate targeted probes that challenge these elements, and measure the resulting probability shifts. This design allows us to test a precise hypothesis: \textit{the magnitude of belief revision should correlate with the betweenness centrality of the challenged causal element}.
+
+Our contributions are:
+\begin{enumerate}
+    \item A \textbf{four-stage causal probing pipeline} that elicits structured causal models from LLMs and generates graph-theoretically motivated belief challenges across 10 probe types in three categories (node, edge, structural).
+    \item \textbf{Novel metrics} for quantifying structural belief sensitivity: the Structural Sensitivity Ratio (SSR), Spurious Acceptance Rate (SAR), asymmetry index, critical path premium, and importance--sensitivity correlation.
+    \item \textbf{Empirical evaluation} across three LLMs and $N$ forecasting questions from ForecastBench, providing evidence on whether LLM belief updates are structurally coherent.
+    \item A \textbf{comprehensive robustness analysis} including test--retest reliability, null controls, dose--response analysis, and cross-model comparison.
+\end{enumerate}
+
+% ============================================================================
+\section{Related Work}
+\label{sec:related}
+
+\subsection{LLM Forecasting and Calibration}
+
+The use of LLMs for probabilistic forecasting has progressed rapidly. Early work by \citet{zou2022forecasting} introduced the Autocast dataset and found LLM performance far below human experts, though improving with scale and retrieval. \citet{halawi2024approaching} subsequently demonstrated that retrieval-augmented LLM systems can approach human forecasting accuracy on competitive platform questions. \citet{zou2024forecastbench} introduced ForecastBench, a continuously-updated benchmark of 1,000+ questions from prediction markets (Metaculus, Polymarket, INFER, ACLED), finding that frontier LLMs perform roughly on par with median inexperienced human forecasters but below expert superforecasters.
+
+More recent work has narrowed this gap further. \citet{schoenegger2024wisdom} showed that aggregating forecasts from multiple LLM ``agents'' improves calibration, paralleling the ``wisdom of crowds'' effect in human prediction markets. \citet{pratt2024forecasting} tested whether strategies known to improve human forecasting (reference class reasoning, base-rate anchoring) also help LLMs, identifying systematic biases toward negative predictions. Most recently, agentic LLM systems combining retrieval, multi-agent deliberation, and calibration techniques have achieved results statistically indistinguishable from human superforecasters \cite{aia2025forecaster}.
+
+Despite these advances, LLM calibration remains imperfect. \citet{kadavath2022language} found that larger models show better calibration but exhibit systematic overconfidence. \citet{tian2023just} explored strategies for eliciting calibrated confidence scores from RLHF-trained models. \citet{kalshi2025bench} evaluated leading models on 300 prediction market questions with verified outcomes, finding systematic overconfidence across all models tested.
+
+\subsection{Prompt Sensitivity and Robustness}
+
+A growing literature documents the sensitivity of LLM outputs to seemingly irrelevant prompt variations. \citet{sclar2024quantifying} showed that minor formatting changes (e.g., whitespace, delimiter choice) can shift model accuracy by up to 76 percentage points. \citet{jia2024prosa} found that prompt sensitivity varies across datasets and models, with larger models generally more robust but subjective and reasoning-heavy tasks most affected. \citet{errica2025sensitivity} introduced label-free metrics for diagnosing unreliable LLM behavior across prompt rephrasings. \citet{lunardi2025robustness} demonstrated that benchmark-based evaluations may not reliably measure true capabilities due to sensitivity to superficial rephrasing.
+
+These findings raise a fundamental question for LLM forecasting: if probability estimates are sensitive to prompt formatting, are they also sensitive to the \textit{content} of challenges---and if so, does that sensitivity reflect the structural importance of the challenged information, or is it indiscriminate?
+
+\subsection{Sycophancy and Anchoring}
+
+Sycophancy---the tendency of LLMs to agree with user assertions even when incorrect---has been identified as a significant failure mode. \citet{sharma2024towards} provided a foundational analysis showing that RLHF training encourages models to match user beliefs over truthful answers. \citet{wang2025sycophancy} used mechanistic interpretability (logit-lens analysis, causal activation patching) to identify a two-stage internal mechanism for sycophantic behavior. \citet{cheng2025elephant} introduced the ELEPHANT benchmark for ``social sycophancy,'' finding that LLMs preserve user face 45 percentage points more than humans even in clear user-wrongdoing scenarios.
+
+Closely related is anchoring bias---the tendency to over-weight initial numerical values. \citet{li2025anchoring} demonstrated anchoring effects across multiple LLMs and showed that simple mitigation strategies (chain-of-thought, ``ignore anchor'' prompts) are insufficient. \citet{echterhoff2024anchoring} extended classic anchoring paradigms to LLMs, finding significant anchoring in GPT-4, Gemini Pro, and Claude 2. \citet{huang2025anchoring} found that anchoring operates through shallow layers and is robust to conventional debiasing.
+
+Our work connects these literatures by testing whether belief updating under challenge is \textit{structurally undifferentiated}---shifting equally regardless of the importance of the challenged element (consistent with sycophancy or anchoring)---or \textit{structurally calibrated}, with shifts proportional to causal importance. An SSR $\approx 1$ would indicate undifferentiated updating, while SSR $\gg 1$ would suggest structurally informed belief revision.
+
+\subsection{Belief Revision in LLMs}
+
+\citet{hase2024belief} framed model editing as a philosophical belief-revision problem, identifying 13 open problems and showing that LLM probabilities consistently diverge from Bayesian posteriors. \citet{wilie2024beliefr} introduced Belief-R, a dataset for testing LLMs' ability to revise beliefs when presented with contradictory evidence. \citet{wu2024counterfactual} proposed counterfactual task variants and found that model performance substantially degrades on counterfactual scenarios, suggesting reliance on memorized procedures rather than abstract reasoning. \citet{turpin2024language} demonstrated that chain-of-thought explanations can be unfaithful to the model's actual reasoning process, raising questions about whether stated reasoning reflects genuine belief structures.
+
+Our approach differs from prior belief revision work in that we test revision within the model's \textit{own} elicited causal framework, rather than against externally-defined ground truth. This allows us to measure \textit{internal consistency} without requiring knowledge of the correct causal structure.
+
+\subsection{Causal Reasoning and Causal Discovery with LLMs}
+
+The ability of LLMs to perform causal reasoning has been evaluated extensively. \citet{kiciman2023causal} found that GPT-4 achieved 97\% accuracy on pairwise causal discovery but struggled with counterfactual scenarios. \citet{zevcevic2023causal} argued that autoregressive LLMs cannot perform genuine causal reasoning as they lack interventional distributions---they are ``causal parrots.'' \citet{chi2024causalprobe} introduced CausalProbe with post-training-cutoff data, finding that LLMs primarily perform level-1 (associational) causal reasoning and lack deeper interventional or counterfactual capabilities. \citet{yang2024critical} argued that many benchmarks can be solved via domain knowledge retrieval rather than genuine reasoning.
+
+On causal graph discovery specifically, \citet{wan2024causal} surveyed three integration modes: direct extraction, domain knowledge integration, and structural refinement. \citet{feng2025reliability} found that LLMs recognize frequent causal relations well but struggle with rare or novel ones. \citet{sheth2024causalgraph2llm} showed that LLM performance on causal graph queries is highly sensitive to graph encoding format, with even GPT-4 showing $\sim$60\% deviation across representations.
+
+Our work does not test whether LLMs perform \textit{correct} causal reasoning. Instead, we test a weaker but practically important property: whether LLMs' belief updates are \textit{internally consistent} with their self-reported causal models. Even if the elicited DAG is factually incorrect, a structurally coherent forecaster should update more when central elements of its own model are challenged.
+
+% ============================================================================
+\section{Methodology}
+\label{sec:method}
+
+\subsection{Overview}
+
+Our pipeline consists of four stages applied to each forecasting question $q$:
+
+\begin{enumerate}
+    \item \textbf{Causal Forecast}: The LLM produces an initial probability $p_0 \in [0.01, 0.99]$ and a causal DAG $G = (V, E)$ with 4--8 factor nodes, 1 outcome node, and directed edges representing causal mechanisms.
+    \item \textbf{Network Analysis}: We compute graph-theoretic metrics on $G$, including betweenness centrality, PageRank, and path relevance for nodes, and edge betweenness and critical-path membership for edges. We select 16--18 probe targets spanning 10 probe types.
+    \item \textbf{Probe Generation}: The LLM generates a natural-language probe for each target, contextualized to the specific question and network element.
+    \item \textbf{Probed Forecast}: For each probe, we present the LLM (in a fresh conversation) with the original question, initial probability, causal network, and the probe, and elicit an updated probability $p_i$.
+\end{enumerate}
+
+The key dependent variable is the \textbf{absolute shift} $|\Delta_i| = |p_i - p_0|$ for each probe $i$. We analyze whether $|\Delta_i|$ varies systematically with the structural importance of the probed element.
+
+\subsection{Questions}
+
+We draw questions from ForecastBench \cite{zou2024forecastbench}, a benchmark of binary forecasting questions sourced from active prediction markets. Questions span domains including geopolitics, economics, science, and technology, with community-derived probabilities serving as ground truth. We sample $N$ questions with active market prices at the time of data collection.
+
+\subsection{Causal DAG Elicitation}
+\label{sec:dag}
+
+In Stage 1, we prompt the LLM to act as a calibrated probabilistic forecaster and produce:
+\begin{itemize}
+    \item A probability estimate $p_0$
+    \item A set of \textbf{factor nodes} $V_F = \{v_1, \ldots, v_k\}$ ($4 \leq k \leq 8$), each with a natural-language description
+    \item An \textbf{outcome node} $v_o$ representing the event being forecast
+    \item A set of \textbf{directed edges} $E \subseteq V \times V$, each annotated with a causal mechanism
+\end{itemize}
+
+We enforce structural constraints: every factor must have at least one outgoing edge, the outcome must have at least one incoming edge, and all edges must reference valid nodes. Responses failing validation are retried up to 3 times.
+
+\subsection{Network Analysis}
+\label{sec:network}
+
+We compute the following metrics on the elicited DAG $G$:
+
+\paragraph{Node metrics.}
+\begin{itemize}
+    \item \textbf{Betweenness centrality} $C_B(v) = \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$, where $\sigma_{st}$ is the number of shortest paths from $s$ to $t$ and $\sigma_{st}(v)$ is the number passing through $v$.
+    \item \textbf{PageRank} with damping factor $\alpha = 0.85$.
+    \item \textbf{Path relevance}: the fraction of shortest paths from any factor node to the outcome that pass through $v$.
+    \item \textbf{In-degree and out-degree}.
+\end{itemize}
+
+\paragraph{Edge metrics.}
+\begin{itemize}
+    \item \textbf{Edge betweenness centrality}: analogous to node betweenness, applied to edges.
+    \item \textbf{Critical-path membership}: whether the edge lies on any shortest path from a factor to the outcome.
+\end{itemize}
+
+\paragraph{Probe target selection.} We select 16--18 targets using a structured allocation designed to span the importance spectrum and all probe types (Table~\ref{tab:probe_types}).
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llp{3.0cm}c}
+\toprule
+\textbf{Category} & \textbf{Probe Type} & \textbf{Description} & \textbf{$n$} \\
+\midrule
+\multirow{4}{*}{Node}
+  & negate\_high & Challenge top-importance node & 2 \\
+  & negate\_medium & Challenge median-importance node & 1 \\
+  & negate\_low & Challenge lowest-importance node & 1 \\
+  & strengthen & Reinforce top-importance node & 2 \\
+\midrule
+\multirow{4}{*}{Edge}
+  & negate\_critical & Challenge critical-path edge & 2 \\
+  & negate\_peripheral & Challenge non-critical edge & 1 \\
+  & reverse & Argue reversed causation & 1 \\
+  & spurious & Propose a missing edge & 2 \\
+\midrule
+\multirow{2}{*}{Structural}
+  & missing\_node & Suggest omitted factor & 2 \\
+  & irrelevant & Introduce irrelevant info (control) & 2 \\
+\bottomrule
+\end{tabular}
+\caption{Probe types and allocation per question. Each question receives 16--18 probes spanning three categories. Nodes are ranked by betweenness centrality; edges by edge betweenness and critical-path membership.}
+\label{tab:probe_types}
+\end{table}
+
+\subsection{Probe Generation}
+\label{sec:probes}
+
+For each target, we prompt the LLM with the original question, initial probability, the full causal network, and type-specific instructions. For example, a \texttt{node\_negate\_high} probe instructs: ``Generate a plausible challenge arguing that this high-importance factor is incorrect or irrelevant.'' Structural probes (\texttt{missing\_node}, \texttt{irrelevant}) are generated freely by the LLM without a specific target element.
+
+If the LLM fails to produce a parseable probe, we use a type-specific fallback template. We record whether each probe was LLM-generated or a fallback.
+
+\subsection{Probed Forecast}
+\label{sec:probed}
+
+Each probe is presented in an independent, single-turn conversation. The LLM receives the original question, its initial probability $p_0$, the full causal network, and the probe text. It produces an updated probability $p_i \in [0.01, 0.99]$ and reasoning. This one-turn design ensures that probe results are independent---each probe is evaluated without knowledge of other probes or their effects.
+
+\subsection{Metrics}
+\label{sec:metrics}
+
+We define the following metrics to characterize structural belief sensitivity:
+
+\paragraph{Structural Sensitivity Ratio (SSR).}
+Let $H = \{\texttt{negate\_high}, \texttt{strengthen}, \texttt{negate\_critical}\}$ be the set of high-importance probe types and $L = \{\texttt{negate\_low}, \texttt{negate\_peripheral}, \texttt{irrelevant}\}$ be the low-importance types. Then:
+\begin{equation}
+    \text{SSR} = \frac{\bar{|\Delta|}_H}{\bar{|\Delta|}_L}
+\end{equation}
+SSR $> 1$ indicates structurally differentiated updating; SSR $\approx 1$ indicates undifferentiated updating.
+
+\paragraph{Importance--Sensitivity Correlation ($\rho_{IS}$).}
+Spearman rank correlation between target betweenness centrality $C_B(v_i)$ and absolute shift $|\Delta_i|$, computed over all probes with importance $> 0$.
+
+\paragraph{Spurious Acceptance Rate (SAR).}
+The fraction of \texttt{edge\_spurious} and \texttt{missing\_node} probes producing $|\Delta| \geq 0.05$:
+\begin{equation}
+    \text{SAR} = \frac{|\{i \in S : |\Delta_i| \geq 0.05\}|}{|S|}
+\end{equation}
+where $S$ is the set of spurious/missing-node probes.
+
+\paragraph{Asymmetry Index (AI).}
+\begin{equation}
+    \text{AI} = \frac{\bar{|\Delta|}_{\text{negate\_high}}}{\bar{|\Delta|}_{\text{strengthen}}}
+\end{equation}
+AI $> 1$ indicates negativity bias; AI $< 1$ indicates confirmation bias.
+
+\paragraph{Critical Path Premium (CPP).}
+\begin{equation}
+    \text{CPP} = \bar{|\Delta|}_{\text{on-path}} - \bar{|\Delta|}_{\text{off-path}}
+\end{equation}
+where probes are grouped by whether their target lies on a shortest path from any factor to the outcome. CPP $> 0$ indicates sensitivity to topological position.
+
+% ============================================================================
+\section{Experimental Setup}
+\label{sec:setup}
+
+\subsection{Models}
+
+We evaluate three models of varying scale accessed via OpenRouter:
+\begin{itemize}
+    \item \textbf{Llama 3.1 8B Instruct} (\texttt{meta-llama/llama-3.1-8b-instruct})
+    \item \textbf{Llama 3.3 70B Instruct} (\texttt{meta-llama/llama-3.3-70b-instruct})
+    \item \textbf{DeepSeek V3} (\texttt{deepseek/deepseek-v3})
+\end{itemize}
+
+All models use temperature 0.3 for Stages 1--3 (causal forecast, network analysis, probe generation) and temperature 0.1 for Stage 4 (probed forecast) to reduce stochastic variation in the key dependent variable.
+
+\subsection{Questions}
+
+We sample $N = 50$ questions from ForecastBench, filtering for questions with active prediction market prices. Questions are shared across all models to enable paired comparison.
+
+\subsection{Test--Retest Reliability}
+
+To assess the stability of our measurements, we run the full pipeline twice on the same 50 questions using Llama 3.3 70B. We compare initial probabilities (Spearman $\rho$), graph structure (Jaccard similarity of nodes and edges), and per-question mean shifts (Spearman $\rho$) across the two runs.
+
+% ============================================================================
+\section{Results}
+\label{sec:results}
+
+% PLACEHOLDER — to be filled after data collection completes
+
+\subsection{Graph Quality}
+
+[Distribution of graph properties across questions and models. \% DAGs, mean nodes/edges, density. Degenerate case rate.]
+
+\subsection{Overall Sensitivity}
+
+[Mean absolute shift, median shift, \% no-change. By model.]
+
+\subsection{Structural Sensitivity}
+
+[SSR by model. Importance--sensitivity $\rho$ by model. Critical path premium. Table comparing all metrics across models.]
+
+\subsection{Directionality}
+
+[Do negation probes decrease confidence? Do strengthening probes increase confidence? Are irrelevant probes neutral?]
+
+\subsection{Spurious Acceptance}
+
+[SAR by model. Do models resist fabricated causal links?]
+
+\subsection{Dose--Response}
+
+[Linear relationship between importance and shift. Quartile analysis. Bootstrap CI on slope.]
+
+\subsection{Null Test}
+
+[Real probes vs. irrelevant controls. Paired t-test, Cohen's d.]
+
+\subsection{Test--Retest Reliability}
+
+[ICC on initial probabilities. Graph Jaccard similarity. Shift correlation across runs.]
+
+\subsection{Cross-Model Comparison}
+
+[Paired comparisons. Which patterns replicate across models?]
+
+% ============================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+% PLACEHOLDER
+
+\subsection{Structural Coherence of LLM Beliefs}
+
+[Do LLMs update in proportion to causal importance? What does SSR tell us?]
+
+\subsection{Sycophancy vs. Structured Reasoning}
+
+[How do our findings relate to sycophancy literature? Is updating indiscriminate or structured?]
+
+\subsection{Implications for LLM Forecasting}
+
+[What do these results mean for using LLMs as forecasters? Reliability concerns.]
+
+\subsection{Limitations}
+
+\begin{itemize}
+    \item The causal DAGs are elicited from the LLM itself, not ground-truth causal models. Our test is of \textit{internal consistency}, not causal correctness.
+    \item We use betweenness centrality as the primary importance metric. Alternative metrics (PageRank, path relevance) may capture different aspects of structural importance.
+    \item The probe generation step uses the same LLM, creating potential circularity. However, the probes are structurally motivated by graph analysis, not by the LLM's preferences.
+    \item We evaluate three models from two families. Broader evaluation across architectures and scales would strengthen generalizability claims.
+    \item ForecastBench questions vary in difficulty and domain; our sample may not be representative of all forecasting contexts.
+\end{itemize}
+
+% ============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+% PLACEHOLDER
+
+We introduced a causal probing pipeline for evaluating the structural coherence of LLM belief updates in probabilistic forecasting. Our metrics---SSR, SAR, importance--sensitivity correlation, and critical path premium---provide a framework for assessing whether LLM forecasters update beliefs in proportion to the structural importance of challenged factors. Across three models and $N$ forecasting questions, we find [KEY FINDING]. These results have implications for the deployment of LLMs in forecasting and decision-support systems, suggesting that [IMPLICATION].
+
+% ============================================================================
+% References — using placeholder keys; to be replaced with .bib file
+\bibliography{references}
+\bibliographystyle{acl_natbib}
+
+\end{document}

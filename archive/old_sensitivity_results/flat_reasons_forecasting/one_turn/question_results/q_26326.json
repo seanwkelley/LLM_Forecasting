@@ -1,0 +1,405 @@
+{
+  "question_id": "26326",
+  "question_text": "Five years after AGI, will there be universal basic income?",
+  "source": "metaculus",
+  "initial_probability": 0.32,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "The development of AGI is likely to lead to significant job displacement, making universal basic income (UBI) a necessary social safety net.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "Governments may be hesitant to implement UBI due to concerns about cost and effectiveness, potentially delaying or preventing its adoption.",
+      "importance": "high"
+    },
+    {
+      "id": 3,
+      "text": "The potential benefits of AGI, such as increased productivity and efficiency, could lead to economic growth and reduced poverty, making UBI less necessary.",
+      "importance": "medium"
+    },
+    {
+      "id": 4,
+      "text": "Some experts argue that UBI is a potential solution to the problem of job displacement, but its effectiveness has not been extensively tested, and its implementation would require significant changes to existing social welfare systems.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "While the development of AGI is likely to have significant economic and social implications, the likelihood of UBI being implemented five years after its emergence is uncertain. Job displacement and the need for a social safety net are strong arguments in favor of UBI, but government hesitation and concerns about cost and effectiveness may delay or prevent its adoption.",
+  "probes": [
+    {
+      "probe_text": "In the event of AGI, it's possible that automation doesn't replace human labor, but rather complements it, leading to widespread job creation in new fields such as AI maintenance, development, and training. This could be due to AGI's ability to augment human capabilities, making certain tasks more efficient and freeing up time for creative pursuits.",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A new study published in the Journal of Economic Dynamics and Control found that the introduction of automation technologies in the manufacturing sector led to a significant increase in the creation of high-skilled jobs, as workers were retrained and upskilled to work alongside machines. The study's lead author, Dr. Rachel Kim, noted that 'the data suggests that while automation may displace some jobs, it also creates new opportunities for workers to develop valuable skills and adapt to changing labor market demands.'",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A new study finds that AGI will primarily augment human capabilities in tasks that require creativity, empathy, and complex problem-solving, such as artistic endeavors, social work, and scientific research, rather than displacing jobs in these areas.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the McKinsey Global Institute estimates that up to 800 million jobs could be lost worldwide due to automation by 2030, with the majority of these losses occurring in high-income countries. This projection is based on an analysis of over 800 tasks and 2,000 job descriptions, and suggests that the impact of automation will be more pronounced in industries where tasks are repetitive, routine, or can be easily automated. The report's lead author, a renowned economist, has stated that these findings have significant implications for policymakers and suggest a pressing need for social safety nets, such as universal basic income, to mitigate the effects of job displacement.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "In the United States, the number of households using online grocery shopping has increased by 30% over the past 5 years.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "What if governments are actually incentivized to implement UBI due to the potential economic benefits of stabilizing consumer demand and reducing poverty rates, which could lead to increased tax revenues and a more productive workforce?",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "Yesterday, a groundbreaking study published in the Journal of Public Economics found that implementing Universal Basic Income (UBI) in a pilot program in Finland resulted in a 25% increase in economic mobility among low-income households and a 15% decrease in poverty rates. Notably, the study's authors estimated that these benefits came at a relatively low cost to the government, with a net expenditure of only 1.2% of GDP.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A large-scale, privately-funded UBI pilot program in a major economy, such as the United States or the European Union, achieves significant success in reducing poverty and increasing economic mobility, with positive outcomes widely reported in the media and by independent evaluators.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent survey of 125 top economists affiliated with the American Economic Association found that 80% of respondents believe that implementing a universal basic income would 'significantly strain' government budgets, with 45% stating it would be 'extremely challenging' to fund.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent survey of experts in the field of artificial intelligence found that 75% of respondents believe that AGI will be capable of simulating human-like creativity in 20 years, despite current limitations in understanding human creative processes.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the increased productivity and efficiency brought about by AGI lead to a significant concentration of wealth among a small elite, exacerbating income inequality and making universal basic income more necessary to mitigate the negative consequences?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the McKinsey Global Institute estimates that 75% of jobs in the US could be automated by 2030, with AGI driving a significant increase in productivity but also a corresponding decrease in employment rates, potentially exacerbating income inequality and rendering UBI more necessary than ever.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "However, if AGI is primarily used to automate low-skilled, high-turnover jobs in the service industry, which are disproportionately held by low-income workers, it's possible that the resulting job displacement could exacerbate existing income inequality, making the case for UBI more compelling.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study by the McKinsey Global Institute estimates that widespread adoption of AGI in industries such as manufacturing and healthcare could lead to a 40% increase in global GDP by 2030, with the majority of benefits accruing to low- and middle-income countries. This significant economic growth could further reduce poverty rates and alleviate the need for universal basic income, supporting our initial hypothesis.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "In 2025, the United Nations General Assembly adopted a resolution recognizing the importance of asteroid mining for space exploration and development, with several countries pledging to collaborate on the initiative.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the implementation of UBI actually accelerates the adoption of automation and AI, as workers who receive a basic income are more likely to take risks and invest in their own education and training, leading to a more rapid transition to a post-scarcity economy?",
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A new study published in the Journal of Labor Economics, a top-tier peer-reviewed journal, found that a randomized controlled trial of UBI in a small European country resulted in a 25% increase in employment rates among participants, with no significant increase in welfare dependency. The study's lead author, Dr. Maria Rodriguez, a renowned expert in labor economics, stated that the findings suggest that UBI can be an effective tool for reducing unemployment, particularly in regions with high levels of job displacement due to automation. The study's results have already been cited by policymakers in several countries, and some experts are now arguing that UBI could be a key component of a comprehensive strategy for mitigating the effects of AGI on the job market.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A large-scale, randomized controlled trial in a major developed economy demonstrates that the implementation of a UBI leads to a significant reduction in poverty rates and improved overall well-being, without causing unintended consequences such as increased unemployment or social unrest.",
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the McKinsey Global Institute found that up to 800 million jobs could be lost worldwide due to automation by 2030, with the majority of those job losses occurring in the next decade. This finding reinforces concerns about the potential for significant job displacement and the need for innovative solutions like UBI to mitigate its effects.",
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "The concept of UBI has been discussed in various forms of science fiction, including a notable episode of the TV show 'Star Trek: The Next Generation' where the crew of the USS Enterprise visits a planet where a UBI-like system is in place.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "generated": true
+    }
+  ],
+  "condition": "one-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "In the event of AGI, it's possible that automation doesn't replace human labor, but rather complements it, leading to widespread job creation in new fields such as AI maintenance, development, and training. This could be due to AGI's ability to augment human capabilities, making certain tasks more efficient and freeing up time for creative pursuits.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.26,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that AGI could lead to job creation in new fields, rather than displacement, which undermines the primary justification for universal basic income (UBI). While it's still possible that some job displacement occurs, the potential for job creation in complementary fields reduces the likelihood of widespread job displacement, and therefore, the necessity of UBI. I've decreased my estimate by 6 percentage points, reflecting a moderate decrease in confidence in the likelihood of UBI implementation.",
+      "raw_response": "{\n  \"updated_probability\": 0.26,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that AGI could lead to job creation in new fields, rather than displacement, which undermines the primary justification for universal basic income (UBI). While it's still possible that some job displacement occurs, the potential for job creation in complementary fields reduces the likelihood of widespread job displacement, and therefore, the necessity of UBI. I've decreased my estimate by 6 percentage points, reflecting a moderate decrease in confidence in the likelihood of UBI implementation.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A new study published in the Journal of Economic Dynamics and Control found that the introduction of automation technologies in the manufacturing sector led to a significant increase in the creation of high-skilled jobs, as workers were retrained and upskilled to work alongside machines. The study's lead author, Dr. Rachel Kim, noted that 'the data suggests that while automation may displace some jobs, it also creates new opportunities for workers to develop valuable skills and adapt to changing labor market demands.'",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.26,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new study's findings, suggesting that automation can lead to an increase in high-skilled jobs through worker retraining and upskilling, has led me to decrease my estimate of the likelihood of universal basic income (UBI) five years after AGI. This is because the study's results imply that the job displacement concerns that initially led me to assign a higher probability to UBI are less severe than I previously thought. While some job displacement may still occur, the potential for workers to develop valuable skills and adapt to changing labor market demands reduces the need for a comprehensive social safety net like UBI.",
+      "raw_response": "{\n  \"updated_probability\": 0.26,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new study's findings, suggesting that automation can lead to an increase in high-skilled jobs through worker retraining and upskilling, has led me to decrease my estimate of the likelihood of universal basic income (UBI) five years after AGI. This is because the study's results imply that the job displacement concerns that initially led me to assign a higher probability to UBI are less severe than I previously thought. While some job displacement may still occur, the potential for workers to develop valuable skills and adapt to changing labor market demands reduces the need for a comprehensive social safety net like UBI.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "A new study finds that AGI will primarily augment human capabilities in tasks that require creativity, empathy, and complex problem-solving, such as artistic endeavors, social work, and scientific research, rather than displacing jobs in these areas.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.22,
+      "absolute_shift": 0.1,
+      "shift_direction": "decreased",
+      "reasoning": "The new study's finding that AGI will primarily augment human capabilities in tasks that require creativity, empathy, and complex problem-solving reduces the likelihood of significant job displacement. This, in turn, reduces the need for universal basic income, making my initial estimate of 0.32 too high. I now estimate the probability of universal basic income five years after AGI to be 0.22, as the primary job displacement concerns are alleviated.",
+      "raw_response": "{\n  \"updated_probability\": 0.22,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new study's finding that AGI will primarily augment human capabilities in tasks that require creativity, empathy, and complex problem-solving reduces the likelihood of significant job displacement. This, in turn, reduces the need for universal basic income, making my initial estimate of 0.32 too high. I now estimate the probability of universal basic income five years after AGI to be 0.22, as the primary job displacement concerns are alleviated.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A recent report by the McKinsey Global Institute estimates that up to 800 million jobs could be lost worldwide due to automation by 2030, with the majority of these losses occurring in high-income countries. This projection is based on an analysis of over 800 tasks and 2,000 job descriptions, and suggests that the impact of automation will be more pronounced in industries where tasks are repetitive, routine, or can be easily automated. The report's lead author, a renowned economist, has stated that these findings have significant implications for policymakers and suggest a pressing need for social safety nets, such as universal basic income, to mitigate the effects of job displacement.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.56,
+      "absolute_shift": 0.24000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new report from McKinsey provides strong evidence that job displacement due to automation is a pressing concern, with a projected loss of 800 million jobs worldwide by 2030. This challenges my initial assumption that the development of AGI would lead to significant job displacement, making UBI a necessary social safety net. The report's findings, based on an analysis of over 800 tasks and 2,000 job descriptions, suggest that the impact of automation will be more pronounced in industries where tasks are repetitive, routine, or can be easily automated. This increases the likelihood that governments will implement UBI as a social safety net, leading to my updated probability estimate of 0.56.",
+      "raw_response": "{\n  \"updated_probability\": 0.56,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new report from McKinsey provides strong evidence that job displacement due to automation is a pressing concern, with a projected loss of 800 million jobs worldwide by 2030. This challenges my initial assumption that the development of AGI would lead to significant job displacement, making UBI a necessary social safety net. The report's findings, based on an analysis of over 800 tasks and 2,000 job descriptions, suggest that the impact of automation will be more pronounced in industries where tasks are repetitive, routine, or can be easily automated. This increases the likelihood that governments will implement UBI as a social safety net, leading to my updated probability estimate of 0.56.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "In the United States, the number of households using online grocery shopping has increased by 30% over the past 5 years.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.13,
+      "shift_direction": "decreased",
+      "reasoning": "The significant increase in online grocery shopping usage in the US over the past 5 years suggests that automation and AI (such as AGI) are already driving changes in the workforce, particularly in retail and food delivery sectors. This trend is consistent with the prediction that AGI will lead to job displacement. However, the fact that online shopping has increased by 30% does not necessarily imply that UBI is less necessary, as the jobs lost in traditional retail may be offset by new job opportunities in e-commerce and related fields. Nevertheless, this new information challenges my initial assumption that the development of AGI will lead to significant job displacement (reason #1), and I have decreased my probability estimate accordingly.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The significant increase in online grocery shopping usage in the US over the past 5 years suggests that automation and AI (such as AGI) are already driving changes in the workforce, particularly in retail and food delivery sectors. This trend is consistent with the prediction that AGI will lead to job displacement. However, the fact that online shopping has increased by 30% does not necessarily imply that UBI is less necessary, as the jobs lost in traditional retail may be offset by new job opportunities in e-commerce and related fields. Nevertheless, this new information challenges my initial assumption that the development of AGI will lead to significant job displacement (reason #1), and I have decreased my probability estimate accordingly.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "What if governments are actually incentivized to implement UBI due to the potential economic benefits of stabilizing consumer demand and reducing poverty rates, which could lead to increased tax revenues and a more productive workforce?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.48,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests that governments may be more inclined to implement UBI due to its potential economic benefits, which could mitigate the concern about cost and effectiveness. This challenges my initial assumption that governments would be hesitant to adopt UBI. I'm increasing my probability estimate from 0.32 to 0.48, as the potential benefits of UBI for economic stability and growth seem more compelling than I initially thought.",
+      "raw_response": "{\n  \"updated_probability\": 0.48,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information suggests that governments may be more inclined to implement UBI due to its potential economic benefits, which could mitigate the concern about cost and effectiveness. This challenges my initial assumption that governments would be hesitant to adopt UBI. I'm increasing my probability estimate from 0.32 to 0.48, as the potential benefits of UBI for economic stability and growth seem more compelling than I initially thought.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "Yesterday, a groundbreaking study published in the Journal of Public Economics found that implementing Universal Basic Income (UBI) in a pilot program in Finland resulted in a 25% increase in economic mobility among low-income households and a 15% decrease in poverty rates. Notably, the study's authors estimated that these benefits came at a relatively low cost to the government, with a net expenditure of only 1.2% of GDP.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.23000000000000004,
+      "shift_direction": "increased",
+      "reasoning": "The new study on the effectiveness of UBI in Finland has significantly strengthened my confidence in the potential for governments to implement UBI in response to AGI-induced job displacement. The observed 25% increase in economic mobility and 15% decrease in poverty rates, at a relatively low cost, suggest that UBI is a viable solution that could alleviate some of the social impacts of AGI. This new information has overridden my initial concerns about government hesitation and cost, leading me to increase my estimate of the likelihood of UBI implementation.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new study on the effectiveness of UBI in Finland has significantly strengthened my confidence in the potential for governments to implement UBI in response to AGI-induced job displacement. The observed 25% increase in economic mobility and 15% decrease in poverty rates, at a relatively low cost, suggest that UBI is a viable solution that could alleviate some of the social impacts of AGI. This new information has overridden my initial concerns about government hesitation and cost, leading me to increase my estimate of the likelihood of UBI implementation.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "A large-scale, privately-funded UBI pilot program in a major economy, such as the United States or the European Union, achieves significant success in reducing poverty and increasing economic mobility, with positive outcomes widely reported in the media and by independent evaluators.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.55,
+      "absolute_shift": 0.23000000000000004,
+      "shift_direction": "increased",
+      "reasoning": "This new information significantly increases the likelihood of UBI adoption in the face of job displacement caused by AGI. The success of a large-scale pilot program demonstrates the feasibility and effectiveness of UBI, making it more likely that governments will implement it as a social safety net. This challenges reason #2, which suggested that governments might be hesitant to implement UBI. The reduced uncertainty and demonstrated success of UBI increase the likelihood of its adoption, leading to an increased probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.55,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"This new information significantly increases the likelihood of UBI adoption in the face of job displacement caused by AGI. The success of a large-scale pilot program demonstrates the feasibility and effectiveness of UBI, making it more likely that governments will implement it as a social safety net. This challenges reason #2, which suggested that governments might be hesitant to implement UBI. The reduced uncertainty and demonstrated success of UBI increase the likelihood of its adoption, leading to an increased probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "A recent survey of 125 top economists affiliated with the American Economic Association found that 80% of respondents believe that implementing a universal basic income would 'significantly strain' government budgets, with 45% stating it would be 'extremely challenging' to fund.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.24,
+      "absolute_shift": 0.08000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The recent survey of top economists suggests that the cost concerns about implementing UBI are more widespread and severe than I initially thought. The high percentage of respondents believing that UBI would 'significantly strain' government budgets and be 'extremely challenging' to fund strengthens my assumption that governments may be hesitant to implement UBI. This new information makes me more skeptical about the likelihood of UBI being implemented, so I've decreased my probability estimate accordingly.",
+      "raw_response": "{\n  \"updated_probability\": 0.24,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The recent survey of top economists suggests that the cost concerns about implementing UBI are more widespread and severe than I initially thought. The high percentage of respondents believing that UBI would 'significantly strain' government budgets and be 'extremely challenging' to fund strengthens my assumption that governments may be hesitant to implement UBI. This new information makes me more skeptical about the likelihood of UBI being implemented, so I've decreased my probability estimate accordingly.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "A recent survey of experts in the field of artificial intelligence found that 75% of respondents believe that AGI will be capable of simulating human-like creativity in 20 years, despite current limitations in understanding human creative processes.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.26,
+      "absolute_shift": 0.06,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that AGI may become more capable and widespread than initially anticipated, potentially exacerbating job displacement and making the implementation of UBI more urgent. However, it also implies that governments may be even more hesitant to adopt UBI due to concerns about its effectiveness and cost, as the benefits of AGI may be more pronounced. This new information challenges my initial assumption that governments may be hesitant to implement UBI due to concerns about cost and effectiveness, but it does not entirely undermine it. As a result, I have decreased my probability estimate slightly, but still consider the possibility of UBI to be plausible.",
+      "raw_response": "{\n  \"updated_probability\": 0.26,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that AGI may become more capable and widespread than initially anticipated, potentially exacerbating job displacement and making the implementation of UBI more urgent. However, it also implies that governments may be even more hesitant to adopt UBI due to concerns about its effectiveness and cost, as the benefits of AGI may be more pronounced. This new information challenges my initial assumption that governments may be hesitant to implement UBI due to concerns about cost and effectiveness, but it does not entirely undermine it. As a result, I have decreased my probability estimate slightly, but still consider the possibility of UBI to be plausible.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if the increased productivity and efficiency brought about by AGI lead to a significant concentration of wealth among a small elite, exacerbating income inequality and making universal basic income more necessary to mitigate the negative consequences?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.44,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests that the potential benefits of AGI, such as increased productivity and efficiency, could lead to unintended consequences like income inequality. This exacerbates the need for a social safety net, specifically universal basic income. I have increased my probability estimate from 0.32 to 0.44, as this new information mitigates the counter-argument presented by reason #3, making UBI a more likely necessity after the advent of AGI.",
+      "raw_response": "{\n  \"updated_probability\": 0.44,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information suggests that the potential benefits of AGI, such as increased productivity and efficiency, could lead to unintended consequences like income inequality. This exacerbates the need for a social safety net, specifically universal basic income. I have increased my probability estimate from 0.32 to 0.44, as this new information mitigates the counter-argument presented by reason #3, making UBI a more likely necessity after the advent of AGI.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "A recent report by the McKinsey Global Institute estimates that 75% of jobs in the US could be automated by 2030, with AGI driving a significant increase in productivity but also a corresponding decrease in employment rates, potentially exacerbating income inequality and rendering UBI more necessary than ever.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.48,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the McKinsey Global Institute report strengthens reason #3, suggesting that the potential benefits of AGI may be outweighed by the negative impacts on employment and income inequality. This makes the need for a social safety net, such as UBI, more pressing. I have increased my estimate to 0.48, indicating a moderate increase in the likelihood of UBI being implemented within five years of AGI. This update reflects the increased confidence in the potential consequences of AGI on employment and the economy.",
+      "raw_response": "{\n  \"updated_probability\": 0.48,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the McKinsey Global Institute report strengthens reason #3, suggesting that the potential benefits of AGI may be outweighed by the negative impacts on employment and income inequality. This makes the need for a social safety net, such as UBI, more pressing. I have increased my estimate to 0.48, indicating a moderate increase in the likelihood of UBI being implemented within five years of AGI. This update reflects the increased confidence in the potential consequences of AGI on employment and the economy.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "However, if AGI is primarily used to automate low-skilled, high-turnover jobs in the service industry, which are disproportionately held by low-income workers, it's possible that the resulting job displacement could exacerbate existing income inequality, making the case for UBI more compelling.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.44,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "This new information strengthens reason #3, making the potential benefits of AGI (e.g., increased productivity and efficiency) less likely to offset the negative effects of job displacement. As a result, I believe the case for UBI becomes more compelling, increasing the likelihood of its adoption five years after AGI. Specifically, the new information highlights the potential for AGI to exacerbate income inequality, which is a key argument in favor of UBI. I've increased the probability estimate from 0.32 to 0.44 to reflect this updated assessment.",
+      "raw_response": "{\n  \"updated_probability\": 0.44,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"This new information strengthens reason #3, making the potential benefits of AGI (e.g., increased productivity and efficiency) less likely to offset the negative effects of job displacement. As a result, I believe the case for UBI becomes more compelling, increasing the likelihood of its adoption five years after AGI. Specifically, the new information highlights the potential for AGI to exacerbate income inequality, which is a key argument in favor of UBI. I've increased the probability estimate from 0.32 to 0.44 to reflect this updated assessment.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "A recent study by the McKinsey Global Institute estimates that widespread adoption of AGI in industries such as manufacturing and healthcare could lead to a 40% increase in global GDP by 2030, with the majority of benefits accruing to low- and middle-income countries. This significant economic growth could further reduce poverty rates and alleviate the need for universal basic income, supporting our initial hypothesis.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.22,
+      "absolute_shift": 0.1,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that AGI could lead to significant economic growth, which could reduce the need for universal basic income. This challenges my initial hypothesis that job displacement would necessitate UBI. While the study's findings are promising, I'm not convinced that AGI will uniformly benefit all industries and populations. Nevertheless, this new evidence has led me to reassess my initial estimate, and I now believe that the likelihood of UBI being implemented five years after AGI is lower than I previously thought.",
+      "raw_response": "{\n  \"updated_probability\": 0.22,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that AGI could lead to significant economic growth, which could reduce the need for universal basic income. This challenges my initial hypothesis that job displacement would necessitate UBI. While the study's findings are promising, I'm not convinced that AGI will uniformly benefit all industries and populations. Nevertheless, this new evidence has led me to reassess my initial estimate, and I now believe that the likelihood of UBI being implemented five years after AGI is lower than I previously thought.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "In 2025, the United Nations General Assembly adopted a resolution recognizing the importance of asteroid mining for space exploration and development, with several countries pledging to collaborate on the initiative.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "decreased",
+      "reasoning": "The recognition of asteroid mining for space exploration and development, while exciting and important in its own right, has a tenuous connection to the potential benefits of AGI, such as increased productivity and efficiency. However, it suggests that humanity may be open to exploring and leveraging new sources of value and resources, which could potentially augment the positive effects of AGI. Thus, I slightly decrease my estimate of the probability of UBI being implemented, as the new information does not strongly support or refute the notion that AGI would lead to economic growth and reduced poverty.",
+      "raw_response": "{\n  \"updated_probability\": 0.29,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The recognition of asteroid mining for space exploration and development, while exciting and important in its own right, has a tenuous connection to the potential benefits of AGI, such as increased productivity and efficiency. However, it suggests that humanity may be open to exploring and leveraging new sources of value and resources, which could potentially augment the positive effects of AGI. Thus, I slightly decrease my estimate of the probability of UBI being implemented, as the new information does not strongly support or refute the notion that AGI would lead to economic growth and reduced poverty.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "probe_text": "What if the implementation of UBI actually accelerates the adoption of automation and AI, as workers who receive a basic income are more likely to take risks and invest in their own education and training, leading to a more rapid transition to a post-scarcity economy?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that UBI could actually accelerate the transition to a post-scarcity economy, making it less likely that governments will implement it as a response to job displacement. This challenges my initial assumption that UBI would be a necessary social safety net, and I now consider it less likely. However, I still believe that the development of AGI will lead to significant job displacement, and governments may still be hesitant to implement UBI due to concerns about cost and effectiveness. The potential benefits of AGI, such as increased productivity and efficiency, could also lead to economic growth and reduced poverty, making UBI less necessary.",
+      "raw_response": "{\n  \"updated_probability\": 0.29,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that UBI could actually accelerate the transition to a post-scarcity economy, making it less likely that governments will implement it as a response to job displacement. This challenges my initial assumption that UBI would be a necessary social safety net, and I now consider it less likely. However, I still believe that the development of AGI will lead to significant job displacement, and governments may still be hesitant to implement UBI due to concerns about cost and effectiveness. The potential benefits of AGI, such as increased productivity and efficiency, could also lead to economic growth and reduced poverty, making UBI less necessary.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "probe_text": "A new study published in the Journal of Labor Economics, a top-tier peer-reviewed journal, found that a randomized controlled trial of UBI in a small European country resulted in a 25% increase in employment rates among participants, with no significant increase in welfare dependency. The study's lead author, Dr. Maria Rodriguez, a renowned expert in labor economics, stated that the findings suggest that UBI can be an effective tool for reducing unemployment, particularly in regions with high levels of job displacement due to automation. The study's results have already been cited by policymakers in several countries, and some experts are now arguing that UBI could be a key component of a comprehensive strategy for mitigating the effects of AGI on the job market.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The new study's findings, combined with the fact that it was published in a top-tier peer-reviewed journal and has already been cited by policymakers, strengthen reason #4's argument that UBI is a potentially effective solution to job displacement. This new information reduces the uncertainty surrounding the effectiveness of UBI, making me more confident in its adoption. I've increased my probability estimate from 0.32 to 0.45, as the study's results demonstrate a significant positive impact on employment rates, which is a key concern addressed by UBI.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new study's findings, combined with the fact that it was published in a top-tier peer-reviewed journal and has already been cited by policymakers, strengthen reason #4's argument that UBI is a potentially effective solution to job displacement. This new information reduces the uncertainty surrounding the effectiveness of UBI, making me more confident in its adoption. I've increased my probability estimate from 0.32 to 0.45, as the study's results demonstrate a significant positive impact on employment rates, which is a key concern addressed by UBI.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "probe_text": "A large-scale, randomized controlled trial in a major developed economy demonstrates that the implementation of a UBI leads to a significant reduction in poverty rates and improved overall well-being, without causing unintended consequences such as increased unemployment or social unrest.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.10999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly strengthens reason #4, which previously weighed against the adoption of UBI. The successful implementation of UBI in a major developed economy, as demonstrated by the randomized controlled trial, suggests that it is a viable solution to the problem of job displacement. This, in turn, reduces the likelihood that governments will be hesitant to implement UBI, making it more likely to be implemented in the future. As a result, I have increased my estimate of the probability of universal basic income being implemented five years after AGI.",
+      "raw_response": "{\n  \"updated_probability\": 0.43,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information significantly strengthens reason #4, which previously weighed against the adoption of UBI. The successful implementation of UBI in a major developed economy, as demonstrated by the randomized controlled trial, suggests that it is a viable solution to the problem of job displacement. This, in turn, reduces the likelihood that governments will be hesitant to implement UBI, making it more likely to be implemented in the future. As a result, I have increased my estimate of the probability of universal basic income being implemented five years after AGI.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "probe_text": "A recent report by the McKinsey Global Institute found that up to 800 million jobs could be lost worldwide due to automation by 2030, with the majority of those job losses occurring in the next decade. This finding reinforces concerns about the potential for significant job displacement and the need for innovative solutions like UBI to mitigate its effects.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.19,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the McKinsey report reinforces reason #1, highlighting the potential for significant job displacement due to automation. This strengthens my confidence in the likelihood of universal basic income being necessary as a social safety net. While reason #2 and #3 remain relevant, the increased emphasis on job displacement due to automation shifts the balance of my estimate towards a higher probability of UBI being implemented.",
+      "raw_response": "{\n  \"updated_probability\": 0.51,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the McKinsey report reinforces reason #1, highlighting the potential for significant job displacement due to automation. This strengthens my confidence in the likelihood of universal basic income being necessary as a social safety net. While reason #2 and #3 remain relevant, the increased emphasis on job displacement due to automation shifts the balance of my estimate towards a higher probability of UBI being implemented.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "probe_text": "The concept of UBI has been discussed in various forms of science fiction, including a notable episode of the TV show 'Star Trek: The Next Generation' where the crew of the USS Enterprise visits a planet where a UBI-like system is in place.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.02999999999999997,
+      "shift_direction": "increased",
+      "reasoning": "The mention of UBI in a science fiction TV show, while not conclusive evidence, suggests that the idea of UBI has been considered and discussed in a hypothetical context, which may indicate a level of familiarity and acceptance among the general public. This new information slightly increases my confidence in the adoption of UBI, but the relationship between science fiction and real-world policy implementation is uncertain and not a decisive factor. Therefore, the update is moderate.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The mention of UBI in a science fiction TV show, while not conclusive evidence, suggests that the idea of UBI has been considered and discussed in a hypothetical context, which may indicate a level of familiarity and acceptance among the general public. This new information slightly increases my confidence in the adoption of UBI, but the relationship between science fiction and real-world policy implementation is uncertain and not a decisive factor. Therefore, the update is moderate.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "26326",
+    "question_text": "Five years after AGI, will there be universal basic income?",
+    "source": "metaculus",
+    "condition": "one-turn",
+    "initial_probability": 0.32,
+    "n_probes": 20,
+    "n_successful": 20,
+    "mean_absolute_shift": 0.11850000000000001,
+    "max_absolute_shift": 0.24000000000000005
+  }
+}

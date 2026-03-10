@@ -1,0 +1,65 @@
+{
+  "condition": "one-turn",
+  "n_probes": 960,
+  "n_successful": 960,
+  "anchoring": {
+    "n": 960,
+    "mean_absolute_shift": 0.1405,
+    "median_absolute_shift": 0.13,
+    "pct_no_change": 0.8,
+    "pct_small_shift": 10.0
+  },
+  "sensitivity_by_importance": {
+    "": {
+      "n": 2,
+      "mean_shift": 0.195,
+      "median_shift": 0.195
+    },
+    "high": {
+      "n": 449,
+      "mean_shift": 0.1462,
+      "median_shift": 0.13
+    },
+    "low": {
+      "n": 154,
+      "mean_shift": 0.1474,
+      "median_shift": 0.13
+    },
+    "medium": {
+      "n": 355,
+      "mean_shift": 0.13,
+      "median_shift": 0.12
+    }
+  },
+  "sensitivity_by_probe_type": {
+    "counterfactual": {
+      "n": 192,
+      "mean_shift": 0.1635,
+      "median_shift": 0.16
+    },
+    "irrelevant": {
+      "n": 192,
+      "mean_shift": 0.0778,
+      "median_shift": 0.07
+    },
+    "negation": {
+      "n": 192,
+      "mean_shift": 0.1684,
+      "median_shift": 0.17
+    },
+    "strengthening": {
+      "n": 192,
+      "mean_shift": 0.133,
+      "median_shift": 0.13
+    },
+    "weakening": {
+      "n": 192,
+      "mean_shift": 0.1599,
+      "median_shift": 0.15
+    }
+  },
+  "conversational_drift": {
+    "mean_spearman_rho": 1.0,
+    "n_questions": 50
+  }
+}

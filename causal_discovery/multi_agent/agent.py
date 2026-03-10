@@ -402,6 +402,11 @@ def run_single_agent(
     all_results = list(shared_results) if shared_results else []
     own_results = []  # only this agent's results
     all_intervention_keys = set()
+    if shared_results:
+        for r in shared_results:
+            inv = r.intervention
+            key = (inv.type, json.dumps(inv.target, sort_keys=True))
+            all_intervention_keys.add(key)
 
     for step in range(budget):
         if verbose:

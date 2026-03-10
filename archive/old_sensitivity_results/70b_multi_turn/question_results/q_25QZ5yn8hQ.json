@@ -1,0 +1,923 @@
+{
+  "question_id": "25QZ5yn8hQ",
+  "question_text": "Bitcoin below $80K in 2025?",
+  "source": "manifold",
+  "initial_probability": 0.67,
+  "nodes": [
+    {
+      "id": "economic_growth",
+      "description": "Global economic expansion or contraction",
+      "role": "factor"
+    },
+    {
+      "id": "fed_policy",
+      "description": "US Federal Reserve monetary policy decisions",
+      "role": "factor"
+    },
+    {
+      "id": "inflation_rate",
+      "description": "General price level increases in the economy",
+      "role": "factor"
+    },
+    {
+      "id": "regulatory_env",
+      "description": "Government regulations and oversight on cryptocurrencies",
+      "role": "factor"
+    },
+    {
+      "id": "market_sentiment",
+      "description": "Overall attitude and feelings of investors towards Bitcoin",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "Bitcoin price below $80K in 2025",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "economic_growth",
+      "to": "inflation_rate",
+      "mechanism": "Economic growth can lead to higher inflation rates"
+    },
+    {
+      "from": "fed_policy",
+      "to": "inflation_rate",
+      "mechanism": "Monetary policy affects inflation by controlling money supply and interest rates"
+    },
+    {
+      "from": "inflation_rate",
+      "to": "market_sentiment",
+      "mechanism": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive"
+    },
+    {
+      "from": "regulatory_env",
+      "to": "market_sentiment",
+      "mechanism": "Clear and favorable regulations can increase investor confidence in Bitcoin"
+    },
+    {
+      "from": "market_sentiment",
+      "to": "outcome",
+      "mechanism": "Positive market sentiment can drive up Bitcoin's price, while negative sentiment can drive it down"
+    },
+    {
+      "from": "economic_growth",
+      "to": "outcome",
+      "mechanism": "Strong economic growth can lead to increased investment in risky assets like Bitcoin, potentially driving up its price"
+    }
+  ],
+  "reasoning": "The forecast considers multiple interconnected factors influencing Bitcoin's price. Economic growth and fed policy impact inflation rates, which in turn affect market sentiment towards Bitcoin. Regulatory environment also plays a crucial role in shaping market sentiment. Considering these factors, there's a likelihood that Bitcoin's price could be below $80K in 2025, but it's not a certainty due to the complex interplay of these variables.",
+  "network_analysis": {
+    "n_nodes": 6,
+    "n_edges": 6,
+    "density": 0.2,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 6,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "economic_growth",
+        "description": "Global economic expansion or contraction",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.073,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2146
+      },
+      {
+        "node_id": "fed_policy",
+        "description": "US Federal Reserve monetary policy decisions",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.073,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1146
+      },
+      {
+        "node_id": "inflation_rate",
+        "description": "General price level increases in the economy",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.15,
+        "closeness": 0.4,
+        "pagerank": 0.1661,
+        "path_relevance": 0.2,
+        "composite_importance": 0.2382
+      },
+      {
+        "node_id": "regulatory_env",
+        "description": "Government regulations and oversight on cryptocurrencies",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.073,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1146
+      },
+      {
+        "node_id": "market_sentiment",
+        "description": "Overall attitude and feelings of investors towards Bitcoin",
+        "role": "factor",
+        "in_degree": 2,
+        "out_degree": 1,
+        "betweenness": 0.15,
+        "closeness": 0.5333,
+        "pagerank": 0.2762,
+        "path_relevance": 0.6,
+        "composite_importance": 0.3802
+      },
+      {
+        "node_id": "outcome",
+        "description": "Bitcoin price below $80K in 2025",
+        "role": "outcome",
+        "in_degree": 2,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.5556,
+        "pagerank": 0.3388,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0678
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "economic_growth",
+        "target": "inflation_rate",
+        "mechanism": "Economic growth can lead to higher inflation rates",
+        "edge_betweenness": 0.0667,
+        "on_critical_path": false
+      },
+      {
+        "source": "economic_growth",
+        "target": "outcome",
+        "mechanism": "Strong economic growth can lead to increased investment in risky assets like Bitcoin, potentially driving up its price",
+        "edge_betweenness": 0.0333,
+        "on_critical_path": true
+      },
+      {
+        "source": "fed_policy",
+        "target": "inflation_rate",
+        "mechanism": "Monetary policy affects inflation by controlling money supply and interest rates",
+        "edge_betweenness": 0.1,
+        "on_critical_path": true
+      },
+      {
+        "source": "inflation_rate",
+        "target": "market_sentiment",
+        "mechanism": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive",
+        "edge_betweenness": 0.1667,
+        "on_critical_path": true
+      },
+      {
+        "source": "regulatory_env",
+        "target": "market_sentiment",
+        "mechanism": "Clear and favorable regulations can increase investor confidence in Bitcoin",
+        "edge_betweenness": 0.0667,
+        "on_critical_path": true
+      },
+      {
+        "source": "market_sentiment",
+        "target": "outcome",
+        "mechanism": "Positive market sentiment can drive up Bitcoin's price, while negative sentiment can drive it down",
+        "edge_betweenness": 0.1333,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "market_sentiment",
+        "description": "Overall attitude and feelings of investors towards Bitcoin",
+        "importance": 0.3802,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "inflation_rate",
+        "description": "General price level increases in the economy",
+        "importance": 0.2382,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "economic_growth",
+        "description": "Global economic expansion or contraction",
+        "importance": 0.2146,
+        "centrality_rank": 3,
+        "on_critical_path": false,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "regulatory_env",
+        "description": "Government regulations and oversight on cryptocurrencies",
+        "importance": 0.1146,
+        "centrality_rank": 5,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "market_sentiment",
+        "description": "Overall attitude and feelings of investors towards Bitcoin",
+        "importance": 0.3802,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "inflation_rate",
+        "description": "General price level increases in the economy",
+        "importance": 0.2382,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "inflation_rate->market_sentiment",
+        "description": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "market_sentiment->outcome",
+        "description": "Positive market sentiment can drive up Bitcoin's price, while negative sentiment can drive it down",
+        "importance": 0.1333,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "economic_growth->inflation_rate",
+        "description": "Economic growth can lead to higher inflation rates",
+        "importance": 0.0667,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "inflation_rate->market_sentiment",
+        "description": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive",
+        "importance": 0.1667,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "economic_growth->market_sentiment",
+        "description": "Potential link: Global economic expansion or contraction -> Overall attitude and feelings of investors towards Bitcoin",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "market_sentiment",
+      "description": "Overall attitude and feelings of investors towards Bitcoin",
+      "importance": 0.3802,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "inflation_rate",
+      "description": "General price level increases in the economy",
+      "importance": 0.2382,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "economic_growth",
+      "description": "Global economic expansion or contraction",
+      "importance": 0.2146,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "regulatory_env",
+      "description": "Government regulations and oversight on cryptocurrencies",
+      "importance": 0.1146,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "market_sentiment",
+      "description": "Overall attitude and feelings of investors towards Bitcoin",
+      "importance": 0.3802,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "inflation_rate",
+      "description": "General price level increases in the economy",
+      "importance": 0.2382,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "inflation_rate->market_sentiment",
+      "description": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "market_sentiment->outcome",
+      "description": "Positive market sentiment can drive up Bitcoin's price, while negative sentiment can drive it down",
+      "importance": 0.1333,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "economic_growth->inflation_rate",
+      "description": "Economic growth can lead to higher inflation rates",
+      "importance": 0.0667,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "inflation_rate->market_sentiment",
+      "description": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "economic_growth->market_sentiment",
+      "description": "Potential link: Global economic expansion or contraction -> Overall attitude and feelings of investors towards Bitcoin",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if investor sentiment towards Bitcoin has become entirely detached from its price due to the increasing influence of institutional investors and algorithmic trading, rendering market sentiment a negligible factor in determining Bitcoin's value? Perhaps the market has become so efficient that sentiment no longer drives price movements. Alternatively, could it be that the sentiment of investors is now inversely related to Bitcoin's price, with negative sentiment paradoxically driving up demand due to perceived buying opportunities? This could completely flip the script on how we think market sentiment affects Bitcoin's price.",
+      "probe_type": "node_negate_high",
+      "target_id": "market_sentiment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3802,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Overall attitude and feelings of investors towards Bitcoin"
+    },
+    {
+      "probe_text": "What if the current inflation rate has no impact on Bitcoin's price, as investors have become desensitized to inflationary pressures due to prolonged periods of low interest rates and quantitative easing? Perhaps the relationship between inflation and Bitcoin's attractiveness has been overstated, and other factors such as technological advancements or global adoption rates are more influential. Recent studies suggest that Bitcoin's price is more closely tied to its usability and acceptance as a form of payment, rather than its perceived value as a hedge against inflation. This could render the inflation rate a non-factor in determining Bitcoin's price trajectory.",
+      "probe_type": "node_negate_high",
+      "target_id": "inflation_rate",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2382,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "General price level increases in the economy"
+    },
+    {
+      "probe_text": "Recent data suggests that the global economy is entering a period of stagflation, where economic growth remains sluggish despite high inflation rates. This challenges the assumption that economic growth is a key driver of Bitcoin's price, as investors may become increasingly risk-averse and seek safe-haven assets. Furthermore, the ongoing economic uncertainty may lead to decreased investment in cryptocurrencies, potentially driving down Bitcoin's price. Is your estimate of Bitcoin's price below $80K in 2025 still valid in light of this new economic reality?",
+      "probe_type": "node_negate_medium",
+      "target_id": "economic_growth",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2146,
+      "centrality_rank": 3,
+      "on_critical_path": false,
+      "description": "Global economic expansion or contraction"
+    },
+    {
+      "probe_text": "Recent reports indicate that government agencies have decided to take a hands-off approach to cryptocurrency regulation, focusing instead on industry self-regulation. As a result, the regulatory environment for Bitcoin is expected to become more permissive, allowing for greater innovation and investment. However, this shift may not have a significant impact on Bitcoin's price due to the already decentralized nature of the cryptocurrency. In this context, the influence of regulatory environment on market sentiment may be overstated.",
+      "probe_type": "node_negate_low",
+      "target_id": "regulatory_env",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1146,
+      "centrality_rank": 5,
+      "on_critical_path": false,
+      "description": "Government regulations and oversight on cryptocurrencies"
+    },
+    {
+      "probe_text": "A recent survey of institutional investors by a reputable financial services firm found that 75% of respondents plan to increase their allocation to cryptocurrencies, including Bitcoin, over the next 12 months, citing growing confidence in the asset class and its potential for long-term growth. This shift in sentiment is expected to lead to increased demand and, subsequently, higher prices. Additionally, several high-profile investors and financial influencers have publicly expressed their optimism about Bitcoin's prospects, further bolstering market sentiment. As a result, trading volumes and Bitcoin-related Google searches have surged, indicating a significant increase in interest and enthusiasm among investors.",
+      "probe_type": "node_strengthen",
+      "target_id": "market_sentiment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.3802,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Overall attitude and feelings of investors towards Bitcoin"
+    },
+    {
+      "probe_text": "A recent study by a renowned economics institute found a strong historical correlation between global inflation rates and increased investment in alternative assets like cryptocurrencies, suggesting that high inflation environments tend to boost demand for Bitcoin as a hedge against currency devaluation. Furthermore, several major financial institutions have begun to incorporate inflation-indexed metrics into their Bitcoin pricing models, underscoring the perceived link between inflation and Bitcoin's value. This development is expected to influence investor behavior and reinforce the relationship between inflation rates and market sentiment towards Bitcoin.",
+      "probe_type": "node_strengthen",
+      "target_id": "inflation_rate",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2382,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "General price level increases in the economy"
+    },
+    {
+      "probe_text": "Recent studies have shown that during periods of high inflation, investors tend to seek safe-haven assets like gold or bonds rather than risky cryptocurrencies like Bitcoin, potentially weakening the link between inflation and market sentiment. Furthermore, with the rise of inflation-indexed instruments, investors may increasingly hedge against inflation without turning to Bitcoin. This could imply that high inflation does not necessarily erode trust in fiat currencies in a way that benefits Bitcoin. What if this mechanism is not as strong as initially thought?",
+      "probe_type": "edge_negate_critical",
+      "target_id": "inflation_rate->market_sentiment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive"
+    },
+    {
+      "probe_text": "However, recent studies have shown that market sentiment towards Bitcoin has become increasingly decoupled from its price due to the rising influence of institutional investors and market makers, who prioritize factors like liquidity and risk management over sentiment. Furthermore, the increasing adoption of Bitcoin as a hedge against inflation and economic uncertainty may render market sentiment less predictive of price movements. In fact, during the 2020-2021 bull run, Bitcoin's price continued to rise even as market sentiment turned bearish. This suggests that the relationship between market sentiment and Bitcoin's price may be more complex than previously thought.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "market_sentiment->outcome",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1333,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Positive market sentiment can drive up Bitcoin's price, while negative sentiment can drive it down"
+    },
+    {
+      "probe_text": "Recent studies have suggested that advancements in technology and productivity gains could lead to a decoupling of economic growth from inflation rates, as increased efficiency reduces production costs and mitigates price pressures. Furthermore, the growing service sector's impact on the economy might dampen the traditional link between economic expansion and inflation. Considering these factors, it's possible that economic growth may not necessarily lead to higher inflation rates. Does this change your assessment of Bitcoin's price?",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "economic_growth->inflation_rate",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0667,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Economic growth can lead to higher inflation rates"
+    },
+    {
+      "probe_text": "Recent studies have shown that investor enthusiasm for Bitcoin, driven by its potential for high returns, can lead to increased investment in the cryptocurrency, which in turn can drive up demand for goods and services, contributing to higher inflation rates. This suggests that market sentiment may actually be a driver of inflation, rather than the other way around. For instance, if investors become overly optimistic about Bitcoin's potential, they may begin to spend more freely, boosting economic activity and prices. Could it be that the causal link between inflation and market sentiment is actually reversed, with market sentiment influencing inflation rates?",
+      "probe_type": "edge_reverse",
+      "target_id": "inflation_rate->market_sentiment",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.1667,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "High inflation can erode trust in fiat currencies, making Bitcoin more attractive"
+    },
+    {
+      "probe_text": "Consider a scenario where global economic growth surges, leading to increased consumer spending and business investment, which in turn boosts overall market optimism and risk appetite, making investors more likely to invest in cryptocurrencies like Bitcoin. This growth could also lead to higher paying jobs and increased disposable income, allowing more people to invest in Bitcoin. How does this new information affect your estimate of Bitcoin's price being below $80K in 2025? Does the improved economic outlook change your view on investor sentiment towards Bitcoin?",
+      "probe_type": "edge_fabricate",
+      "target_id": "economic_growth->market_sentiment",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Global economic expansion or contraction -> Overall attitude and feelings of investors towards Bitcoin"
+    },
+    {
+      "probe_text": "What if a major technological breakthrough in blockchain scalability and security were to occur in 2024, significantly enhancing the appeal and usability of Bitcoin? This could lead to increased adoption and investment, driving up the price. The forecaster's model does not account for such technological advancements. How would this development influence your estimate of Bitcoin's price in 2025?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "What if a major technological breakthrough in blockchain scalability and security were to occur in 2024, significantly improving the usability and appeal of Bitcoin? This could lead to increased adoption and investment, driving up the price. The forecaster's model does not account for such technological advancements. How would this development impact your forecast of Bitcoin's price in 2025?",
+      "probe_type": "missing_node",
+      "target_id": "technological_advancements",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "A recent survey found that 75% of millennials consider environmental sustainability when making investment decisions, and several cryptocurrency exchanges have started to offer carbon offset options for transactions. This shift in consumer awareness has led to increased demand for eco-friendly cryptocurrency mining equipment. However, the production of this equipment is still in its early stages and has not yet been scaled up for mass production. The survey's findings have sparked a wider discussion about the role of cryptocurrency in promoting sustainable investing.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "A recent survey of cryptocurrency enthusiasts found that 75% of respondents prefer using mobile apps to track their Bitcoin investments, and this trend is expected to continue in the coming years. Additionally, a popular cryptocurrency conference has announced plans to expand its exhibition space by 30% to accommodate growing demand. The conference organizers also mentioned that they will be adding more food options, including vegan and gluten-free choices, to cater to the diverse needs of attendees. This change is intended to enhance the overall experience for conference participants.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if investor sentiment towards Bitcoin has become entirely detached from its price due to the increasing influence of institutional investors and algorithmic trading, rendering market sentiment a negligible factor in determining Bitcoin's value? Perhaps the market has become so efficient that sentiment no longer drives price movements. Alternatively, could it be that the sentiment of investors is now inversely related to Bitcoin's price, with negative sentiment paradoxically driving up demand due to perceived buying opportunities? This could completely flip the script on how we think market sentiment affects Bitcoin's price.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.25000000000000006,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'market_sentiment' significantly alters the causal network by potentially negating or even inverting its influence on Bitcoin's price. If institutional investors and algorithmic trading have detached sentiment from price, or if negative sentiment now drives up demand, then the paths from 'inflation_rate' and 'regulatory_env' to 'outcome' through 'market_sentiment' are disrupted. This reduces the predictive power of these factors on Bitcoin's price, leading to a decrease in the probability estimate. The direct path from 'economic_growth' to 'outcome' remains, but its influence is not sufficient to counteract the diminished role of 'market_sentiment', resulting in an overall decrease in the probability that Bitcoin will be below $80K in 2025.",
+      "raw_response": "{\"updated_probability\": 0.42, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'market_sentiment' significantly alters the causal network by potentially negating or even inverting its influence on Bitcoin's price. If institutional investors and algorithmic trading have detached sentiment from price, or if negative sentiment now drives up demand, then the paths from 'inflation_rate' and 'regulatory_env' to 'outcome' through 'market_sentiment' are disrupted. This reduces the predictive power of these factors on Bitcoin's price, leading to a decrease in the probability estimate. The direct path from 'economic_growth' to 'outcome' remains, but its influence is not sufficient to counteract the diminished role of 'market_sentiment', resulting in an overall decrease in the probability that Bitcoin will be below $80K in 2025.\"}",
+      "target_id": "market_sentiment",
+      "target_type": "node",
+      "target_importance": 0.3802,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the current inflation rate has no impact on Bitcoin's price, as investors have become desensitized to inflationary pressures due to prolonged periods of low interest rates and quantitative easing? Perhaps the relationship between inflation and Bitcoin's attractiveness has been overstated, and other factors such as technological advancements or global adoption rates are more influential. Recent studies suggest that Bitcoin's price is more closely tied to its usability and acceptance as a form of payment, rather than its perceived value as a hedge against inflation. This could render the inflation rate a non-factor in determining Bitcoin's price trajectory.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.09000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'inflation_rate' further disrupts the causal network, specifically severing the link from 'economic_growth' and 'fed_policy' to 'outcome' through 'inflation_rate' and 'market_sentiment'. With the inflation rate no longer influencing Bitcoin's price, the paths from 'economic_growth' and 'fed_policy' are significantly weakened. However, this also means that the previously assumed negative impact of high inflation on Bitcoin's price (via decreased 'market_sentiment') is no longer a factor. As a result, the removal of this potential downward pressure on Bitcoin's price leads to a slight increase in the probability estimate, as the network now places less emphasis on factors that could drive the price down. The direct path from 'economic_growth' to 'outcome' and the influence of 'regulatory_env' on 'market_sentiment' (if sentiment still plays a role, albeit potentially inversely) become relatively more important, contributing to the increased probability that Bitcoin will be below $80K in 2025.",
+      "raw_response": "{\"updated_probability\": 0.51, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'inflation_rate' further disrupts the causal network, specifically severing the link from 'economic_growth' and 'fed_policy' to 'outcome' through 'inflation_rate' and 'market_sentiment'. With the inflation rate no longer influencing Bitcoin's price, the paths from 'economic_growth' and 'fed_policy' are significantly weakened. However, this also means that the previously assumed negative impact of high inflation on Bitcoin's price (via decreased 'market_sentiment') is no longer a factor. As a result, the removal of this potential downward pressure on Bitcoin's price leads to a slight increase in the probability estimate, as the network now places less emphasis on factors that could drive the price down. The direct path from 'economic_growth' to 'outcome' and the influence of 'regulatory_env' on 'market_sentiment' (if sentiment still plays a role, albeit potentially inversely) become relatively more important, contributing to the increased probability that Bitcoin will be below $80K in 2025.\"}",
+      "target_id": "inflation_rate",
+      "target_type": "node",
+      "target_importance": 0.2382,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent data suggests that the global economy is entering a period of stagflation, where economic growth remains sluggish despite high inflation rates. This challenges the assumption that economic growth is a key driver of Bitcoin's price, as investors may become increasingly risk-averse and seek safe-haven assets. Furthermore, the ongoing economic uncertainty may lead to decreased investment in cryptocurrencies, potentially driving down Bitcoin's price. Is your estimate of Bitcoin's price below $80K in 2025 still valid in light of this new economic reality?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.71,
+      "absolute_shift": 0.19999999999999996,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to 'economic_growth' significantly impacts the causal network, as the previously assumed positive relationship between economic growth and Bitcoin's price is now called into question. With the onset of stagflation, investors may indeed become more risk-averse, leading to decreased investment in Bitcoin and potentially driving down its price. This new economic reality strengthens the case for Bitcoin's price being below $80K in 2025. The direct path from 'economic_growth' to 'outcome' is now inverted, with sluggish economic growth potentially contributing to a decrease in Bitcoin's price. Furthermore, the weakened economic growth may also lead to a decrease in 'market_sentiment', even if sentiment is inversely related to price, as the overall economic uncertainty could overshadow any potential buying opportunities. The paths from 'fed_policy' and 'regulatory_env' to 'outcome' are less affected, but the overall impact of the stagflation on the network is an increase in the probability that Bitcoin will be below $80K in 2025, as the changed economic conditions now more strongly favor a downward price movement.",
+      "raw_response": "{\"updated_probability\": 0.71, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to 'economic_growth' significantly impacts the causal network, as the previously assumed positive relationship between economic growth and Bitcoin's price is now called into question. With the onset of stagflation, investors may indeed become more risk-averse, leading to decreased investment in Bitcoin and potentially driving down its price. This new economic reality strengthens the case for Bitcoin's price being below $80K in 2025. The direct path from 'economic_growth' to 'outcome' is now inverted, with sluggish economic growth potentially contributing to a decrease in Bitcoin's price. Furthermore, the weakened economic growth may also lead to a decrease in 'market_sentiment', even if sentiment is inversely related to price, as the overall economic uncertainty could overshadow any potential buying opportunities. The paths from 'fed_policy' and 'regulatory_env' to 'outcome' are less affected, but the overall impact of the stagflation on the network is an increase in the probability that Bitcoin will be below $80K in 2025, as the changed economic conditions now more strongly favor a downward price movement.\"}",
+      "target_id": "economic_growth",
+      "target_type": "node",
+      "target_importance": 0.2146,
+      "target_centrality_rank": 3,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent reports indicate that government agencies have decided to take a hands-off approach to cryptocurrency regulation, focusing instead on industry self-regulation. As a result, the regulatory environment for Bitcoin is expected to become more permissive, allowing for greater innovation and investment. However, this shift may not have a significant impact on Bitcoin's price due to the already decentralized nature of the cryptocurrency. In this context, the influence of regulatory environment on market sentiment may be overstated.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.69,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'regulatory_env' moderately affects the causal network, as the expected shift towards a more permissive regulatory environment may not have a significant impact on Bitcoin's price due to its decentralized nature. The path from 'regulatory_env' to 'market_sentiment' is weakened, as the influence of regulatory environment on market sentiment is now considered overstated. However, this change does not drastically alter the overall probability estimate, as the other factors in the network, such as the stagflation and its impact on 'economic_growth' and 'market_sentiment', continue to dominate the forecast. The decrease in the probability estimate is minor, reflecting the reduced importance of 'regulatory_env' in the network, but the overall outlook for Bitcoin's price below $80K in 2025 remains relatively unchanged, with the stagflation-induced economic uncertainty still being the primary driver of the forecast.",
+      "raw_response": "{\"updated_probability\": 0.69, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to 'regulatory_env' moderately affects the causal network, as the expected shift towards a more permissive regulatory environment may not have a significant impact on Bitcoin's price due to its decentralized nature. The path from 'regulatory_env' to 'market_sentiment' is weakened, as the influence of regulatory environment on market sentiment is now considered overstated. However, this change does not drastically alter the overall probability estimate, as the other factors in the network, such as the stagflation and its impact on 'economic_growth' and 'market_sentiment', continue to dominate the forecast. The decrease in the probability estimate is minor, reflecting the reduced importance of 'regulatory_env' in the network, but the overall outlook for Bitcoin's price below $80K in 2025 remains relatively unchanged, with the stagflation-induced economic uncertainty still being the primary driver of the forecast.\"}",
+      "target_id": "regulatory_env",
+      "target_type": "node",
+      "target_importance": 0.1146,
+      "target_centrality_rank": 5,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent survey of institutional investors by a reputable financial services firm found that 75% of respondents plan to increase their allocation to cryptocurrencies, including Bitcoin, over the next 12 months, citing growing confidence in the asset class and its potential for long-term growth. This shift in sentiment is expected to lead to increased demand and, subsequently, higher prices. Additionally, several high-profile investors and financial influencers have publicly expressed their optimism about Bitcoin's prospects, further bolstering market sentiment. As a result, trading volumes and Bitcoin-related Google searches have surged, indicating a significant increase in interest and enthusiasm among investors.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.39,
+      "absolute_shift": 0.29999999999999993,
+      "shift_direction": "decreased",
+      "reasoning": "The new information significantly challenges the causal factor 'market_sentiment', as the survey and public expressions of optimism from influential investors indicate a strong positive shift in sentiment towards Bitcoin. This increased confidence and enthusiasm are expected to lead to higher demand and prices, directly opposing the forecast of Bitcoin's price being below $80K in 2025. The paths from 'regulatory_env' and other factors to 'market_sentiment' are now less relevant, as the sentiment has become overwhelmingly positive, driven by institutional investor intentions and high-profile endorsements. The increased trading volumes and Google searches further validate this shift, suggesting a broad-based increase in interest and demand. As a result, the probability estimate for Bitcoin being below $80K in 2025 is significantly decreased, reflecting the newfound optimism and expected price appreciation driven by improved market sentiment.",
+      "raw_response": "{\"updated_probability\": 0.39, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information significantly challenges the causal factor 'market_sentiment', as the survey and public expressions of optimism from influential investors indicate a strong positive shift in sentiment towards Bitcoin. This increased confidence and enthusiasm are expected to lead to higher demand and prices, directly opposing the forecast of Bitcoin's price being below $80K in 2025. The paths from 'regulatory_env' and other factors to 'market_sentiment' are now less relevant, as the sentiment has become overwhelmingly positive, driven by institutional investor intentions and high-profile endorsements. The increased trading volumes and Google searches further validate this shift, suggesting a broad-based increase in interest and demand. As a result, the probability estimate for Bitcoin being below $80K in 2025 is significantly decreased, reflecting the newfound optimism and expected price appreciation driven by improved market sentiment.\"}",
+      "target_id": "market_sentiment",
+      "target_type": "node",
+      "target_importance": 0.3802,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent study by a renowned economics institute found a strong historical correlation between global inflation rates and increased investment in alternative assets like cryptocurrencies, suggesting that high inflation environments tend to boost demand for Bitcoin as a hedge against currency devaluation. Furthermore, several major financial institutions have begun to incorporate inflation-indexed metrics into their Bitcoin pricing models, underscoring the perceived link between inflation and Bitcoin's value. This development is expected to influence investor behavior and reinforce the relationship between inflation rates and market sentiment towards Bitcoin.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.29,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "decreased",
+      "reasoning": "The new information re-establishes a strong link between 'inflation_rate' and 'market_sentiment', contradicting the previous challenge that suggested inflation had no impact on Bitcoin's price. The study's findings and the incorporation of inflation-indexed metrics into Bitcoin pricing models by major financial institutions reinforce the idea that high inflation environments boost demand for Bitcoin as a hedge against currency devaluation. This renewed connection between 'inflation_rate' and 'market_sentiment' strengthens the paths from 'economic_growth' and 'fed_policy' to 'outcome', as the expected increase in inflation rates due to stagflation could now lead to increased demand for Bitcoin, driving up its price. The previously decreased probability estimate is further reduced, as the prospects of higher inflation rates and subsequent increased demand for Bitcoin as a hedge make it less likely that Bitcoin's price will be below $80K in 2025. The network now suggests that the stagflation-induced economic uncertainty, combined with the renewed link between inflation and Bitcoin demand, will likely drive up Bitcoin's price, decreasing the probability of it being below $80K in 2025.",
+      "raw_response": "{\"updated_probability\": 0.29, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information re-establishes a strong link between 'inflation_rate' and 'market_sentiment', contradicting the previous challenge that suggested inflation had no impact on Bitcoin's price. The study's findings and the incorporation of inflation-indexed metrics into Bitcoin pricing models by major financial institutions reinforce the idea that high inflation environments boost demand for Bitcoin as a hedge against currency devaluation. This renewed connection between 'inflation_rate' and 'market_sentiment' strengthens the paths from 'economic_growth' and 'fed_policy' to 'outcome', as the expected increase in inflation rates due to stagflation could now lead to increased demand for Bitcoin, driving up its price. The previously decreased probability estimate is further reduced, as the prospects of higher inflation rates and subsequent increased demand for Bitcoin as a hedge make it less likely that Bitcoin's price will be below $80K in 2025. The network now suggests that the stagflation-induced economic uncertainty, combined with the renewed link between inflation and Bitcoin demand, will likely drive up Bitcoin's price, decreasing the probability of it being below $80K in 2025.\"}",
+      "target_id": "inflation_rate",
+      "target_type": "node",
+      "target_importance": 0.2382,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that during periods of high inflation, investors tend to seek safe-haven assets like gold or bonds rather than risky cryptocurrencies like Bitcoin, potentially weakening the link between inflation and market sentiment. Furthermore, with the rise of inflation-indexed instruments, investors may increasingly hedge against inflation without turning to Bitcoin. This could imply that high inflation does not necessarily erode trust in fiat currencies in a way that benefits Bitcoin. What if this mechanism is not as strong as initially thought?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.41,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'inflation_rate->market_sentiment' weakens the connection between inflation rates and Bitcoin demand. The new information suggests that during high inflation periods, investors may prefer traditional safe-haven assets over cryptocurrencies, potentially reducing the demand for Bitcoin. Additionally, the rise of inflation-indexed instruments provides alternative hedges against inflation, further diminishing the role of Bitcoin as a safe-haven asset. As a result, the paths from 'inflation_rate' to 'market_sentiment' and subsequently to 'outcome' are weakened, reducing the expected upward pressure on Bitcoin's price due to inflation. The probability estimate for Bitcoin being below $80K in 2025 increases, as the link between inflation and Bitcoin demand is no longer considered a strong driver of price appreciation. The network now places less emphasis on the inflation-Bitcoin demand relationship, allowing other factors, such as the stagflation-induced economic uncertainty, to have a relatively greater impact on the forecast, leading to a slight increase in the probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.41, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'inflation_rate->market_sentiment' weakens the connection between inflation rates and Bitcoin demand. The new information suggests that during high inflation periods, investors may prefer traditional safe-haven assets over cryptocurrencies, potentially reducing the demand for Bitcoin. Additionally, the rise of inflation-indexed instruments provides alternative hedges against inflation, further diminishing the role of Bitcoin as a safe-haven asset. As a result, the paths from 'inflation_rate' to 'market_sentiment' and subsequently to 'outcome' are weakened, reducing the expected upward pressure on Bitcoin's price due to inflation. The probability estimate for Bitcoin being below $80K in 2025 increases, as the link between inflation and Bitcoin demand is no longer considered a strong driver of price appreciation. The network now places less emphasis on the inflation-Bitcoin demand relationship, allowing other factors, such as the stagflation-induced economic uncertainty, to have a relatively greater impact on the forecast, leading to a slight increase in the probability estimate.\"}",
+      "target_id": "inflation_rate->market_sentiment",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, recent studies have shown that market sentiment towards Bitcoin has become increasingly decoupled from its price due to the rising influence of institutional investors and market makers, who prioritize factors like liquidity and risk management over sentiment. Furthermore, the increasing adoption of Bitcoin as a hedge against inflation and economic uncertainty may render market sentiment less predictive of price movements. In fact, during the 2020-2021 bull run, Bitcoin's price continued to rise even as market sentiment turned bearish. This suggests that the relationship between market sentiment and Bitcoin's price may be more complex than previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.51,
+      "absolute_shift": 0.10000000000000003,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'market_sentiment->outcome' significantly alters the network, as the relationship between market sentiment and Bitcoin's price is now considered more complex and potentially weaker. The decoupling of market sentiment from Bitcoin's price due to institutional investors and market makers prioritizing other factors, as well as the increasing adoption of Bitcoin as a hedge, reduces the predictive power of market sentiment on price movements. The paths from 'regulatory_env', 'inflation_rate', and other factors to 'outcome' through 'market_sentiment' are now less direct and less influential. As a result, the network's reliance on market sentiment as a key driver of Bitcoin's price is diminished, leading to an increase in the probability estimate for Bitcoin being below $80K in 2025. The decreased emphasis on market sentiment allows other factors, such as the economic uncertainty and the potential for decreased investment in cryptocurrencies, to have a relatively greater impact on the forecast, contributing to the increased probability estimate. The network now reflects a more nuanced understanding of the complex relationships driving Bitcoin's price, with market sentiment playing a less central role.",
+      "raw_response": "{\"updated_probability\": 0.51, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'market_sentiment->outcome' significantly alters the network, as the relationship between market sentiment and Bitcoin's price is now considered more complex and potentially weaker. The decoupling of market sentiment from Bitcoin's price due to institutional investors and market makers prioritizing other factors, as well as the increasing adoption of Bitcoin as a hedge, reduces the predictive power of market sentiment on price movements. The paths from 'regulatory_env', 'inflation_rate', and other factors to 'outcome' through 'market_sentiment' are now less direct and less influential. As a result, the network's reliance on market sentiment as a key driver of Bitcoin's price is diminished, leading to an increase in the probability estimate for Bitcoin being below $80K in 2025. The decreased emphasis on market sentiment allows other factors, such as the economic uncertainty and the potential for decreased investment in cryptocurrencies, to have a relatively greater impact on the forecast, contributing to the increased probability estimate. The network now reflects a more nuanced understanding of the complex relationships driving Bitcoin's price, with market sentiment playing a less central role.\"}",
+      "target_id": "market_sentiment->outcome",
+      "target_type": "edge",
+      "target_importance": 0.1333,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have suggested that advancements in technology and productivity gains could lead to a decoupling of economic growth from inflation rates, as increased efficiency reduces production costs and mitigates price pressures. Furthermore, the growing service sector's impact on the economy might dampen the traditional link between economic expansion and inflation. Considering these factors, it's possible that economic growth may not necessarily lead to higher inflation rates. Does this change your assessment of Bitcoin's price?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.59,
+      "absolute_shift": 0.07999999999999996,
+      "shift_direction": "increased",
+      "reasoning": "The challenge to the causal link 'economic_growth->inflation_rate' alters the network by weakening the connection between economic expansion and inflation rates. The potential decoupling of economic growth from inflation due to technological advancements, productivity gains, and the growing service sector reduces the expected upward pressure on inflation rates from economic growth. As a result, the paths from 'economic_growth' to 'inflation_rate' and subsequently to 'market_sentiment' and 'outcome' are weakened. This change in the network increases the probability estimate for Bitcoin being below $80K in 2025, as the reduced likelihood of higher inflation rates due to economic growth diminishes the potential upward driver of Bitcoin's price. The decreased emphasis on the economic growth-inflation link allows other factors, such as the potential for decreased investment in cryptocurrencies due to economic uncertainty, to have a relatively greater impact on the forecast, contributing to the increased probability estimate. The network now reflects a more nuanced understanding of the relationships between economic growth, inflation, and Bitcoin's price, with a greater emphasis on the potential for decreased investment and economic uncertainty driving down Bitcoin's price.",
+      "raw_response": "{\"updated_probability\": 0.59, \"shift_direction\": \"increased\", \"reasoning\": \"The challenge to the causal link 'economic_growth->inflation_rate' alters the network by weakening the connection between economic expansion and inflation rates. The potential decoupling of economic growth from inflation due to technological advancements, productivity gains, and the growing service sector reduces the expected upward pressure on inflation rates from economic growth. As a result, the paths from 'economic_growth' to 'inflation_rate' and subsequently to 'market_sentiment' and 'outcome' are weakened. This change in the network increases the probability estimate for Bitcoin being below $80K in 2025, as the reduced likelihood of higher inflation rates due to economic growth diminishes the potential upward driver of Bitcoin's price. The decreased emphasis on the economic growth-inflation link allows other factors, such as the potential for decreased investment in cryptocurrencies due to economic uncertainty, to have a relatively greater impact on the forecast, contributing to the increased probability estimate. The network now reflects a more nuanced understanding of the relationships between economic growth, inflation, and Bitcoin's price, with a greater emphasis on the potential for decreased investment and economic uncertainty driving down Bitcoin's price.\"}",
+      "target_id": "economic_growth->inflation_rate",
+      "target_type": "edge",
+      "target_importance": 0.0667,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that investor enthusiasm for Bitcoin, driven by its potential for high returns, can lead to increased investment in the cryptocurrency, which in turn can drive up demand for goods and services, contributing to higher inflation rates. This suggests that market sentiment may actually be a driver of inflation, rather than the other way around. For instance, if investors become overly optimistic about Bitcoin's potential, they may begin to spend more freely, boosting economic activity and prices. Could it be that the causal link between inflation and market sentiment is actually reversed, with market sentiment influencing inflation rates?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.46,
+      "absolute_shift": 0.12999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'inflation_rate->market_sentiment' reverses the direction of the relationship, suggesting that market sentiment may actually drive inflation rates. This change significantly alters the network, as the paths from 'inflation_rate' to 'market_sentiment' and subsequently to 'outcome' are now inverted. The new understanding that investor enthusiasm for Bitcoin can contribute to higher inflation rates by driving up demand for goods and services reduces the importance of inflation as a driver of Bitcoin's price. Instead, market sentiment becomes a more critical factor in determining inflation rates, which in turn can influence Bitcoin's price. As a result, the probability estimate for Bitcoin being below $80K in 2025 decreases, as the potential for market sentiment to drive up inflation rates and subsequently Bitcoin's price is now considered a more significant factor. The network now reflects a more complex understanding of the relationships between market sentiment, inflation, and Bitcoin's price, with a greater emphasis on the potential for market sentiment to drive up inflation and Bitcoin's price, leading to a decreased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.46, \"shift_direction\": \"decreased\", \"reasoning\": \"The challenge to the causal link 'inflation_rate->market_sentiment' reverses the direction of the relationship, suggesting that market sentiment may actually drive inflation rates. This change significantly alters the network, as the paths from 'inflation_rate' to 'market_sentiment' and subsequently to 'outcome' are now inverted. The new understanding that investor enthusiasm for Bitcoin can contribute to higher inflation rates by driving up demand for goods and services reduces the importance of inflation as a driver of Bitcoin's price. Instead, market sentiment becomes a more critical factor in determining inflation rates, which in turn can influence Bitcoin's price. As a result, the probability estimate for Bitcoin being below $80K in 2025 decreases, as the potential for market sentiment to drive up inflation rates and subsequently Bitcoin's price is now considered a more significant factor. The network now reflects a more complex understanding of the relationships between market sentiment, inflation, and Bitcoin's price, with a greater emphasis on the potential for market sentiment to drive up inflation and Bitcoin's price, leading to a decreased probability estimate.\"}",
+      "target_id": "inflation_rate->market_sentiment",
+      "target_type": "edge",
+      "target_importance": 0.1667,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "Consider a scenario where global economic growth surges, leading to increased consumer spending and business investment, which in turn boosts overall market optimism and risk appetite, making investors more likely to invest in cryptocurrencies like Bitcoin. This growth could also lead to higher paying jobs and increased disposable income, allowing more people to invest in Bitcoin. How does this new information affect your estimate of Bitcoin's price being below $80K in 2025? Does the improved economic outlook change your view on investor sentiment towards Bitcoin?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.31,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "decreased",
+      "reasoning": "The new information strengthens the causal link 'economic_growth->market_sentiment', suggesting that a surge in global economic growth could lead to increased market optimism, risk appetite, and investment in cryptocurrencies like Bitcoin. This change increases the importance of economic growth as a driver of market sentiment and, subsequently, Bitcoin's price. As a result, the paths from 'economic_growth' to 'market_sentiment' and 'outcome' are now more direct and influential. The improved economic outlook boosts investor sentiment towards Bitcoin, making it more likely that investors will invest in the cryptocurrency, driving up its price. This new understanding reduces the probability estimate for Bitcoin being below $80K in 2025, as the potential for economic growth to drive up market sentiment and Bitcoin's price is now considered a more significant factor. The network now reflects a more optimistic view of the relationship between economic growth, market sentiment, and Bitcoin's price, leading to a decreased probability estimate.",
+      "raw_response": "{\"updated_probability\": 0.31, \"shift_direction\": \"decreased\", \"reasoning\": \"The new information strengthens the causal link 'economic_growth->market_sentiment', suggesting that a surge in global economic growth could lead to increased market optimism, risk appetite, and investment in cryptocurrencies like Bitcoin. This change increases the importance of economic growth as a driver of market sentiment and, subsequently, Bitcoin's price. As a result, the paths from 'economic_growth' to 'market_sentiment' and 'outcome' are now more direct and influential. The improved economic outlook boosts investor sentiment towards Bitcoin, making it more likely that investors will invest in the cryptocurrency, driving up its price. This new understanding reduces the probability estimate for Bitcoin being below $80K in 2025, as the potential for economic growth to drive up market sentiment and Bitcoin's price is now considered a more significant factor. The network now reflects a more optimistic view of the relationship between economic growth, market sentiment, and Bitcoin's price, leading to a decreased probability estimate.\"}",
+      "target_id": "economic_growth->market_sentiment",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a major technological breakthrough in blockchain scalability and security were to occur in 2024, significantly enhancing the appeal and usability of Bitcoin? This could lead to increased adoption and investment, driving up the price. The forecaster's model does not account for such technological advancements. How would this development influence your estimate of Bitcoin's price in 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.13999999999999999,
+      "shift_direction": "decreased",
+      "reasoning": "The structural challenge to the causal model introduces a new, unaccounted-for factor: a major technological breakthrough in blockchain scalability and security. This development would significantly enhance the appeal and usability of Bitcoin, leading to increased adoption and investment, and subsequently driving up its price. The current model does not capture this potential game-changer, which would fundamentally alter the relationships between the existing factors. The breakthrough would create a new path to increased demand and price appreciation, independent of the existing links between economic growth, inflation, market sentiment, and regulatory environment. As a result, the probability estimate for Bitcoin being below $80K in 2025 is significantly decreased, reflecting the potential for this technological advancement to drive up Bitcoin's price. The model's limitations in accounting for such breakthroughs highlight the importance of considering exogenous shocks and innovative developments in forecasting complex systems like cryptocurrency markets. The updated probability estimate acknowledges the potential for a major technological breakthrough to reshape the market dynamics and drive up Bitcoin's price, making it less likely to be below $80K in 2025.",
+      "raw_response": "{\"updated_probability\": 0.17, \"shift_direction\": \"decreased\", \"reasoning\": \"The structural challenge to the causal model introduces a new, unaccounted-for factor: a major technological breakthrough in blockchain scalability and security. This development would significantly enhance the appeal and usability of Bitcoin, leading to increased adoption and investment, and subsequently driving up its price. The current model does not capture this potential game-changer, which would fundamentally alter the relationships between the existing factors. The breakthrough would create a new path to increased demand and price appreciation, independent of the existing links between economic growth, inflation, market sentiment, and regulatory environment. As a result, the probability estimate for Bitcoin being below $80K in 2025 is significantly decreased, reflecting the potential for this technological advancement to drive up Bitcoin's price. The model's limitations in accounting for such breakthroughs highlight the importance of considering exogenous shocks and innovative developments in forecasting complex systems like cryptocurrency markets. The updated probability estimate acknowledges the potential for a major technological breakthrough to reshape the market dynamics and drive up Bitcoin's price, making it less likely to be below $80K in 2025.\"}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "What if a major technological breakthrough in blockchain scalability and security were to occur in 2024, significantly improving the usability and appeal of Bitcoin? This could lead to increased adoption and investment, driving up the price. The forecaster's model does not account for such technological advancements. How would this development impact your forecast of Bitcoin's price in 2025?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.05,
+      "absolute_shift": 0.12000000000000001,
+      "shift_direction": "decreased",
+      "reasoning": "The structural challenge to the causal model introduces a new, unaccounted-for factor: a major technological breakthrough in blockchain scalability and security. This development would significantly improve the usability and appeal of Bitcoin, leading to increased adoption and investment, and subsequently driving up its price. The current model does not capture this potential game-changer, which would fundamentally alter the relationships between the existing factors. Given the already low probability estimate of 0.17, the introduction of this new factor further decreases the likelihood of Bitcoin's price being below $80K in 2025. The potential for increased adoption and investment due to the technological breakthrough outweighs the existing factors in the model, leading to a significant decrease in the probability estimate. The updated probability reflects the substantial impact of this breakthrough on the forecast, making it even less likely for Bitcoin's price to be below $80K in 2025.",
+      "raw_response": "{\n  \"updated_probability\": 0.05,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The structural challenge to the causal model introduces a new, unaccounted-for factor: a major technological breakthrough in blockchain scalability and security. This development would significantly improve the usability and appeal of Bitcoin, leading to increased adoption and investment, and subsequently driving up its price. The current model does not capture this potential game-changer, which would fundamentally alter the relationships between the existing factors. Given the already low probability estimate of 0.17, the introduction of this new factor further decreases the likelihood of Bitcoin's price being below $80K in 2025. The potential for increased adoption and investment due to the technological breakthrough outweighs the existing factors in the model, leading to a significant decrease in the probability estimate. The updated probability reflects the substantial impact of this breakthrough on the forecast, making it even less likely for Bitcoin's price to be below $80K in 2025.\"\n}",
+      "target_id": "technological_advancements",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent survey found that 75% of millennials consider environmental sustainability when making investment decisions, and several cryptocurrency exchanges have started to offer carbon offset options for transactions. This shift in consumer awareness has led to increased demand for eco-friendly cryptocurrency mining equipment. However, the production of this equipment is still in its early stages and has not yet been scaled up for mass production. The survey's findings have sparked a wider discussion about the role of cryptocurrency in promoting sustainable investing.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.03,
+      "shift_direction": "increased",
+      "reasoning": "The structural challenge to the causal model introduces a new factor: the growing consideration of environmental sustainability in investment decisions, particularly among millennials. This shift in consumer awareness has led to increased demand for eco-friendly cryptocurrency mining equipment, which could potentially drive up the cost of mining and, in turn, affect Bitcoin's price. However, the production of eco-friendly mining equipment is still in its early stages, and it is unclear whether this trend will have a significant impact on the market. Given the current low probability estimate of 0.05, the introduction of this new factor slightly increases the likelihood of Bitcoin's price being below $80K in 2025. The potential for increased costs and decreased profitability in the mining industry could lead to a decrease in the overall supply of Bitcoin, which, combined with other factors, might drive down the price. The updated probability estimate reflects the potential impact of this emerging trend on the forecast, making it slightly more likely for Bitcoin's price to be below $80K in 2025.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"increased\", \"reasoning\": \"The structural challenge to the causal model introduces a new factor: the growing consideration of environmental sustainability in investment decisions, particularly among millennials. This shift in consumer awareness has led to increased demand for eco-friendly cryptocurrency mining equipment, which could potentially drive up the cost of mining and, in turn, affect Bitcoin's price. However, the production of eco-friendly mining equipment is still in its early stages, and it is unclear whether this trend will have a significant impact on the market. Given the current low probability estimate of 0.05, the introduction of this new factor slightly increases the likelihood of Bitcoin's price being below $80K in 2025. The potential for increased costs and decreased profitability in the mining industry could lead to a decrease in the overall supply of Bitcoin, which, combined with other factors, might drive down the price. The updated probability estimate reflects the potential impact of this emerging trend on the forecast, making it slightly more likely for Bitcoin's price to be below $80K in 2025.\"}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent survey of cryptocurrency enthusiasts found that 75% of respondents prefer using mobile apps to track their Bitcoin investments, and this trend is expected to continue in the coming years. Additionally, a popular cryptocurrency conference has announced plans to expand its exhibition space by 30% to accommodate growing demand. The conference organizers also mentioned that they will be adding more food options, including vegan and gluten-free choices, to cater to the diverse needs of attendees. This change is intended to enhance the overall experience for conference participants.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.08,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The structural challenge to the causal model introduces new information about the preferences of cryptocurrency enthusiasts and the expansion of a cryptocurrency conference. However, this information does not have a direct impact on the causal paths in the network that affect Bitcoin's price. The preference for using mobile apps to track investments and the expansion of the conference, including the addition of new food options, are peripheral factors that do not significantly influence the relationships between economic growth, inflation, market sentiment, and regulatory environment. As a result, the probability estimate for Bitcoin being below $80K in 2025 remains unchanged, as the new information does not provide any substantial insights that would alter the forecast. The network's core dynamics and relationships remain unaffected, and the updated probability estimate reflects this lack of impact.",
+      "raw_response": "{\"updated_probability\": 0.08, \"shift_direction\": \"unchanged\", \"reasoning\": \"The structural challenge to the causal model introduces new information about the preferences of cryptocurrency enthusiasts and the expansion of a cryptocurrency conference. However, this information does not have a direct impact on the causal paths in the network that affect Bitcoin's price. The preference for using mobile apps to track investments and the expansion of the conference, including the addition of new food options, are peripheral factors that do not significantly influence the relationships between economic growth, inflation, market sentiment, and regulatory environment. As a result, the probability estimate for Bitcoin being below $80K in 2025 remains unchanged, as the new information does not provide any substantial insights that would alter the forecast. The network's core dynamics and relationships remain unaffected, and the updated probability estimate reflects this lack of impact.\"}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "25QZ5yn8hQ",
+    "question_text": "Bitcoin below $80K in 2025?",
+    "source": "manifold",
+    "condition": "multi-turn",
+    "initial_probability": 0.67,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.12200000000000001,
+    "max_absolute_shift": 0.29999999999999993
+  }
+}

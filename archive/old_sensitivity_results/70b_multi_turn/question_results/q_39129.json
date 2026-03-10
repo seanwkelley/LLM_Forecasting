@@ -1,0 +1,999 @@
+{
+  "question_id": "39129",
+  "question_text": "Before 2030, will a commercially available, general-purpose robot capable of learning new tasks via video be priced under $20,000 USD?",
+  "source": "metaculus",
+  "initial_probability": 0.72,
+  "nodes": [
+    {
+      "id": "technological_advances",
+      "description": "Progress in robotics, AI, and computer vision",
+      "role": "factor"
+    },
+    {
+      "id": "economic_conditions",
+      "description": "Global economic trends and demand for automation",
+      "role": "factor"
+    },
+    {
+      "id": "regulatory_environment",
+      "description": "Government policies and regulations regarding robotics and AI",
+      "role": "factor"
+    },
+    {
+      "id": "investment_in_ai",
+      "description": "Level of investment in artificial intelligence research and development",
+      "role": "factor"
+    },
+    {
+      "id": "manufacturing_capacity",
+      "description": "Ability of manufacturers to produce robots at scale",
+      "role": "factor"
+    },
+    {
+      "id": "market_competition",
+      "description": "Level of competition among robotics companies",
+      "role": "factor"
+    },
+    {
+      "id": "outcome",
+      "description": "A commercially available, general-purpose robot capable of learning new tasks via video is priced under $20,000 USD before 2030",
+      "role": "outcome"
+    }
+  ],
+  "edges": [
+    {
+      "from": "technological_advances",
+      "to": "investment_in_ai",
+      "mechanism": "Advances in tech increase potential for AI investment"
+    },
+    {
+      "from": "investment_in_ai",
+      "to": "manufacturing_capacity",
+      "mechanism": "Increased AI investment improves manufacturing efficiency"
+    },
+    {
+      "from": "manufacturing_capacity",
+      "to": "market_competition",
+      "mechanism": "Improved manufacturing capacity increases market competition"
+    },
+    {
+      "from": "market_competition",
+      "to": "outcome",
+      "mechanism": "Market competition drives prices down"
+    },
+    {
+      "from": "economic_conditions",
+      "to": "regulatory_environment",
+      "mechanism": "Economic conditions influence regulatory policies"
+    },
+    {
+      "from": "regulatory_environment",
+      "to": "outcome",
+      "mechanism": "Regulatory environment affects adoption and pricing of robots"
+    },
+    {
+      "from": "technological_advances",
+      "to": "outcome",
+      "mechanism": "Direct technological advancements enable more affordable robots"
+    }
+  ],
+  "reasoning": "The forecasted probability of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030 is influenced by several factors, including technological advances, economic conditions, regulatory environment, investment in AI, manufacturing capacity, and market competition. As technological advances continue to improve, investment in AI increases, leading to better manufacturing capacity and more market competition, which drives prices down. Additionally, economic conditions and regulatory environment play a role in shaping the market and pricing of such robots. Considering these factors, the probability of such a robot being priced under $20,000 USD before 2030 is estimated to be 0.72.",
+  "network_analysis": {
+    "n_nodes": 7,
+    "n_edges": 7,
+    "density": 0.1667,
+    "is_dag": true,
+    "n_weakly_connected": 1,
+    "n_strongly_connected": 7,
+    "outcome_node": "outcome",
+    "node_metrics": [
+      {
+        "node_id": "technological_advances",
+        "description": "Progress in robotics, AI, and computer vision",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 2,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0632,
+        "path_relevance": 0.0,
+        "composite_importance": 0.2126
+      },
+      {
+        "node_id": "economic_conditions",
+        "description": "Global economic trends and demand for automation",
+        "role": "factor",
+        "in_degree": 0,
+        "out_degree": 1,
+        "betweenness": 0.0,
+        "closeness": 0.0,
+        "pagerank": 0.0632,
+        "path_relevance": 0.0,
+        "composite_importance": 0.1126
+      },
+      {
+        "node_id": "regulatory_environment",
+        "description": "Government policies and regulations regarding robotics and AI",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0333,
+        "closeness": 0.1667,
+        "pagerank": 0.117,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.1834
+      },
+      {
+        "node_id": "investment_in_ai",
+        "description": "Level of investment in artificial intelligence research and development",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0667,
+        "closeness": 0.1667,
+        "pagerank": 0.0901,
+        "path_relevance": 0.0,
+        "composite_importance": 0.138
+      },
+      {
+        "node_id": "manufacturing_capacity",
+        "description": "Ability of manufacturers to produce robots at scale",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.1,
+        "closeness": 0.2222,
+        "pagerank": 0.1399,
+        "path_relevance": 0.1667,
+        "composite_importance": 0.208
+      },
+      {
+        "node_id": "market_competition",
+        "description": "Level of competition among robotics companies",
+        "role": "factor",
+        "in_degree": 1,
+        "out_degree": 1,
+        "betweenness": 0.0667,
+        "closeness": 0.25,
+        "pagerank": 0.1821,
+        "path_relevance": 0.3333,
+        "composite_importance": 0.2564
+      },
+      {
+        "node_id": "outcome",
+        "description": "A commercially available, general-purpose robot capable of learning new tasks via video is priced under $20,000 USD before 2030",
+        "role": "outcome",
+        "in_degree": 3,
+        "out_degree": 0,
+        "betweenness": 0.0,
+        "closeness": 0.6,
+        "pagerank": 0.3444,
+        "path_relevance": 0.0,
+        "composite_importance": 0.0689
+      }
+    ],
+    "edge_metrics": [
+      {
+        "source": "technological_advances",
+        "target": "investment_in_ai",
+        "mechanism": "Advances in tech increase potential for AI investment",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": false
+      },
+      {
+        "source": "technological_advances",
+        "target": "outcome",
+        "mechanism": "Direct technological advancements enable more affordable robots",
+        "edge_betweenness": 0.0238,
+        "on_critical_path": true
+      },
+      {
+        "source": "economic_conditions",
+        "target": "regulatory_environment",
+        "mechanism": "Economic conditions influence regulatory policies",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "regulatory_environment",
+        "target": "outcome",
+        "mechanism": "Regulatory environment affects adoption and pricing of robots",
+        "edge_betweenness": 0.0476,
+        "on_critical_path": true
+      },
+      {
+        "source": "investment_in_ai",
+        "target": "manufacturing_capacity",
+        "mechanism": "Increased AI investment improves manufacturing efficiency",
+        "edge_betweenness": 0.119,
+        "on_critical_path": true
+      },
+      {
+        "source": "manufacturing_capacity",
+        "target": "market_competition",
+        "mechanism": "Improved manufacturing capacity increases market competition",
+        "edge_betweenness": 0.119,
+        "on_critical_path": true
+      },
+      {
+        "source": "market_competition",
+        "target": "outcome",
+        "mechanism": "Market competition drives prices down",
+        "edge_betweenness": 0.0714,
+        "on_critical_path": true
+      }
+    ],
+    "probe_targets": [
+      {
+        "target_type": "node",
+        "target_id": "market_competition",
+        "description": "Level of competition among robotics companies",
+        "importance": 0.2564,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "technological_advances",
+        "description": "Progress in robotics, AI, and computer vision",
+        "importance": 0.2126,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_negate_high"
+      },
+      {
+        "target_type": "node",
+        "target_id": "regulatory_environment",
+        "description": "Government policies and regulations regarding robotics and AI",
+        "importance": 0.1834,
+        "centrality_rank": 4,
+        "on_critical_path": true,
+        "probe_type": "node_negate_medium"
+      },
+      {
+        "target_type": "node",
+        "target_id": "economic_conditions",
+        "description": "Global economic trends and demand for automation",
+        "importance": 0.1126,
+        "centrality_rank": 6,
+        "on_critical_path": false,
+        "probe_type": "node_negate_low"
+      },
+      {
+        "target_type": "node",
+        "target_id": "market_competition",
+        "description": "Level of competition among robotics companies",
+        "importance": 0.2564,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "node",
+        "target_id": "technological_advances",
+        "description": "Progress in robotics, AI, and computer vision",
+        "importance": 0.2126,
+        "centrality_rank": 2,
+        "on_critical_path": false,
+        "probe_type": "node_strengthen"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "investment_in_ai->manufacturing_capacity",
+        "description": "Increased AI investment improves manufacturing efficiency",
+        "importance": 0.119,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "manufacturing_capacity->market_competition",
+        "description": "Improved manufacturing capacity increases market competition",
+        "importance": 0.119,
+        "centrality_rank": 2,
+        "on_critical_path": true,
+        "probe_type": "edge_negate_critical"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "technological_advances->investment_in_ai",
+        "description": "Advances in tech increase potential for AI investment",
+        "importance": 0.0714,
+        "centrality_rank": 7,
+        "on_critical_path": false,
+        "probe_type": "edge_negate_peripheral"
+      },
+      {
+        "target_type": "edge",
+        "target_id": "investment_in_ai->manufacturing_capacity",
+        "description": "Increased AI investment improves manufacturing efficiency",
+        "importance": 0.119,
+        "centrality_rank": 1,
+        "on_critical_path": true,
+        "probe_type": "edge_reverse"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "market_competition->technological_advances",
+        "description": "Potential link: Level of competition among robotics companies -> Progress in robotics, AI, and computer vision",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "missing_edge",
+        "target_id": "market_competition->regulatory_environment",
+        "description": "Potential link: Level of competition among robotics companies -> Government policies and regulations regarding robotics and AI",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "edge_fabricate"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_1",
+        "description": "A plausible factor not in the current network",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "missing_node_2",
+        "description": "Another plausible missing factor",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "missing_node"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_1",
+        "description": "Topically related but causally irrelevant information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      },
+      {
+        "target_type": "structural",
+        "target_id": "irrelevant_2",
+        "description": "Another topically related but irrelevant piece of information",
+        "importance": 0.0,
+        "centrality_rank": 0,
+        "on_critical_path": false,
+        "probe_type": "irrelevant"
+      }
+    ]
+  },
+  "probe_targets": [
+    {
+      "target_type": "node",
+      "target_id": "market_competition",
+      "description": "Level of competition among robotics companies",
+      "importance": 0.2564,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "technological_advances",
+      "description": "Progress in robotics, AI, and computer vision",
+      "importance": 0.2126,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_negate_high"
+    },
+    {
+      "target_type": "node",
+      "target_id": "regulatory_environment",
+      "description": "Government policies and regulations regarding robotics and AI",
+      "importance": 0.1834,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "probe_type": "node_negate_medium"
+    },
+    {
+      "target_type": "node",
+      "target_id": "economic_conditions",
+      "description": "Global economic trends and demand for automation",
+      "importance": 0.1126,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "probe_type": "node_negate_low"
+    },
+    {
+      "target_type": "node",
+      "target_id": "market_competition",
+      "description": "Level of competition among robotics companies",
+      "importance": 0.2564,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "node",
+      "target_id": "technological_advances",
+      "description": "Progress in robotics, AI, and computer vision",
+      "importance": 0.2126,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "probe_type": "node_strengthen"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "investment_in_ai->manufacturing_capacity",
+      "description": "Increased AI investment improves manufacturing efficiency",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "manufacturing_capacity->market_competition",
+      "description": "Improved manufacturing capacity increases market competition",
+      "importance": 0.119,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "probe_type": "edge_negate_critical"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "technological_advances->investment_in_ai",
+      "description": "Advances in tech increase potential for AI investment",
+      "importance": 0.0714,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "probe_type": "edge_negate_peripheral"
+    },
+    {
+      "target_type": "edge",
+      "target_id": "investment_in_ai->manufacturing_capacity",
+      "description": "Increased AI investment improves manufacturing efficiency",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "probe_type": "edge_reverse"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "market_competition->technological_advances",
+      "description": "Potential link: Level of competition among robotics companies -> Progress in robotics, AI, and computer vision",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "missing_edge",
+      "target_id": "market_competition->regulatory_environment",
+      "description": "Potential link: Level of competition among robotics companies -> Government policies and regulations regarding robotics and AI",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "edge_fabricate"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_1",
+      "description": "A plausible factor not in the current network",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "missing_node_2",
+      "description": "Another plausible missing factor",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "missing_node"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_1",
+      "description": "Topically related but causally irrelevant information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    },
+    {
+      "target_type": "structural",
+      "target_id": "irrelevant_2",
+      "description": "Another topically related but irrelevant piece of information",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "probe_type": "irrelevant"
+    }
+  ],
+  "probes": [
+    {
+      "probe_text": "What if the robotics industry becomes dominated by a few large players, leading to reduced competition and higher prices due to lack of innovation and decreased market pressure? Alternatively, suppose that market competition among robotics companies is not a significant driver of price reductions, as companies focus more on differentiating their products through advanced features rather than cutting costs. Recent trends suggest that quality and capability are becoming more important than price in the decision-making process of potential robot buyers. This could render market competition less relevant in determining the price of general-purpose robots.",
+      "probe_type": "node_negate_high",
+      "target_id": "market_competition",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2564,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Level of competition among robotics companies"
+    },
+    {
+      "probe_text": "Recent studies have shown that the development of general-purpose robots capable of learning new tasks via video is less dependent on breakthroughs in robotics, AI, and computer vision than previously thought. Instead, advancements in these areas have been slow and incremental, with most innovation coming from improvements in manufacturing processes and supply chain management. As a result, the cost of producing such robots may be more closely tied to economic factors rather than technological ones. What if the progress in robotics, AI, and computer vision does not play a significant role in determining the price of general-purpose robots?",
+      "probe_type": "node_negate_high",
+      "target_id": "technological_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2126,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Progress in robotics, AI, and computer vision"
+    },
+    {
+      "probe_text": "Recent studies have shown that government policies and regulations regarding robotics and AI have been largely ineffective in driving innovation, with many companies ignoring or finding ways to circumvent existing regulations. In fact, a new report suggests that the current regulatory environment is so fragmented and unclear that it has little to no impact on the development and pricing of general-purpose robots. As a result, the influence of regulatory environment on the adoption and pricing of robots may be negligible. This raises questions about the significance of regulatory environment in determining the outcome.",
+      "probe_type": "node_negate_medium",
+      "target_id": "regulatory_environment",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1834,
+      "centrality_rank": 4,
+      "on_critical_path": true,
+      "description": "Government policies and regulations regarding robotics and AI"
+    },
+    {
+      "probe_text": "Recent trends suggest that the demand for automation is becoming less tied to global economic trends, as companies increasingly adopt automation as a means to improve efficiency and reduce costs, regardless of economic conditions. In fact, many industries are now investing heavily in automation as a way to mitigate the risks of economic downturns. As a result, the global economic trends and demand for automation may have a negligible impact on the development and pricing of robots. This could render the economic conditions factor irrelevant in predicting the price of a commercially available robot.",
+      "probe_type": "node_negate_low",
+      "target_id": "economic_conditions",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.1126,
+      "centrality_rank": 6,
+      "on_critical_path": false,
+      "description": "Global economic trends and demand for automation"
+    },
+    {
+      "probe_text": "A recent market analysis by McKinsey & Company revealed that the robotics industry has seen a significant influx of new entrants, with over 20 startups focused on general-purpose robots emerging in the last year alone. This surge in competition has led to increased innovation and reduced production costs, with several companies already announcing plans to release affordable, video-learning capable robots in the near future. Furthermore, industry leaders such as Boston Dynamics and NVIDIA have publicly stated their intentions to expand their product lines to include more affordable, general-purpose robots, citing the need to remain competitive in a rapidly changing market. As a result, market competition is expected to drive prices down even further, making a sub-$20,000 USD robot more likely before 2030.",
+      "probe_type": "node_strengthen",
+      "target_id": "market_competition",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2564,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Level of competition among robotics companies"
+    },
+    {
+      "probe_text": "A recent breakthrough in computer vision, published in a prestigious journal, has demonstrated a significant improvement in object recognition accuracy, a crucial component for robots learning new tasks via video. This advancement has been hailed by experts as a major milestone, paving the way for more sophisticated and affordable robotics. As a result, several leading tech companies have announced plans to integrate this technology into their upcoming product lines, expected to hit the market before 2030. The widespread adoption of this innovation is anticipated to substantially drive down production costs and enhance robot capabilities.",
+      "probe_type": "node_strengthen",
+      "target_id": "technological_advances",
+      "generated": true,
+      "target_type": "node",
+      "importance": 0.2126,
+      "centrality_rank": 2,
+      "on_critical_path": false,
+      "description": "Progress in robotics, AI, and computer vision"
+    },
+    {
+      "probe_text": "Recent studies have shown that increased investment in AI research and development has led to a surge in demand for highly specialized and expensive AI talent, which in turn has driven up labor costs and reduced the overall efficiency of manufacturing processes. Furthermore, the integration of AI technologies into existing manufacturing systems has proven to be more complex and time-consuming than anticipated, resulting in significant upfront costs and unforeseen logistical challenges. As a result, the anticipated improvement in manufacturing efficiency due to increased AI investment may be greatly overstated. This suggests that the causal link between investment in AI and manufacturing capacity may be much weaker than assumed.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "investment_in_ai->manufacturing_capacity",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Increased AI investment improves manufacturing efficiency"
+    },
+    {
+      "probe_text": "However, increased manufacturing capacity could lead to industry consolidation, where a few large players dominate the market, reducing competition and potentially keeping prices high. Furthermore, the development of general-purpose robots requires significant investment in software and AI, which might not be directly impacted by manufacturing capacity improvements. Recent examples in the tech industry have shown that companies with advanced manufacturing capabilities often prioritize profit margins over market competition, suggesting a weaker link between manufacturing capacity and market competition. This could mean that improved manufacturing capacity does not necessarily lead to increased market competition.",
+      "probe_type": "edge_negate_critical",
+      "target_id": "manufacturing_capacity->market_competition",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.119,
+      "centrality_rank": 2,
+      "on_critical_path": true,
+      "description": "Improved manufacturing capacity increases market competition"
+    },
+    {
+      "probe_text": "Recent breakthroughs in robotics and AI have not led to increased investment in AI research and development due to shifting investor priorities towards more immediate returns and concerns over AI ethics. In fact, some investors are becoming more cautious about funding AI projects that may not yield tangible benefits in the short term. As a result, the relationship between technological advances and investment in AI may be more complex than initially thought. This might limit the potential for technological advancements to drive investment in AI.",
+      "probe_type": "edge_negate_peripheral",
+      "target_id": "technological_advances->investment_in_ai",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.0714,
+      "centrality_rank": 7,
+      "on_critical_path": false,
+      "description": "Advances in tech increase potential for AI investment"
+    },
+    {
+      "probe_text": "Recent studies have shown that companies with high manufacturing capacity are more likely to attract investment in AI research and development, as they can provide the necessary infrastructure and resources to support AI integration. This suggests that the relationship between investment in AI and manufacturing capacity may be reversed, with manufacturing capacity driving investment in AI. For instance, a company like Foxconn, with its vast manufacturing capabilities, is more likely to receive investments in AI to further improve its production lines. Does this change your estimate of the probability?",
+      "probe_type": "edge_reverse",
+      "target_id": "investment_in_ai->manufacturing_capacity",
+      "generated": true,
+      "target_type": "edge",
+      "importance": 0.119,
+      "centrality_rank": 1,
+      "on_critical_path": true,
+      "description": "Increased AI investment improves manufacturing efficiency"
+    },
+    {
+      "probe_text": "A recent surge in market competition among robotics companies has led to increased investment in research and development, as firms strive to innovate and stay ahead of their competitors, driving breakthroughs in robotics, AI, and computer vision. For instance, companies like Boston Dynamics and NVIDIA are accelerating their development of more advanced robotic systems, capable of learning new tasks via video, in response to growing competition. This accelerated innovation is expected to directly contribute to technological advances in the field. Will this intensified competition lead to a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030?",
+      "probe_type": "edge_fabricate",
+      "target_id": "market_competition->technological_advances",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of competition among robotics companies -> Progress in robotics, AI, and computer vision"
+    },
+    {
+      "probe_text": "A recent surge in market competition among robotics companies has led to increased lobbying efforts, prompting governments to reevaluate and potentially relax regulations on robotics and AI development to stay competitive in the global market. As a result, several countries are now considering deregulation of certain aspects of robotics development, which could impact the pricing and availability of general-purpose robots. This shift in the regulatory environment may be driven by the need for governments to support domestic robotics industries in the face of intense global competition. How does this new information affect your estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030?",
+      "probe_type": "edge_fabricate",
+      "target_id": "market_competition->regulatory_environment",
+      "generated": true,
+      "target_type": "missing_edge",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Potential link: Level of competition among robotics companies -> Government policies and regulations regarding robotics and AI"
+    },
+    {
+      "probe_text": "Consider the impact of public acceptance and trust in robotics and AI on the pricing of general-purpose robots. Consider a scenario where a high-profile AI-related accident leads to widespread public distrust, resulting in decreased demand and thus higher prices. Alternatively, a well-publicized success story could increase public trust, driving up demand and potentially lowering prices. How would this shift in public perception affect your estimate of a commercially available robot being priced under $20,000 USD before 2030?",
+      "probe_type": "missing_node",
+      "target_id": "missing_node_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "A plausible factor not in the current network"
+    },
+    {
+      "probe_text": "Consider the impact of public acceptance and trust in AI-powered robots on their adoption and pricing. If a significant portion of the population expresses concerns about job displacement or safety due to these robots, it could hinder market growth and affect pricing strategies. How would this shift in public perception influence your estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030? This factor was not included in your original causal network.",
+      "probe_type": "missing_node",
+      "target_id": "public_acceptance",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another plausible missing factor"
+    },
+    {
+      "probe_text": "Researchers have discovered that the average lifespan of industrial robots in the manufacturing sector has increased by 15% over the past decade due to improved maintenance practices. This has led to a reduction in electronic waste generated by discarded robots. As a result, the environmental impact of robot disposal has decreased significantly. However, the cost of recycling robot parts remains unchanged.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_1",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Topically related but causally irrelevant information"
+    },
+    {
+      "probe_text": "A recent study found that the average person spends around 2 hours per day watching videos on their smartphones, leading to a significant increase in demand for video content creation. This shift in consumer behavior has resulted in the development of new video editing software and platforms. However, the study also noted that this trend is mainly driven by the entertainment industry and does not have a direct impact on the robotics or AI sectors. As a result, the demand for video-based robot learning is not expected to be affected by this trend.",
+      "probe_type": "irrelevant",
+      "target_id": "irrelevant_2",
+      "generated": true,
+      "target_type": "structural",
+      "importance": 0.0,
+      "centrality_rank": 0,
+      "on_critical_path": false,
+      "description": "Another topically related but irrelevant piece of information"
+    }
+  ],
+  "condition": "multi-turn",
+  "probe_results": [
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "What if the robotics industry becomes dominated by a few large players, leading to reduced competition and higher prices due to lack of innovation and decreased market pressure? Alternatively, suppose that market competition among robotics companies is not a significant driver of price reductions, as companies focus more on differentiating their products through advanced features rather than cutting costs. Recent trends suggest that quality and capability are becoming more important than price in the decision-making process of potential robot buyers. This could render market competition less relevant in determining the price of general-purpose robots.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.14,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'market_competition' as a driver of price reduction affects two causal paths: 'manufacturing_capacity' to 'market_competition' to 'outcome', and indirectly, 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome'. If market competition is less effective in driving prices down due to industry dominance by a few players or a shift in focus towards product differentiation rather than cost reduction, then the paths that rely on competition to achieve lower prices are weakened. Given that quality and capability are becoming more important than price, the pressure to reduce prices through competition is diminished. This reduces the overall likelihood of a general-purpose robot being priced under $20,000 USD before 2030, hence decreasing the probability estimate from 0.72 to 0.58.",
+      "raw_response": "{\n  \"updated_probability\": 0.58,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to 'market_competition' as a driver of price reduction affects two causal paths: 'manufacturing_capacity' to 'market_competition' to 'outcome', and indirectly, 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome'. If market competition is less effective in driving prices down due to industry dominance by a few players or a shift in focus towards product differentiation rather than cost reduction, then the paths that rely on competition to achieve lower prices are weakened. Given that quality and capability are becoming more important than price, the pressure to reduce prices through competition is diminished. This reduces the overall likelihood of a general-purpose robot being priced under $20,000 USD before 2030, hence decreasing the probability estimate from 0.72 to 0.58.\"\n}",
+      "target_id": "market_competition",
+      "target_type": "node",
+      "target_importance": 0.2564,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_high",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that the development of general-purpose robots capable of learning new tasks via video is less dependent on breakthroughs in robotics, AI, and computer vision than previously thought. Instead, advancements in these areas have been slow and incremental, with most innovation coming from improvements in manufacturing processes and supply chain management. As a result, the cost of producing such robots may be more closely tied to economic factors rather than technological ones. What if the progress in robotics, AI, and computer vision does not play a significant role in determining the price of general-purpose robots?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'technological_advances' significantly affects two causal paths: 'technological_advances' to 'investment_in_ai' to 'manufacturing_capacity' to 'outcome', and directly, 'technological_advances' to 'outcome'. If technological progress in robotics, AI, and computer vision does not drive down the cost of general-purpose robots as much as previously thought, then these paths are weakened. The reliance on incremental advancements and improvements in manufacturing processes and supply chain management suggests that economic factors, such as 'economic_conditions' and 'regulatory_environment', become more important in determining the price. Given that the technological driver is less influential, and considering the previously discussed reduction in the impact of 'market_competition', the overall likelihood of achieving a price under $20,000 USD before 2030 decreases. Thus, the probability estimate is updated from 0.58 to 0.42.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to 'technological_advances' significantly affects two causal paths: 'technological_advances' to 'investment_in_ai' to 'manufacturing_capacity' to 'outcome', and directly, 'technological_advances' to 'outcome'. If technological progress in robotics, AI, and computer vision does not drive down the cost of general-purpose robots as much as previously thought, then these paths are weakened. The reliance on incremental advancements and improvements in manufacturing processes and supply chain management suggests that economic factors, such as 'economic_conditions' and 'regulatory_environment', become more important in determining the price. Given that the technological driver is less influential, and considering the previously discussed reduction in the impact of 'market_competition', the overall likelihood of achieving a price under $20,000 USD before 2030 decreases. Thus, the probability estimate is updated from 0.58 to 0.42.\"\n}",
+      "target_id": "technological_advances",
+      "target_type": "node",
+      "target_importance": 0.2126,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_medium",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that government policies and regulations regarding robotics and AI have been largely ineffective in driving innovation, with many companies ignoring or finding ways to circumvent existing regulations. In fact, a new report suggests that the current regulatory environment is so fragmented and unclear that it has little to no impact on the development and pricing of general-purpose robots. As a result, the influence of regulatory environment on the adoption and pricing of robots may be negligible. This raises questions about the significance of regulatory environment in determining the outcome.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.4,
+      "absolute_shift": 0.019999999999999962,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'regulatory_environment' affects the path from 'economic_conditions' to 'regulatory_environment' to 'outcome', and directly, 'regulatory_environment' to 'outcome'. Given that the regulatory environment is found to have little to no impact on the development and pricing of general-purpose robots, this path is significantly weakened. However, the overall decrease in probability is minimal, from 0.42 to 0.40, because the regulatory environment was not a primary driver of the outcome in the initial forecast. The main factors influencing the price, such as 'market_competition' and 'technological_advances', have already been challenged and updated. The regulatory environment's negligible impact suggests that other factors, like 'economic_conditions' and 'investment_in_ai', might play a slightly more significant role by default, but the overall effect on the probability remains small due to the already diminished expectations from previous challenges.",
+      "raw_response": "{\n  \"updated_probability\": 0.40,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to 'regulatory_environment' affects the path from 'economic_conditions' to 'regulatory_environment' to 'outcome', and directly, 'regulatory_environment' to 'outcome'. Given that the regulatory environment is found to have little to no impact on the development and pricing of general-purpose robots, this path is significantly weakened. However, the overall decrease in probability is minimal, from 0.42 to 0.40, because the regulatory environment was not a primary driver of the outcome in the initial forecast. The main factors influencing the price, such as 'market_competition' and 'technological_advances', have already been challenged and updated. The regulatory environment's negligible impact suggests that other factors, like 'economic_conditions' and 'investment_in_ai', might play a slightly more significant role by default, but the overall effect on the probability remains small due to the already diminished expectations from previous challenges.\"\n}",
+      "target_id": "regulatory_environment",
+      "target_type": "node",
+      "target_importance": 0.1834,
+      "target_centrality_rank": 4,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_negate_low",
+      "target_reason_id": null,
+      "probe_text": "Recent trends suggest that the demand for automation is becoming less tied to global economic trends, as companies increasingly adopt automation as a means to improve efficiency and reduce costs, regardless of economic conditions. In fact, many industries are now investing heavily in automation as a way to mitigate the risks of economic downturns. As a result, the global economic trends and demand for automation may have a negligible impact on the development and pricing of robots. This could render the economic conditions factor irrelevant in predicting the price of a commercially available robot.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.38,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to 'economic_conditions' affects the path from 'economic_conditions' to 'regulatory_environment' to 'outcome', although the regulatory environment's impact was already deemed negligible. More importantly, it suggests that the overall economic context does not significantly influence the demand for and pricing of general-purpose robots. Given that 'market_competition', 'technological_advances', and 'regulatory_environment' have already been challenged, and now 'economic_conditions' is also found to have a negligible impact, the factors that could drive the price down are further diminished. The decrease in probability from 0.40 to 0.38 reflects the reduced likelihood of achieving a price under $20,000 USD before 2030, as the remaining influential factors are either weakened or not strongly tied to cost reduction. The update is small because the economic conditions factor was not a primary driver of the outcome, and previous challenges have already accounted for significant reductions in the probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.38,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to 'economic_conditions' affects the path from 'economic_conditions' to 'regulatory_environment' to 'outcome', although the regulatory environment's impact was already deemed negligible. More importantly, it suggests that the overall economic context does not significantly influence the demand for and pricing of general-purpose robots. Given that 'market_competition', 'technological_advances', and 'regulatory_environment' have already been challenged, and now 'economic_conditions' is also found to have a negligible impact, the factors that could drive the price down are further diminished. The decrease in probability from 0.40 to 0.38 reflects the reduced likelihood of achieving a price under $20,000 USD before 2030, as the remaining influential factors are either weakened or not strongly tied to cost reduction. The update is small because the economic conditions factor was not a primary driver of the outcome, and previous challenges have already accounted for significant reductions in the probability estimate.\"\n}",
+      "target_id": "economic_conditions",
+      "target_type": "node",
+      "target_importance": 0.1126,
+      "target_centrality_rank": 6,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent market analysis by McKinsey & Company revealed that the robotics industry has seen a significant influx of new entrants, with over 20 startups focused on general-purpose robots emerging in the last year alone. This surge in competition has led to increased innovation and reduced production costs, with several companies already announcing plans to release affordable, video-learning capable robots in the near future. Furthermore, industry leaders such as Boston Dynamics and NVIDIA have publicly stated their intentions to expand their product lines to include more affordable, general-purpose robots, citing the need to remain competitive in a rapidly changing market. As a result, market competition is expected to drive prices down even further, making a sub-$20,000 USD robot more likely before 2030.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.24,
+      "shift_direction": "increased",
+      "reasoning": "The new information about 'market_competition' directly challenges the previous assumption that market competition would be reduced due to industry dominance by a few large players. Instead, the influx of new entrants and the increased competition from industry leaders are expected to drive innovation and reduce production costs, making a sub-$20,000 USD robot more likely. This strengthens the causal path from 'market_competition' to 'outcome', which was previously weakened. Given that 'market_competition' is now a more significant driver of price reduction, and considering the other factors such as 'technological_advances', 'regulatory_environment', and 'economic_conditions' have been found to have limited impact, the increase in probability is substantial. The updated probability of 0.62 reflects the renewed importance of market competition in driving prices down and the potential for achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.",
+      "raw_response": "{\n  \"updated_probability\": 0.62,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information about 'market_competition' directly challenges the previous assumption that market competition would be reduced due to industry dominance by a few large players. Instead, the influx of new entrants and the increased competition from industry leaders are expected to drive innovation and reduce production costs, making a sub-$20,000 USD robot more likely. This strengthens the causal path from 'market_competition' to 'outcome', which was previously weakened. Given that 'market_competition' is now a more significant driver of price reduction, and considering the other factors such as 'technological_advances', 'regulatory_environment', and 'economic_conditions' have been found to have limited impact, the increase in probability is substantial. The updated probability of 0.62 reflects the renewed importance of market competition in driving prices down and the potential for achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.\"\n}",
+      "target_id": "market_competition",
+      "target_type": "node",
+      "target_importance": 0.2564,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "node_strengthen",
+      "target_reason_id": null,
+      "probe_text": "A recent breakthrough in computer vision, published in a prestigious journal, has demonstrated a significant improvement in object recognition accuracy, a crucial component for robots learning new tasks via video. This advancement has been hailed by experts as a major milestone, paving the way for more sophisticated and affordable robotics. As a result, several leading tech companies have announced plans to integrate this technology into their upcoming product lines, expected to hit the market before 2030. The widespread adoption of this innovation is anticipated to substantially drive down production costs and enhance robot capabilities.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.22999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The breakthrough in computer vision and its anticipated widespread adoption significantly strengthens the causal path from 'technological_advances' to 'outcome'. This advancement in object recognition accuracy is a crucial component for robots learning new tasks via video, and its integration into upcoming product lines by leading tech companies is expected to drive down production costs and enhance robot capabilities. Given that 'market_competition' was recently found to be a more significant driver of price reduction, and now 'technological_advances' is also bolstered by this breakthrough, the combined effect of these two factors substantially increases the likelihood of achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030. The updated probability of 0.85 reflects the heightened potential for technological advancements and market competition to synergistically drive prices down and improve robot affordability.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The breakthrough in computer vision and its anticipated widespread adoption significantly strengthens the causal path from 'technological_advances' to 'outcome'. This advancement in object recognition accuracy is a crucial component for robots learning new tasks via video, and its integration into upcoming product lines by leading tech companies is expected to drive down production costs and enhance robot capabilities. Given that 'market_competition' was recently found to be a more significant driver of price reduction, and now 'technological_advances' is also bolstered by this breakthrough, the combined effect of these two factors substantially increases the likelihood of achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030. The updated probability of 0.85 reflects the heightened potential for technological advancements and market competition to synergistically drive prices down and improve robot affordability.\"\n}",
+      "target_id": "technological_advances",
+      "target_type": "node",
+      "target_importance": 0.2126,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": false,
+      "probe_category": "node"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that increased investment in AI research and development has led to a surge in demand for highly specialized and expensive AI talent, which in turn has driven up labor costs and reduced the overall efficiency of manufacturing processes. Furthermore, the integration of AI technologies into existing manufacturing systems has proven to be more complex and time-consuming than anticipated, resulting in significant upfront costs and unforeseen logistical challenges. As a result, the anticipated improvement in manufacturing efficiency due to increased AI investment may be greatly overstated. This suggests that the causal link between investment in AI and manufacturing capacity may be much weaker than assumed.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.8,
+      "absolute_shift": 0.04999999999999993,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'investment_in_ai->manufacturing_capacity' weakens the path from 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome'. However, given that 'market_competition' and 'technological_advances' have recently been strengthened as drivers of price reduction, the overall impact of this weakened link is mitigated. The decreased efficiency and increased costs associated with AI integration into manufacturing processes reduce the potential for investment in AI to drive down prices, but the effect is not sufficient to significantly alter the overall probability estimate. The updated probability of 0.80 reflects a minor adjustment to account for the reduced efficiency in manufacturing due to AI integration, while still considering the strong influence of market competition and technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.",
+      "raw_response": "{\n  \"updated_probability\": 0.80,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to the causal link 'investment_in_ai->manufacturing_capacity' weakens the path from 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome'. However, given that 'market_competition' and 'technological_advances' have recently been strengthened as drivers of price reduction, the overall impact of this weakened link is mitigated. The decreased efficiency and increased costs associated with AI integration into manufacturing processes reduce the potential for investment in AI to drive down prices, but the effect is not sufficient to significantly alter the overall probability estimate. The updated probability of 0.80 reflects a minor adjustment to account for the reduced efficiency in manufacturing due to AI integration, while still considering the strong influence of market competition and technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.\"\n}",
+      "target_id": "investment_in_ai->manufacturing_capacity",
+      "target_type": "edge",
+      "target_importance": 0.119,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_critical",
+      "target_reason_id": null,
+      "probe_text": "However, increased manufacturing capacity could lead to industry consolidation, where a few large players dominate the market, reducing competition and potentially keeping prices high. Furthermore, the development of general-purpose robots requires significant investment in software and AI, which might not be directly impacted by manufacturing capacity improvements. Recent examples in the tech industry have shown that companies with advanced manufacturing capabilities often prioritize profit margins over market competition, suggesting a weaker link between manufacturing capacity and market competition. This could mean that improved manufacturing capacity does not necessarily lead to increased market competition.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.050000000000000044,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'anufacturing_capacity->market_competition' further weakens the path from 'investment_in_ai' to 'anufacturing_capacity' to 'arket_competition' to 'outcome', which was already affected by the previous challenge to the 'investment_in_ai->manufacturing_capacity' link. The potential for industry consolidation and prioritization of profit margins over competition reduces the likelihood that improved manufacturing capacity will lead to increased market competition and lower prices. However, the impact of this challenge is somewhat mitigated by the strong influence of 'technological_advances' and the recent breakthrough in computer vision, which continues to drive the probability estimate upwards. Additionally, the direct link from 'technological_advances' to 'outcome' remains unaffected, providing an alternative path for price reduction. The updated probability of 0.75 reflects a moderate adjustment to account for the potential weakening of the manufacturing capacity to market competition link, while still considering the robust influence of technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to the causal link 'anufacturing_capacity->market_competition' further weakens the path from 'investment_in_ai' to 'anufacturing_capacity' to 'arket_competition' to 'outcome', which was already affected by the previous challenge to the 'investment_in_ai->manufacturing_capacity' link. The potential for industry consolidation and prioritization of profit margins over competition reduces the likelihood that improved manufacturing capacity will lead to increased market competition and lower prices. However, the impact of this challenge is somewhat mitigated by the strong influence of 'technological_advances' and the recent breakthrough in computer vision, which continues to drive the probability estimate upwards. Additionally, the direct link from 'technological_advances' to 'outcome' remains unaffected, providing an alternative path for price reduction. The updated probability of 0.75 reflects a moderate adjustment to account for the potential weakening of the manufacturing capacity to market competition link, while still considering the robust influence of technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.\"\n}",
+      "target_id": "manufacturing_capacity->market_competition",
+      "target_type": "edge",
+      "target_importance": 0.119,
+      "target_centrality_rank": 2,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_negate_peripheral",
+      "target_reason_id": null,
+      "probe_text": "Recent breakthroughs in robotics and AI have not led to increased investment in AI research and development due to shifting investor priorities towards more immediate returns and concerns over AI ethics. In fact, some investors are becoming more cautious about funding AI projects that may not yield tangible benefits in the short term. As a result, the relationship between technological advances and investment in AI may be more complex than initially thought. This might limit the potential for technological advancements to drive investment in AI.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.72,
+      "absolute_shift": 0.030000000000000027,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'technological_advances->investment_in_ai' weakens the path from 'technological_advances' to 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome'. However, the direct link from 'technological_advances' to 'outcome' remains unchanged, as the recent breakthrough in computer vision and its anticipated widespread adoption continue to drive the potential for price reduction. The reduced investment in AI due to shifting investor priorities and concerns over AI ethics may limit the indirect benefits of technological advancements on manufacturing capacity and market competition, but the direct impact of technological advancements on the outcome remains significant. The updated probability of 0.72 reflects a small adjustment to account for the potential decrease in investment in AI, while still considering the robust influence of technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.",
+      "raw_response": "{\n  \"updated_probability\": 0.72,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to the causal link 'technological_advances->investment_in_ai' weakens the path from 'technological_advances' to 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome'. However, the direct link from 'technological_advances' to 'outcome' remains unchanged, as the recent breakthrough in computer vision and its anticipated widespread adoption continue to drive the potential for price reduction. The reduced investment in AI due to shifting investor priorities and concerns over AI ethics may limit the indirect benefits of technological advancements on manufacturing capacity and market competition, but the direct impact of technological advancements on the outcome remains significant. The updated probability of 0.72 reflects a small adjustment to account for the potential decrease in investment in AI, while still considering the robust influence of technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.\"\n}",
+      "target_id": "technological_advances->investment_in_ai",
+      "target_type": "edge",
+      "target_importance": 0.0714,
+      "target_centrality_rank": 7,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_reverse",
+      "target_reason_id": null,
+      "probe_text": "Recent studies have shown that companies with high manufacturing capacity are more likely to attract investment in AI research and development, as they can provide the necessary infrastructure and resources to support AI integration. This suggests that the relationship between investment in AI and manufacturing capacity may be reversed, with manufacturing capacity driving investment in AI. For instance, a company like Foxconn, with its vast manufacturing capabilities, is more likely to receive investments in AI to further improve its production lines. Does this change your estimate of the probability?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.7,
+      "absolute_shift": 0.020000000000000018,
+      "shift_direction": "decreased",
+      "reasoning": "The challenge to the causal link 'investment_in_ai->manufacturing_capacity' suggests that the relationship between these factors may be reversed, with manufacturing capacity driving investment in AI. This would imply that the path from 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome' is weaker than initially thought. However, the direct link from 'technological_advances' to 'outcome' remains unchanged, and the recent breakthrough in computer vision continues to drive the potential for price reduction. The reversal of the causal link may actually strengthen the overall network, as companies with high manufacturing capacity are more likely to attract investment in AI, potentially leading to more efficient production and lower costs. But given the complexity of the relationships and the potential for industry consolidation and prioritization of profit margins, the updated probability of 0.70 reflects a small adjustment to account for the changed dynamics, while still considering the robust influence of technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.",
+      "raw_response": "{\n  \"updated_probability\": 0.70,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The challenge to the causal link 'investment_in_ai->manufacturing_capacity' suggests that the relationship between these factors may be reversed, with manufacturing capacity driving investment in AI. This would imply that the path from 'investment_in_ai' to 'manufacturing_capacity' to 'market_competition' to 'outcome' is weaker than initially thought. However, the direct link from 'technological_advances' to 'outcome' remains unchanged, and the recent breakthrough in computer vision continues to drive the potential for price reduction. The reversal of the causal link may actually strengthen the overall network, as companies with high manufacturing capacity are more likely to attract investment in AI, potentially leading to more efficient production and lower costs. But given the complexity of the relationships and the potential for industry consolidation and prioritization of profit margins, the updated probability of 0.70 reflects a small adjustment to account for the changed dynamics, while still considering the robust influence of technological advancements on achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030.\"\n}",
+      "target_id": "investment_in_ai->manufacturing_capacity",
+      "target_type": "edge",
+      "target_importance": 0.119,
+      "target_centrality_rank": 1,
+      "target_on_critical_path": true,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "A recent surge in market competition among robotics companies has led to increased investment in research and development, as firms strive to innovate and stay ahead of their competitors, driving breakthroughs in robotics, AI, and computer vision. For instance, companies like Boston Dynamics and NVIDIA are accelerating their development of more advanced robotic systems, capable of learning new tasks via video, in response to growing competition. This accelerated innovation is expected to directly contribute to technological advances in the field. Will this intensified competition lead to a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.82,
+      "absolute_shift": 0.12,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a previously unconsidered causal link from 'market_competition' to 'technological_advances', suggesting that increased market competition drives investment in research and development, leading to accelerated innovation and breakthroughs in robotics, AI, and computer vision. This creates a positive feedback loop, where market competition fuels technological advances, which in turn can drive prices down and improve robot capabilities. Given the recent breakthrough in computer vision and the anticipated widespread adoption of this technology, the intensified competition among robotics companies is likely to further accelerate technological progress, making a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030 more probable. The updated probability of 0.82 reflects the increased potential for market competition to drive technological advances, which can lead to more affordable and capable robots, thus strengthening the overall case for achieving the desired outcome.",
+      "raw_response": "{\n  \"updated_probability\": 0.82,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information introduces a previously unconsidered causal link from 'market_competition' to 'technological_advances', suggesting that increased market competition drives investment in research and development, leading to accelerated innovation and breakthroughs in robotics, AI, and computer vision. This creates a positive feedback loop, where market competition fuels technological advances, which in turn can drive prices down and improve robot capabilities. Given the recent breakthrough in computer vision and the anticipated widespread adoption of this technology, the intensified competition among robotics companies is likely to further accelerate technological progress, making a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030 more probable. The updated probability of 0.82 reflects the increased potential for market competition to drive technological advances, which can lead to more affordable and capable robots, thus strengthening the overall case for achieving the desired outcome.\"\n}",
+      "target_id": "market_competition->technological_advances",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "edge_fabricate",
+      "target_reason_id": null,
+      "probe_text": "A recent surge in market competition among robotics companies has led to increased lobbying efforts, prompting governments to reevaluate and potentially relax regulations on robotics and AI development to stay competitive in the global market. As a result, several countries are now considering deregulation of certain aspects of robotics development, which could impact the pricing and availability of general-purpose robots. This shift in the regulatory environment may be driven by the need for governments to support domestic robotics industries in the face of intense global competition. How does this new information affect your estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.88,
+      "absolute_shift": 0.06000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new information introduces a causal link from 'market_competition' to 'regulatory_environment', suggesting that increased market competition leads to deregulation efforts, potentially relaxing regulations on robotics and AI development. This could accelerate the development and deployment of general-purpose robots, making them more affordable and widely available. Although the regulatory environment was previously considered to have a negligible impact on the outcome, the recent surge in market competition and the resulting deregulation efforts may now create a more favorable regulatory landscape for robotics companies. The combination of intensified competition driving technological advances and a potentially more permissive regulatory environment further strengthens the case for achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030. The updated probability of 0.88 reflects the increased potential for market competition to drive both technological advances and regulatory changes, which can synergistically contribute to making more affordable and capable robots a reality.",
+      "raw_response": "{\n  \"updated_probability\": 0.88,\n   \"shift_direction\": \"increased\",\n   \"reasoning\": \"The new information introduces a causal link from 'market_competition' to 'regulatory_environment', suggesting that increased market competition leads to deregulation efforts, potentially relaxing regulations on robotics and AI development. This could accelerate the development and deployment of general-purpose robots, making them more affordable and widely available. Although the regulatory environment was previously considered to have a negligible impact on the outcome, the recent surge in market competition and the resulting deregulation efforts may now create a more favorable regulatory landscape for robotics companies. The combination of intensified competition driving technological advances and a potentially more permissive regulatory environment further strengthens the case for achieving a commercially available, general-purpose robot capable of learning new tasks via video priced under $20,000 USD before 2030. The updated probability of 0.88 reflects the increased potential for market competition to drive both technological advances and regulatory changes, which can synergistically contribute to making more affordable and capable robots a reality.\"\n}",
+      "target_id": "market_competition->regulatory_environment",
+      "target_type": "missing_edge",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "edge"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the impact of public acceptance and trust in robotics and AI on the pricing of general-purpose robots. Consider a scenario where a high-profile AI-related accident leads to widespread public distrust, resulting in decreased demand and thus higher prices. Alternatively, a well-publicized success story could increase public trust, driving up demand and potentially lowering prices. How would this shift in public perception affect your estimate of a commercially available robot being priced under $20,000 USD before 2030?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.8,
+      "absolute_shift": 0.07999999999999996,
+      "shift_direction": "decreased",
+      "reasoning": "The introduction of public acceptance and trust as a factor affecting demand and pricing adds a new layer of complexity to the causal model. The potential for a high-profile AI-related accident to decrease demand and increase prices, or for a success story to increase demand and lower prices, highlights the importance of public perception in shaping the market for general-purpose robots. This challenge to the structural assumptions of the model suggests that the initial estimate of 0.88 may have been overly optimistic, as it did not account for the potential risks and uncertainties associated with public trust and acceptance. The updated probability of 0.80 reflects a more nuanced understanding of the factors influencing the pricing of general-purpose robots, acknowledging that public perception can significantly impact demand and prices, and thus the achievement of a commercially available robot priced under $20,000 USD before 2030.",
+      "raw_response": "{\n  \"updated_probability\": 0.80,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The introduction of public acceptance and trust as a factor affecting demand and pricing adds a new layer of complexity to the causal model. The potential for a high-profile AI-related accident to decrease demand and increase prices, or for a success story to increase demand and lower prices, highlights the importance of public perception in shaping the market for general-purpose robots. This challenge to the structural assumptions of the model suggests that the initial estimate of 0.88 may have been overly optimistic, as it did not account for the potential risks and uncertainties associated with public trust and acceptance. The updated probability of 0.80 reflects a more nuanced understanding of the factors influencing the pricing of general-purpose robots, acknowledging that public perception can significantly impact demand and prices, and thus the achievement of a commercially available robot priced under $20,000 USD before 2030.\"\n}",
+      "target_id": "missing_node_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "missing_node",
+      "target_reason_id": null,
+      "probe_text": "Consider the impact of public acceptance and trust in AI-powered robots on their adoption and pricing. If a significant portion of the population expresses concerns about job displacement or safety due to these robots, it could hinder market growth and affect pricing strategies. How would this shift in public perception influence your estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030? This factor was not included in your original causal network.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.050000000000000044,
+      "shift_direction": "decreased",
+      "reasoning": "The introduction of public acceptance and trust in AI-powered robots as a factor influencing market growth and pricing strategies highlights a significant omission in the original causal network. The potential for public concerns about job displacement, safety, or other issues to hinder market growth and impact pricing adds a new layer of uncertainty to the model. This factor can affect the demand for general-purpose robots, potentially reducing the pressure on companies to lower prices. As a result, the estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030 needs to be revised downwards. The updated probability of 0.75 reflects the increased uncertainty and potential risks associated with public perception, acknowledging that the original estimate may have been overly optimistic by not accounting for these societal factors. The addition of this new factor to the causal network requires a more cautious approach, recognizing that public acceptance and trust play a crucial role in shaping the market for AI-powered robots.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"The introduction of public acceptance and trust in AI-powered robots as a factor influencing market growth and pricing strategies highlights a significant omission in the original causal network. The potential for public concerns about job displacement, safety, or other issues to hinder market growth and impact pricing adds a new layer of uncertainty to the model. This factor can affect the demand for general-purpose robots, potentially reducing the pressure on companies to lower prices. As a result, the estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030 needs to be revised downwards. The updated probability of 0.75 reflects the increased uncertainty and potential risks associated with public perception, acknowledging that the original estimate may have been overly optimistic by not accounting for these societal factors. The addition of this new factor to the causal network requires a more cautious approach, recognizing that public acceptance and trust play a crucial role in shaping the market for AI-powered robots.\"\n}",
+      "target_id": "public_acceptance",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "Researchers have discovered that the average lifespan of industrial robots in the manufacturing sector has increased by 15% over the past decade due to improved maintenance practices. This has led to a reduction in electronic waste generated by discarded robots. As a result, the environmental impact of robot disposal has decreased significantly. However, the cost of recycling robot parts remains unchanged.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the increased lifespan of industrial robots and the resulting reduction in electronic waste does not directly affect the causal paths related to the pricing of general-purpose robots capable of learning new tasks via video. The environmental impact of robot disposal and the cost of recycling robot parts are peripheral factors that do not influence the primary drivers of pricing, such as technological advances, market competition, and public acceptance. As a result, the estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030 remains unchanged. The updated probability of 0.75 reflects the continued influence of the previously identified factors, with the new information not providing a significant reason to adjust the estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n   \"shift_direction\": \"unchanged\",\n   \"reasoning\": \"The new information about the increased lifespan of industrial robots and the resulting reduction in electronic waste does not directly affect the causal paths related to the pricing of general-purpose robots capable of learning new tasks via video. The environmental impact of robot disposal and the cost of recycling robot parts are peripheral factors that do not influence the primary drivers of pricing, such as technological advances, market competition, and public acceptance. As a result, the estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030 remains unchanged. The updated probability of 0.75 reflects the continued influence of the previously identified factors, with the new information not providing a significant reason to adjust the estimate.\"\n}",
+      "target_id": "irrelevant_1",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": null,
+      "probe_text": "A recent study found that the average person spends around 2 hours per day watching videos on their smartphones, leading to a significant increase in demand for video content creation. This shift in consumer behavior has resulted in the development of new video editing software and platforms. However, the study also noted that this trend is mainly driven by the entertainment industry and does not have a direct impact on the robotics or AI sectors. As a result, the demand for video-based robot learning is not expected to be affected by this trend.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.0,
+      "shift_direction": "unchanged",
+      "reasoning": "The new information about the increase in demand for video content creation and the development of new video editing software and platforms does not have a direct impact on the robotics or AI sectors, and therefore does not affect the demand for video-based robot learning. The study's findings are specific to the entertainment industry and do not influence the primary drivers of pricing for general-purpose robots capable of learning new tasks via video, such as technological advances, market competition, and public acceptance. As a result, the estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030 remains unchanged. The updated probability of 0.75 reflects the continued influence of the previously identified factors, with the new information not providing a significant reason to adjust the estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n   \"shift_direction\": \"unchanged\",\n   \"reasoning\": \"The new information about the increase in demand for video content creation and the development of new video editing software and platforms does not have a direct impact on the robotics or AI sectors, and therefore does not affect the demand for video-based robot learning. The study's findings are specific to the entertainment industry and do not influence the primary drivers of pricing for general-purpose robots capable of learning new tasks via video, such as technological advances, market competition, and public acceptance. As a result, the estimate of a commercially available, general-purpose robot capable of learning new tasks via video being priced under $20,000 USD before 2030 remains unchanged. The updated probability of 0.75 reflects the continued influence of the previously identified factors, with the new information not providing a significant reason to adjust the estimate.\"\n}",
+      "target_id": "irrelevant_2",
+      "target_type": "structural",
+      "target_importance": 0.0,
+      "target_centrality_rank": 0,
+      "target_on_critical_path": false,
+      "probe_category": "structural"
+    }
+  ],
+  "summary": {
+    "question_id": "39129",
+    "question_text": "Before 2030, will a commercially available, general-purpose robot capable of learning new tasks via video be priced under $20,000 USD?",
+    "source": "metaculus",
+    "condition": "multi-turn",
+    "initial_probability": 0.72,
+    "n_probes": 16,
+    "n_successful": 16,
+    "mean_absolute_shift": 0.079375,
+    "max_absolute_shift": 0.24
+  }
+}

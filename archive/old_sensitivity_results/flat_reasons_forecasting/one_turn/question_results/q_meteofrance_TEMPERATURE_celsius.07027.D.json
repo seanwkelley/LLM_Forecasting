@@ -1,0 +1,405 @@
+{
+  "question_id": "meteofrance_TEMPERATURE_celsius.07027.D",
+  "question_text": "What is the probability that the daily average temperature at the French weather station at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21?",
+  "source": "dbnomics",
+  "initial_probability": 0.58,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "The average high temperature at Caen \u2013 Carpiquet Airport in December is around 9\u00b0C, with a standard deviation of 2.5\u00b0C.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The average temperature difference between consecutive days in December is around 1.2\u00b0C.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "The French region of Normandy, where Caen is located, is expected to experience a mild winter in 2025, with above-average temperatures forecasted for December.",
+      "importance": "high"
+    },
+    {
+      "id": 4,
+      "text": "The temperature trend for the Northern Hemisphere in December 2025 is expected to be neutral, with no significant warming or cooling patterns.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Based on historical climate data and seasonal trends, I estimate that the probability of the daily average temperature at Caen \u2013 Carpiquet Airport being higher on 2025-12-28 than on 2025-12-21 is around 58%. This is primarily due to the expected mild winter in Normandy and the relatively small temperature differences between consecutive days in December. However, the neutral temperature trend for the Northern Hemisphere in December 2025 has a relatively low impact on my estimate.",
+  "probes": [
+    {
+      "probe_text": "What if the average high temperature at Caen \u2013 Carpiquet Airport in December is actually around 2\u00b0C, with a standard deviation of 1\u00b0C, due to a persistent high-pressure system dominating the region during this period, resulting in colder than usual temperatures?",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Atmospheric Science and Climate Change suggests that a significant warming trend in the North Atlantic has led to a shift in the jet stream, resulting in a 1.2\u00b0C increase in winter temperatures in the Normandy region since 2010, which would imply a revised average high temperature in December for Caen \u2013 Carpiquet Airport of approximately 10.2\u00b0C.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "Assume that a severe heatwave has been forecasted to affect Western Europe in the last week of December 2025, with temperatures expected to be 6-8\u00b0C above normal. In this scenario, would the forecaster still rely heavily on the average high temperature and standard deviation in December as a key reason for their probability estimate, or would they give more weight to other factors?",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that the December temperature profile in Northern France is characterized by a consistent warming trend due to the increasing influence of the North Atlantic Oscillation (NAO) on the regional climate. This warming trend is expected to continue into the mid-2020s, with a predicted increase in average high temperatures of approximately 0.5\u00b0C over the next 5 years. This development supports the forecaster's initial reasoning that the average high temperature at Caen \u2013 Carpiquet Airport in December is likely to be around 9\u00b0C.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "Caen \u2013 Carpiquet Airport is a military airbase that has been in operation since 1933, and it has a mix of military and civilian air traffic. The airport has undergone several renovations and expansions over the years to accommodate the growing demand for air travel in the region.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "However, recent studies suggest that a significant portion of the temperature differences in December are due to temperature oscillations caused by high-pressure systems, which are more frequent in the second half of the month. This might lead to a situation where the temperature difference between consecutive days is actually higher in the second half of the month, potentially making it more likely for the temperature on 2025-12-28 to be lower than on 2025-12-21.",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A study published in the Journal of Meteorological Research found that in December, the average temperature difference between consecutive days at French weather stations is actually around 0.4\u00b0C, with a standard deviation of 0.8\u00b0C. This suggests that temperature fluctuations in December are less predictable than previously thought.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "In the past five years, there has been a significant cold snap in the region on December 21, causing the average temperature over the following week to be 2\u00b0C lower than usual. Furthermore, forecast models are indicating an increased likelihood of a high-pressure system dominating the area from December 20-28, leading to a prolonged period of clear skies and calm conditions.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study by the European Centre for Medium-Range Weather Forecasts (ECMWF) analyzed temperature trends in Western Europe during the past three winters, and found that the average daily temperature increase between consecutive days in December was 1.15\u00b0C, with a 95% confidence interval between 1.05\u00b0C and 1.25\u00b0C.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "Caen \u2013 Carpiquet Airport has recently undergone a renovation of its terminal building, including the installation of new retail spaces and an expanded security checkpoint.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the cold air from the 2025 European winter's low-pressure system that is predicted to intensify over the North Sea in early December brings an early and prolonged cold snap to Normandy, leading to below-average temperatures for the entire month, including December 21 and 28?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "According to a recent statement by the French National Meteorological Service (M\u00e9t\u00e9o-France), a cold air mass from the Arctic is expected to bring a prolonged period of below-average temperatures to the Normandy region in mid-December 2025, potentially disrupting the region's mild winter forecast.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The French government announces a plan to increase energy production from renewable sources, which would lead to a significant increase in wind farms being built in the Normandy region, potentially altering local temperature patterns and making the winter outlook less predictable.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Climate Research, a reputable scientific publication, suggests that the North Atlantic Oscillation (NAO) index is expected to be in a positive phase during the winter of 2024-2025, which is typically associated with milder winters in Western Europe, including the region of Normandy.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A new pedestrian bridge is scheduled to be completed near the Caen \u2013 Carpiquet Airport by the end of 2025, connecting the city to a nearby park.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the Northern Hemisphere is actually experiencing a strong positive phase of the North Atlantic Oscillation (NAO) in December 2025, leading to a significant meridional flow and a pronounced warming trend across Western Europe, including the French region?",
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study by the University of Paris-Saclay, published in the Journal of Atmospheric Science, revealed a strong correlation between the North Atlantic Oscillation (NAO) and temperature trends in the Northern Hemisphere during December. According to the study, a negative NAO phase is expected for the 2025-2026 winter season, which could lead to a significant cooling trend in Western Europe, including France.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "The forecaster receives a report that a strong high-pressure system is expected to dominate the Atlantic Ocean and Western Europe during the second half of December 2025, potentially leading to a more pronounced temperature gradient between Western and Eastern Europe.",
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Climate Dynamics suggests that the North Atlantic Oscillation (NAO) index, a key driver of temperature variability in the Northern Hemisphere, is expected to remain in its neutral phase throughout December 2025, with a 70% probability of indices between -0.5 and +0.5. This prediction, based on ensemble forecast models, further supports the expectation of a neutral temperature trend for the Northern Hemisphere in December 2025.",
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "generated": true
+    },
+    {
+      "probe_text": "It's been reported that the French Ministry of Culture has announced plans to restore the 18th-century castle located near Caen, which will include a significant renovation of its gardens and public spaces.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "generated": true
+    }
+  ],
+  "condition": "one-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "What if the average high temperature at Caen \u2013 Carpiquet Airport in December is actually around 2\u00b0C, with a standard deviation of 1\u00b0C, due to a persistent high-pressure system dominating the region during this period, resulting in colder than usual temperatures?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "Given the new information that the average high temperature at Caen \u2013 Carpiquet Airport in December is actually around 2\u00b0C, with a standard deviation of 1\u00b0C, I have decreased my initial probability estimate. This is because the colder temperatures will make it less likely for the daily average temperature on 2025-12-28 to be higher than on 2025-12-21. With a standard deviation of 1\u00b0C, the temperature fluctuations will be smaller, making it more difficult for the temperature to increase over the 7-day period. I have updated my probability estimate to reflect this new information, and it now stands at 0.42, indicating a 42% chance of the daily average temperature on 2025-12-28 being higher than on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"Given the new information that the average high temperature at Caen \u2013 Carpiquet Airport in December is actually around 2\u00b0C, with a standard deviation of 1\u00b0C, I have decreased my initial probability estimate. This is because the colder temperatures will make it less likely for the daily average temperature on 2025-12-28 to be higher than on 2025-12-21. With a standard deviation of 1\u00b0C, the temperature fluctuations will be smaller, making it more difficult for the temperature to increase over the 7-day period. I have updated my probability estimate to reflect this new information, and it now stands at 0.42, indicating a 42% chance of the daily average temperature on 2025-12-28 being higher than on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Atmospheric Science and Climate Change suggests that a significant warming trend in the North Atlantic has led to a shift in the jet stream, resulting in a 1.2\u00b0C increase in winter temperatures in the Normandy region since 2010, which would imply a revised average high temperature in December for Caen \u2013 Carpiquet Airport of approximately 10.2\u00b0C.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.67,
+      "absolute_shift": 0.09000000000000008,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the warming trend in the Normandy region significantly changes my initial estimate. With a revised average high temperature in December for Caen \u2013 Carpiquet Airport of approximately 10.2\u00b0C, the likelihood of the daily average temperature being higher on 2025-12-28 than on 2025-12-21 increases. Given the additional 1.2\u00b0C of warming, I now estimate a 67% probability of this event occurring. This update is substantial, as the revised temperature increase is substantial and directly relevant to the forecast.",
+      "raw_response": "{\n  \"updated_probability\": 0.67,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information about the warming trend in the Normandy region significantly changes my initial estimate. With a revised average high temperature in December for Caen \u2013 Carpiquet Airport of approximately 10.2\u00b0C, the likelihood of the daily average temperature being higher on 2025-12-28 than on 2025-12-21 increases. Given the additional 1.2\u00b0C of warming, I now estimate a 67% probability of this event occurring. This update is substantial, as the revised temperature increase is substantial and directly relevant to the forecast.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "Assume that a severe heatwave has been forecasted to affect Western Europe in the last week of December 2025, with temperatures expected to be 6-8\u00b0C above normal. In this scenario, would the forecaster still rely heavily on the average high temperature and standard deviation in December as a key reason for their probability estimate, or would they give more weight to other factors?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.27,
+      "shift_direction": "increased",
+      "reasoning": "Given the severe heatwave forecasted to affect Western Europe in the last week of December 2025, I would expect the daily average temperature at Caen \u2013 Carpiquet Airport to be significantly higher than normal. As a result, I would give less weight to the average high temperature and standard deviation in December (reason #1), which was previously a key reason for my probability estimate. I would instead rely more heavily on the mild winter forecast for the French region of Normandy (reason #3) and the neutral temperature trend for the Northern Hemisphere in December 2025 (reason #4). The heatwave forecast makes it more likely that the temperature on 2025-12-28 will be higher than on 2025-12-21, so I am increasing my probability estimate accordingly.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"Given the severe heatwave forecasted to affect Western Europe in the last week of December 2025, I would expect the daily average temperature at Caen \u2013 Carpiquet Airport to be significantly higher than normal. As a result, I would give less weight to the average high temperature and standard deviation in December (reason #1), which was previously a key reason for my probability estimate. I would instead rely more heavily on the mild winter forecast for the French region of Normandy (reason #3) and the neutral temperature trend for the Northern Hemisphere in December 2025 (reason #4). The heatwave forecast makes it more likely that the temperature on 2025-12-28 will be higher than on 2025-12-21, so I am increasing my probability estimate accordingly.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Atmospheric Science found that the December temperature profile in Northern France is characterized by a consistent warming trend due to the increasing influence of the North Atlantic Oscillation (NAO) on the regional climate. This warming trend is expected to continue into the mid-2020s, with a predicted increase in average high temperatures of approximately 0.5\u00b0C over the next 5 years. This development supports the forecaster's initial reasoning that the average high temperature at Caen \u2013 Carpiquet Airport in December is likely to be around 9\u00b0C.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.27,
+      "shift_direction": "increased",
+      "reasoning": "The new information provides further evidence that the average high temperature at Caen \u2013 Carpiquet Airport in December will be around 9\u00b0C. This increases my confidence in this aspect of the initial estimate, leading to an updated probability of 0.85. The additional warming trend due to the North Atlantic Oscillation (NAO) is expected to continue into the mid-2020s, which in turn supports my initial reasoning. This new development has increased my estimate of the probability that the daily average temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information provides further evidence that the average high temperature at Caen \u2013 Carpiquet Airport in December will be around 9\u00b0C. This increases my confidence in this aspect of the initial estimate, leading to an updated probability of 0.85. The additional warming trend due to the North Atlantic Oscillation (NAO) is expected to continue into the mid-2020s, which in turn supports my initial reasoning. This new development has increased my estimate of the probability that the daily average temperature on 2025-12-28 will be higher than on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "Caen \u2013 Carpiquet Airport is a military airbase that has been in operation since 1933, and it has a mix of military and civilian air traffic. The airport has undergone several renovations and expansions over the years to accommodate the growing demand for air travel in the region.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the airport's renovations and expansions does not have a direct impact on the average temperature. However, it could imply that the airport's surroundings have changed over time, potentially affecting local microclimates. This could lead to a slight increase in the probability of warmer temperatures on 2025-12-28 compared to 2025-12-21, as the assumption of a stable temperature pattern may be less valid. Nevertheless, this effect is likely to be small, and the overall update is moderate.",
+      "raw_response": "{\n  \"updated_probability\": 0.62,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information about the airport's renovations and expansions does not have a direct impact on the average temperature. However, it could imply that the airport's surroundings have changed over time, potentially affecting local microclimates. This could lead to a slight increase in the probability of warmer temperatures on 2025-12-28 compared to 2025-12-21, as the assumption of a stable temperature pattern may be less valid. Nevertheless, this effect is likely to be small, and the overall update is moderate.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "However, recent studies suggest that a significant portion of the temperature differences in December are due to temperature oscillations caused by high-pressure systems, which are more frequent in the second half of the month. This might lead to a situation where the temperature difference between consecutive days is actually higher in the second half of the month, potentially making it more likely for the temperature on 2025-12-28 to be lower than on 2025-12-21.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.49,
+      "absolute_shift": 0.08999999999999997,
+      "shift_direction": "decreased",
+      "reasoning": "The new information on temperature oscillations caused by high-pressure systems in the second half of December suggests that the temperature difference between consecutive days might be higher in the second half of the month, making it more likely for the temperature on 2025-12-28 to be lower than on 2025-12-21. This challenges my initial assumption that the temperature difference would be around 1.2\u00b0C, and I now think it's less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.49,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information on temperature oscillations caused by high-pressure systems in the second half of December suggests that the temperature difference between consecutive days might be higher in the second half of the month, making it more likely for the temperature on 2025-12-28 to be lower than on 2025-12-21. This challenges my initial assumption that the temperature difference would be around 1.2\u00b0C, and I now think it's less likely that the temperature on 2025-12-28 will be higher than on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "A study published in the Journal of Meteorological Research found that in December, the average temperature difference between consecutive days at French weather stations is actually around 0.4\u00b0C, with a standard deviation of 0.8\u00b0C. This suggests that temperature fluctuations in December are less predictable than previously thought.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.46,
+      "absolute_shift": 0.11999999999999994,
+      "shift_direction": "decreased",
+      "reasoning": "The new information suggests that the temperature fluctuations in December are less predictable than previously thought, with a larger standard deviation of 0.8\u00b0C compared to the initial estimate of 0.6\u00b0C (0.8 * 0.75). This reduced predictability decreases the likelihood that the temperature on 2025-12-28 will be higher than on 2025-12-21, as it becomes more difficult to accurately forecast the temperature trend. As a result, I have decreased my initial estimate of 0.58 to 0.46.",
+      "raw_response": "{\n  \"updated_probability\": 0.46,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information suggests that the temperature fluctuations in December are less predictable than previously thought, with a larger standard deviation of 0.8\u00b0C compared to the initial estimate of 0.6\u00b0C (0.8 * 0.75). This reduced predictability decreases the likelihood that the temperature on 2025-12-28 will be higher than on 2025-12-21, as it becomes more difficult to accurately forecast the temperature trend. As a result, I have decreased my initial estimate of 0.58 to 0.46.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "In the past five years, there has been a significant cold snap in the region on December 21, causing the average temperature over the following week to be 2\u00b0C lower than usual. Furthermore, forecast models are indicating an increased likelihood of a high-pressure system dominating the area from December 20-28, leading to a prolonged period of clear skies and calm conditions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges my initial assumption (reason #2) that the average temperature difference between consecutive days in December is around 1.2\u00b0C. The mention of a significant cold snap in the past five years and the increased likelihood of a high-pressure system dominating the area from December 20-28 suggests that there may be a lower-than-average temperature increase between December 21 and 28. This reduces the likelihood that the daily average temperature at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21. I have updated my probability estimate to reflect this new information, decreasing it to 0.42.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges my initial assumption (reason #2) that the average temperature difference between consecutive days in December is around 1.2\u00b0C. The mention of a significant cold snap in the past five years and the increased likelihood of a high-pressure system dominating the area from December 20-28 suggests that there may be a lower-than-average temperature increase between December 21 and 28. This reduces the likelihood that the daily average temperature at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21. I have updated my probability estimate to reflect this new information, decreasing it to 0.42.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "A recent study by the European Centre for Medium-Range Weather Forecasts (ECMWF) analyzed temperature trends in Western Europe during the past three winters, and found that the average daily temperature increase between consecutive days in December was 1.15\u00b0C, with a 95% confidence interval between 1.05\u00b0C and 1.25\u00b0C.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.64,
+      "absolute_shift": 0.06000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the ECMWF study suggests that the average daily temperature increase between consecutive days in December is 1.15\u00b0C, which is higher than my initial estimate of 1.2\u00b0C. Given that this study's findings are based on a robust analysis of historical data, I'm inclined to update my probability estimate to 0.64, as this new information strengthens the case for a warmer December 2025 compared to December 21. The increased confidence in a positive temperature trend between consecutive days in December has led me to increase my probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.64,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the ECMWF study suggests that the average daily temperature increase between consecutive days in December is 1.15\u00b0C, which is higher than my initial estimate of 1.2\u00b0C. Given that this study's findings are based on a robust analysis of historical data, I'm inclined to update my probability estimate to 0.64, as this new information strengthens the case for a warmer December 2025 compared to December 21. The increased confidence in a positive temperature trend between consecutive days in December has led me to increase my probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "Caen \u2013 Carpiquet Airport has recently undergone a renovation of its terminal building, including the installation of new retail spaces and an expanded security checkpoint.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.07000000000000006,
+      "shift_direction": "increased",
+      "reasoning": "The renovation of the terminal building at Caen \u2013 Carpiquet Airport is unlikely to have a significant impact on the daily average temperature. However, the increased activity and human presence resulting from the renovation might slightly increase the temperature due to the urban heat island effect. Given the low relevance of reason #2 to the temperature forecast, I am increasing the probability by a small margin, from 0.58 to 0.65.",
+      "raw_response": "{\n  \"updated_probability\": 0.65,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The renovation of the terminal building at Caen \u2013 Carpiquet Airport is unlikely to have a significant impact on the daily average temperature. However, the increased activity and human presence resulting from the renovation might slightly increase the temperature due to the urban heat island effect. Given the low relevance of reason #2 to the temperature forecast, I am increasing the probability by a small margin, from 0.58 to 0.65.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if the cold air from the 2025 European winter's low-pressure system that is predicted to intensify over the North Sea in early December brings an early and prolonged cold snap to Normandy, leading to below-average temperatures for the entire month, including December 21 and 28?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.22999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the potential cold snap in Normandy has significantly altered my assessment. The prolonged cold snap would likely offset the mild winter forecast, leading to below-average temperatures throughout December. This would increase the likelihood of the temperature on 2025-12-28 being lower than on 2025-12-21. As a result, I have decreased my probability estimate from 0.58 to 0.35.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the potential cold snap in Normandy has significantly altered my assessment. The prolonged cold snap would likely offset the mild winter forecast, leading to below-average temperatures throughout December. This would increase the likelihood of the temperature on 2025-12-28 being lower than on 2025-12-21. As a result, I have decreased my probability estimate from 0.58 to 0.35.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "According to a recent statement by the French National Meteorological Service (M\u00e9t\u00e9o-France), a cold air mass from the Arctic is expected to bring a prolonged period of below-average temperatures to the Normandy region in mid-December 2025, potentially disrupting the region's mild winter forecast.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from M\u00e9t\u00e9o-France has significantly altered my initial assessment for a mild winter in Normandy. The expected cold air mass and prolonged period of below-average temperatures in mid-December 2025 likely means that temperatures in Caen will be colder than initially thought. As a result, I now believe it is less likely that the daily average temperature on 2025-12-28 will be higher than on 2025-12-21. The neutral temperature trend in the Northern Hemisphere and the high standard deviation of daily temperatures still provide some uncertainty, but the cold air mass is a more decisive factor in this case.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information from M\u00e9t\u00e9o-France has significantly altered my initial assessment for a mild winter in Normandy. The expected cold air mass and prolonged period of below-average temperatures in mid-December 2025 likely means that temperatures in Caen will be colder than initially thought. As a result, I now believe it is less likely that the daily average temperature on 2025-12-28 will be higher than on 2025-12-21. The neutral temperature trend in the Northern Hemisphere and the high standard deviation of daily temperatures still provide some uncertainty, but the cold air mass is a more decisive factor in this case.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "The French government announces a plan to increase energy production from renewable sources, which would lead to a significant increase in wind farms being built in the Normandy region, potentially altering local temperature patterns and making the winter outlook less predictable.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.12999999999999995,
+      "shift_direction": "decreased",
+      "reasoning": "The announcement of increased wind farms in the Normandy region introduces significant uncertainty to the temperature outlook. While the original forecast was based on above-average temperatures due to a mild winter, the potential for altered local temperature patterns and increased unpredictability due to wind farms makes me less confident in the original estimate. I have reduced the probability of warmer temperatures on 2025-12-28 compared to 2025-12-21, acknowledging the increased uncertainty and potential for a less predictable winter outlook.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The announcement of increased wind farms in the Normandy region introduces significant uncertainty to the temperature outlook. While the original forecast was based on above-average temperatures due to a mild winter, the potential for altered local temperature patterns and increased unpredictability due to wind farms makes me less confident in the original estimate. I have reduced the probability of warmer temperatures on 2025-12-28 compared to 2025-12-21, acknowledging the increased uncertainty and potential for a less predictable winter outlook.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "A recent study published in the Journal of Climate Research, a reputable scientific publication, suggests that the North Atlantic Oscillation (NAO) index is expected to be in a positive phase during the winter of 2024-2025, which is typically associated with milder winters in Western Europe, including the region of Normandy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.73,
+      "absolute_shift": 0.15000000000000002,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the positive NAO phase during the winter of 2024-2025, associated with milder winters in Western Europe, including Normandy, strengthens my previous reasoning for a mild winter in 2025. This increases my confidence in the likelihood of higher temperatures on 2025-12-28 compared to 2025-12-21. Given the high relevance of this new information and its direct impact on the temperature outlook, I update my probability estimate from 0.58 to 0.73.",
+      "raw_response": "{\n  \"updated_probability\": 0.73,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information about the positive NAO phase during the winter of 2024-2025, associated with milder winters in Western Europe, including Normandy, strengthens my previous reasoning for a mild winter in 2025. This increases my confidence in the likelihood of higher temperatures on 2025-12-28 compared to 2025-12-21. Given the high relevance of this new information and its direct impact on the temperature outlook, I update my probability estimate from 0.58 to 0.73.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "A new pedestrian bridge is scheduled to be completed near the Caen \u2013 Carpiquet Airport by the end of 2025, connecting the city to a nearby park.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.05999999999999994,
+      "shift_direction": "decreased",
+      "reasoning": "The new pedestrian bridge near Caen \u2013 Carpiquet Airport is unlikely to have a significant impact on the temperature in the area. While it may increase local activity and potentially contribute to a small increase in greenhouse gas emissions, its effect on the larger climate pattern is negligible. As a result, I decrease the probability of a higher temperature on 2025-12-28 compared to 2025-12-21 by 6%.",
+      "raw_response": "{\n  \"updated_probability\": 0.52,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new pedestrian bridge near Caen \u2013 Carpiquet Airport is unlikely to have a significant impact on the temperature in the area. While it may increase local activity and potentially contribute to a small increase in greenhouse gas emissions, its effect on the larger climate pattern is negligible. As a result, I decrease the probability of a higher temperature on 2025-12-28 compared to 2025-12-21 by 6%.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 4,
+      "probe_text": "What if the Northern Hemisphere is actually experiencing a strong positive phase of the North Atlantic Oscillation (NAO) in December 2025, leading to a significant meridional flow and a pronounced warming trend across Western Europe, including the French region?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.27,
+      "shift_direction": "increased",
+      "reasoning": "The strong positive phase of the North Atlantic Oscillation (NAO) in December 2025, leading to a significant meridional flow and a pronounced warming trend across Western Europe, including the French region, significantly increases the likelihood of higher temperatures on 2025-12-28 compared to 2025-12-21. This new information has a substantial impact on my initial estimate, as it directly influences the temperature trend in the region. Given the strong warming pattern, I now expect a higher probability of warmer temperatures on the later date, warranting a substantial increase in the probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The strong positive phase of the North Atlantic Oscillation (NAO) in December 2025, leading to a significant meridional flow and a pronounced warming trend across Western Europe, including the French region, significantly increases the likelihood of higher temperatures on 2025-12-28 compared to 2025-12-21. This new information has a substantial impact on my initial estimate, as it directly influences the temperature trend in the region. Given the strong warming pattern, I now expect a higher probability of warmer temperatures on the later date, warranting a substantial increase in the probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 4,
+      "probe_text": "A recent study by the University of Paris-Saclay, published in the Journal of Atmospheric Science, revealed a strong correlation between the North Atlantic Oscillation (NAO) and temperature trends in the Northern Hemisphere during December. According to the study, a negative NAO phase is expected for the 2025-2026 winter season, which could lead to a significant cooling trend in Western Europe, including France.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.15999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the strong correlation between the North Atlantic Oscillation (NAO) and temperature trends in the Northern Hemisphere during December, as well as the expected negative NAO phase for the 2025-2026 winter season, significantly changes my initial estimate. The possibility of a cooling trend in Western Europe, including France, makes it less likely that the daily average temperature at the French weather station at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21. Therefore, I have decreased my estimated probability to 0.42.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the strong correlation between the North Atlantic Oscillation (NAO) and temperature trends in the Northern Hemisphere during December, as well as the expected negative NAO phase for the 2025-2026 winter season, significantly changes my initial estimate. The possibility of a cooling trend in Western Europe, including France, makes it less likely that the daily average temperature at the French weather station at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21. Therefore, I have decreased my estimated probability to 0.42.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 4,
+      "probe_text": "The forecaster receives a report that a strong high-pressure system is expected to dominate the Atlantic Ocean and Western Europe during the second half of December 2025, potentially leading to a more pronounced temperature gradient between Western and Eastern Europe.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.07000000000000006,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests a more pronounced temperature gradient between Western and Eastern Europe, which could lead to warmer temperatures in Western Europe, including Normandy. Given the expected mild winter in Normandy and the strong high-pressure system dominating the Atlantic Ocean, I update my estimate to reflect a higher likelihood of warmer temperatures in December 2025. The increased temperature gradient and above-average temperatures forecasted for December in Normandy contribute to a modest increase in the probability of higher temperatures on 2025-12-28 compared to 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.65,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information suggests a more pronounced temperature gradient between Western and Eastern Europe, which could lead to warmer temperatures in Western Europe, including Normandy. Given the expected mild winter in Normandy and the strong high-pressure system dominating the Atlantic Ocean, I update my estimate to reflect a higher likelihood of warmer temperatures in December 2025. The increased temperature gradient and above-average temperatures forecasted for December in Normandy contribute to a modest increase in the probability of higher temperatures on 2025-12-28 compared to 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 4,
+      "probe_text": "A recent study published in the Journal of Climate Dynamics suggests that the North Atlantic Oscillation (NAO) index, a key driver of temperature variability in the Northern Hemisphere, is expected to remain in its neutral phase throughout December 2025, with a 70% probability of indices between -0.5 and +0.5. This prediction, based on ensemble forecast models, further supports the expectation of a neutral temperature trend for the Northern Hemisphere in December 2025.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.65,
+      "absolute_shift": 0.07000000000000006,
+      "shift_direction": "increased",
+      "reasoning": "The new information strengthens the expectation of a neutral temperature trend for the Northern Hemisphere in December 2025, which supports my initial assumption. Given the high confidence in the ensemble forecast models, I increase the probability that the daily average temperature at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21, as the neutral NAO phase reduces the likelihood of significant temperature variability. However, the other factors, such as the mild winter forecast for Normandy and the temperature difference between consecutive days, still play a role in my estimate, hence the moderate update.",
+      "raw_response": "{\n  \"updated_probability\": 0.65,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information strengthens the expectation of a neutral temperature trend for the Northern Hemisphere in December 2025, which supports my initial assumption. Given the high confidence in the ensemble forecast models, I increase the probability that the daily average temperature at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21, as the neutral NAO phase reduces the likelihood of significant temperature variability. However, the other factors, such as the mild winter forecast for Normandy and the temperature difference between consecutive days, still play a role in my estimate, hence the moderate update.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 4,
+      "probe_text": "It's been reported that the French Ministry of Culture has announced plans to restore the 18th-century castle located near Caen, which will include a significant renovation of its gardens and public spaces.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.62,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the restoration of the 18th-century castle is unrelated to weather patterns. Since the challenge to my assumption about a neutral temperature trend in the Northern Hemisphere is weak and lacks any connection to the local climate, I update my probability only slightly. I now consider it slightly more likely that the temperature trend will be favorable for warmer temperatures at Caen \u2013 Carpiquet Airport on 2025-12-28 compared to 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.62,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information about the restoration of the 18th-century castle is unrelated to weather patterns. Since the challenge to my assumption about a neutral temperature trend in the Northern Hemisphere is weak and lacks any connection to the local climate, I update my probability only slightly. I now consider it slightly more likely that the temperature trend will be favorable for warmer temperatures at Caen \u2013 Carpiquet Airport on 2025-12-28 compared to 2025-12-21.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "meteofrance_TEMPERATURE_celsius.07027.D",
+    "question_text": "What is the probability that the daily average temperature at the French weather station at Caen \u2013 Carpiquet Airport will be higher on 2025-12-28 than on 2025-12-21?",
+    "source": "dbnomics",
+    "condition": "one-turn",
+    "initial_probability": 0.58,
+    "n_probes": 20,
+    "n_successful": 20,
+    "mean_absolute_shift": 0.1335,
+    "max_absolute_shift": 0.27
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "question_id": "952de03f3e1b6b9679a372ef16b72ea4b7b42d841f504feb5819d06ffe1de921",
+  "question_text": "Will there be more than ten times as many 'Explosions/Remote violence' in Lebanon for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Explosions/Remote violence'\n2023-11-11,1\n2023-10-10,2\nto calculate one plus the 30-day average of 'Explosions/Remote violence' over the preceding 360 days, we\u2019d have: 1+(1+2)/12=1.25.\n\nIn this example, for the question to resolve positively, 13 (10 x 1.25) or more 'Explosions/Remote violence' would need to occur in the 30 days leading up to the resolution.",
+  "source": "acled",
+  "initial_probability": 0.32,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "Historical trend of 'Explosions/Remote violence' in Lebanon shows a seasonal increase around holidays and political events, which might lead to a higher number of incidents in the 30 days leading up to 2025-12-28.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "The 360-day average of 'Explosions/Remote violence' over the preceding period is relatively low, which might not be representative of the current situation.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "There have been no significant escalations or changes in the political landscape in Lebanon in the recent past, which could indicate a relatively stable situation.",
+      "importance": "low"
+    }
+  ],
+  "reasoning": "Based on the historical trend and seasonal fluctuations, I expect a moderate increase in 'Explosions/Remote violence' in the 30 days leading up to 2025-12-28. However, the relatively low 360-day average and stable political landscape temper my expectations, leading to a moderate probability of more than ten times as many incidents as the calculated average.",
+  "probes": [
+    {
+      "probe_text": "What if historical trend of 'Explosions/Remote violence' in Lebanon shows a seasonal decrease around holidays and political events, leading to a lower number of incidents in the 30 days leading up to 2025-12-28, due to increased security presence and vigilance in anticipation of such events?",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A report from the International Association for Conflict Prevention, a leading research organization, states that a comprehensive analysis of 20 years of data on 'Explosions/Remote violence' in Lebanon reveals a significant decline in incidents during the 30 days preceding major holidays and political events, with a 30% decrease in incidents compared to the rest of the year.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "Lebanon has recently passed a significant piece of legislation that reduces the likelihood of large-scale protests and political gatherings around holidays and events, potentially mitigating the historical seasonal increase in 'Explosions/Remote violence'.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A respected Lebanon-based think tank, the Lebanese Center for Policy Studies, has released a report highlighting an uptick in 'Explosions/Remote violence' in Lebanon in the months leading up to major holidays, including Christmas and New Year's Eve, in recent years. Specifically, the report notes that 75% of all 'Explosions/Remote violence' incidents in 2021 and 2023 occurred within a 30-day window preceding these holidays. This supports the forecaster's assumption that the upcoming holiday season will lead to an increase in 'Explosions/Remote violence' in Lebanon.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A new government has recently been formed in Lebanon, which might lead to increased stability and a reduction in 'Explosions/Remote violence' incidents.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the 360-day average of 'Explosions/Remote violence' over the preceding period is actually a reliable indicator of the current situation, and the recent low average is simply a statistical fluke due to the lack of recent data points for the specific time of year or after a recent significant event?",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the Middle East Institute notes that the 360-day average of 'Explosions/Remote violence' over the preceding period is actually a significant underestimation due to a previously unknown data gap between 2023-04-01 and 2023-08-01, during which time 17 'Explosions/Remote violence' events occurred, but were not accounted for in the original dataset. This omission has artificially suppressed the average, making it appear lower than it actually is.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "Lebanon's recent political developments have led to a significant influx of international diplomats and observers, resulting in a noticeable increase in the number of security personnel and military assets deployed in the region. If this increase in security presence were to remain in place for the next 30 days, it's possible that the 360-day average of 'Explosions/Remote violence' over the preceding period may be less representative of the current situation due to the changed circumstances.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report by the Middle East Institute notes that the 360-day average of 'Explosions/Remote violence' in Lebanon over the preceding period is 25% lower than the 5-year average for the same time of year, suggesting a prolonged period of relative calm in the country.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The Lebanese government has recently announced plans to renovate the Beirut International Airport, a project expected to be completed in 2026, which will increase the airport's capacity to handle international flights.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "However, what if a recent, under-the-radar agreement between Hezbollah and a key regional power secretly shifts the political balance in Lebanon, potentially leading to a surge in tensions and violence?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "BREAKING: Sources close to the Lebanese government reveal a long-sought deal between rival factions, granting Hezbollah significant concessions in the upcoming parliamentary elections, sparking fears of a ratcheting up of tensions in the run-up to the polls.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Reports emerge that a prominent Lebanese politician, known for their pro-Western stance, has announced their intention to run for the presidency and has pledged to take a tougher stance against Iran-backed militia groups, potentially leading to an escalation of tensions with neighboring Syria.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report from the International Crisis Group, a reputable think tank, highlights the ongoing efforts of Lebanese politicians to address long-standing issues, such as the economic crisis and power sector reform, through peaceful dialogue and compromise.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The government of Lebanon has established a new national tourism board, with a focus on promoting the country's cultural heritage and attracting visitors to its ancient cities, including Tyre and Byblos.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    }
+  ],
+  "condition": "one-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "What if historical trend of 'Explosions/Remote violence' in Lebanon shows a seasonal decrease around holidays and political events, leading to a lower number of incidents in the 30 days leading up to 2025-12-28, due to increased security presence and vigilance in anticipation of such events?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.23,
+      "absolute_shift": 0.09,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges my initial assumption that there would be a seasonal increase in 'Explosions/Remote violence' around holidays and political events. If the trend actually shows a decrease due to increased security presence and vigilance, it suggests that the number of incidents might be lower than initially expected. This reduces the likelihood of having more than ten times the 30-day average of 'Explosions/Remote violence' over the preceding 360 days.",
+      "raw_response": "{\n  \"updated_probability\": 0.23,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges my initial assumption that there would be a seasonal increase in 'Explosions/Remote violence' around holidays and political events. If the trend actually shows a decrease due to increased security presence and vigilance, it suggests that the number of incidents might be lower than initially expected. This reduces the likelihood of having more than ten times the 30-day average of 'Explosions/Remote violence' over the preceding 360 days.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A report from the International Association for Conflict Prevention, a leading research organization, states that a comprehensive analysis of 20 years of data on 'Explosions/Remote violence' in Lebanon reveals a significant decline in incidents during the 30 days preceding major holidays and political events, with a 30% decrease in incidents compared to the rest of the year.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.15,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the International Association for Conflict Prevention significantly challenges my initial assumption that there will be a seasonal increase in 'Explosions/Remote violence' in Lebanon around holidays and political events. The reported 30% decrease in incidents during this period is substantial and suggests that my initial estimate was overly optimistic. Given this new evidence, I have decreased my probability estimate to reflect the reduced likelihood of a significant increase in incidents.",
+      "raw_response": "{\n  \"updated_probability\": 0.17,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information from the International Association for Conflict Prevention significantly challenges my initial assumption that there will be a seasonal increase in 'Explosions/Remote violence' in Lebanon around holidays and political events. The reported 30% decrease in incidents during this period is substantial and suggests that my initial estimate was overly optimistic. Given this new evidence, I have decreased my probability estimate to reflect the reduced likelihood of a significant increase in incidents.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "Lebanon has recently passed a significant piece of legislation that reduces the likelihood of large-scale protests and political gatherings around holidays and events, potentially mitigating the historical seasonal increase in 'Explosions/Remote violence'.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.07,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the passed legislation in Lebanon significantly reduces the likelihood of large-scale protests and political gatherings around holidays and events, which was a key factor in my initial increase in probability. Given this new context, I reassess the historical trend of 'Explosions/Remote violence' in Lebanon as less relevant and its impact on the forecast as diminished. As a result, I decrease my initial probability from 0.32 to 0.25.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the passed legislation in Lebanon significantly reduces the likelihood of large-scale protests and political gatherings around holidays and events, which was a key factor in my initial increase in probability. Given this new context, I reassess the historical trend of 'Explosions/Remote violence' in Lebanon as less relevant and its impact on the forecast as diminished. As a result, I decrease my initial probability from 0.32 to 0.25.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A respected Lebanon-based think tank, the Lebanese Center for Policy Studies, has released a report highlighting an uptick in 'Explosions/Remote violence' in Lebanon in the months leading up to major holidays, including Christmas and New Year's Eve, in recent years. Specifically, the report notes that 75% of all 'Explosions/Remote violence' incidents in 2021 and 2023 occurred within a 30-day window preceding these holidays. This supports the forecaster's assumption that the upcoming holiday season will lead to an increase in 'Explosions/Remote violence' in Lebanon.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.54,
+      "absolute_shift": 0.22000000000000003,
+      "shift_direction": "increased",
+      "reasoning": "The new information from the Lebanese Center for Policy Studies' report provides strong evidence to support my initial assumption of a seasonal increase in 'Explosions/Remote violence' around holidays. Specifically, the report's finding that 75% of incidents in 2021 and 2023 occurred within a 30-day window preceding major holidays strongly suggests that a similar increase is likely to occur this year as well. As a result, I have increased my probability estimate from 0.32 to 0.54, as the new information has significantly bolstered my confidence in the likelihood of a higher number of 'Explosions/Remote violence' incidents in the 30 days leading up to 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.54,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information from the Lebanese Center for Policy Studies' report provides strong evidence to support my initial assumption of a seasonal increase in 'Explosions/Remote violence' around holidays. Specifically, the report's finding that 75% of incidents in 2021 and 2023 occurred within a 30-day window preceding major holidays strongly suggests that a similar increase is likely to occur this year as well. As a result, I have increased my probability estimate from 0.32 to 0.54, as the new information has significantly bolstered my confidence in the likelihood of a higher number of 'Explosions/Remote violence' incidents in the 30 days leading up to 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "A new government has recently been formed in Lebanon, which might lead to increased stability and a reduction in 'Explosions/Remote violence' incidents.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.18,
+      "absolute_shift": 0.14,
+      "shift_direction": "decreased",
+      "reasoning": "The new information that a new government has recently been formed in Lebanon, potentially leading to increased stability and reduced 'Explosions/Remote violence' incidents, challenges my initial assumption about the seasonal increase around holidays and political events. This makes it less likely that there will be a significant increase in incidents in the 30 days leading up to 2025-12-28. As a result, I have decreased my probability estimate from 0.32 to 0.18.",
+      "raw_response": "{\n  \"updated_probability\": 0.18,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information that a new government has recently been formed in Lebanon, potentially leading to increased stability and reduced 'Explosions/Remote violence' incidents, challenges my initial assumption about the seasonal increase around holidays and political events. This makes it less likely that there will be a significant increase in incidents in the 30 days leading up to 2025-12-28. As a result, I have decreased my probability estimate from 0.32 to 0.18.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "What if the 360-day average of 'Explosions/Remote violence' over the preceding period is actually a reliable indicator of the current situation, and the recent low average is simply a statistical fluke due to the lack of recent data points for the specific time of year or after a recent significant event?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.14,
+      "absolute_shift": 0.18,
+      "shift_direction": "decreased",
+      "reasoning": "Upon reevaluation, the challenge that the 360-day average of 'Explosions/Remote violence' is a reliable indicator of the current situation is compelling. If the recent low average is a statistical fluke, it would be more likely for the 30-day average to be higher than previously anticipated, making the threshold of 10 times as many incidents more achievable. As a result, I have decreased my probability estimate from 0.32 to 0.14, reflecting a lower likelihood of exceeding this threshold.",
+      "raw_response": "{\n  \"updated_probability\": 0.14,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"Upon reevaluation, the challenge that the 360-day average of 'Explosions/Remote violence' is a reliable indicator of the current situation is compelling. If the recent low average is a statistical fluke, it would be more likely for the 30-day average to be higher than previously anticipated, making the threshold of 10 times as many incidents more achievable. As a result, I have decreased my probability estimate from 0.32 to 0.14, reflecting a lower likelihood of exceeding this threshold.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "A recent report by the Middle East Institute notes that the 360-day average of 'Explosions/Remote violence' over the preceding period is actually a significant underestimation due to a previously unknown data gap between 2023-04-01 and 2023-08-01, during which time 17 'Explosions/Remote violence' events occurred, but were not accounted for in the original dataset. This omission has artificially suppressed the average, making it appear lower than it actually is.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.10999999999999999,
+      "shift_direction": "increased",
+      "reasoning": "The new information significantly increases the 360-day average of 'Explosions/Remote violence' over the preceding period, which was previously underestimated due to a data gap. This suggests that the baseline against which the upcoming 30-day period is compared is actually higher than initially thought. Given this new information, I now consider the historical trend (reason #1) and the corrected average (reason #2) to be more relevant, and the lack of recent escalations (reason #3) to be less relevant in assessing the likelihood of 'Explosions/Remote violence' in the upcoming period. As a result, I increase my probability estimate to 0.43.",
+      "raw_response": "{\n  \"updated_probability\": 0.43,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information significantly increases the 360-day average of 'Explosions/Remote violence' over the preceding period, which was previously underestimated due to a data gap. This suggests that the baseline against which the upcoming 30-day period is compared is actually higher than initially thought. Given this new information, I now consider the historical trend (reason #1) and the corrected average (reason #2) to be more relevant, and the lack of recent escalations (reason #3) to be less relevant in assessing the likelihood of 'Explosions/Remote violence' in the upcoming period. As a result, I increase my probability estimate to 0.43.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "Lebanon's recent political developments have led to a significant influx of international diplomats and observers, resulting in a noticeable increase in the number of security personnel and military assets deployed in the region. If this increase in security presence were to remain in place for the next 30 days, it's possible that the 360-day average of 'Explosions/Remote violence' over the preceding period may be less representative of the current situation due to the changed circumstances.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "This new information strengthens reason #2, suggesting that the 360-day average of 'Explosions/Remote violence' over the preceding period may be less representative of the current situation due to the increased security presence. This challenges my initial assumption that the 360-day average is a good indicator of the current situation. As a result, I now consider it less likely that there will be more than ten times as many 'Explosions/Remote violence' in the 30 days leading up to 2025-12-28 compared to one plus the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.12,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"This new information strengthens reason #2, suggesting that the 360-day average of 'Explosions/Remote violence' over the preceding period may be less representative of the current situation due to the increased security presence. This challenges my initial assumption that the 360-day average is a good indicator of the current situation. As a result, I now consider it less likely that there will be more than ten times as many 'Explosions/Remote violence' in the 30 days leading up to 2025-12-28 compared to one plus the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "A recent report by the Middle East Institute notes that the 360-day average of 'Explosions/Remote violence' in Lebanon over the preceding period is 25% lower than the 5-year average for the same time of year, suggesting a prolonged period of relative calm in the country.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.16,
+      "absolute_shift": 0.16,
+      "shift_direction": "decreased",
+      "reasoning": "The recent report by the Middle East Institute, suggesting a prolonged period of relative calm in Lebanon, has significantly impacted my confidence in the forecast. While the seasonal increase around holidays and political events still presents a risk, the prolonged calm reduces the likelihood of a substantial increase in 'Explosions/Remote violence'. This new information outweighs the influence of the recent low 360-day average, leading to a decreased forecast probability.",
+      "raw_response": "{\n  \"updated_probability\": 0.16,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The recent report by the Middle East Institute, suggesting a prolonged period of relative calm in Lebanon, has significantly impacted my confidence in the forecast. While the seasonal increase around holidays and political events still presents a risk, the prolonged calm reduces the likelihood of a substantial increase in 'Explosions/Remote violence'. This new information outweighs the influence of the recent low 360-day average, leading to a decreased forecast probability.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "The Lebanese government has recently announced plans to renovate the Beirut International Airport, a project expected to be completed in 2026, which will increase the airport's capacity to handle international flights.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.25,
+      "absolute_shift": 0.07,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the Beirut International Airport renovation project increases the likelihood of more international flights and increased economic activity in Lebanon. This could potentially lead to a higher number of 'Explosions/Remote violence' incidents, as a result of increased tensions or instability associated with the project. I'm decreasing my initial estimate of 0.32 to 0.25 because this new information adds some uncertainty and potential risk to the situation, but it's still not a strong enough reason to significantly increase my probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.25,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the Beirut International Airport renovation project increases the likelihood of more international flights and increased economic activity in Lebanon. This could potentially lead to a higher number of 'Explosions/Remote violence' incidents, as a result of increased tensions or instability associated with the project. I'm decreasing my initial estimate of 0.32 to 0.25 because this new information adds some uncertainty and potential risk to the situation, but it's still not a strong enough reason to significantly increase my probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "However, what if a recent, under-the-radar agreement between Hezbollah and a key regional power secretly shifts the political balance in Lebanon, potentially leading to a surge in tensions and violence?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.25999999999999995,
+      "shift_direction": "increased",
+      "reasoning": "The new information suggests a possible shift in the political landscape in Lebanon, which could lead to increased tensions and violence. Although this is still speculative and not explicitly confirmed, I believe it's a more plausible explanation for potential future events compared to the previous assumption of stability. This increased uncertainty and potential for escalation warrants an increase in my probability estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.58,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information suggests a possible shift in the political landscape in Lebanon, which could lead to increased tensions and violence. Although this is still speculative and not explicitly confirmed, I believe it's a more plausible explanation for potential future events compared to the previous assumption of stability. This increased uncertainty and potential for escalation warrants an increase in my probability estimate.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "BREAKING: Sources close to the Lebanese government reveal a long-sought deal between rival factions, granting Hezbollah significant concessions in the upcoming parliamentary elections, sparking fears of a ratcheting up of tensions in the run-up to the polls.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.56,
+      "absolute_shift": 0.24000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new information challenges my initial assumption of a relatively stable situation in Lebanon, as it reveals a significant development that could escalate tensions. This increases the likelihood of more 'Explosions/Remote violence' in the run-up to the parliamentary elections. I have increased the probability from 0.32 to 0.56, reflecting a moderate increase in the likelihood of the event occurring.",
+      "raw_response": "{\n  \"updated_probability\": 0.56,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information challenges my initial assumption of a relatively stable situation in Lebanon, as it reveals a significant development that could escalate tensions. This increases the likelihood of more 'Explosions/Remote violence' in the run-up to the parliamentary elections. I have increased the probability from 0.32 to 0.56, reflecting a moderate increase in the likelihood of the event occurring.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "Reports emerge that a prominent Lebanese politician, known for their pro-Western stance, has announced their intention to run for the presidency and has pledged to take a tougher stance against Iran-backed militia groups, potentially leading to an escalation of tensions with neighboring Syria.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.56,
+      "absolute_shift": 0.24000000000000005,
+      "shift_direction": "increased",
+      "reasoning": "The new information about the pro-Western politician's intention to run for the presidency and their pledge to take a tougher stance against Iran-backed militia groups significantly increases the likelihood of an escalation of tensions with neighboring Syria. This development is a strong challenge to my initial assumption of a relatively stable situation (reason #3). I now believe that the increased likelihood of tensions and potential violence, combined with the seasonal increase in 'Explosions/Remote violence' around holidays and political events (reason #1), makes a higher number of incidents in the 30 days leading up to 2025-12-28 more plausible. The relatively low 360-day average of 'Explosions/Remote violence' (reason #2) remains a consideration, but the new information has a more significant impact on my estimate.",
+      "raw_response": "{\n  \"updated_probability\": 0.56,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information about the pro-Western politician's intention to run for the presidency and their pledge to take a tougher stance against Iran-backed militia groups significantly increases the likelihood of an escalation of tensions with neighboring Syria. This development is a strong challenge to my initial assumption of a relatively stable situation (reason #3). I now believe that the increased likelihood of tensions and potential violence, combined with the seasonal increase in 'Explosions/Remote violence' around holidays and political events (reason #1), makes a higher number of incidents in the 30 days leading up to 2025-12-28 more plausible. The relatively low 360-day average of 'Explosions/Remote violence' (reason #2) remains a consideration, but the new information has a more significant impact on my estimate.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "A recent report from the International Crisis Group, a reputable think tank, highlights the ongoing efforts of Lebanese politicians to address long-standing issues, such as the economic crisis and power sector reform, through peaceful dialogue and compromise.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.12,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about Lebanese politicians' efforts to address long-standing issues through peaceful dialogue and compromise has significantly reduced my confidence in the forecast. While the historical trend of seasonal increases around holidays and political events remains a concern, the recent report from the International Crisis Group suggests a more stable situation, which I believe is likely to result in fewer 'Explosions/Remote violence' incidents in the 30 days leading up to 2025-12-28. As a result, I have decreased my probability estimate from 0.32 to 0.12.",
+      "raw_response": "{\n  \"updated_probability\": 0.12,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about Lebanese politicians' efforts to address long-standing issues through peaceful dialogue and compromise has significantly reduced my confidence in the forecast. While the historical trend of seasonal increases around holidays and political events remains a concern, the recent report from the International Crisis Group suggests a more stable situation, which I believe is likely to result in fewer 'Explosions/Remote violence' incidents in the 30 days leading up to 2025-12-28. As a result, I have decreased my probability estimate from 0.32 to 0.12.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "The government of Lebanon has established a new national tourism board, with a focus on promoting the country's cultural heritage and attracting visitors to its ancient cities, including Tyre and Byblos.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.17,
+      "absolute_shift": 0.15,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the government establishing a national tourism board and promoting cultural heritage suggests a shift towards more stability and economic development in Lebanon. This development might lead to a decrease in the likelihood of 'Explosions/Remote violence' in the 30 days leading up to 2025-12-28. The reduced uncertainty and potential for increased economic growth could contribute to a more peaceful environment, thereby decreasing the probability of the event.",
+      "raw_response": "{\n  \"updated_probability\": 0.17,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the government establishing a national tourism board and promoting cultural heritage suggests a shift towards more stability and economic development in Lebanon. This development might lead to a decrease in the likelihood of 'Explosions/Remote violence' in the 30 days leading up to 2025-12-28. The reduced uncertainty and potential for increased economic growth could contribute to a more peaceful environment, thereby decreasing the probability of the event.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "952de03f3e1b6b9679a372ef16b72ea4b7b42d841f504feb5819d06ffe1de921",
+    "question_text": "Will there be more than ten times as many 'Explosions/Remote violence' in Lebanon for the 30 days before 2025-12-28 compared to one plus the 30-day average of 'Explosions/Remote violence' over the 360 days preceding 2025-12-21?\n\ne.g. If the forecast due date is 2024-01-01 and we have the following data:\nDate,'Explosions/Remote violence'\n2023-11-11,1\n2023-10-10,2\nto calculate one plus the 30-day average of 'Explosions/Remote violence' over the preceding 360 days, we\u2019d have: 1+(1+2)/12=1.25.\n\nIn this example, for the question to resolve positively, 13 (10 x 1.25) or more 'Explosions/Remote violence' would need to occur in the 30 days leading up to the resolution.",
+    "source": "acled",
+    "condition": "one-turn",
+    "initial_probability": 0.32,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.16533333333333333,
+    "max_absolute_shift": 0.25999999999999995
+  }
+}

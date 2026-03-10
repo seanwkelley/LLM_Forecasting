@@ -1,8 +1,8 @@
 """
 Single-Agent Causal Discovery Results — Network Plots.
 
-Visualizes the single-agent estimated causal graphs for both domains,
-color-coding edges by correctness (TP, FP, FN) against ground truth.
+Generates one network plot per domain/model combination, showing the
+proposed causal graph color-coded against ground truth (TP, FP, FN).
 
 Usage:
     python causal_discovery/plot_single_agent.py
@@ -40,8 +40,32 @@ EDGE_COLORS = {
     "false_negative":  "#3498db",  # blue — missed edge (dashed)
 }
 
+# Model display names and directory suffixes
+MODELS = [
+    ("Llama 8B",  "_llama8b"),
+    ("Llama 70B", "_llama70b"),
+    ("Qwen 397B", "_qwen397b"),
+]
 
-def _load_per_edge(path: str | Path) -> list[dict]:
+DOMAINS = [
+    {
+        "name": "market",
+        "variables": MARKET_VARIABLES,
+        "categories": MARKET_CATEGORIES,
+        "pos": MARKET_POS,
+        "gt_fn": get_market_ground_truth,
+    },
+    {
+        "name": "conflict",
+        "variables": CONFLICT_VARIABLES,
+        "categories": CONFLICT_CATEGORIES,
+        "pos": CONFLICT_POS,
+        "gt_fn": get_conflict_ground_truth,
+    },
+]
+
+
+def _load_per_edge(path: str | Path) -> tuple[list[dict], dict]:
     """Load per-edge results from a pilot_results.json file."""
     with open(path) as f:
         data = json.load(f)
@@ -72,6 +96,7 @@ def plot_estimated_graph(
     pos: dict[str, tuple[float, float]],
     scores: dict,
     domain: str,
+    model_name: str,
     ax: plt.Axes | None = None,
 ):
     """Plot estimated causal graph with edges colored by correctness."""
@@ -160,11 +185,11 @@ def plot_estimated_graph(
     ax.legend(handles=legend_patches, loc="lower left", fontsize=9,
               framealpha=0.9, edgecolor="#cccccc")
 
-    title = domain.title()
+    shd = scores.get("shd", scores.get("hamming_distance", "?"))
     ax.set_title(
-        f"{title} Engine — Single-Agent Estimated Graph\n"
+        f"{domain.title()} — {model_name}\n"
         f"P={scores['precision']:.2f}  R={scores['recall']:.2f}  "
-        f"F1={scores['f1']:.2f}  SHD={scores.get('shd', scores.get('hamming_distance', '?'))}",
+        f"F1={scores['f1']:.2f}  SHD={shd}",
         fontsize=13, fontweight="bold", pad=15,
     )
     ax.axis("off")
@@ -177,6 +202,7 @@ def plot_node_breakdown(
     variables: list[str],
     scores: dict,
     domain: str,
+    model_name: str,
     ax: plt.Axes | None = None,
 ):
     """Horizontal bar chart showing per-node TP, FP, FN edge counts."""
@@ -211,7 +237,7 @@ def plot_node_breakdown(
     ax.set_yticklabels([_short_label(v) for v in sorted_vars], fontsize=9)
     ax.set_xlabel("Edge Count (as source or target)", fontsize=10)
     ax.set_title(
-        f"{domain.title()} — Per-Node Edge Classification",
+        f"{domain.title()} — {model_name} — Per-Node Edge Classification",
         fontsize=12, fontweight="bold",
     )
     ax.legend(loc="lower right", fontsize=9)
@@ -222,61 +248,92 @@ def plot_node_breakdown(
 
 
 def main():
-    out_dir = Path("outputs/causal_discovery/multi_agent")
-    plot_dir = out_dir / "plots"
+    base_dir = Path("outputs/causal_discovery/single_agent")
+    plot_dir = base_dir / "plots"
     plot_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load results
-    market_edges, market_scores = _load_per_edge(
-        out_dir / "market_single" / "pilot_results.json"
-    )
-    conflict_edges, conflict_scores = _load_per_edge(
-        out_dir / "conflict_single" / "pilot_results.json"
-    )
+    n_models = len(MODELS)
+    n_domains = len(DOMAINS)
 
-    # --- Combined network plot (side by side) ---
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(28, 11))
+    # --- Combined grid: models (rows) x domains (cols) ---
+    fig, axes = plt.subplots(
+        n_models, n_domains, figsize=(14 * n_domains, 11 * n_models),
+    )
+    if n_models == 1:
+        axes = [axes]
 
-    plot_estimated_graph(
-        market_edges, MARKET_VARIABLES, MARKET_CATEGORIES,
-        MARKET_POS, market_scores, "market", ax=ax1,
-    )
-    plot_estimated_graph(
-        conflict_edges, CONFLICT_VARIABLES, CONFLICT_CATEGORIES,
-        CONFLICT_POS, conflict_scores, "conflict", ax=ax2,
-    )
+    found_any = False
+    for row, (model_label, model_suffix) in enumerate(MODELS):
+        for col, dom in enumerate(DOMAINS):
+            ax = axes[row][col]
+            domain_name = dom["name"]
+            result_dir = base_dir / f"{domain_name}_single{model_suffix}"
+            result_file = result_dir / "pilot_results.json"
+
+            if not result_file.exists():
+                ax.text(0.5, 0.5, f"No data\n{result_file.name}",
+                        ha="center", va="center", fontsize=14, color="#999")
+                ax.set_title(f"{domain_name.title()} — {model_label}",
+                             fontsize=13, fontweight="bold")
+                ax.axis("off")
+                continue
+
+            per_edge, scores = _load_per_edge(result_file)
+            plot_estimated_graph(
+                per_edge, dom["variables"], dom["categories"],
+                dom["pos"], scores, domain_name, model_label, ax=ax,
+            )
+            found_any = True
+
+    if not found_any:
+        print("No result files found. Nothing to plot.")
+        plt.close(fig)
+        return
 
     fig.suptitle(
         "Single-Agent Causal Discovery — Estimated vs Ground Truth",
-        fontsize=16, fontweight="bold", y=0.98,
+        fontsize=20, fontweight="bold", y=0.995,
     )
-    fig.tight_layout(rect=[0, 0, 1, 0.95])
-    fig.savefig(
-        plot_dir / "single_agent_networks.png",
-        dpi=200, bbox_inches="tight", facecolor="white", edgecolor="none",
-    )
-    print(f"Saved: {plot_dir / 'single_agent_networks.png'}")
+    fig.tight_layout(rect=[0, 0, 1, 0.98])
+    out_path = plot_dir / "single_agent_networks.png"
+    fig.savefig(out_path, dpi=200, bbox_inches="tight",
+                facecolor="white", edgecolor="none")
+    print(f"Saved: {out_path}")
 
-    # --- Per-node breakdown (side by side) ---
-    fig2, (ax3, ax4) = plt.subplots(1, 2, figsize=(20, 8))
+    # --- Per-node breakdown grid ---
+    fig2, axes2 = plt.subplots(
+        n_models, n_domains, figsize=(10 * n_domains, 8 * n_models),
+    )
+    if n_models == 1:
+        axes2 = [axes2]
 
-    plot_node_breakdown(
-        market_edges, MARKET_VARIABLES, market_scores, "market", ax=ax3,
-    )
-    plot_node_breakdown(
-        conflict_edges, CONFLICT_VARIABLES, conflict_scores, "conflict", ax=ax4,
-    )
+    for row, (model_label, model_suffix) in enumerate(MODELS):
+        for col, dom in enumerate(DOMAINS):
+            ax = axes2[row][col]
+            domain_name = dom["name"]
+            result_file = base_dir / f"{domain_name}_single{model_suffix}" / "pilot_results.json"
+
+            if not result_file.exists():
+                ax.text(0.5, 0.5, "No data", ha="center", va="center",
+                        fontsize=14, color="#999")
+                ax.axis("off")
+                continue
+
+            per_edge, scores = _load_per_edge(result_file)
+            plot_node_breakdown(
+                per_edge, dom["variables"], scores,
+                domain_name, model_label, ax=ax,
+            )
 
     fig2.suptitle(
         "Single-Agent — Per-Node Edge Classification",
-        fontsize=14, fontweight="bold", y=1.0,
+        fontsize=16, fontweight="bold", y=1.0,
     )
     fig2.tight_layout()
-    fig2.savefig(
-        plot_dir / "single_agent_node_breakdown.png",
-        dpi=200, bbox_inches="tight", facecolor="white", edgecolor="none",
-    )
-    print(f"Saved: {plot_dir / 'single_agent_node_breakdown.png'}")
+    out_path2 = plot_dir / "single_agent_node_breakdown.png"
+    fig2.savefig(out_path2, dpi=200, bbox_inches="tight",
+                 facecolor="white", edgecolor="none")
+    print(f"Saved: {out_path2}")
 
     plt.close("all")
 

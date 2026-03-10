@@ -1,0 +1,310 @@
+{
+  "question_id": "SP500",
+  "question_text": "Will the S&P 500, which represents the daily index value at market close have increased by 2025-12-28 as compared to its value on 2025-12-21?",
+  "source": "fred",
+  "initial_probability": 0.62,
+  "reasons": [
+    {
+      "id": 1,
+      "text": "The S&P 500 has historically trended upwards in the long term, with an average annual return of around 7-8%.",
+      "importance": "high"
+    },
+    {
+      "id": 2,
+      "text": "Market conditions in the next 7 days may be volatile due to upcoming economic data releases and geopolitical events.",
+      "importance": "medium"
+    },
+    {
+      "id": 3,
+      "text": "The S&P 500 is heavily influenced by the overall US economy, which is expected to experience moderate growth in the next few years.",
+      "importance": "high"
+    }
+  ],
+  "reasoning": "Based on historical trends and the overall economic outlook, I estimate a moderate likelihood of the S&P 500 increasing over the next week. However, considering the potential for short-term market volatility, I have not assigned a very high probability. My forecast reflects a balance between long-term growth expectations and near-term uncertainty.",
+  "probes": [
+    {
+      "probe_text": "Historically, the S&P 500 has occasionally experienced long-term declining trends, such as the 20-year period from 1966 to 1986, where the index value decreased by over 50%. This could be due to prolonged economic downturns, overvaluation, or structural changes in the market that reduce long-term growth rates.",
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent report released by the non-partisan Congressional Budget Office (CBO) has suggested that the long-term average annual return on the S&P 500 may be significantly lower than previously estimated, citing a 30-year study that found the actual average annual return to be around 2-3%.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A prominent economic research institution releases a report indicating that a potential global economic downturn, triggered by a synchronized interest rate hike by major central banks, could result in a sharp decline in long-term investment returns, including those of the S&P 500.",
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "A recent study published in the Journal of Financial Economics found that, over the past 50 years, the S&P 500 has experienced a positive annual return in 85% of all December months, with an average return of 2.5% during this period. This trend suggests that the index may continue to exhibit a strong year-end rally, which would support the forecast's estimate of a 7-8% average annual return.",
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "There have been recent announcements regarding potential changes to the index methodology of the S&P 500, which will affect how some international stocks are included in the calculation. Specifically, the changes will impact how companies are weighted in the index. This change is set to be implemented by the end of 2025 and will apply to all companies listed in the index moving forward. The S&P 500 index is going to keep its existing index constituents and weighting methodology till the implementation date.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "generated": true
+    },
+    {
+      "probe_text": "The upcoming economic data releases and geopolitical events will be widely anticipated by investors, leading to a significant reduction in market volatility as the uncertainty surrounding these events is largely priced into the market.",
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The Securities and Exchange Commission (SEC) announced today that, in response to recent market volatility, they will be releasing a revised schedule for key economic data releases, pushing back the publication dates for the December 2025 GDP growth rate and the January 2026 inflation rate by at least 2 weeks. This change is expected to reduce the uncertainty surrounding market conditions in the next 7 days, as investors will have more time to digest the data before making investment decisions.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "The US Federal Reserve announces a surprise pause in interest rate hikes, citing a stronger than expected economic recovery and low inflation rates. This leads to a significant decrease in market volatility, as investors become more confident in the stability of the economy. Furthermore, the upcoming economic data releases are unexpectedly strong, reducing the potential for negative shocks to the market.",
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "A prominent economic research firm, Moody's Analytics, has issued a report forecasting a 25% chance of a recession within the next 12 months, citing the upcoming economic data releases as a key factor in their analysis. This heightened risk of recession is likely to exacerbate market volatility in the coming weeks, making it even more probable that the S&P 500 will be affected by the volatile market conditions mentioned.",
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "It's worth noting that the S&P 500 index is rebalanced quarterly, and the next rebalancing is scheduled to occur on 2026-03-19, which could potentially affect the index's composition and therefore its value.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "generated": true
+    },
+    {
+      "probe_text": "What if the US economy is actually due for a recession in the next few years, triggered by a sharp increase in interest rates and a decline in consumer spending, leading to a significant decline in the S&P 500?",
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "Yesterday, the US Federal Reserve announced plans to introduce a new regulatory framework aimed at curbing the growth of the US gig economy, which is expected to disproportionately affect the country's largest tech companies, significant contributors to the S&P 500. The new regulations, set to take effect in 2026, have been met with criticism from industry experts, who warn that they could lead to widespread job losses and a significant contraction in the US tech sector. As a result, Morgan Stanley's Chief Economist has downgraded their forecast for US GDP growth in 2026 to just 1.2%, citing the potential impact of the new regulations on the US economy.",
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A sudden and unexpected global economic downturn is announced, triggered by a major trade war escalation between the US and a key economic partner, leading to a sharp decline in international trade and a significant increase in uncertainty surrounding global economic growth.",
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "The Federal Reserve, in its most recent Economic Projections report, has revised upward its estimate of US GDP growth for the 2024-2027 period, citing strong consumer spending and an improving labor market. This updated forecast aligns with the forecaster's expectation of moderate US economic growth, further supporting the assumption that the S&P 500 will reflect this growth.",
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "generated": true
+    },
+    {
+      "probe_text": "A new species of flowering plant, identified as 'Ipomoea imperialis', has been discovered in the tropical rainforests of Central America. This discovery has sparked interest among botanists and conservationists, highlighting the ongoing importance of preserving these ecosystems. However, it is expected that the impact of this discovery will be largely limited to the scientific community and will not have a direct effect on the overall US economy.",
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "generated": true
+    }
+  ],
+  "condition": "one-turn",
+  "probe_results": [
+    {
+      "probe_type": "negation",
+      "target_reason_id": 1,
+      "probe_text": "Historically, the S&P 500 has occasionally experienced long-term declining trends, such as the 20-year period from 1966 to 1986, where the index value decreased by over 50%. This could be due to prolonged economic downturns, overvaluation, or structural changes in the market that reduce long-term growth rates.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.49,
+      "absolute_shift": 0.13,
+      "shift_direction": "decreased",
+      "reasoning": "Considering the historical example of a 20-year declining trend in the S&P 500, I have decreased my estimate of the probability of the S&P 500 increasing by 2025-12-28 as compared to its value on 2025-12-21. While the historically high long-term trend is still a dominant factor, this exception highlights that long-term growth is not guaranteed and that periods of decline can occur. This new information has reduced my confidence in the S&P 500's long-term growth rate, leading to a decrease in the estimated probability of it increasing over the next week.",
+      "raw_response": "{\n  \"updated_probability\": 0.49,\n   \"shift_direction\": \"decreased\",\n   \"reasoning\": \"Considering the historical example of a 20-year declining trend in the S&P 500, I have decreased my estimate of the probability of the S&P 500 increasing by 2025-12-28 as compared to its value on 2025-12-21. While the historically high long-term trend is still a dominant factor, this exception highlights that long-term growth is not guaranteed and that periods of decline can occur. This new information has reduced my confidence in the S&P 500's long-term growth rate, leading to a decrease in the estimated probability of it increasing over the next week.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 1,
+      "probe_text": "A recent report released by the non-partisan Congressional Budget Office (CBO) has suggested that the long-term average annual return on the S&P 500 may be significantly lower than previously estimated, citing a 30-year study that found the actual average annual return to be around 2-3%.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the Congressional Budget Office (CBO) has significantly challenged my initial assumption about the S&P 500's long-term average annual return. The estimated return of 2-3% is much lower than my initial assumption of 7-8%, which was a key driver of my initial probability estimate of 0.62. Given the substantial reduction in the expected return, I have decreased my probability estimate to 0.45, reflecting a more cautious outlook for the S&P 500's growth in the long term.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information from the Congressional Budget Office (CBO) has significantly challenged my initial assumption about the S&P 500's long-term average annual return. The estimated return of 2-3% is much lower than my initial assumption of 7-8%, which was a key driver of my initial probability estimate of 0.62. Given the substantial reduction in the expected return, I have decreased my probability estimate to 0.45, reflecting a more cautious outlook for the S&P 500's growth in the long term.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 1,
+      "probe_text": "A prominent economic research institution releases a report indicating that a potential global economic downturn, triggered by a synchronized interest rate hike by major central banks, could result in a sharp decline in long-term investment returns, including those of the S&P 500.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.42,
+      "absolute_shift": 0.2,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from the economic research institution significantly challenges my initial assumption of a 7-8% annual return for the S&P 500. The potential for a global economic downturn and a synchronized interest rate hike by major central banks could lead to a sharp decline in long-term investment returns, reducing the likelihood of the S&P 500 increasing by 2025-12-28. As a result, I have decreased my probability estimate from 0.62 to 0.42, recognizing the increased uncertainty and potential risk associated with this scenario.",
+      "raw_response": "{\n  \"updated_probability\": 0.42,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information from the economic research institution significantly challenges my initial assumption of a 7-8% annual return for the S&P 500. The potential for a global economic downturn and a synchronized interest rate hike by major central banks could lead to a sharp decline in long-term investment returns, reducing the likelihood of the S&P 500 increasing by 2025-12-28. As a result, I have decreased my probability estimate from 0.62 to 0.42, recognizing the increased uncertainty and potential risk associated with this scenario.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 1,
+      "probe_text": "A recent study published in the Journal of Financial Economics found that, over the past 50 years, the S&P 500 has experienced a positive annual return in 85% of all December months, with an average return of 2.5% during this period. This trend suggests that the index may continue to exhibit a strong year-end rally, which would support the forecast's estimate of a 7-8% average annual return.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The new information regarding the S&P 500's historical trend in December months has strengthened my confidence in the forecast's estimate of a long-term upward trend. The 85% success rate in December months, coupled with an average return of 2.5%, suggests that the index may indeed exhibit a strong year-end rally. This supports the forecast's initial reasoning, and I have therefore increased the probability estimate to account for this new information.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The new information regarding the S&P 500's historical trend in December months has strengthened my confidence in the forecast's estimate of a long-term upward trend. The 85% success rate in December months, coupled with an average return of 2.5%, suggests that the index may indeed exhibit a strong year-end rally. This supports the forecast's initial reasoning, and I have therefore increased the probability estimate to account for this new information.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 1,
+      "probe_text": "There have been recent announcements regarding potential changes to the index methodology of the S&P 500, which will affect how some international stocks are included in the calculation. Specifically, the changes will impact how companies are weighted in the index. This change is set to be implemented by the end of 2025 and will apply to all companies listed in the index moving forward. The S&P 500 index is going to keep its existing index constituents and weighting methodology till the implementation date.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.45,
+      "absolute_shift": 0.16999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The potential changes to the index methodology of the S&P 500 introduce uncertainty about future returns. If the changes lead to a more representative index, it could potentially lead to lower returns, as the index may become more aligned with the overall global market. However, the impact of these changes is difficult to quantify, and the timeline for implementation suggests that it will not affect the index value between 2025-12-21 and 2025-12-28. Nevertheless, this new information reduces my confidence in the long-term upward trend of the S&P 500, leading to a decreased probability of an increase by 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.45,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The potential changes to the index methodology of the S&P 500 introduce uncertainty about future returns. If the changes lead to a more representative index, it could potentially lead to lower returns, as the index may become more aligned with the overall global market. However, the impact of these changes is difficult to quantify, and the timeline for implementation suggests that it will not affect the index value between 2025-12-21 and 2025-12-28. Nevertheless, this new information reduces my confidence in the long-term upward trend of the S&P 500, leading to a decreased probability of an increase by 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 2,
+      "probe_text": "The upcoming economic data releases and geopolitical events will be widely anticipated by investors, leading to a significant reduction in market volatility as the uncertainty surrounding these events is largely priced into the market.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "Given the new information that the upcoming economic data releases and geopolitical events are largely priced into the market, I expect the market volatility to be significantly reduced. This, in turn, should lead to a more stable and predictable market environment. As a result, I increase the probability of the S&P 500 increasing between 2025-12-21 and 2025-12-28, given the long-term historical trend and the expected moderate growth of the US economy.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"Given the new information that the upcoming economic data releases and geopolitical events are largely priced into the market, I expect the market volatility to be significantly reduced. This, in turn, should lead to a more stable and predictable market environment. As a result, I increase the probability of the S&P 500 increasing between 2025-12-21 and 2025-12-28, given the long-term historical trend and the expected moderate growth of the US economy.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 2,
+      "probe_text": "The Securities and Exchange Commission (SEC) announced today that, in response to recent market volatility, they will be releasing a revised schedule for key economic data releases, pushing back the publication dates for the December 2025 GDP growth rate and the January 2026 inflation rate by at least 2 weeks. This change is expected to reduce the uncertainty surrounding market conditions in the next 7 days, as investors will have more time to digest the data before making investment decisions.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "This new information reduces the uncertainty surrounding market conditions in the next 7 days, which was previously a concern that led me to reduce my initial estimate. With the publication dates for key economic data releases pushed back, investors will have more time to digest the data, which should lead to more stable market conditions. As a result, I increase my probability estimate, as the positive trend of the S&P 500 is now less likely to be disrupted by short-term volatility. The S&P 500's historical trend and the overall US economy's moderate growth prospects remain unchanged as factors supporting my forecast.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"This new information reduces the uncertainty surrounding market conditions in the next 7 days, which was previously a concern that led me to reduce my initial estimate. With the publication dates for key economic data releases pushed back, investors will have more time to digest the data, which should lead to more stable market conditions. As a result, I increase my probability estimate, as the positive trend of the S&P 500 is now less likely to be disrupted by short-term volatility. The S&P 500's historical trend and the overall US economy's moderate growth prospects remain unchanged as factors supporting my forecast.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 2,
+      "probe_text": "The US Federal Reserve announces a surprise pause in interest rate hikes, citing a stronger than expected economic recovery and low inflation rates. This leads to a significant decrease in market volatility, as investors become more confident in the stability of the economy. Furthermore, the upcoming economic data releases are unexpectedly strong, reducing the potential for negative shocks to the market.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.85,
+      "absolute_shift": 0.22999999999999998,
+      "shift_direction": "increased",
+      "reasoning": "The surprise pause in interest rate hikes and the strong economic data releases have significantly reduced the risk of market volatility and potential negative shocks to the market. This new information strengthens the case for the S&P 500 to increase in value, as investors are more confident in the stability of the economy. The reduced volatility and improved market conditions increase the likelihood of a positive return for the S&P 500 over the next week.",
+      "raw_response": "{\n  \"updated_probability\": 0.85,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The surprise pause in interest rate hikes and the strong economic data releases have significantly reduced the risk of market volatility and potential negative shocks to the market. This new information strengthens the case for the S&P 500 to increase in value, as investors are more confident in the stability of the economy. The reduced volatility and improved market conditions increase the likelihood of a positive return for the S&P 500 over the next week.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 2,
+      "probe_text": "A prominent economic research firm, Moody's Analytics, has issued a report forecasting a 25% chance of a recession within the next 12 months, citing the upcoming economic data releases as a key factor in their analysis. This heightened risk of recession is likely to exacerbate market volatility in the coming weeks, making it even more probable that the S&P 500 will be affected by the volatile market conditions mentioned.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.52,
+      "absolute_shift": 0.09999999999999998,
+      "shift_direction": "decreased",
+      "reasoning": "The new information from Moody's Analytics has significantly increased my concern about market volatility in the coming weeks. The heightened risk of recession within the next 12 months, as cited in their report, suggests that the upcoming economic data releases and geopolitical events may have a more pronounced impact on the market. As a result, I have decreased my probability estimate from 0.62 to 0.52, reflecting a more cautious outlook on the S&P 500's performance between 2025-12-21 and 2025-12-28.",
+      "raw_response": "{\n  \"updated_probability\": 0.52,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information from Moody's Analytics has significantly increased my concern about market volatility in the coming weeks. The heightened risk of recession within the next 12 months, as cited in their report, suggests that the upcoming economic data releases and geopolitical events may have a more pronounced impact on the market. As a result, I have decreased my probability estimate from 0.62 to 0.52, reflecting a more cautious outlook on the S&P 500's performance between 2025-12-21 and 2025-12-28.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 2,
+      "probe_text": "It's worth noting that the S&P 500 index is rebalanced quarterly, and the next rebalancing is scheduled to occur on 2026-03-19, which could potentially affect the index's composition and therefore its value.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.58,
+      "absolute_shift": 0.040000000000000036,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the quarterly rebalancing of the S&P 500 index has a moderate impact on my estimate. The rebalancing could potentially affect the index's composition, which might lead to short-term fluctuations in the index value. However, the impact of the rebalancing on the index's value by 2025-12-28 is likely to be limited, given that it is still 3 months away from the rebalancing date. Therefore, I decrease my initial probability estimate by 4 percentage points to 58%",
+      "raw_response": "{\n  \"updated_probability\": 0.58,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the quarterly rebalancing of the S&P 500 index has a moderate impact on my estimate. The rebalancing could potentially affect the index's composition, which might lead to short-term fluctuations in the index value. However, the impact of the rebalancing on the index's value by 2025-12-28 is likely to be limited, given that it is still 3 months away from the rebalancing date. Therefore, I decrease my initial probability estimate by 4 percentage points to 58%\"\n}"
+    },
+    {
+      "probe_type": "negation",
+      "target_reason_id": 3,
+      "probe_text": "What if the US economy is actually due for a recession in the next few years, triggered by a sharp increase in interest rates and a decline in consumer spending, leading to a significant decline in the S&P 500?",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.33,
+      "absolute_shift": 0.29,
+      "shift_direction": "decreased",
+      "reasoning": "The new information regarding a potential recession in the US economy, triggered by a sharp increase in interest rates and a decline in consumer spending, significantly undermines my initial estimate. This development would likely lead to a sharp decline in the S&P 500 rather than a moderate increase. Given the potential for a recession, I have decreased my probability estimate from 0.62 to 0.33, indicating a much lower likelihood of the S&P 500 increasing by 2025-12-28 as compared to its value on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.33,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information regarding a potential recession in the US economy, triggered by a sharp increase in interest rates and a decline in consumer spending, significantly undermines my initial estimate. This development would likely lead to a sharp decline in the S&P 500 rather than a moderate increase. Given the potential for a recession, I have decreased my probability estimate from 0.62 to 0.33, indicating a much lower likelihood of the S&P 500 increasing by 2025-12-28 as compared to its value on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "counterfactual",
+      "target_reason_id": 3,
+      "probe_text": "Yesterday, the US Federal Reserve announced plans to introduce a new regulatory framework aimed at curbing the growth of the US gig economy, which is expected to disproportionately affect the country's largest tech companies, significant contributors to the S&P 500. The new regulations, set to take effect in 2026, have been met with criticism from industry experts, who warn that they could lead to widespread job losses and a significant contraction in the US tech sector. As a result, Morgan Stanley's Chief Economist has downgraded their forecast for US GDP growth in 2026 to just 1.2%, citing the potential impact of the new regulations on the US economy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.43,
+      "absolute_shift": 0.19,
+      "shift_direction": "decreased",
+      "reasoning": "The new information challenges my initial assumption that the US economy will experience moderate growth in the next few years. The introduction of new regulations aimed at curbing the growth of the US gig economy and the expected impact on the US tech sector are significant concerns. The downgraded forecast for US GDP growth in 2026 from Morgan Stanley's Chief Economist further supports this concern. As a result, I have decreased my initial probability estimate from 0.62 to 0.43, reflecting a lower confidence in the S&P 500's ability to increase by 2025-12-28 as compared to its value on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.43,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information challenges my initial assumption that the US economy will experience moderate growth in the next few years. The introduction of new regulations aimed at curbing the growth of the US gig economy and the expected impact on the US tech sector are significant concerns. The downgraded forecast for US GDP growth in 2026 from Morgan Stanley's Chief Economist further supports this concern. As a result, I have decreased my initial probability estimate from 0.62 to 0.43, reflecting a lower confidence in the S&P 500's ability to increase by 2025-12-28 as compared to its value on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "weakening",
+      "target_reason_id": 3,
+      "probe_text": "A sudden and unexpected global economic downturn is announced, triggered by a major trade war escalation between the US and a key economic partner, leading to a sharp decline in international trade and a significant increase in uncertainty surrounding global economic growth.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.35,
+      "absolute_shift": 0.27,
+      "shift_direction": "decreased",
+      "reasoning": "The sudden and unexpected global economic downturn, triggered by a major trade war escalation, significantly increases uncertainty surrounding global economic growth. This new information undermines the assumption of moderate growth in the next few years, which was a key factor in my initial estimate. The sharp decline in international trade and increase in uncertainty will likely have a negative impact on the S&P 500, making it less likely to increase by 2025-12-28 compared to its value on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.35,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The sudden and unexpected global economic downturn, triggered by a major trade war escalation, significantly increases uncertainty surrounding global economic growth. This new information undermines the assumption of moderate growth in the next few years, which was a key factor in my initial estimate. The sharp decline in international trade and increase in uncertainty will likely have a negative impact on the S&P 500, making it less likely to increase by 2025-12-28 compared to its value on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "strengthening",
+      "target_reason_id": 3,
+      "probe_text": "The Federal Reserve, in its most recent Economic Projections report, has revised upward its estimate of US GDP growth for the 2024-2027 period, citing strong consumer spending and an improving labor market. This updated forecast aligns with the forecaster's expectation of moderate US economic growth, further supporting the assumption that the S&P 500 will reflect this growth.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.75,
+      "absolute_shift": 0.13,
+      "shift_direction": "increased",
+      "reasoning": "The revised US GDP growth forecast from the Federal Reserve, citing strong consumer spending and an improving labor market, provides additional confidence in the moderate US economic growth scenario, which I initially assumed would positively influence the S&P 500. This new information reinforces my previous reasoning and leads me to update my probability estimate upward, as it now seems more likely that the S&P 500 will reflect this growth and increase by 2025-12-28 compared to its value on 2025-12-21.",
+      "raw_response": "{\n  \"updated_probability\": 0.75,\n  \"shift_direction\": \"increased\",\n  \"reasoning\": \"The revised US GDP growth forecast from the Federal Reserve, citing strong consumer spending and an improving labor market, provides additional confidence in the moderate US economic growth scenario, which I initially assumed would positively influence the S&P 500. This new information reinforces my previous reasoning and leads me to update my probability estimate upward, as it now seems more likely that the S&P 500 will reflect this growth and increase by 2025-12-28 compared to its value on 2025-12-21.\"\n}"
+    },
+    {
+      "probe_type": "irrelevant",
+      "target_reason_id": 3,
+      "probe_text": "A new species of flowering plant, identified as 'Ipomoea imperialis', has been discovered in the tropical rainforests of Central America. This discovery has sparked interest among botanists and conservationists, highlighting the ongoing importance of preserving these ecosystems. However, it is expected that the impact of this discovery will be largely limited to the scientific community and will not have a direct effect on the overall US economy.",
+      "probe_generated": true,
+      "success": true,
+      "updated_probability": 0.61,
+      "absolute_shift": 0.010000000000000009,
+      "shift_direction": "decreased",
+      "reasoning": "The new information about the discovery of a new species of flowering plant in Central America does not have a direct effect on the overall US economy, which was one of the key reasons for my initial estimate. Since the challenge to this assumption is weak and unrelated to the economic factors that influence the S&P 500, I have only slightly decreased my probability estimate. The other two reasons for my initial estimate remain unchanged, and the S&P 500's historical trend and market conditions in the next 7 days continue to support a moderate increase in the index value.",
+      "raw_response": "{\n  \"updated_probability\": 0.61,\n  \"shift_direction\": \"decreased\",\n  \"reasoning\": \"The new information about the discovery of a new species of flowering plant in Central America does not have a direct effect on the overall US economy, which was one of the key reasons for my initial estimate. Since the challenge to this assumption is weak and unrelated to the economic factors that influence the S&P 500, I have only slightly decreased my probability estimate. The other two reasons for my initial estimate remain unchanged, and the S&P 500's historical trend and market conditions in the next 7 days continue to support a moderate increase in the index value.\"\n}"
+    }
+  ],
+  "summary": {
+    "question_id": "SP500",
+    "question_text": "Will the S&P 500, which represents the daily index value at market close have increased by 2025-12-28 as compared to its value on 2025-12-21?",
+    "source": "fred",
+    "condition": "one-turn",
+    "initial_probability": 0.62,
+    "n_probes": 15,
+    "n_successful": 15,
+    "mean_absolute_shift": 0.15466666666666665,
+    "max_absolute_shift": 0.29
+  }
+}

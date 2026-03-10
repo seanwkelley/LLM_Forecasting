@@ -1,13 +1,16 @@
 """
-Causal Network Analysis — Compute network-specific metrics from causal experiment results.
+Belief Sensitivity Analysis — Compute metrics from causal network experiment results.
 
-Six network-specific metrics on top of the base analysis:
-1. Importance-sensitivity correlation (Spearman)
-2. Structural sensitivity ratio (SSR)
-3. Sensitivity by probe category (node/edge/structural)
-4. Critical path premium
-5. Spurious acceptance rate
-6. Asymmetry index
+Metrics:
+1. Anchoring (mean/median shift, % no-change, % small-shift)
+2. Importance-sensitivity correlation (Spearman)
+3. Structural sensitivity ratio (SSR)
+4. Sensitivity by probe category (node/edge/structural)
+5. Critical path premium
+6. Spurious acceptance rate
+7. Asymmetry index
+8. Conversational drift
+9. Cross-condition comparison (paired t-test + Cohen's d)
 
 Usage:
     python forecast_bench/analysis_causal.py outputs/sensitivity/causal/llama_one_turn
@@ -24,15 +27,188 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-# Add project root to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from forecast_bench.analysis import (
-    compute_anchoring_metrics,
-    compute_consistency_metrics,
-    compare_conditions,
-    _spearman_correlation,
-)
+# =============================================================================
+# STATISTICAL HELPERS
+# =============================================================================
+
+def _spearman_correlation(x: list, y: list) -> float | None:
+    """Compute Spearman rank correlation between two lists."""
+    n = len(x)
+    if n < 3:
+        return None
+
+    def _rank(vals):
+        indexed = sorted(enumerate(vals), key=lambda t: t[1])
+        ranks = [0.0] * n
+        i = 0
+        while i < n:
+            j = i
+            while j < n - 1 and indexed[j + 1][1] == indexed[j][1]:
+                j += 1
+            avg_rank = (i + j) / 2.0 + 1  # 1-based
+            for k in range(i, j + 1):
+                ranks[indexed[k][0]] = avg_rank
+            i = j + 1
+        return ranks
+
+    rx = _rank(x)
+    ry = _rank(y)
+
+    mean_rx = sum(rx) / n
+    mean_ry = sum(ry) / n
+
+    cov = sum((a - mean_rx) * (b - mean_ry) for a, b in zip(rx, ry))
+    std_x = math.sqrt(sum((a - mean_rx) ** 2 for a in rx))
+    std_y = math.sqrt(sum((b - mean_ry) ** 2 for b in ry))
+
+    if std_x == 0 or std_y == 0:
+        return None
+
+    return cov / (std_x * std_y)
+
+
+def _t_to_p(t: float, df: int) -> float:
+    """Approximate two-tailed p-value from t-statistic."""
+    t_abs = abs(t)
+
+    if df >= 30:
+        p_one_tail = 0.5 * math.erfc(t_abs / math.sqrt(2))
+        return min(1.0, 2 * p_one_tail)
+
+    x = df / (df + t_abs ** 2)
+    a = df / 2.0
+    b = 0.5
+    p = _regularized_incomplete_beta(x, a, b)
+    return min(1.0, p)
+
+
+def _regularized_incomplete_beta(x: float, a: float, b: float, n_terms: int = 200) -> float:
+    """Approximate the regularized incomplete beta function I_x(a, b)."""
+    if x <= 0:
+        return 0.0
+    if x >= 1:
+        return 1.0
+
+    log_beta = math.lgamma(a) + math.lgamma(b) - math.lgamma(a + b)
+    front = math.exp(a * math.log(x) + b * math.log(1 - x) - log_beta) / a
+
+    total = 1.0
+    term = 1.0
+    for n in range(1, n_terms):
+        term *= x * (n - b) / (n * (a + n)) if (a + n) != 0 else 0
+        total += term
+        if abs(term) < 1e-12:
+            break
+
+    return min(1.0, front * total)
+
+
+# =============================================================================
+# SHARED METRICS
+# =============================================================================
+
+def compute_anchoring_metrics(rows: list[dict]) -> dict:
+    """Compute anchoring metrics from successful probe results."""
+    shifts = [r["absolute_shift"] for r in rows if r["success"] and r["absolute_shift"] is not None]
+
+    if not shifts:
+        return {"n": 0, "mean_absolute_shift": None, "median_absolute_shift": None,
+                "pct_no_change": None, "pct_small_shift": None}
+
+    shifts_sorted = sorted(shifts)
+    n = len(shifts)
+    mean_shift = sum(shifts) / n
+    median_shift = shifts_sorted[n // 2] if n % 2 == 1 else (shifts_sorted[n // 2 - 1] + shifts_sorted[n // 2]) / 2
+
+    no_change = sum(1 for s in shifts if s < 0.01)
+    small_shift = sum(1 for s in shifts if s < 0.05)
+
+    return {
+        "n": n,
+        "mean_absolute_shift": round(mean_shift, 4),
+        "median_absolute_shift": round(median_shift, 4),
+        "pct_no_change": round(no_change / n * 100, 1),
+        "pct_small_shift": round(small_shift / n * 100, 1),
+    }
+
+
+def compute_consistency_metrics(rows: list[dict]) -> dict:
+    """Conversational drift: Spearman correlation of probe order vs cumulative shift."""
+    questions = defaultdict(list)
+    for r in rows:
+        if r["success"] and r["absolute_shift"] is not None and r.get("probe_index") is not None:
+            questions[r["question_id"]].append(r)
+
+    rhos = []
+    for qid, q_rows in questions.items():
+        q_rows.sort(key=lambda x: x["probe_index"])
+        if len(q_rows) < 3:
+            continue
+
+        cumulative = []
+        total = 0.0
+        for r in q_rows:
+            total += r["absolute_shift"]
+            cumulative.append(total)
+
+        orders = list(range(len(q_rows)))
+        rho = _spearman_correlation(orders, cumulative)
+        if rho is not None:
+            rhos.append(rho)
+
+    if not rhos:
+        return {"mean_spearman_rho": None, "n_questions": 0}
+
+    return {
+        "mean_spearman_rho": round(sum(rhos) / len(rhos), 4),
+        "n_questions": len(rhos),
+    }
+
+
+def compare_conditions(
+    one_turn_rows: list[dict],
+    multi_turn_rows: list[dict],
+) -> dict:
+    """Compare mean absolute shifts between conditions using paired t-test + Cohen's d."""
+    def _question_means(rows):
+        groups = defaultdict(list)
+        for r in rows:
+            if r["success"] and r["absolute_shift"] is not None:
+                groups[r["question_id"]].append(r["absolute_shift"])
+        return {qid: sum(s) / len(s) for qid, s in groups.items()}
+
+    ind_means = _question_means(one_turn_rows)
+    conv_means = _question_means(multi_turn_rows)
+
+    shared_ids = sorted(set(ind_means) & set(conv_means))
+    if len(shared_ids) < 3:
+        return {"error": f"Too few paired questions ({len(shared_ids)})", "n_pairs": len(shared_ids)}
+
+    ind_vals = [ind_means[qid] for qid in shared_ids]
+    conv_vals = [conv_means[qid] for qid in shared_ids]
+
+    diffs = [c - i for c, i in zip(conv_vals, ind_vals)]
+    n = len(diffs)
+    mean_diff = sum(diffs) / n
+    var_diff = sum((d - mean_diff) ** 2 for d in diffs) / (n - 1)
+    se_diff = math.sqrt(var_diff / n) if var_diff > 0 else 1e-10
+
+    t_stat = mean_diff / se_diff
+    p_value = _t_to_p(t_stat, n - 1)
+
+    sd_diff = math.sqrt(var_diff) if var_diff > 0 else 1e-10
+    cohens_d = mean_diff / sd_diff
+
+    return {
+        "n_pairs": n,
+        "mean_shift_one_turn": round(sum(ind_vals) / len(ind_vals), 4),
+        "mean_shift_multi_turn": round(sum(conv_vals) / len(conv_vals), 4),
+        "mean_difference": round(mean_diff, 4),
+        "t_statistic": round(t_stat, 4),
+        "p_value": round(p_value, 4),
+        "cohens_d": round(cohens_d, 4),
+    }
 
 
 # =============================================================================

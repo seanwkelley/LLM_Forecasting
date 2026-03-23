@@ -480,8 +480,10 @@ def fig_shift_by_probe_type(runs: dict):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_calibration(runs: dict):
-    """Combined figure: (a) cross-model initial probabilities, (b) calibration curve."""
+    """Combined figure: (a) cross-model initial probabilities,
+    (b) inter-model agreement heatmap, (c) calibration curve."""
     from matplotlib.patches import Patch
+    from scipy import stats as sp_stats
 
     freeze_vals = _load_freeze_values()
     model_names = list(runs.keys())
@@ -499,8 +501,9 @@ def fig_calibration(runs: dict):
     shared_qids = set.intersection(*(set(p.keys()) for p in model_probs.values()))
     shared_qids = sorted(shared_qids)
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7),
-                                     gridspec_kw={"width_ratios": [1, 1]})
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6),
+                                         gridspec_kw={"width_ratios": [1, 1.1, 1],
+                                                      "wspace": 0.35})
 
     # ── (a) Connected dot plot ──
     q_means = []
@@ -512,7 +515,6 @@ def fig_calibration(runs: dict):
 
     y_positions = range(len(sorted_qids))
 
-    # Connect dots per question with gray lines (draw first)
     for yi, qid in enumerate(sorted_qids):
         vals = [model_probs[m][qid] for m in model_names]
         ax1.plot([min(vals), max(vals)], [yi, yi], color="gray",
@@ -527,11 +529,41 @@ def fig_calibration(runs: dict):
     ax1.set_ylabel("Questions (sorted by mean probability)")
     ax1.set_xlim(0, 1)
     ax1.set_yticks([])
-    # ax1.grid(axis="x", alpha=0.2)
 
-    # ── (b) Calibration curve ──
+    # ── (b) Inter-model agreement heatmap ──
+    n = len(model_names)
+    rho_matrix = np.ones((n, n))
+    for i in range(n):
+        for j in range(i + 1, n):
+            shared = sorted(set(model_probs[model_names[i]]) & set(model_probs[model_names[j]]))
+            if len(shared) < 5:
+                rho_matrix[i, j] = rho_matrix[j, i] = np.nan
+                continue
+            p_i = [model_probs[model_names[i]][q] for q in shared]
+            p_j = [model_probs[model_names[j]][q] for q in shared]
+            rho, _ = sp_stats.spearmanr(p_i, p_j)
+            rho_matrix[i, j] = rho_matrix[j, i] = rho
+
+    im = ax2.imshow(rho_matrix, cmap="RdYlBu", vmin=0, vmax=1, aspect="equal")
+    ax2.set_xticks(range(n))
+    ax2.set_yticks(range(n))
+    ax2.set_xticklabels([_short_model_name(nm) for nm in model_names], fontsize=8, rotation=45, ha="right")
+    ax2.set_yticklabels([_short_model_name(nm) for nm in model_names], fontsize=8)
+
+    for i in range(n):
+        for j in range(n):
+            val = rho_matrix[i, j]
+            if not np.isnan(val):
+                color = "white" if val < 0.5 else "black"
+                ax2.text(j, i, f"{val:.2f}", ha="center", va="center",
+                         fontsize=9, color=color, fontweight="bold" if i == j else "normal")
+
+    cbar = fig.colorbar(im, ax=ax2, shrink=0.7, pad=0.08)
+    cbar.set_label("Spearman ρ", fontsize=9)
+
+    # ── (c) Calibration curve ──
     if freeze_vals:
-        ax2.plot([0, 1], [0, 1], "k--", alpha=0.3, linewidth=1, label="Perfect calibration")
+        ax3.plot([0, 1], [0, 1], "k--", alpha=0.3, linewidth=1)
 
         for name, (rows, q_data) in runs.items():
             pairs = []
@@ -556,34 +588,37 @@ def fig_calibration(runs: dict):
                 bin_actuals.append(sum(a for _, a in chunk) / len(chunk))
                 bin_ns.append(len(chunk))
 
-            ax2.plot(bin_preds, bin_actuals, "o-", color=COLORS[name], markersize=8,
+            ax3.plot(bin_preds, bin_actuals, "o-", color=COLORS[name], markersize=8,
                      linewidth=2)
 
             for bp, ba, bn in zip(bin_preds, bin_actuals, bin_ns):
                 se = (ba * (1 - ba) / max(bn, 1)) ** 0.5
-                ax2.fill_between([bp - 0.01, bp + 0.01],
+                ax3.fill_between([bp - 0.01, bp + 0.01],
                                 [ba - 1.96 * se] * 2, [ba + 1.96 * se] * 2,
                                 alpha=0.1, color=COLORS[name])
 
-        ax2.set_xlabel("LLM Predicted Probability")
-        ax2.set_ylabel("Reference Probability")
-        ax2.set_xlim(0, 1)
-        ax2.set_ylim(0, 1)
-        # No aspect constraint — let both panels fill equally
-        # ax2.grid(True, alpha=0.2)
-        pass  # caption describes reference sources
+        ax3.set_xlabel("LLM Predicted Probability", fontsize=12)
+        ax3.set_ylabel("Reference Probability", fontsize=12)
+        ax3.set_xlim(0, 1)
+        ax3.set_ylim(0, 1)
     else:
-        ax2.text(0.5, 0.5, "No market reference data", ha="center", va="center",
-                 transform=ax2.transAxes)
+        ax3.text(0.5, 0.5, "No market reference data", ha="center", va="center",
+                 transform=ax3.transAxes)
 
-    _label_axes([ax1, ax2])
-    # Shared legend on the right side
+    # Align panel labels at the same vertical level using figure coords
+    fig.canvas.draw()
+    for ax, label in zip([ax1, ax2, ax3], ["(a)", "(b)", "(c)"]):
+        # Get the top of the tallest axis in figure coords
+        bbox = ax.get_position()
+        fig.text(bbox.x0 - 0.01, 0.95, label,
+                 fontsize=14, fontweight="bold", va="bottom", ha="right")
+
+    # Shared legend at bottom
     legend_handles = [Patch(facecolor=COLORS[name], label=name) for name in model_names]
-    fig.legend(handles=legend_handles, loc="center right", fontsize=10, frameon=False,
-               bbox_to_anchor=(0.99, 0.5))
-    plt.tight_layout(rect=[0, 0, 0.88, 1])
-    plt.savefig(FIGURES_DIR / "initial_probabilities.png")
-    plt.savefig(FIGURES_DIR / "initial_probabilities.pdf")
+    fig.legend(handles=legend_handles, loc="lower center", ncol=len(model_names),
+               fontsize=9, frameon=False, bbox_to_anchor=(0.5, -0.02))
+    plt.savefig(FIGURES_DIR / "initial_probabilities.png", dpi=300, bbox_inches="tight")
+    plt.savefig(FIGURES_DIR / "initial_probabilities.pdf", bbox_inches="tight")
     plt.close()
     print("  Saved initial_probabilities.png/pdf")
 
@@ -1712,35 +1747,32 @@ def fig_bottleneck_sensitivity(runs: dict):
         else:
             r_cis.append(0)
 
-    ax1.bar(x - width/2, b_means, width, yerr=b_cis, label="Bottleneck",
+    ax1.bar(x - width/2, b_means, width, yerr=b_cis, label="On shortest path",
             color="#D55E00", edgecolor="none", capsize=4, error_kw={"linewidth": 1.5})
-    ax1.bar(x + width/2, r_means, width, yerr=r_cis, label="Redundant",
+    ax1.bar(x + width/2, r_means, width, yerr=r_cis, label="Off shortest path",
             color="#999999", edgecolor="none", capsize=4, error_kw={"linewidth": 1.5})
     ax1.set_xticks(x)
     ax1.set_xticklabels([_short_model_name(n) for n in model_names], fontsize=9)
     ax1.set_ylabel("Mean |Probability Shift|")
     ax1.legend(frameon=False, fontsize=9)
 
-    # (b) Scatter: path_relevance vs |shift|
+    # (b) Scatter: path_relevance vs |shift| with linear fit
     ax2.scatter(all_path_rel, all_shifts, alpha=0.15, s=15, color="#0072B2", edgecolors="none")
-    # Binned means
-    bins = np.linspace(0, 1, 6)
-    bin_centers, bin_means, bin_cis_lo, bin_cis_hi = [], [], [], []
-    for i in range(len(bins) - 1):
-        mask = [(bins[i] <= p < bins[i+1]) for p in all_path_rel]
-        vals = [s for s, m in zip(all_shifts, mask) if m]
-        if len(vals) >= 5:
-            m = sum(vals) / len(vals)
-            se = (sum((v-m)**2 for v in vals) / (len(vals)-1))**0.5 / len(vals)**0.5
-            bin_centers.append((bins[i] + bins[i+1]) / 2)
-            bin_means.append(m)
-            bin_cis_lo.append(1.96 * se)
-            bin_cis_hi.append(1.96 * se)
-    if bin_centers:
-        ax2.errorbar(bin_centers, bin_means, yerr=[bin_cis_lo, bin_cis_hi],
-                     fmt="o-", color="#D55E00", markersize=7, linewidth=2,
-                     capsize=4, markeredgecolor="black", markeredgewidth=0.5, zorder=5)
-    ax2.set_xlabel("Path Relevance\n(fraction of source→outcome paths through node)")
+    # Linear regression line with p-value
+    if len(all_path_rel) > 2:
+        from scipy.stats import pearsonr
+        pr_arr = np.array(all_path_rel)
+        sh_arr = np.array(all_shifts)
+        slope, intercept = np.polyfit(pr_arr, sh_arr, 1)
+        r, p = pearsonr(pr_arr, sh_arr)
+        x_line = np.linspace(0, 1, 100)
+        ax2.plot(x_line, slope * x_line + intercept, color="#D55E00", linewidth=2, zorder=5)
+        stars = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else ""
+        ax2.text(0.95, 0.95, f"r = {r:.2f}", transform=ax2.transAxes,
+                 ha="right", va="top", fontsize=10)
+        ax2.text(0.958, 0.97, stars, transform=ax2.transAxes,
+                 ha="left", va="top", fontsize=8, fontweight="bold")
+    ax2.set_xlabel("Path Relevance")
     ax2.set_ylabel("Mean |Probability Shift|")
     ax2.set_xlim(-0.05, 1.05)
 
@@ -2364,13 +2396,10 @@ def fig_structural_ablation():
     ax = axes[0]
     ax.hist(per_q_taus, bins=20, color="#0072B2", edgecolor="black", linewidth=0.5, alpha=0.8)
     mean_tau = sum(per_q_taus) / len(per_q_taus) if per_q_taus else 0
-    ax.axvline(mean_tau, color="#D55E00", linewidth=2, linestyle="--",
-               label=f"Mean τ = {mean_tau:.3f}")
-    ax.axvline(0, color="#444444", linewidth=1, linestyle=":")
+    ax.axvline(mean_tau, color="#D55E00", linewidth=2, linestyle="--")
 
     ax.set_xlabel("Within-Question Kendall τ\n(Node Betweenness vs |Shift|)")
     ax.set_ylabel("Number of Questions")
-    ax.legend(fontsize=9)
 
     # (b) On-path vs off-path mean shift (within-question paired)
     ax = axes[1]
@@ -2421,7 +2450,7 @@ def fig_structural_ablation():
     ax.annotate(stars, xy=(0.5, y_top + 0.002), xytext=(0, 2),
                 textcoords="offset points", ha="center", fontsize=12, fontweight="bold")
     ax.set_xticks([0, 1])
-    ax.set_xticklabels(["On Shortest Path", "Off Shortest Path"], fontsize=9)
+    ax.set_xticklabels(["On Shortest Path", "Off Shortest Path"], fontsize=13)
     ax.set_ylabel("Mean |Probability Shift|\n(per-question average)")
 
     _label_axes(axes)

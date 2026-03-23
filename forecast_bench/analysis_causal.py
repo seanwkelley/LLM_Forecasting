@@ -242,12 +242,13 @@ def load_causal_results(csv_path: Path) -> list[dict]:
                 "irlevant": "irrelevant",
                 "edge_missing": "edge_spurious",
                 "edge_omitted": "edge_spurious",
-                "edge_added": "edge_fabricate",
-                "edge_addition": "edge_fabricate",
-                "edge_add": "edge_fabricate",
-                "edge_add_causal": "edge_fabricate",
-                "edge_add_direct": "edge_fabricate",
+                "edge_added": "edge_spurious",
+                "edge_addition": "edge_spurious",
+                "edge_add": "edge_spurious",
+                "edge_add_causal": "edge_spurious",
+                "edge_add_direct": "edge_spurious",
                 "edge_feedback": "edge_spurious",
+                "edge_fabricate": "edge_spurious",
             }
             row["probe_type"] = _PROBE_TYPE_NORMALIZE.get(pt, pt)
             rows.append(row)

@@ -393,12 +393,13 @@ def fig_shift_by_probe_type(runs: dict):
                 "irlevant": "irrelevant",
                 "edge_missing": "edge_spurious",
                 "edge_omitted": "edge_spurious",
-                "edge_added": "edge_fabricate",
-                "edge_addition": "edge_fabricate",
-                "edge_add": "edge_fabricate",
-                "edge_add_causal": "edge_fabricate",
-                "edge_add_direct": "edge_fabricate",
+                "edge_added": "edge_spurious",
+                "edge_addition": "edge_spurious",
+                "edge_add": "edge_spurious",
+                "edge_add_causal": "edge_spurious",
+                "edge_add_direct": "edge_spurious",
                 "edge_feedback": "edge_spurious",
+                "edge_fabricate": "edge_spurious",
             }
             pt = PROBE_TYPE_NORMALIZE.get(pt, pt)
             type_shifts[pt].append(r["absolute_shift"])
@@ -417,7 +418,7 @@ def fig_shift_by_probe_type(runs: dict):
         "edge_strengthen_peripheral": "Strengthen Peripheral Edge",
         "edge_reverse": "Reverse Edge",
         "edge_spurious": "Spurious Edge",
-        "edge_fabricate": "Fabricate Edge",
+
         "missing_node": "Missing Node",
         "irrelevant": "Irrelevant (Control)",
     }
@@ -986,7 +987,7 @@ def fig_null_test(runs: dict):
         data = np.load(str(embeddings_path))
         embeddings = data["embeddings"]
 
-        CONTROL_TYPES = {"irrelevant", "edge_spurious", "edge_fabricate", "missing_node"}
+        CONTROL_TYPES = {"irrelevant", "edge_spurious", "missing_node"}
 
         # Index by (model, qid)
         model_q_index = defaultdict(list)
@@ -2524,7 +2525,6 @@ _IMPORTANCE_TIER = {
     "edge_strengthen_peripheral": "Low",
     "edge_reverse": "Low",
     "edge_spurious": "Control",
-    "edge_fabricate": "Control",
     "missing_node": "Control",
     "irrelevant": "Control",
 }
@@ -2534,12 +2534,13 @@ _EMBED_PROBE_NORMALIZE = {
     "irlevant": "irrelevant",
     "edge_missing": "edge_spurious",
     "edge_omitted": "edge_spurious",
-    "edge_added": "edge_fabricate",
-    "edge_addition": "edge_fabricate",
-    "edge_add": "edge_fabricate",
-    "edge_add_causal": "edge_fabricate",
-    "edge_add_direct": "edge_fabricate",
+    "edge_added": "edge_spurious",
+    "edge_addition": "edge_spurious",
+    "edge_add": "edge_spurious",
+    "edge_add_causal": "edge_spurious",
+    "edge_add_direct": "edge_spurious",
     "edge_feedback": "edge_spurious",
+    "edge_fabricate": "edge_spurious",
 }
 
 _TIER_COLORS = {
@@ -2584,7 +2585,7 @@ def fig_reasoning_embeddings(runs: dict):
     embeddings = data["embeddings"]
 
     # Parse metadata: qid|probe_type|probe_idx|model
-    CONTROL_TYPES = {"irrelevant", "edge_spurious", "edge_fabricate", "missing_node"}
+    CONTROL_TYPES = {"irrelevant", "edge_spurious", "missing_node"}
 
     # Index embeddings by (model, qid) -> list of (is_control, embedding_idx)
     model_q_index = defaultdict(list)

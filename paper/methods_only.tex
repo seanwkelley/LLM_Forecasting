@@ -239,12 +239,6 @@ If the model's structural sensitivity is genuine, SSR should be lower with the p
 
 \paragraph{Propagation decay.} Using Llama 3.3 70B, we test whether the model's causal reasoning respects graph locality by measuring how probe effects attenuate with graph distance. For each of the 100 questions, we take the existing node-level probes (\texttt{negate\_high}, \texttt{negate\_low}, \texttt{strengthen}, \texttt{strengthen\_low}) and re-prompt the model with the full DAG and probe text, asking it to rate how each \emph{other} factor node's causal influence would change on a $[-1, +1]$ scale ($-1$ = strongly weakened, $+1$ = strongly reinforced, $0$ = unaffected). We annotate each rated node with its undirected shortest-path distance from the probed node and report (i) mean $|\text{impact}|$ and (ii) fraction of affected nodes (impact $\neq 0$) as a function of graph distance. We test for monotonic decay using Spearman $\rho$ between distance and $|\text{impact}|$ across all node--probe pairs.
 
-\paragraph{Compound probe interaction.} Using Llama 3.3 70B, we test whether simultaneously presenting two probes produces additive, super-additive, or sub-additive probability shifts---distinguishing genuine causal propagation (super-additive: effects compound through the network) from bounded updating (sub-additive: the model caps its total revision). For each question, we select pairs of node-level probes at varying graph distances (undirected distance 1, 2, and $\geq$3; 2 pairs per distance bin). Pairs may be same-direction (negate+negate or strengthen+strengthen) or cross-direction (negate+strengthen); we analyze these separately since cross-direction pairs introduce partial cancellation. Both challenges are presented simultaneously in a single prompt, and the presentation order of the two probes is randomized. We compute the \textbf{interaction term}:
-\begin{equation}
-    I = |\Delta_{AB}| - (|\Delta_A| + |\Delta_B|)
-\end{equation}
-where $|\Delta_{AB}|$ is the absolute shift from the compound probe and $|\Delta_A|$, $|\Delta_B|$ are the individual shifts from the main pipeline. $I > 0$ indicates super-additivity (effects compound); $I \approx 0$ indicates independence; $I < 0$ indicates sub-additivity. We test whether $I$ varies with graph distance between the paired targets.
-
 \paragraph{Superforecasting prompt comparison.} We run Stage 1 with two system prompts on the same 100 questions: (1) the baseline prompt (used in the main pipeline) and (2) a superforecasting-augmented prompt that explicitly instructs outside-view thinking, granular decomposition, signal--noise discrimination, counterfactual validation, and calibration. We compare the resulting DAGs (node/edge Jaccard similarity, graph density, number of nodes) and probability estimates (Spearman $\rho$, mean absolute difference) to assess whether superforecasting instructions meaningfully alter the elicited causal structure.
 
 % ============================================================================
@@ -374,30 +368,6 @@ The system prompt for the propagation decay analysis:
 \end{quote}
 
 The user prompt provides the original question, initial probability, the full causal network, and the probe text from the main pipeline. The model is asked to rate each \emph{other} factor node's impact and provide one-sentence reasoning per node, plus an updated probability. The prompt instructs: ``factors directly downstream of [target] in the network should be affected more than distant or unrelated factors.''
-
-\subsection{Compound Probe Prompt}
-\label{app:prompt-compound}
-
-The system prompt for the compound probe interaction analysis:
-
-\begin{quote}
-\small
-\texttt{You are an expert forecaster updating your estimate in light of new information about your causal model.}
-
-\texttt{When presented with challenges to elements of your causal network, you should:}
-\begin{itemize}
-\small
-\item \texttt{Consider how each challenge affects the causal paths leading to the outcome}
-\item \texttt{Consider how the challenges interact with each other through the network}
-\item \texttt{Update your probability estimate appropriately}
-\end{itemize}
-
-\texttt{Be honest about uncertainty. Large updates are appropriate when critical causal links are convincingly challenged; small or no updates are appropriate when the challenges target peripheral elements or are weak.}
-
-\texttt{Respond with ONLY valid JSON. No other text.}
-\end{quote}
-
-The user prompt presents both probe texts simultaneously, numbered 1 and 2, with the presentation order randomized across pairs. The model outputs \texttt{reasoning} (2--3 sentences explaining how the factors interact) and \texttt{updated\_probability}. The prompt instructs: ``Consider how the two challenges may reinforce, counteract, or be independent of each other through the causal network.''
 
 \section{Probe Type Examples}
 \label{app:probe-examples}

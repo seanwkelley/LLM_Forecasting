@@ -60,7 +60,7 @@ def draw_base_graph(ax):
 
 
 def main():
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4.5), gridspec_kw={"wspace": 0.3})
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.5), gridspec_kw={"wspace": 0.3})
 
     # --- Panel 1: Single probe ---
     ax = axes[0]
@@ -110,40 +110,6 @@ def main():
     ax.text(0.5, -0.35, "Rate impact on\neach other node", fontsize=8, ha="center",
             bbox=dict(boxstyle="round,pad=0.3", facecolor="#FFF3E0", edgecolor="#D55E00"))
     ax.text(0.5, 1.65, "Propagation decay", fontsize=11, ha="center", fontweight="bold")
-
-    # --- Panel 3: Compound probe (same path vs independent) ---
-    ax = axes[2]
-    setup_ax(ax)
-    draw_base_graph(ax)
-
-    for name, xy in NODES.items():
-        if name == "A":
-            # Probe 1: negate A (top-left)
-            draw_node(ax, xy, name, color="#D55E00", edgecolor="#D55E00", textcolor="white")
-        elif name == "D":
-            # Probe 2: strengthen D (same path as A via A->D)
-            draw_node(ax, xy, name, color="#009E73", edgecolor="#009E73", textcolor="white")
-        elif name == "O":
-            draw_node(ax, xy, "Outcome", color="#CCE5FF", edgecolor="#0072B2", fontsize=7)
-        else:
-            draw_node(ax, xy, name)
-
-    ax.annotate("Probe 1\n(negate)", xy=(0.2, 1.38), fontsize=8, ha="center", va="bottom",
-                color="#D55E00", fontweight="bold")
-    ax.annotate("Probe 2\n(negate)", xy=(0.5, 0.42), fontsize=8, ha="center", va="top",
-                color="#009E73", fontweight="bold")
-
-    # Show the directed path A -> D with a highlight
-    ax.annotate("", xy=(0.37, 0.73), xytext=(0.33, 1.07),
-                arrowprops=dict(arrowstyle="->", color="#CC79A7", linewidth=2.0,
-                                linestyle="--"))
-    ax.text(0.15, 0.93, "same\npath", fontsize=7, color="#CC79A7", fontstyle="italic",
-            ha="center")
-
-    ax.text(0.5, -0.45, "Does shift(A,D) depend on\nwhether A \u2192 D in the DAG?",
-            fontsize=8, ha="center", va="top",
-            bbox=dict(boxstyle="round,pad=0.3", facecolor="#E8F5E9", edgecolor="#009E73"))
-    ax.text(0.5, 1.65, "Compound probe", fontsize=11, ha="center", fontweight="bold")
 
     for fmt in ("pdf", "png"):
         fig.savefig(f"paper/figures/compound_probe_diagram.{fmt}",

@@ -34,6 +34,7 @@ MODEL_DIRS = {
     "llama-8b": CAUSAL_DIR / "llama_one_turn",
     "deepseek": CAUSAL_DIR / "deepseek_one_turn",
     "qwen": CAUSAL_DIR / "qwen_one_turn",
+    "gemini": CAUSAL_DIR / "gemini_flash_lite_one_turn",
 }
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "") or \

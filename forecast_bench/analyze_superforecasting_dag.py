@@ -21,6 +21,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats as sp_stats
+from forecast_bench.semantic_graph_match import semantic_jaccard_pair
 
 plt.rcParams.update({"font.family": "Arial", "font.size": 10, "figure.dpi": 300})
 
@@ -165,6 +166,15 @@ def main():
             # Overlap
             "node_jaccard": jaccard(bp["factor_ids"], sp["factor_ids"]),
             "edge_jaccard": jaccard(bp["edge_tuples"], sp["edge_tuples"]),
+            # Semantic matching
+            "semantic": semantic_jaccard_pair(
+                [n for n in baseline[qid].get("nodes", []) if n.get("role") != "outcome"],
+                [n for n in sf[qid].get("nodes", []) if n.get("role") != "outcome"],
+                edges1=baseline[qid].get("edges", []),
+                edges2=sf[qid].get("edges", []),
+                condition1="baseline", condition2="superforecasting",
+                qid=qid,
+            ),
             # Graph edit distance (normalized)
             "norm_ged": normalized_ged(bp["node_ids"], bp["edge_tuples"],
                                        sp["node_ids"], sp["edge_tuples"]),
@@ -185,10 +195,20 @@ def main():
     norm_geds = [c["norm_ged"] for c in comparisons]
     spectral_dists = [c["spectral_dist"] for c in comparisons]
 
-    print(f"\nNode Jaccard:    mean={np.mean(node_j):.3f}, median={np.median(node_j):.3f}, "
+    sem_node_j = [c["semantic"]["node_jaccard"] for c in comparisons]
+    sem_edge_j = [c["semantic"]["mapped_edge_jaccard"] for c in comparisons]
+    sem_spectral = [c["semantic"]["spectral_distance"] for c in comparisons]
+
+    print(f"\nNode Jaccard (exact):    mean={np.mean(node_j):.3f}, median={np.median(node_j):.3f}, "
           f"std={np.std(node_j):.3f}")
-    print(f"Edge Jaccard:    mean={np.mean(edge_j):.3f}, median={np.median(edge_j):.3f}, "
+    print(f"Edge Jaccard (exact):    mean={np.mean(edge_j):.3f}, median={np.median(edge_j):.3f}, "
           f"std={np.std(edge_j):.3f}")
+    print(f"Node Jaccard (semantic): mean={np.mean(sem_node_j):.3f}, median={np.median(sem_node_j):.3f}, "
+          f"std={np.std(sem_node_j):.3f}")
+    print(f"Edge Jaccard (semantic): mean={np.mean(sem_edge_j):.3f}, median={np.median(sem_edge_j):.3f}, "
+          f"std={np.std(sem_edge_j):.3f}")
+    print(f"Spectral (semantic):     mean={np.mean(sem_spectral):.3f}, median={np.median(sem_spectral):.3f}, "
+          f"std={np.std(sem_spectral):.3f}")
     print(f"Norm GED:        mean={np.mean(norm_geds):.3f}, median={np.median(norm_geds):.3f}, "
           f"std={np.std(norm_geds):.3f}")
     print(f"Spectral dist:   mean={np.mean(spectral_dists):.3f}, median={np.median(spectral_dists):.3f}, "
@@ -284,45 +304,98 @@ def main():
     print(f"  Norm GED:      obs={obs_ged:.3f}, null={np.mean(perm_ged):.3f}±{np.std(perm_ged):.3f}, p={p_ged:.4f}")
     print(f"  Spectral dist: obs={obs_spectral:.3f}, null={np.mean(perm_spectral):.3f}±{np.std(perm_spectral):.3f}, p={p_spectral:.4f}")
 
-    # ── Generate figure: 1×3 — (a) Jaccard, (b) Distance, (c) Probability ──
-    from scipy.stats import gaussian_kde
+    # ── Generate figure: 1×2 — (a) Permutation tests, (b) Probability ──
 
-    fig, (ax_a, ax_b, ax_c) = plt.subplots(1, 3, figsize=(16, 4.5))
+    fig, (ax_a, ax_c) = plt.subplots(1, 2, figsize=(10, 3.5),
+                                      gridspec_kw={"width_ratios": [1, 1]})
     fig.patch.set_facecolor("white")
 
-    metric_keys_a = [
-        ("Node\nJaccard", obs_node_j, perm_node_j, BLUE),
-        ("Edge\nJaccard", obs_edge_j, perm_edge_j, ORANGE),
-    ]
-    metric_keys_b = [
-        ("Spectral\nDist", obs_spectral, perm_spectral, GREEN),
+    all_metrics = [
+        ("Node Jaccard", obs_node_j, perm_node_j, BLUE),
+        ("Edge Jaccard", obs_edge_j, perm_edge_j, ORANGE),
+        ("Spectral Distance", obs_spectral, perm_spectral, GREEN),
     ]
 
-    for ax, metrics, xlabel in [
-        (ax_a, metric_keys_a, "Jaccard Similarity\n(higher = more similar)"),
-        (ax_b, metric_keys_b, "Spectral Distance\n(higher = more different)"),
-    ]:
-        for j, (label, obs, null_dist, color) in enumerate(metrics):
-            kde = gaussian_kde(null_dist)
-            x_range = np.linspace(null_dist.min(), null_dist.max(), 200)
-            density = kde(x_range)
-            density = density / density.max() * 0.35
-            # Black baseline
-            ax.hlines(j, null_dist.min(), null_dist.max(), color="black",
-                      linewidth=0.8, zorder=1)
-            # Half-violin above baseline
-            ax.fill_between(x_range, j - density, j, alpha=0.5, color=color,
-                            edgecolor=color, linewidth=0.5)
-            # Observed diamond
-            ax.scatter([obs], [j], color=color, s=100, zorder=5,
-                       edgecolors="black", linewidths=1.5, marker="D")
-        ax.set_yticks(list(range(len(metrics))))
-        ax.set_yticklabels([m[0] for m in metrics], fontsize=9)
-        ax.set_xlabel(xlabel, fontsize=9)
-        ax.invert_yaxis()
+    # For spectral distance, lower = more similar, so flip sign for z-score
+    # so positive z always means "more similar than chance"
+    CI_COLOR = "#1f3d73"  # dark blue for all CIs
+    BREAK_LO = 5      # break starts here
+    BREAK_HI = 18     # break ends here
+    BREAK_W = 0.8      # visual width of break region
 
-    ax_a.text(-0.15, 1.05, "(a)", transform=ax_a.transAxes, fontsize=14, fontweight="bold")
-    ax_b.text(-0.12, 1.05, "(b)", transform=ax_b.transAxes, fontsize=14, fontweight="bold")
+    # Compute z-scores
+    z_data = []
+    for j, (label, obs, null_dist, color) in enumerate(all_metrics):
+        null_mean = np.mean(null_dist)
+        null_std = np.std(null_dist)
+        if label == "Spectral Distance":
+            z_obs = (null_mean - obs) / null_std
+            z_ci_lo = (null_mean - np.percentile(null_dist, 97.5)) / null_std
+            z_ci_hi = (null_mean - np.percentile(null_dist, 2.5)) / null_std
+        else:
+            z_obs = (obs - null_mean) / null_std
+            z_ci_lo = (np.percentile(null_dist, 2.5) - null_mean) / null_std
+            z_ci_hi = (np.percentile(null_dist, 97.5) - null_mean) / null_std
+        z_data.append((label, z_obs, z_ci_lo, z_ci_hi, color))
+
+    def _to_display(z):
+        """Map z-score to display x, with axis break."""
+        if z <= BREAK_LO:
+            return z
+        elif z >= BREAK_HI:
+            return BREAK_LO + BREAK_W + (z - BREAK_HI)
+        else:
+            # In the break region — map linearly to the break width
+            frac = (z - BREAK_LO) / (BREAK_HI - BREAK_LO)
+            return BREAK_LO + frac * BREAK_W
+
+    for j, (label, z_obs, z_ci_lo, z_ci_hi, color) in enumerate(z_data):
+        d_ci_lo = _to_display(z_ci_lo)
+        d_ci_hi = _to_display(z_ci_hi)
+        d_obs = _to_display(z_obs)
+
+        # Null 95% CI
+        ax_a.plot([d_ci_lo, d_ci_hi], [j, j], color=CI_COLOR, linewidth=4,
+                  solid_capstyle="round", alpha=0.4, zorder=1)
+        # Null mean (always at 0)
+        ax_a.plot(_to_display(0), j, "|", color=CI_COLOR, markersize=10,
+                  markeredgewidth=1.2, alpha=0.6, zorder=2)
+        # Observed
+        ax_a.scatter([d_obs], [j], color=color, s=60, zorder=5,
+                     edgecolors="black", linewidths=1.0, marker="D")
+
+    # Draw break markers on x-axis spine only
+    break_x_lo = _to_display(BREAK_LO)
+    break_x_hi = _to_display(BREAK_HI)
+    # Small diagonal slashes straddling the x-axis
+    d = 0.06
+    kwargs = dict(color="black", linewidth=0.7, clip_on=False, zorder=6,
+                  transform=ax_a.get_xaxis_transform())
+    for bx in [break_x_lo, break_x_hi]:
+        ax_a.plot([bx - d, bx + d], [-0.04, 0.04], **kwargs)
+        ax_a.plot([bx - d * 1.8, bx + d * 0.2], [-0.04, 0.04], **kwargs)
+
+    # Custom x-ticks: show real z-values, adapting to actual data range
+    left_ticks = [-2, 0, 2, 4]
+    z_max = max(d[1] for d in z_data)
+    # Generate right-side ticks covering the observed range
+    right_start = int(np.ceil(BREAK_HI / 5) * 5)  # round up to nearest 5
+    right_end = int(np.ceil(z_max / 5) * 5) + 5
+    right_ticks = list(range(right_start, right_end, 5))
+    tick_positions = [_to_display(t) for t in left_ticks + right_ticks]
+    tick_labels = [str(t) for t in left_ticks + right_ticks]
+    ax_a.set_xticks(tick_positions)
+    ax_a.set_xticklabels(tick_labels)
+
+    x_max = _to_display(z_max) + 1.5
+    ax_a.set_xlim(-3, x_max)
+    ax_a.set_yticks(list(range(len(all_metrics))))
+    ax_a.set_yticklabels([m[0] for m in all_metrics], fontsize=10)
+    ax_a.set_xlabel("Standard Deviations from Null Mean\n(positive = more similar than chance)", fontsize=9)
+    ax_a.axvline(_to_display(0), color="#DDDDDD", linewidth=0.8, linestyle="--", zorder=0)
+    ax_a.invert_yaxis()
+
+    ax_a.text(-0.18, 1.05, "(a)", transform=ax_a.transAxes, fontsize=14, fontweight="bold")
 
     # (c) Probability scatter with OLS
     pb = np.array(probs_b[:len(probs_s)])
@@ -339,14 +412,16 @@ def main():
     ax_c.set_ylabel("P(Yes) — Superforecasting")
     ax_c.set_xlim(0, 1); ax_c.set_ylim(0, 1)
     ax_c.set_aspect("equal")
-    ax_c.text(-0.12, 1.05, "(c)", transform=ax_c.transAxes, fontsize=14, fontweight="bold")
+    ax_c.text(-0.12, 1.05, "(b)", transform=ax_c.transAxes, fontsize=14, fontweight="bold")
 
     plt.tight_layout()
+    supp_dir = OUT / "supplementary"
+    supp_dir.mkdir(exist_ok=True)
     for ext in ["png", "pdf"]:
-        fig.savefig(str(OUT / f"superforecasting_dag_comparison.{ext}"),
+        fig.savefig(str(supp_dir / f"superforecasting_dag_comparison.{ext}"),
                     dpi=300, bbox_inches="tight", facecolor="white")
     plt.close(fig)
-    print(f"\nFigure saved to {OUT / 'superforecasting_dag_comparison.png'}")
+    print(f"\nFigure saved to {supp_dir / 'superforecasting_dag_comparison.png'}")
 
 
 if __name__ == "__main__":

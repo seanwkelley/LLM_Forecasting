@@ -1,4 +1,4 @@
-"""Three new figures: cross-model agreement, critical vs peripheral, asymmetry."""
+"""Three new figures: cross-model agreement, shortest-path vs peripheral, asymmetry."""
 import json, sys, csv
 from pathlib import Path
 from collections import defaultdict
@@ -13,8 +13,15 @@ import numpy as np
 from forecast_bench.analysis_causal import load_causal_results, _spearman_correlation, _safe_mean
 from forecast_bench.analysis_full import load_question_jsons
 from forecast_bench.analyze_superforecasting_dag import normalized_ged, spectral_distance
+from forecast_bench.semantic_graph_match import ensure_all_embeddings, compute_semantic_similarity
 
-plt.rcParams.update({"font.family": "Arial", "font.size": 10, "figure.dpi": 300})
+plt.rcParams.update({
+    "font.family": "Arial",
+    "font.size": 10,
+    "figure.dpi": 300,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+})
 
 BLUE, ORANGE, VERMILLION, GREEN = "#0072B2", "#E69F00", "#D55E00", "#009E73"
 
@@ -27,8 +34,10 @@ MODEL_DIRS = {
     "Llama-3.3-70B": CAUSAL / "70b_one_turn",
     "DeepSeek-V3":   CAUSAL / "deepseek_one_turn",
     "Qwen3-235B":    CAUSAL / "qwen_one_turn",
+    "Gemini-Flash-Lite": CAUSAL / "gemini_flash_lite_one_turn",
 }
-MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN}
+REDDISH_PURPLE = "#CC79A7"
+MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN, "Gemini-Flash-Lite": REDDISH_PURPLE}
 
 
 def jaccard(set_a, set_b):
@@ -129,65 +138,121 @@ def main():
                   f"GED={obs['ged']:.3f} (p={pvals['ged']:.4f}), "
                   f"spectral={obs['spectral']:.3f} (p={pvals['spectral']:.4f})")
 
-    # 2×2 grid: one panel per metric, each with 3 horizontal boxplots + observed markers
-    metric_keys = [
-        ("node_j", "perm_nj", "Node Jaccard\n(higher = more similar)", BLUE),
-        ("edge_j", "perm_ej", "Edge Jaccard\n(higher = more similar)", ORANGE),
-        ("spectral", "perm_sd", "Spectral Distance\n(higher = more different)", GREEN),
+    # ── Semantic matching ──
+    print("\n  Computing semantic graph similarity...")
+    try:
+        node_idx, node_mat, edge_idx, edge_mat = ensure_all_embeddings(runs)
+        has_semantic = True
+    except (ValueError, Exception) as e:
+        print(f"  Skipping semantic matching: {e}")
+        has_semantic = False
+
+    semantic_results = {}
+    if has_semantic:
+        for i, m1 in enumerate(model_names):
+            for m2 in model_names[i+1:]:
+                _, qd1 = runs[m1]
+                _, qd2 = runs[m2]
+                sem = compute_semantic_similarity(
+                    qd1, qd2, m1, m2,
+                    node_idx, node_mat, edge_idx, edge_mat,
+                    threshold=0.7,
+                )
+                semantic_results[f"{m1} vs {m2}"] = sem
+                print(f"  {m1} vs {m2}: semantic node J={sem['mean_node_jaccard']:.3f} (p={sem['pval_node_jaccard']:.4f}), "
+                      f"mapped edge J={sem['mean_mapped_edge_jaccard']:.3f} (p={sem['pval_mapped_edge_jaccard']:.4f}), "
+                      f"direct edge J={sem['mean_direct_edge_jaccard']:.3f} (p={sem['pval_direct_edge_jaccard']:.4f}), "
+                      f"spectral={sem['mean_spectral_distance']:.3f} (p={sem['pval_spectral_distance']:.4f})")
+
+    # ── LaTeX table instead of figure ──
+    def _fmt_p(p):
+        if p < 0.001:
+            return "$<$0.001"
+        return f"{p:.3f}"
+
+    if has_semantic:
+        tex_lines = [
+            r"\begin{table}[ht]",
+            r"\centering",
+            r"\caption{Cross-model DAG agreement via semantic matching. Nodes and edges are aligned across models using embedding-based Hungarian matching (text-embedding-3-large, cosine $\geq 0.7$). Mapped-edge Jaccard re-identifies edges through aligned node pairs; direct-edge Jaccard matches edge descriptions independently. Spectral distance compares normalized Laplacian eigenvalues in the aligned node namespace. All $p$-values from permutation tests ($n=5{,}000$).}",
+            r"\label{tab:cross_model_agreement}",
+            r"\small",
+            r"\begin{tabular}{lccccc}",
+            r"\toprule",
+            r"Model Pair & $n$ & Node ($p$) & Edge mapped ($p$) & Edge direct ($p$) & Spectral ($p$) \\",
+            r"\midrule",
+        ]
+
+        for p in pairs:
+            pair_label = p["pair_short"]
+            n = p["n_shared"]
+            sem = semantic_results.get(pair_label, {})
+            snj = sem.get("mean_node_jaccard", 0)
+            smej = sem.get("mean_mapped_edge_jaccard", 0)
+            sdej = sem.get("mean_direct_edge_jaccard", 0)
+            ssd = sem.get("mean_spectral_distance", 0)
+            psnj = sem.get("pval_node_jaccard", 1)
+            psmej = sem.get("pval_mapped_edge_jaccard", 1)
+            psdej = sem.get("pval_direct_edge_jaccard", 1)
+            pssd = sem.get("pval_spectral_distance", 1)
+            tex_lines.append(
+                f"{pair_label} & {n} & "
+                f"{snj:.3f} ({_fmt_p(psnj)}) & {smej:.3f} ({_fmt_p(psmej)}) & "
+                f"{sdej:.3f} ({_fmt_p(psdej)}) & {ssd:.3f} ({_fmt_p(pssd)}) \\\\"
+            )
+    else:
+        tex_lines = [
+            r"\begin{table}[ht]",
+            r"\centering",
+            r"\caption{Cross-model DAG agreement. Observed metric values with permutation-test $p$-values ($n=5{,}000$ permutations). Node and edge Jaccard test whether same-question DAGs share more labels/connections than chance; spectral distance tests topological similarity.}",
+            r"\label{tab:cross_model_agreement}",
+            r"\small",
+            r"\begin{tabular}{lcccc}",
+            r"\toprule",
+            r"Model Pair & $n$ & Node Jaccard ($p$) & Edge Jaccard ($p$) & Spectral Dist.\ ($p$) \\",
+            r"\midrule",
+        ]
+
+        for p in pairs:
+            pair_label = p["pair_short"]
+            n = p["n_shared"]
+            nj = p["obs"]["node_j"]
+            ej = p["obs"]["edge_j"]
+            sd = p["obs"]["spectral"]
+            pnj = p["pvals"]["node_j"]
+            pej = p["pvals"]["edge_j"]
+            psd = p["pvals"]["spectral"]
+            tex_lines.append(
+                f"{pair_label} & {n} & {nj:.3f} ({_fmt_p(pnj)}) & "
+                f"{ej:.3f} ({_fmt_p(pej)}) & {sd:.3f} ({_fmt_p(psd)}) \\\\"
+            )
+
+    tex_lines += [
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\end{table}",
     ]
-    pair_labels = [p["pair_short"] for p in pairs]
 
-    fig, axes = plt.subplots(1, 3, figsize=(16, max(5, len(pairs) * 1.2 + 1)))
-    fig.patch.set_facecolor("white")
-    panel_labels = ["(a)", "(b)", "(c)"]
+    tex_path = BASE / "paper" / "tables" / "cross_model_agreement.tex"
+    tex_path.parent.mkdir(parents=True, exist_ok=True)
+    tex_path.write_text("\n".join(tex_lines), encoding="utf-8")
+    print(f"Saved {tex_path}")
 
-    for idx, (obs_key, perm_key, metric_label, color) in enumerate(metric_keys):
-        ax = axes.flat[idx]
-        null_dists = [p[perm_key] for p in pairs]
-        obs_vals = [p["obs"][obs_key] for p in pairs]
-        p_vals = [p["pvals"][obs_key] for p in pairs]
-
-        positions = list(range(len(pairs)))
-        # Half-violin (upper half only)
-        for j, dist in enumerate(null_dists):
-            from scipy.stats import gaussian_kde
-            kde = gaussian_kde(dist)
-            x_range = np.linspace(dist.min(), dist.max(), 200)
-            density = kde(x_range)
-            density = density / density.max() * 0.4  # scale to fit
-            ax.hlines(j, dist.min(), dist.max(), color="black",
-                      linewidth=0.8, zorder=1)
-            ax.fill_between(x_range, j - density, j, alpha=0.5, color=color,
-                            edgecolor=color, linewidth=0.5)
-
-        for j, obs_val in enumerate(obs_vals):
-            ax.scatter([obs_val], [j], color=color, s=100, zorder=5,
-                       edgecolors="black", linewidths=1.5, marker="D")
-
-        ax.set_yticks(positions)
-        ax.set_yticklabels(pair_labels, fontsize=8)
-        ax.set_xlabel(metric_label, fontsize=9)
-        ax.tick_params(axis="x", labelsize=8)
-        ax.xaxis.set_major_locator(plt.MaxNLocator(5))
-        ax.invert_yaxis()
-        ax.text(-0.12, 1.05, panel_labels[idx], transform=ax.transAxes,
-                fontsize=14, fontweight="bold")
-
-    plt.tight_layout()
+    # Clean up old figure files
     for ext in ["png", "pdf"]:
-        fig.savefig(str(OUT / "supplementary" / f"cross_model_agreement.{ext}"),
-                    dpi=300, bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    print("Saved cross_model_agreement")
+        old = OUT / "supplementary" / f"cross_model_agreement.{ext}"
+        if old.exists():
+            old.unlink()
+            print(f"  Removed old {old.name}")
 
     # ═══════════════════════════════════════════════════════════════════════
-    # FIGURE 2: Critical path vs peripheral edges
+    # FIGURE 2: Shortest-path vs peripheral edges
     # ═══════════════════════════════════════════════════════════════════════
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
     fig.patch.set_facecolor("white")
 
-    # (a) Critical vs peripheral mean shift per model
+    # (a) Shortest-path vs peripheral mean shift per model
     x = np.arange(len(runs))
     w = 0.35
     on_means, off_means = [], []
@@ -206,7 +271,7 @@ def main():
               f"off_path n={len(off)} mean={np.mean(off):.3f}")
 
     ax1.bar(x - w/2, on_means, w, yerr=on_sems, color=VERMILLION, alpha=0.7,
-            label="Critical path", capsize=4)
+            label="Shortest path", capsize=4)
     ax1.bar(x + w/2, off_means, w, yerr=off_sems, color="#AAAAAA", alpha=0.7,
             label="Peripheral", capsize=4)
     ax1.set_xticks(x)
@@ -217,7 +282,7 @@ def main():
 
     # (b) By specific edge probe type
     edge_types = ["edge_negate_critical", "edge_negate_peripheral", "edge_reverse", "edge_spurious"]
-    edge_labels = ["Negate\nCritical", "Negate\nPeripheral", "Reverse\nEdge", "Spurious\nEdge"]
+    edge_labels = ["Negate\nShortest-Path", "Negate\nPeripheral", "Reverse\nEdge", "Spurious\nEdge"]
 
     x2 = np.arange(len(edge_types))
     n_models = len(runs)
@@ -245,23 +310,24 @@ def main():
 
     plt.tight_layout()
     for ext in ["png", "pdf"]:
-        fig.savefig(str(OUT / f"critical_path_premium.{ext}"),
+        fig.savefig(str(OUT / f"shortest_path_premium.{ext}"),
                     dpi=300, bbox_inches="tight", facecolor="white")
     plt.close(fig)
-    print("Saved critical_path_premium")
+    print("Saved shortest_path_premium")
 
     # ═══════════════════════════════════════════════════════════════════════
     # FIGURE 3: Asymmetry — negate vs strengthen
     # ═══════════════════════════════════════════════════════════════════════
+    from scipy import stats as sp_stats
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    fig, ax = plt.subplots(figsize=(7, 5))
     fig.patch.set_facecolor("white")
 
-    # (a) Paired bar: negate_high vs strengthen per model
     x = np.arange(len(runs))
     w = 0.35
     neg_means, str_means = [], []
     neg_sems, str_sems = [], []
+    p_values = []
 
     for name, (rows, q_data) in runs.items():
         successful = [r for r in rows
@@ -274,46 +340,44 @@ def main():
         str_means.append(np.mean(stren) if stren else 0)
         neg_sems.append(np.std(neg)/np.sqrt(len(neg)) if len(neg) > 1 else 0)
         str_sems.append(np.std(stren)/np.sqrt(len(stren)) if len(stren) > 1 else 0)
+        # Two-sample Mann-Whitney U test
+        if len(neg) > 1 and len(stren) > 1:
+            _, p = sp_stats.mannwhitneyu(neg, stren, alternative="two-sided")
+        else:
+            p = 1.0
+        p_values.append(p)
         print(f"  {name}: negate n={len(neg)} mean={np.mean(neg):.3f}, "
-              f"strengthen n={len(stren)} mean={np.mean(stren):.3f}")
+              f"strengthen n={len(stren)} mean={np.mean(stren):.3f}, p={p:.4f}")
 
-    ax1.bar(x - w/2, neg_means, w, yerr=neg_sems, color=VERMILLION, alpha=0.7,
-            label="Negate (high-importance)", capsize=4)
-    ax1.bar(x + w/2, str_means, w, yerr=str_sems, color=GREEN, alpha=0.7,
-            label="Strengthen (high-importance)", capsize=4)
-    ax1.set_xticks(x)
-    ax1.set_xticklabels(list(runs.keys()), fontsize=9)
-    ax1.set_ylabel("Mean |Probability Shift|")
-    ax1.legend(fontsize=8, frameon=False)
-    ax1.text(-0.08, 1.05, "(a)", transform=ax1.transAxes, fontsize=14, fontweight="bold")
+    ax.bar(x - w/2, neg_means, w, yerr=neg_sems, color=VERMILLION, alpha=0.7,
+           label="Negate (high-importance)", capsize=4)
+    ax.bar(x + w/2, str_means, w, yerr=str_sems, color=GREEN, alpha=0.7,
+           label="Strengthen (high-importance)", capsize=4)
+    ax.set_xticks(x)
+    ax.set_xticklabels(list(runs.keys()), fontsize=9)
+    ax.set_ylabel("Mean |Probability Shift|")
+    ax.legend(fontsize=9, frameon=False)
 
-    # (b) Scatter: per-question negate vs strengthen
-    for name, (rows, q_data) in runs.items():
-        successful = [r for r in rows
-                      if r.get("success") and r.get("absolute_shift") is not None]
-        by_q = defaultdict(lambda: {"neg": [], "str": []})
-        for r in successful:
-            if r.get("probe_type") == "node_negate_high":
-                by_q[r["question_id"]]["neg"].append(r["absolute_shift"])
-            elif r.get("probe_type") == "node_strengthen":
-                by_q[r["question_id"]]["str"].append(r["absolute_shift"])
+    # Significance brackets
+    for i, p in enumerate(p_values):
+        if p < 0.001:
+            star = "***"
+        elif p < 0.01:
+            star = "**"
+        elif p < 0.05:
+            star = "*"
+        else:
+            star = "n.s."
+        y_top = max(neg_means[i] + neg_sems[i], str_means[i] + str_sems[i]) + 0.008
+        ax.plot([i - w/2, i - w/2, i + w/2, i + w/2],
+                [y_top, y_top + 0.004, y_top + 0.004, y_top],
+                color="black", linewidth=1.0)
+        ax.text(i, y_top + 0.005, star, ha="center", va="bottom",
+                fontsize=10, fontweight="bold")
 
-        neg_q, str_q = [], []
-        for qid, vals in by_q.items():
-            if vals["neg"] and vals["str"]:
-                neg_q.append(np.mean(vals["neg"]))
-                str_q.append(np.mean(vals["str"]))
-
-        ax2.scatter(str_q, neg_q, color=MODEL_COLORS[name], alpha=0.5, s=30, label=name)
-
-    # Identity line
-    lim = max(ax2.get_xlim()[1], ax2.get_ylim()[1])
-    ax2.plot([0, lim], [0, lim], "k--", alpha=0.3, linewidth=1)
-    ax2.set_xlabel("Mean |Shift| \u2014 Strengthen Probes")
-    ax2.set_ylabel("Mean |Shift| \u2014 Negate Probes")
-    ax2.legend(fontsize=8, frameon=False)
-    ax2.set_aspect("equal")
-    ax2.text(-0.08, 1.05, "(b)", transform=ax2.transAxes, fontsize=14, fontweight="bold")
+    # Add padding so stars aren't clipped
+    ylo, yhi = ax.get_ylim()
+    ax.set_ylim(ylo, yhi + 0.02)
 
     plt.tight_layout()
     for ext in ["png", "pdf"]:

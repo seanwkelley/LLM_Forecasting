@@ -46,6 +46,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from forecast_bench.semantic_graph_match import semantic_jaccard_pair
 from forecast_bench.analysis_causal import (
     load_causal_results,
     compute_anchoring_metrics,
@@ -427,6 +428,24 @@ def analyze_test_retest(
         if nodes_1 or nodes_2:
             node_jaccards.append(len(nodes_1 & nodes_2) / len(nodes_1 | nodes_2))
 
+    # Semantic node Jaccard (embedding-based)
+    semantic_node_jaccards = []
+    for qid in shared_ids:
+        n1 = [n for n in run1_questions[qid].get("nodes", []) if n.get("role") != "outcome"]
+        n2 = [n for n in run2_questions[qid].get("nodes", []) if n.get("role") != "outcome"]
+        if n1 and n2:
+            try:
+                sem = semantic_jaccard_pair(
+                    n1, n2,
+                    edges1=run1_questions[qid].get("edges", []),
+                    edges2=run2_questions[qid].get("edges", []),
+                    condition1="run1", condition2="run2",
+                    qid=qid,
+                )
+                semantic_node_jaccards.append(sem["node_jaccard"])
+            except Exception:
+                pass
+
     # Per-question mean shift comparison
     def _question_mean_shifts(questions):
         result = {}
@@ -462,6 +481,7 @@ def analyze_test_retest(
         "graph_similarity": {
             "mean_edge_jaccard": round(sum(jaccards) / len(jaccards), 4) if jaccards else None,
             "mean_node_jaccard": round(sum(node_jaccards) / len(node_jaccards), 4) if node_jaccards else None,
+            "mean_semantic_node_jaccard": round(sum(semantic_node_jaccards) / len(semantic_node_jaccards), 4) if semantic_node_jaccards else None,
             "n_graphs": len(jaccards),
         },
         "mean_shift_reliability": {
@@ -1544,20 +1564,24 @@ def analyze_probe_assertiveness_control(
 
 
 # =============================================================================
-# 14. GROUND TRUTH CALIBRATION
+# 14. CALIBRATION (vs MARKET FREEZE PROBABILITIES)
 # =============================================================================
 
 # Path to bundled ForecastBench questions (has freeze_datetime_value)
 _FORECASTBENCH_PATH = Path(__file__).parent / "forecastbench_questions.json"
-# Path to resolved ground truth (prediction market + data source resolutions)
+# Path to resolved reference values (market freeze probabilities + data source resolutions)
 _GROUND_TRUTH_PATH = Path(__file__).parent.parent / "outputs" / "sensitivity" / "causal" / "ground_truth_resolutions.json"
 
 
 def _load_freeze_values() -> dict[str, float]:
-    """Load ground truth outcome probabilities for calibration.
+    """Load market/resolution reference probabilities for calibration.
 
-    Prefers the resolved ground truth file (ground_truth_resolutions.json)
-    which includes both prediction market probabilities and resolved data
+    These are prediction-market consensus probabilities at freeze time,
+    not binary ground-truth outcomes. For data-source questions, resolved
+    binary outcomes (0/1) are used instead.
+
+    Prefers the resolved file (ground_truth_resolutions.json) which
+    includes both prediction market probabilities and resolved data
     source outcomes. Falls back to prediction-market-only freeze values
     from the ForecastBench questions file.
     """

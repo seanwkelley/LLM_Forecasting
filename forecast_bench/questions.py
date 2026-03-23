@@ -31,7 +31,7 @@ BUNDLED_PATH = Path(__file__).parent / "forecastbench_questions.json"
 
 
 def load_forecastbench_questions(
-    max_questions: int = 50,
+    max_questions: int = 100,
     seed: int = 42,
     questions_file: str | None = None,
 ) -> list[dict]:
@@ -187,16 +187,39 @@ def _filter_and_sample(
     questions: list[dict],
     max_questions: int,
     seed: int,
+    _original_n: int = 51,
 ) -> list[dict]:
-    """Filter valid questions and take a random subset."""
+    """Filter valid questions and take a random subset.
+
+    Uses a two-stage selection to maintain backwards compatibility:
+    the first ``_original_n`` questions are chosen with
+    ``rng.sample(seed)``, matching the original data-collection runs.
+    Any additional questions beyond that are drawn from the remaining
+    pool with ``seed + 1``, so increasing ``max_questions`` only *adds*
+    new questions without changing the existing set.
+    """
     # Remove questions with empty text
     questions = [q for q in questions if q.get("question", "").strip()]
 
     if len(questions) <= max_questions:
         return questions
 
+    # Stage 1 — original selection (backwards compatible)
+    n_first = min(_original_n, max_questions)
     rng = random.Random(seed)
-    return rng.sample(questions, max_questions)
+    first_batch = rng.sample(questions, n_first)
+
+    if max_questions <= _original_n:
+        return first_batch
+
+    # Stage 2 — additional questions from the remainder
+    first_ids = {q.get("id") for q in first_batch}
+    remaining = [q for q in questions if q.get("id") not in first_ids]
+    n_extra = min(max_questions - n_first, len(remaining))
+    rng2 = random.Random(seed + 1)
+    extra = rng2.sample(remaining, n_extra)
+
+    return first_batch + extra
 
 
 def _builtin_sample_questions(max_questions: int, seed: int) -> list[dict]:

@@ -134,7 +134,7 @@ def run_stage1(client, question_text, system_prompt):
 def main():
     parser = argparse.ArgumentParser(description="Superforecasting DAG comparison")
     parser.add_argument("--model", default="llama-70b", choices=list(MODEL_MAP.keys()))
-    parser.add_argument("--max-questions", type=int, default=51)
+    parser.add_argument("--max-questions", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output-dir", type=str, default=None)
     parser.add_argument("--resume", action="store_true")

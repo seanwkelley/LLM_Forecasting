@@ -236,6 +236,20 @@ def load_causal_results(csv_path: Path) -> list[dict]:
             row["success"] = str(row.get("success", "")).lower() == "true"
             row["target_on_critical_path"] = str(row.get("target_on_critical_path", "")).lower() == "true"
             row["probe_generated"] = str(row.get("probe_generated", "")).lower() == "true"
+            # Normalize non-standard probe types to canonical names
+            pt = row.get("probe_type", "")
+            _PROBE_TYPE_NORMALIZE = {
+                "irlevant": "irrelevant",
+                "edge_missing": "edge_spurious",
+                "edge_omitted": "edge_spurious",
+                "edge_added": "edge_fabricate",
+                "edge_addition": "edge_fabricate",
+                "edge_add": "edge_fabricate",
+                "edge_add_causal": "edge_fabricate",
+                "edge_add_direct": "edge_fabricate",
+                "edge_feedback": "edge_spurious",
+            }
+            row["probe_type"] = _PROBE_TYPE_NORMALIZE.get(pt, pt)
             rows.append(row)
     return rows
 
@@ -290,11 +304,18 @@ def structural_sensitivity_ratio(rows: list[dict]) -> dict:
     SSR > 1 = appropriately calibrated to importance.
     SSR ~ 1 = undifferentiated (treats all probes equally).
 
-    High-importance: node_negate_high, node_strengthen, edge_negate_critical
-    Low-importance: node_negate_low, edge_negate_peripheral, irrelevant
+    High-importance: node_negate_high, node_strengthen, edge_negate_critical, edge_strengthen_critical
+    Low-importance: node_negate_low, node_strengthen_low, edge_negate_peripheral, edge_strengthen_peripheral, irrelevant
     """
-    high_types = {"node_negate_high", "node_strengthen", "edge_negate_critical"}
-    low_types = {"node_negate_low", "edge_negate_peripheral", "irrelevant"}
+    high_types = {
+        "node_negate_high", "node_strengthen",
+        "edge_negate_critical", "edge_strengthen_critical",
+    }
+    low_types = {
+        "node_negate_low", "node_strengthen_low",
+        "edge_negate_peripheral", "edge_strengthen_peripheral",
+        "irrelevant",
+    }
 
     high_shifts = [
         r["absolute_shift"] for r in rows
@@ -456,21 +477,29 @@ def asymmetry_index(rows: list[dict]) -> dict:
     > 1 = negativity bias (negations cause larger shifts).
     < 1 = confirmation bias (strengthening causes larger shifts).
 
-    Compares node_negate_high vs node_strengthen (both target high-importance nodes).
+    Compares all negate probes vs all strengthen probes across matched importance levels.
 
     Returns
     -------
     Dict with index, mean_shift_negate, mean_shift_strengthen, n_negate, n_strengthen.
     """
+    negate_types = {
+        "node_negate_high", "node_negate_medium", "node_negate_low",
+        "edge_negate_critical", "edge_negate_peripheral",
+    }
+    strengthen_types = {
+        "node_strengthen", "node_strengthen_medium", "node_strengthen_low",
+        "edge_strengthen_critical", "edge_strengthen_peripheral",
+    }
     negate_shifts = [
         r["absolute_shift"] for r in rows
         if r["success"] and r["absolute_shift"] is not None
-        and r.get("probe_type") == "node_negate_high"
+        and r.get("probe_type") in negate_types
     ]
     strengthen_shifts = [
         r["absolute_shift"] for r in rows
         if r["success"] and r["absolute_shift"] is not None
-        and r.get("probe_type") == "node_strengthen"
+        and r.get("probe_type") in strengthen_types
     ]
 
     if not negate_shifts or not strengthen_shifts:

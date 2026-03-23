@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Outcome} & \textbf{$\beta$(Elo$_z$)} & \textbf{SE} & \textbf{$p$} & \textbf{LRT $\chi^2$(1)} & \textbf{$R^2_m$} & \textbf{$R^2_c$} \\
+\midrule
+\textbf{Mean absolute shift} & +0.007 & 0.001 & <.001 & 28.13 & .061 & .290 \\
+\textbf{SSR} & $-$0.237 & 0.082 & .004 & 8.44 & .027 & .092 \\
+Within-question $\tau$ & +0.017 & 0.016 & .285 & 1.14 & .003 & .022 \\
+Shortest-path premium & +0.001 & 0.001 & .449 & 0.58 & .001 & .001 \\
+\textbf{Asymmetry index} & $-$0.039 & 0.018 & .025 & 5.00 & .010 & .094 \\
+\textbf{Reasoning judge rating} & +0.083 & 0.010 & <.001 & 65.60 & .096 & .461 \\
+\textbf{Uncertainty judge rating} & $-$0.015 & 0.007 & .023 & 5.22 & .010 & .210 \\
+\textbf{Brier score} & $-$0.060 & 0.010 & <.001 & 36.13 & .203 & .207 \\
+\bottomrule
+\end{tabular}
+\caption{Mixed-effects regression: Elo difficulty predicting belief sensitivity metrics, controlling for $|p_0 - 0.5|$. All models include a random intercept for model identity. $\beta$(Elo$_z$) is the standardized coefficient; LRT $\chi^2$ tests whether adding Elo improves fit over $|p_0 - 0.5|$ alone. $R^2_m$ = marginal (fixed effects); $R^2_c$ = conditional (fixed + random). $N = 500$ (100 questions $\times$ 5 models) except Brier ($N = 240$, 48 questions with ground truth). Bold = $p < .05$.}
+\label{tab:elo_regression}
+\end{table*}

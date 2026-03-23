@@ -20,8 +20,12 @@ CAUSAL_PROBE_TYPES = [
     "node_negate_medium",
     "node_negate_low",
     "node_strengthen",
+    "node_strengthen_medium",
+    "node_strengthen_low",
     "edge_negate_critical",
     "edge_negate_peripheral",
+    "edge_strengthen_critical",
+    "edge_strengthen_peripheral",
     "edge_reverse",
     "edge_spurious",
     "missing_node",
@@ -33,8 +37,12 @@ PROBE_CATEGORIES = {
     "node_negate_medium": "node",
     "node_negate_low": "node",
     "node_strengthen": "node",
+    "node_strengthen_medium": "node",
+    "node_strengthen_low": "node",
     "edge_negate_critical": "edge",
     "edge_negate_peripheral": "edge",
+    "edge_strengthen_critical": "edge",
+    "edge_strengthen_peripheral": "edge",
     "edge_reverse": "edge",
     "edge_spurious": "edge",
     "missing_node": "structural",
@@ -62,18 +70,24 @@ uncertainty. Avoid defaulting to 50% unless you truly have no information.
 Respond with ONLY valid JSON. No other text."""
 
 
-def build_causal_forecast_prompt(question: str) -> str:
+def build_causal_forecast_prompt(
+    question: str,
+    node_range: tuple[int, int] = (4, 8),
+) -> str:
     """Build the user prompt for Stage 1: causal forecast.
 
     Parameters
     ----------
     question : str
         The binary forecasting question.
+    node_range : tuple[int, int]
+        (min, max) number of factor nodes to request.
 
     Returns
     -------
     User prompt string.
     """
+    node_min, node_max = node_range
     return f"""\
 Forecast the following question:
 
@@ -95,7 +109,7 @@ Provide your response as JSON with exactly this structure:
 }}
 
 Requirements:
-- Provide between 4 and 8 factor nodes, plus exactly 1 outcome node.
+- Provide between {node_min} and {node_max} factor nodes, plus exactly 1 outcome node.
 - Each factor node must have at least 1 outgoing edge.
 - The outcome node must have at least 1 incoming edge.
 - All edge endpoints ("from" and "to") must reference valid node IDs.
@@ -194,9 +208,23 @@ def build_causal_probe_prompt(
         "node_strengthen": (
             f"Create a plausible piece of evidence or argument that REINFORCES "
             f"the causal factor '{target_id}' ({target_desc}), making it even "
-            f"more likely to be true and more causally important. This could be "
-            f"a new data point, expert endorsement, or development that strongly "
-            f"supports this factor's role in the causal network."
+            f"more likely to be true and more causally important. This is a "
+            f"HIGH-IMPORTANCE factor. Provide a strong new data point, expert "
+            f"endorsement, or development that strongly supports this factor's "
+            f"role in the causal network."
+        ),
+        "node_strengthen_medium": (
+            f"Create a plausible piece of evidence or argument that REINFORCES "
+            f"the causal factor '{target_id}' ({target_desc}), making it even "
+            f"more likely to be true and more causally important. This is a "
+            f"MEDIUM-IMPORTANCE factor. Provide a specific piece of evidence "
+            f"or development that supports this factor."
+        ),
+        "node_strengthen_low": (
+            f"Create a plausible piece of evidence or argument that REINFORCES "
+            f"the causal factor '{target_id}' ({target_desc}), making it even "
+            f"more likely to be true and more causally important. This is a "
+            f"LOW-IMPORTANCE factor. Provide evidence that supports this factor."
         ),
         "edge_negate_critical": (
             f"Challenge the causal link '{target_id}' ({target_desc}). "
@@ -209,6 +237,19 @@ def build_causal_probe_prompt(
             f"Challenge the causal link '{target_id}' ({target_desc}). "
             f"This is a PERIPHERAL edge not on the main causal path. "
             f"Argue why this causal mechanism might not hold."
+        ),
+        "edge_strengthen_critical": (
+            f"Provide evidence or argument that REINFORCES the causal link "
+            f"'{target_id}' ({target_desc}). This is a CRITICAL edge on the "
+            f"shortest path to the outcome. Argue why this causal mechanism "
+            f"is even stronger than assumed, with a specific piece of evidence "
+            f"or recent development that confirms this link."
+        ),
+        "edge_strengthen_peripheral": (
+            f"Provide evidence or argument that REINFORCES the causal link "
+            f"'{target_id}' ({target_desc}). This is a PERIPHERAL edge not "
+            f"on the main causal path. Argue why this causal mechanism is "
+            f"stronger than assumed."
         ),
         "edge_reverse": (
             f"Argue that the causal link '{target_id}' ({target_desc}) "

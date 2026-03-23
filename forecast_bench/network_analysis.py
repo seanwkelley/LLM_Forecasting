@@ -268,13 +268,17 @@ def _select_probe_targets(
 ) -> list[ProbeTarget]:
     """Select structurally motivated probe targets.
 
-    Target allocation (up to ~18 probes):
+    Target allocation (up to ~23 probes):
     - 2 high-centrality node negations
     - 1 medium-centrality node negation
     - 1 low-centrality node negation
     - 2 high-centrality node strengthening
+    - 1 medium-centrality node strengthening
+    - 1 low-centrality node strengthening
     - 2 critical-path edge negations
     - 1 peripheral edge negation
+    - 2 critical-path edge strengthening
+    - 1 peripheral edge strengthening
     - 1 critical-path edge reversal
     - 2 spurious missing-edge probes
     - 2 missing-node probes (LLM-generated)
@@ -352,6 +356,33 @@ def _select_probe_targets(
             probe_type="node_strengthen",
         ))
 
+    # 1 median-importance node: strengthening
+    if n_factors >= 3:
+        mid_idx = n_factors // 2
+        m = factor_metrics[mid_idx]
+        targets.append(ProbeTarget(
+            target_type="node",
+            target_id=m.node_id,
+            description=m.description,
+            importance=m.betweenness,
+            centrality_rank=m._rank,
+            on_critical_path=m.path_relevance > 0,
+            probe_type="node_strengthen_medium",
+        ))
+
+    # 1 lowest-importance node: strengthening
+    if n_factors >= 2:
+        m = factor_metrics[-1]
+        targets.append(ProbeTarget(
+            target_type="node",
+            target_id=m.node_id,
+            description=m.description,
+            importance=m.betweenness,
+            centrality_rank=m._rank,
+            on_critical_path=m.path_relevance > 0,
+            probe_type="node_strengthen_low",
+        ))
+
     # --- Edge targets ---
 
     # Sort edges: critical-path first, then by betweenness
@@ -401,6 +432,31 @@ def _select_probe_targets(
             centrality_rank=len(critical_edges),
             on_critical_path=True,
             probe_type="edge_negate_peripheral",
+        ))
+
+    # 2 critical-path edge strengthening
+    for i, e in enumerate(critical_edges[:2]):
+        targets.append(ProbeTarget(
+            target_type="edge",
+            target_id=f"{e.source}->{e.target}",
+            description=e.mechanism,
+            importance=e.edge_betweenness,
+            centrality_rank=i + 1,
+            on_critical_path=True,
+            probe_type="edge_strengthen_critical",
+        ))
+
+    # 1 peripheral edge strengthening
+    if peripheral_edges:
+        e = peripheral_edges[0]
+        targets.append(ProbeTarget(
+            target_type="edge",
+            target_id=f"{e.source}->{e.target}",
+            description=e.mechanism,
+            importance=e.edge_betweenness,
+            centrality_rank=len(critical_edges) + 1,
+            on_critical_path=False,
+            probe_type="edge_strengthen_peripheral",
         ))
 
     # 1 critical-path edge reversal

@@ -67,6 +67,9 @@ MODEL_MAP = {
     "qwen": "qwen/qwen3-235b-a22b-2507",
     "gemini": "google/gemini-2.5-flash",
     "mistral": "mistralai/mistral-small-3.2-24b-instruct",
+    "gpt5nano": "openai/gpt-5-nano",
+    "gpt-oss": "openai/gpt-oss-120b",
+    "gemini-flash-lite": "google/gemini-2.5-flash-lite",
 }
 
 
@@ -123,30 +126,44 @@ def _parse_probe_result(
 def run_causal_forecast(
     client: LLMClient,
     question: dict,
+    node_range: tuple[int, int] = (4, 8),
+    max_retries: int = 2,
 ) -> dict | None:
     """Get initial probability + causal network for a question.
+
+    Retries up to ``max_retries`` times on parse failures before giving up.
 
     Returns
     -------
     Parsed response dict with probability, nodes, edges, reasoning -- or None on failure.
     """
-    user_prompt = build_causal_forecast_prompt(question["question"])
-    text, ok = client.call_single(CAUSAL_FORECAST_SYSTEM, user_prompt)
-    if not ok:
-        return None
+    user_prompt = build_causal_forecast_prompt(question["question"], node_range=node_range)
 
-    data = parse_json_response(text)
-    if data is None:
-        client.stats.parse_failures += 1
-        return None
+    for attempt in range(1 + max_retries):
+        text, ok = client.call_single(CAUSAL_FORECAST_SYSTEM, user_prompt)
+        if not ok:
+            return None
 
-    # Validate required fields
-    prob = data.get("probability")
-    nodes = data.get("nodes")
-    edges = data.get("edges")
-    if prob is None or not isinstance(nodes, list) or not isinstance(edges, list):
-        client.stats.parse_failures += 1
-        return None
+        data = parse_json_response(text)
+        if data is None:
+            if attempt < max_retries:
+                client.rate_limit_wait()
+                continue
+            client.stats.parse_failures += 1
+            return None
+
+        # Validate required fields
+        prob = data.get("probability")
+        nodes = data.get("nodes")
+        edges = data.get("edges")
+        if prob is None or not isinstance(nodes, list) or not isinstance(edges, list):
+            if attempt < max_retries:
+                client.rate_limit_wait()
+                continue
+            client.stats.parse_failures += 1
+            return None
+
+        break  # valid response
 
     # Clamp probability
     prob = max(0.01, min(0.99, float(prob)))
@@ -537,11 +554,15 @@ def run_pipeline(args):
         api_key=api_key,
         model=model,
         temperature=args.temperature,
-        max_tokens=1200,  # larger for causal network JSON
+        max_tokens=2000,  # larger for causal network JSON (verbose models need >1200)
     )
 
+    # Parse node range
+    node_range = tuple(args.node_range) if hasattr(args, 'node_range') and args.node_range else (4, 8)
+    print(f"Node range: {node_range[0]}-{node_range[1]} factors")
+
     # Stages 1, 1.5, 2 (shared across conditions)
-    shared_results = _run_shared_stages_causal(client, questions, args)
+    shared_results = _run_shared_stages_causal(client, questions, args, node_range=node_range)
 
     # Stage 3 per condition
     for condition in conditions:
@@ -654,6 +675,7 @@ def _run_shared_stages_causal(
     client: LLMClient,
     questions: list[dict],
     args,
+    node_range: tuple[int, int] = (4, 8),
 ) -> dict[str, dict]:
     """Run Stages 1, 1.5, 2 for causal mode.
 
@@ -702,7 +724,7 @@ def _run_shared_stages_causal(
         print(f"  [{q_idx+1}/{len(questions)}] {question['id'][:40]}...", end=" ")
 
         # Stage 1: Causal forecast
-        forecast = run_causal_forecast(client, question)
+        forecast = run_causal_forecast(client, question, node_range=node_range)
         client.rate_limit_wait()
 
         if forecast is None:
@@ -798,8 +820,8 @@ def main():
         help="Experimental condition (default: one-turn)",
     )
     parser.add_argument(
-        "--max-questions", type=int, default=50,
-        help="Maximum number of questions to process (default: 50)",
+        "--max-questions", type=int, default=100,
+        help="Maximum number of questions to process (default: 100)",
     )
     parser.add_argument(
         "--temperature", type=float, default=0.7,
@@ -820,6 +842,10 @@ def main():
     parser.add_argument(
         "--questions-file", default=None,
         help="Path to local JSON file with questions (skips HuggingFace)",
+    )
+    parser.add_argument(
+        "--node-range", type=int, nargs=2, default=None, metavar=("MIN", "MAX"),
+        help="Min and max factor nodes for causal DAG (default: 4 8)",
     )
 
     args = parser.parse_args()

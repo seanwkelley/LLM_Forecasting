@@ -51,8 +51,9 @@ CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 MODEL_DIRS = {
     "Llama-3.1-8B": CAUSAL_DIR / "llama_one_turn",
     "Llama-3.3-70B": CAUSAL_DIR / "70b_one_turn",
-    "DeepSeek-V3-0324": CAUSAL_DIR / "deepseek_one_turn",
+    "DeepSeek-V3": CAUSAL_DIR / "deepseek_one_turn",
     "Qwen3-235B": CAUSAL_DIR / "qwen_one_turn",
+    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_one_turn",
 }
 
 # Colorblind-safe palette (Wong 2011 / IBM Design)
@@ -60,16 +61,36 @@ MODEL_DIRS = {
 COLORS = {
     "Llama-3.1-8B": "#E69F00",        # orange
     "Llama-3.3-70B": "#0072B2",       # blue
-    "DeepSeek-V3-0324": "#D55E00",    # vermillion
+    "DeepSeek-V3": "#D55E00",    # vermillion
     "Qwen3-235B": "#009E73",          # green
+    "Gemini-Flash-Lite": "#CC79A7",  # reddish purple
 }
 
 # Category palette for probe types (colorblind-safe)
 CAT_COLORS = {
     "node": "#0072B2",       # blue
     "edge": "#D55E00",       # vermillion
-    "structural": "#009E73", # bluish green
+    "structural": "#009E73", # bluish green (unused — missing_node → node, spurious → edge)
     "control": "#999999",    # gray
+}
+
+# For figures: remap structural probes to their natural category
+DISPLAY_CATEGORIES = {
+    "node_negate_high": "node",
+    "node_negate_medium": "node",
+    "node_negate_low": "node",
+    "node_strengthen": "node",
+    "node_strengthen_medium": "node",
+    "node_strengthen_low": "node",
+    "missing_node": "node",
+    "edge_negate_critical": "edge",
+    "edge_negate_peripheral": "edge",
+    "edge_strengthen_critical": "edge",
+    "edge_strengthen_peripheral": "edge",
+    "edge_reverse": "edge",
+    "edge_spurious": "edge",
+    "edge_fabricate": "edge",
+    "irrelevant": "control",
 }
 
 # Common style
@@ -90,6 +111,18 @@ plt.rcParams.update({
     "boxplot.medianprops.color": "black",
     "boxplot.medianprops.linewidth": 1.5,
 })
+
+
+def _short_model_name(name: str) -> str:
+    """Consistent short display name for tick labels (with newline)."""
+    _MAP = {
+        "Llama-3.1-8B": "Llama\n8B",
+        "Llama-3.3-70B": "Llama\n70B",
+        "DeepSeek-V3": "DeepSeek\nV3",
+        "Qwen3-235B": "Qwen3\n235B",
+        "Gemini-Flash-Lite": "Gemini\nFlash-Lite",
+    }
+    return _MAP.get(name, name)
 
 
 def _label_axes(axes, fontsize=14):
@@ -201,11 +234,10 @@ def _bootstrap_metric(rows, metric_fn, n_boot=2000, seed=42):
 
 
 def fig_ssr_comparison(runs: dict):
-    """Bar chart comparing SSR, SAR, and importance-rho across models with 95% CIs."""
+    """Bar chart comparing SSR, within-question Kendall tau, and SAR across models with 95% CIs."""
     from forecast_bench.analysis_causal import (
         structural_sensitivity_ratio,
         spurious_acceptance_rate,
-        importance_sensitivity_correlation,
     )
 
     fig, axes = plt.subplots(1, 3, figsize=(14, 4.5))
@@ -219,14 +251,40 @@ def fig_ssr_comparison(runs: dict):
         return r.get("ssr", 0)
 
     def _sar_val(rows):
-        r = spurious_acceptance_rate(rows)
-        return r.get("acceptance_rate", 0)
+        # Control sensitivity: fraction of irrelevant probes where |shift| > 0.05
+        irrel = [r for r in rows if r.get("success") and r.get("absolute_shift") is not None
+                 and r.get("probe_type") == "irrelevant"]
+        if not irrel:
+            return 0
+        return sum(1 for r in irrel if r["absolute_shift"] > 0.05) / len(irrel)
 
-    def _rho_val(rows):
-        r = importance_sensitivity_correlation(rows)
-        return r.get("spearman_rho", 0)
+    # Helper: compute mean within-question Kendall tau for a set of rows
+    node_probe_types = {
+        "node_negate_high", "node_negate_medium", "node_negate_low",
+        "node_strengthen",
+    }
 
-    # SSR with CI
+    def _within_tau_val(rows):
+        from collections import defaultdict as _dd
+        q_probes = _dd(list)
+        for r in rows:
+            if (r.get("success")
+                and r.get("absolute_shift") is not None
+                and r.get("target_importance") is not None
+                and r.get("probe_type") in node_probe_types):
+                q_probes[r["question_id"]].append(r)
+        taus = []
+        for qid, probes in q_probes.items():
+            if len(probes) < 4:
+                continue
+            imp = [p["target_importance"] for p in probes]
+            sh = [p["absolute_shift"] for p in probes]
+            tau = _kendall_tau(imp, sh)
+            if tau is not None:
+                taus.append(tau)
+        return sum(taus) / len(taus) if taus else 0
+
+    # (a) SSR with CI
     ssrs, ssr_los, ssr_his = [], [], []
     for name, (rows, _) in runs.items():
         pt, lo, hi = _bootstrap_metric(rows, _ssr_val)
@@ -235,49 +293,52 @@ def fig_ssr_comparison(runs: dict):
         ssr_his.append(hi - pt)
     axes[0].bar(x, ssrs, yerr=[ssr_los, ssr_his], color=bar_colors,
                 edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
-    axes[0].axhline(y=1, color="gray", linestyle="--", alpha=0.5, label="SSR = 1 (no sensitivity)")
+    axes[0].axhline(y=1, color="#444444", linestyle="--", linewidth=1.5)
     axes[0].set_ylabel("Structural Sensitivity Ratio\n(SSR)")
     axes[0].set_xticks(list(x))
     axes[0].set_xticklabels([n.replace("-", "\n", 1) for n in model_names], fontsize=9)
-    axes[0].legend(fontsize=8, frameon=False)
 
-    # SAR with CI
-    sars, sar_los, sar_his = [], [], []
-    for name, (rows, _) in runs.items():
-        pt, lo, hi = _bootstrap_metric(rows, _sar_val)
-        sars.append(pt)
-        sar_los.append(pt - lo)
-        sar_his.append(hi - pt)
-    axes[1].bar(x, sars, yerr=[sar_los, sar_his], color=bar_colors,
-                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
-    axes[1].set_ylabel("Spurious Acceptance Rate\n(SAR)")
-    axes[1].set_xticks(list(x))
-    axes[1].set_xticklabels([n.replace("-", "\n", 1) for n in model_names], fontsize=9)
-    axes[1].set_ylim(0, 1)
-
-    # Importance rho with CI and p-values
-    rhos, rho_los, rho_his = [], [], []
-    rho_ps = []
-    for name, (rows, _) in runs.items():
-        pt, lo, hi = _bootstrap_metric(rows, _rho_val)
-        rhos.append(pt)
-        rho_los.append(pt - lo)
-        rho_his.append(hi - pt)
-        # Compute p-value from rho and n
-        r = importance_sensitivity_correlation(rows)
-        n = r.get("n", 0)
-        rho = r.get("spearman_rho", 0) or 0
-        if n > 2:
-            t_stat = rho * ((n - 2) / (1 - rho**2 + 1e-12))**0.5
+    # (b) Within-question Kendall tau with CI and p-values
+    taus_pt, tau_los, tau_his = [], [], []
+    tau_ps = []
+    for name, (rows, q_data) in runs.items():
+        pt, lo, hi = _bootstrap_metric(rows, _within_tau_val)
+        taus_pt.append(pt)
+        tau_los.append(pt - lo)
+        tau_his.append(hi - pt)
+        # Compute two-tailed p-value via one-sample t-test on per-question taus (H0: τ = 0)
+        from collections import defaultdict as _dd
+        q_probes = _dd(list)
+        for r in rows:
+            if (r.get("success")
+                and r.get("absolute_shift") is not None
+                and r.get("target_importance") is not None
+                and r.get("probe_type") in node_probe_types):
+                q_probes[r["question_id"]].append(r)
+        per_q_taus = []
+        for qid, probes in q_probes.items():
+            if len(probes) < 4:
+                continue
+            imp = [p["target_importance"] for p in probes]
+            sh = [p["absolute_shift"] for p in probes]
+            tau = _kendall_tau(imp, sh)
+            if tau is not None:
+                per_q_taus.append(tau)
+        if len(per_q_taus) > 1:
+            mean_t = sum(per_q_taus) / len(per_q_taus)
+            var_t = sum((t - mean_t) ** 2 for t in per_q_taus) / (len(per_q_taus) - 1)
+            se_t = (var_t / len(per_q_taus)) ** 0.5 if var_t > 0 else 1e-10
+            t_stat = mean_t / se_t
             from forecast_bench.analysis_causal import _t_to_p
-            p = _t_to_p(abs(t_stat), n - 2)
+            p = _t_to_p(abs(t_stat), len(per_q_taus) - 1)
         else:
             p = 1.0
-        rho_ps.append(p)
-    axes[2].bar(x, rhos, yerr=[rho_los, rho_his], color=bar_colors,
+        tau_ps.append(p)
+    axes[1].bar(x, taus_pt, yerr=[tau_los, tau_his], color=bar_colors,
                 edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
+    axes[1].axhline(y=0, color="#444444", linestyle="--", linewidth=1.5)
     # Add significance stars above bars
-    for i, (rho_v, hi, p) in enumerate(zip(rhos, rho_his, rho_ps)):
+    for i, (tau_v, hi, p) in enumerate(zip(taus_pt, tau_his, tau_ps)):
         if p < 0.001:
             stars = "***"
         elif p < 0.01:
@@ -286,11 +347,26 @@ def fig_ssr_comparison(runs: dict):
             stars = "*"
         else:
             stars = "n.s."
-        axes[2].annotate(stars, xy=(i, rho_v + hi), xytext=(0, 4),
+        y_pos = tau_v + hi if tau_v >= 0 else tau_v - tau_los[i]
+        axes[1].annotate(stars, xy=(i, y_pos), xytext=(0, 4),
                          textcoords="offset points", ha="center", fontsize=13, fontweight="bold")
-    axes[2].set_ylabel("Importance–Shift Correlation\n(Spearman ρ)")
+    axes[1].set_ylabel("Within-Question Importance–Shift\n(Mean Kendall τ)")
+    axes[1].set_xticks(list(x))
+    axes[1].set_xticklabels([n.replace("-", "\n", 1) for n in model_names], fontsize=9)
+
+    # (c) SAR with CI
+    sars, sar_los, sar_his = [], [], []
+    for name, (rows, _) in runs.items():
+        pt, lo, hi = _bootstrap_metric(rows, _sar_val)
+        sars.append(pt)
+        sar_los.append(pt - lo)
+        sar_his.append(hi - pt)
+    axes[2].bar(x, sars, yerr=[sar_los, sar_his], color=bar_colors,
+                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
+    axes[2].set_ylabel("Control Sensitivity\n(Frac. irrelevant probes with |shift| > 0.05)")
     axes[2].set_xticks(list(x))
     axes[2].set_xticklabels([n.replace("-", "\n", 1) for n in model_names], fontsize=9)
+    axes[2].set_ylim(0, 1)
 
     _label_axes(axes)
     plt.tight_layout()
@@ -305,68 +381,93 @@ def fig_ssr_comparison(runs: dict):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_shift_by_probe_type(runs: dict):
-    """Box plots of |shift| by probe type, pooled across all models."""
+    """Horizontal bar chart of mean |shift| by probe type with 95% CIs."""
     type_shifts = defaultdict(list)
     for name, (rows, _) in runs.items():
         for r in rows:
             if not r.get("success") or r.get("absolute_shift") is None:
                 continue
             pt = r.get("probe_type", "unknown")
+            # Normalize known typos/variants to canonical probe types
+            PROBE_TYPE_NORMALIZE = {
+                "irlevant": "irrelevant",
+                "edge_missing": "edge_spurious",
+                "edge_omitted": "edge_spurious",
+                "edge_added": "edge_fabricate",
+                "edge_addition": "edge_fabricate",
+                "edge_add": "edge_fabricate",
+                "edge_add_causal": "edge_fabricate",
+                "edge_add_direct": "edge_fabricate",
+                "edge_feedback": "edge_spurious",
+            }
+            pt = PROBE_TYPE_NORMALIZE.get(pt, pt)
             type_shifts[pt].append(r["absolute_shift"])
 
-    # Order by median shift
-    ordered = sorted(type_shifts.items(), key=lambda kv: _median(kv[1]), reverse=True)
+    # Readable labels
+    PRETTY_LABELS = {
+        "node_negate_high": "Negate High-Importance Node",
+        "node_negate_medium": "Negate Medium-Importance Node",
+        "node_negate_low": "Negate Low-Importance Node",
+        "node_strengthen": "Strengthen High-Importance Node",
+        "node_strengthen_medium": "Strengthen Medium Node",
+        "node_strengthen_low": "Strengthen Low Node",
+        "edge_negate_critical": "Negate Shortest-Path Edge",
+        "edge_negate_peripheral": "Negate Peripheral Edge",
+        "edge_strengthen_critical": "Strengthen Shortest-Path Edge",
+        "edge_strengthen_peripheral": "Strengthen Peripheral Edge",
+        "edge_reverse": "Reverse Edge",
+        "edge_spurious": "Spurious Edge",
+        "edge_fabricate": "Fabricate Edge",
+        "missing_node": "Missing Node",
+        "irrelevant": "Irrelevant (Control)",
+    }
+
+    # Order by mean shift (ascending so highest is at top of horizontal plot)
+    ordered = sorted(type_shifts.items(),
+                     key=lambda kv: sum(kv[1]) / len(kv[1]) if kv[1] else 0)
     labels = [k for k, _ in ordered]
     data = [v for _, v in ordered]
 
-    # Color by category
-    cat_colors = CAT_COLORS
-    from forecast_bench.prompts_causal import PROBE_CATEGORIES
-    face_colors = [cat_colors.get(PROBE_CATEGORIES.get(l, "structural"), "#999") for l in labels]
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    bp = ax.boxplot(data, tick_labels=[l.replace("_", "\n") for l in labels],
-                    patch_artist=True, widths=0.6, showfliers=False)
-    for patch, color in zip(bp["boxes"], face_colors):
-        patch.set_facecolor(color)
-        patch.set_alpha(0.6)
-
-    # Add significance stars (one-sample t-test: mean > 0)
-    from forecast_bench.analysis_causal import _t_to_p
-    for i, (label, vals) in enumerate(ordered):
-        if len(vals) < 2:
-            continue
-        mean_v = sum(vals) / len(vals)
-        var_v = sum((v - mean_v) ** 2 for v in vals) / (len(vals) - 1)
-        se_v = var_v ** 0.5 / len(vals) ** 0.5
-        t_stat = mean_v / se_v if se_v > 0 else 0
-        p = _t_to_p(abs(t_stat), len(vals) - 1)
-        if p < 0.001:
-            stars = "***"
-        elif p < 0.01:
-            stars = "**"
-        elif p < 0.05:
-            stars = "*"
+    # Compute means and 95% CIs
+    means = []
+    ci_los = []
+    ci_his = []
+    for vals in data:
+        n = len(vals)
+        m = sum(vals) / n if n else 0
+        means.append(m)
+        if n > 1:
+            se = (sum((v - m) ** 2 for v in vals) / (n - 1)) ** 0.5 / n ** 0.5
+            ci_los.append(1.96 * se)
+            ci_his.append(1.96 * se)
         else:
-            stars = "n.s."
-        # Place above the whisker
-        whisker_top = bp["caps"][2 * i + 1].get_ydata()[0]
-        ax.annotate(stars, xy=(i + 1, whisker_top), xytext=(0, 4),
-                    textcoords="offset points", ha="center", fontsize=11, fontweight="bold")
+            ci_los.append(0)
+            ci_his.append(0)
 
-    ax.set_ylabel("|Probability Shift|")
+    # Color by category
+    face_colors = [CAT_COLORS.get(DISPLAY_CATEGORIES.get(l, "control"), "#999") for l in labels]
+    pretty = [PRETTY_LABELS.get(l, l.replace("_", " ").title()) for l in labels]
+
+    fig, ax = plt.subplots(figsize=(9, 6))
+    y = list(range(len(labels)))
+    for i, (m, lo, hi, color) in enumerate(zip(means, ci_los, ci_his, face_colors)):
+        ax.plot([m - lo, m + hi], [i, i], color=color, linewidth=3, solid_capstyle="round")
+        ax.plot(m, i, "o", color=color, markersize=8, markeredgecolor="black",
+                markeredgewidth=0.8, zorder=5)
+    ax.set_yticks(y)
+    ax.set_yticklabels(pretty, fontsize=10)
+    ax.set_xlabel("Mean |Probability Shift|")
+    ax.axvline(x=0, color="#333333", linewidth=1.0, linestyle="--", zorder=0)
 
     # Legend for categories
     from matplotlib.patches import Patch
     legend_elements = [
-        Patch(facecolor=CAT_COLORS["node"], alpha=0.6, label="Node probes"),
-        Patch(facecolor=CAT_COLORS["edge"], alpha=0.6, label="Edge probes"),
-        Patch(facecolor=CAT_COLORS["structural"], alpha=0.6, label="Structural probes"),
-        Patch(facecolor=CAT_COLORS["control"], alpha=0.6, label="Control probes"),
+        Patch(facecolor=CAT_COLORS["node"], alpha=0.7, label="Node probes"),
+        Patch(facecolor=CAT_COLORS["edge"], alpha=0.7, label="Edge probes"),
+        Patch(facecolor=CAT_COLORS["control"], alpha=0.7, label="Control probes"),
     ]
-    ax.legend(handles=legend_elements, loc="upper right", frameon=False)
+    ax.legend(handles=legend_elements, loc="lower right", frameon=False, fontsize=9)
 
-    plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     plt.savefig(FIGURES_DIR / "shift_by_probe_type.png")
     plt.savefig(FIGURES_DIR / "shift_by_probe_type.pdf")
@@ -379,64 +480,112 @@ def fig_shift_by_probe_type(runs: dict):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_calibration(runs: dict):
-    """Calibration curve: predicted probability vs ground truth."""
+    """Combined figure: (a) cross-model initial probabilities, (b) calibration curve."""
+    from matplotlib.patches import Patch
+
     freeze_vals = _load_freeze_values()
-    if not freeze_vals:
-        print("  [SKIP] No ground truth data")
-        return
+    model_names = list(runs.keys())
 
-    fig, ax = plt.subplots(figsize=(6, 6))
-    ax.plot([0, 1], [0, 1], "k--", alpha=0.3, linewidth=1, label="Perfect calibration")
-
+    # Collect per-question initial probabilities
+    model_probs = {}
     for name, (rows, q_data) in runs.items():
-        pairs = []
+        probs = {}
         for qid, qd in q_data.items():
-            if qid in freeze_vals:
-                pred = qd.get("initial_probability")
-                if pred is not None:
-                    pairs.append((pred, freeze_vals[qid]))
+            p = qd.get("initial_probability")
+            if p is not None:
+                probs[qid] = p
+        model_probs[name] = probs
 
-        if len(pairs) < 5:
-            continue
+    shared_qids = set.intersection(*(set(p.keys()) for p in model_probs.values()))
+    shared_qids = sorted(shared_qids)
 
-        # Bin into quintiles
-        pairs.sort(key=lambda p: p[0])
-        n_bins = 5
-        bin_size = len(pairs) // n_bins
-        bin_preds = []
-        bin_actuals = []
-        bin_ns = []
-        for i in range(n_bins):
-            start = i * bin_size
-            end = start + bin_size if i < n_bins - 1 else len(pairs)
-            chunk = pairs[start:end]
-            bin_preds.append(sum(p for p, _ in chunk) / len(chunk))
-            bin_actuals.append(sum(a for _, a in chunk) / len(chunk))
-            bin_ns.append(len(chunk))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7),
+                                     gridspec_kw={"width_ratios": [1, 1]})
 
-        ax.plot(bin_preds, bin_actuals, "o-", color=COLORS[name], markersize=8,
-                linewidth=2, label=f"{name} (n={len(pairs)})")
+    # ── (a) Connected dot plot ──
+    q_means = []
+    for qid in shared_qids:
+        vals = [model_probs[m][qid] for m in model_names]
+        q_means.append((qid, sum(vals) / len(vals)))
+    q_means.sort(key=lambda x: x[1])
+    sorted_qids = [qid for qid, _ in q_means]
 
-        # Add error region
-        for bp, ba, bn in zip(bin_preds, bin_actuals, bin_ns):
-            se = (ba * (1 - ba) / max(bn, 1)) ** 0.5
-            ax.fill_between([bp - 0.01, bp + 0.01],
-                           [ba - 1.96 * se] * 2, [ba + 1.96 * se] * 2,
-                           alpha=0.1, color=COLORS[name])
+    y_positions = range(len(sorted_qids))
 
-    ax.set_xlabel("Predicted Probability")
-    ax.set_ylabel("Ground Truth Probability")
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.set_aspect("equal")
-    ax.legend(loc="upper left", fontsize=9, frameon=False)
-    ax.grid(True, alpha=0.2)
+    # Connect dots per question with gray lines (draw first)
+    for yi, qid in enumerate(sorted_qids):
+        vals = [model_probs[m][qid] for m in model_names]
+        ax1.plot([min(vals), max(vals)], [yi, yi], color="gray",
+                 linewidth=1.0, alpha=0.5, zorder=1)
 
-    plt.tight_layout()
-    plt.savefig(FIGURES_DIR / "calibration_curve.png")
-    plt.savefig(FIGURES_DIR / "calibration_curve.pdf")
+    for name in model_names:
+        x_vals = [model_probs[name][qid] for qid in sorted_qids]
+        ax1.scatter(x_vals, y_positions, alpha=0.8, s=40, color=COLORS[name],
+                    edgecolor="white", linewidth=0.5, zorder=3)
+
+    ax1.set_xlabel("Initial Probability")
+    ax1.set_ylabel("Questions (sorted by mean probability)")
+    ax1.set_xlim(0, 1)
+    ax1.set_yticks([])
+    # ax1.grid(axis="x", alpha=0.2)
+
+    # ── (b) Calibration curve ──
+    if freeze_vals:
+        ax2.plot([0, 1], [0, 1], "k--", alpha=0.3, linewidth=1, label="Perfect calibration")
+
+        for name, (rows, q_data) in runs.items():
+            pairs = []
+            for qid, qd in q_data.items():
+                if qid in freeze_vals:
+                    pred = qd.get("initial_probability")
+                    if pred is not None:
+                        pairs.append((pred, freeze_vals[qid]))
+
+            if len(pairs) < 5:
+                continue
+
+            pairs.sort(key=lambda p: p[0])
+            n_bins = 5
+            bin_size = len(pairs) // n_bins
+            bin_preds, bin_actuals, bin_ns = [], [], []
+            for i in range(n_bins):
+                start = i * bin_size
+                end = start + bin_size if i < n_bins - 1 else len(pairs)
+                chunk = pairs[start:end]
+                bin_preds.append(sum(p for p, _ in chunk) / len(chunk))
+                bin_actuals.append(sum(a for _, a in chunk) / len(chunk))
+                bin_ns.append(len(chunk))
+
+            ax2.plot(bin_preds, bin_actuals, "o-", color=COLORS[name], markersize=8,
+                     linewidth=2)
+
+            for bp, ba, bn in zip(bin_preds, bin_actuals, bin_ns):
+                se = (ba * (1 - ba) / max(bn, 1)) ** 0.5
+                ax2.fill_between([bp - 0.01, bp + 0.01],
+                                [ba - 1.96 * se] * 2, [ba + 1.96 * se] * 2,
+                                alpha=0.1, color=COLORS[name])
+
+        ax2.set_xlabel("LLM Predicted Probability")
+        ax2.set_ylabel("Reference Probability")
+        ax2.set_xlim(0, 1)
+        ax2.set_ylim(0, 1)
+        # No aspect constraint — let both panels fill equally
+        # ax2.grid(True, alpha=0.2)
+        pass  # caption describes reference sources
+    else:
+        ax2.text(0.5, 0.5, "No market reference data", ha="center", va="center",
+                 transform=ax2.transAxes)
+
+    _label_axes([ax1, ax2])
+    # Shared legend on the right side
+    legend_handles = [Patch(facecolor=COLORS[name], label=name) for name in model_names]
+    fig.legend(handles=legend_handles, loc="center right", fontsize=10, frameon=False,
+               bbox_to_anchor=(0.99, 0.5))
+    plt.tight_layout(rect=[0, 0, 0.88, 1])
+    plt.savefig(FIGURES_DIR / "initial_probabilities.png")
+    plt.savefig(FIGURES_DIR / "initial_probabilities.pdf")
     plt.close()
-    print("  Saved calibration_curve.png/pdf")
+    print("  Saved initial_probabilities.png/pdf")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -527,7 +676,8 @@ def fig_reasoning_coherence(runs: dict):
 
     # Map judge model keys to figure model names
     judge_model_map = {"llama-8b": "Llama-3.1-8B", "llama-70b": "Llama-3.3-70B",
-                       "deepseek": "DeepSeek-V3-0324", "qwen": "Qwen3-235B"}
+                       "deepseek": "DeepSeek-V3", "qwen": "Qwen3-235B",
+                       "gemini": "Gemini-Flash-Lite"}
 
     # Collect shifts by rating, pooled across all models
     rating_shifts = {r: [] for r in range(1, 6)}
@@ -634,7 +784,7 @@ def fig_probability_distributions(runs: dict):
     ax1.set_xlim(0, 1)
     ax1.set_yticks([])
     ax1.legend(fontsize=8, loc="lower right", frameon=False)
-    ax1.grid(axis="x", alpha=0.2)
+    # ax1.grid(axis="x", alpha=0.2)
 
     # (b) Distribution of per-question spread (max - min across models)
     spreads = []
@@ -683,15 +833,14 @@ def fig_cross_model_shifts(runs: dict):
         ax1.scatter([i + 1], [mean_v], marker="D", color="black", s=30, zorder=5)
     ax1.set_ylabel("|Probability Shift|")
 
-    # Shift by probe category (node / edge / structural) per model
-    from forecast_bench.prompts_causal import PROBE_CATEGORIES
-    cat_order = ["node", "edge", "structural", "control"]
-    cat_labels = ["Node", "Edge", "Structural", "Control"]
+    # Shift by probe category (node / edge / control) per model
+    cat_order = ["node", "edge", "control"]
+    cat_labels = ["Node", "Edge", "Control"]
     cat_colors_list = [CAT_COLORS[c] for c in cat_order]
 
     x = np.arange(len(model_names))
     n_cats = len(cat_order)
-    width = 0.2
+    width = 0.25
 
     for ci, cat in enumerate(cat_order):
         means = []
@@ -699,7 +848,7 @@ def fig_cross_model_shifts(runs: dict):
         for name, (rows, _) in runs.items():
             vals = [r["absolute_shift"] for r in rows
                     if r.get("success") and r.get("absolute_shift") is not None
-                    and PROBE_CATEGORIES.get(r.get("probe_type", ""), "") == cat]
+                    and DISPLAY_CATEGORIES.get(r.get("probe_type", ""), "") == cat]
             if vals:
                 m = sum(vals) / len(vals)
                 se = (sum((v - m)**2 for v in vals) / len(vals))**0.5 / len(vals)**0.5
@@ -714,7 +863,7 @@ def fig_cross_model_shifts(runs: dict):
     ax2.set_ylabel("Mean |Probability Shift|")
     ax2.set_xticks(x)
     ax2.set_xticklabels([n.replace("-", "\n", 1) for n in model_names], fontsize=9)
-    ax2.legend(frameon=False)
+    ax2.legend(frameon=False, loc="upper left")
 
     _label_axes([ax1, ax2])
     plt.tight_layout()
@@ -729,57 +878,326 @@ def fig_cross_model_shifts(runs: dict):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_null_test(runs: dict):
-    """Compare shift distributions: real probes vs irrelevant controls."""
-    name = list(runs.keys())[0]
-    rows = runs[name][0]
+    """Two-panel forest plot: (a) shift separation, (b) reasoning embedding separation.
 
-    real_shifts = [r["absolute_shift"] for r in rows
-                   if r.get("success") and r.get("absolute_shift") is not None
-                   and r.get("probe_type") != "irrelevant"]
-    irrel_shifts = [r["absolute_shift"] for r in rows
-                    if r.get("success") and r.get("absolute_shift") is not None
-                    and r.get("probe_type") == "irrelevant"]
+    Both panels compare structural vs control probes per model using a forest plot
+    with per-model effects and a pooled estimate.
+    """
+    from collections import defaultdict
+    from scipy.stats import wilcoxon
+    import json as _json
 
-    fig, ax = plt.subplots(figsize=(7, 4.5))
-    bins = [i * 0.02 for i in range(26)]
+    model_names = list(runs.keys())
 
-    ax.hist(real_shifts, bins=bins, alpha=0.5, color="#0072B2",
-            edgecolor="#0072B2", linewidth=0.8, label=f"Real probes (n={len(real_shifts)})",
-            density=True)
-    ax.hist(irrel_shifts, bins=bins, alpha=0.5, color="#D55E00",
-            edgecolor="#D55E00", linewidth=0.8, label=f"Irrelevant probes (n={len(irrel_shifts)})",
-            density=True)
+    # ── Panel (a) data: shift difference (real - irrelevant) ──
+    a_labels, a_effects, a_ci_los, a_ci_his = [], [], [], []
+    all_diffs_a = []
 
-    # Add means
-    real_mean = sum(real_shifts) / len(real_shifts)
-    irrel_mean = sum(irrel_shifts) / len(irrel_shifts)
-    ax.axvline(real_mean, color="#0072B2", linestyle="--", linewidth=2,
-               label=f"Real mean = {real_mean:.3f}")
-    ax.axvline(irrel_mean, color="#D55E00", linestyle="--", linewidth=2,
-               label=f"Irrelevant mean = {irrel_mean:.3f}")
+    for name in model_names:
+        rows = runs[name][0]
+        question_groups = defaultdict(lambda: {"real": [], "irrelevant": []})
+        for r in rows:
+            if not r.get("success") or r.get("absolute_shift") is None:
+                continue
+            qid = r["question_id"]
+            if r.get("probe_type") == "irrelevant":
+                question_groups[qid]["irrelevant"].append(r["absolute_shift"])
+            else:
+                question_groups[qid]["real"].append(r["absolute_shift"])
 
-    # Welch's t-test for p-value
-    from forecast_bench.analysis_causal import _t_to_p
-    n1, n2 = len(real_shifts), len(irrel_shifts)
-    m1, m2 = real_mean, irrel_mean
-    var1 = sum((x - m1)**2 for x in real_shifts) / (n1 - 1)
-    var2 = sum((x - m2)**2 for x in irrel_shifts) / (n2 - 1)
-    se = (var1 / n1 + var2 / n2) ** 0.5
-    t_stat = (m1 - m2) / se if se > 0 else 0
-    df = min(n1, n2) - 1
-    p_val = _t_to_p(abs(t_stat), df)
-    p_str = f"p < 0.001" if p_val < 0.001 else f"p = {p_val:.3f}"
-    ax.annotate(f"t = {t_stat:.1f}, {p_str}",
-                xy=(0.55, 0.88), xycoords="axes fraction",
-                fontsize=11, fontweight="bold")
+        diffs = []
+        for qid, groups in question_groups.items():
+            if groups["real"] and groups["irrelevant"]:
+                diffs.append(
+                    sum(groups["real"]) / len(groups["real"])
+                    - sum(groups["irrelevant"]) / len(groups["irrelevant"])
+                )
+        all_diffs_a.extend(diffs)
 
-    ax.set_xlabel("|Probability Shift|")
-    ax.set_ylabel("Density")
-    ax.legend(fontsize=9, frameon=False)
+        mean_d = np.mean(diffs)
+        se = np.std(diffs, ddof=1) / np.sqrt(len(diffs))
+        a_labels.append(name)
+        a_effects.append(mean_d)
+        a_ci_los.append(mean_d - 1.96 * se)
+        a_ci_his.append(mean_d + 1.96 * se)
 
+    # Pooled
+    pm = np.mean(all_diffs_a)
+    pse = np.std(all_diffs_a, ddof=1) / np.sqrt(len(all_diffs_a))
+    a_labels.append("Pooled")
+    a_effects.append(pm)
+    a_ci_los.append(pm - 1.96 * pse)
+    a_ci_his.append(pm + 1.96 * pse)
+
+    # ── Panel (b) data: embedding similarity difference (structural - control) ──
+    b_labels, b_effects, b_ci_los, b_ci_his = [], [], [], []
+    all_diffs_b = []
+
+    embeddings_path = CAUSAL_DIR / "reasoning_embeddings.npz"
+    keys_path = CAUSAL_DIR / "reasoning_embeddings_keys.json"
+    has_embeddings = embeddings_path.exists() and keys_path.exists()
+
+    embed_cache_path = CAUSAL_DIR / "embedding_separation_cache.json"
+
+    if has_embeddings:
+        # Check cache first
+        if embed_cache_path.exists():
+            cached = _json.loads(embed_cache_path.read_text(encoding="utf-8"))
+            _cached_diffs = cached.get("per_model_diffs", {})
+        else:
+            _cached_diffs = {}
+
+        keys = _json.loads(keys_path.read_text(encoding="utf-8"))
+        data = np.load(str(embeddings_path))
+        embeddings = data["embeddings"]
+
+        CONTROL_TYPES = {"irrelevant", "edge_spurious", "edge_fabricate", "missing_node"}
+
+        # Index by (model, qid)
+        model_q_index = defaultdict(list)
+        for i, k in enumerate(keys):
+            parts = k.split("|")
+            if len(parts) < 4:
+                continue
+            pt = _EMBED_PROBE_NORMALIZE.get(parts[1], parts[1])
+            if pt not in _IMPORTANCE_TIER:
+                continue
+            is_control = pt in CONTROL_TYPES
+            model_q_index[(parts[3], parts[0])].append((is_control, i))
+
+        def _cosine_sim(a, b):
+            dot = np.dot(a, b)
+            na, nb = np.linalg.norm(a), np.linalg.norm(b)
+            return dot / (na * nb) if na > 0 and nb > 0 else 0.0
+
+        model_key_map = {
+            "Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
+            "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
+            "Gemini-Flash-Lite": "gemini",
+        }
+
+        for name in model_names:
+            mk = model_key_map.get(name)
+            if not mk:
+                continue
+
+            # Use cache if available
+            if mk in _cached_diffs:
+                diffs = _cached_diffs[mk]
+                all_diffs_b.extend(diffs)
+                mean_d = np.mean(diffs) if diffs else 0
+                se = np.std(diffs, ddof=1) / np.sqrt(len(diffs)) if len(diffs) > 1 else 0
+                b_labels.append(name)
+                b_effects.append(mean_d)
+                b_ci_los.append(mean_d - 1.96 * se)
+                b_ci_his.append(mean_d + 1.96 * se)
+                continue
+
+            model_questions = set(qid for (m, qid) in model_q_index if m == mk)
+            diffs = []
+            for qid in model_questions:
+                entries = model_q_index[(mk, qid)]
+                ctrl_idx = [idx for is_ctrl, idx in entries if is_ctrl]
+                struct_idx = [idx for is_ctrl, idx in entries if not is_ctrl]
+                if len(ctrl_idx) < 2 or len(struct_idx) < 2:
+                    continue
+
+                # Within-structural mean sim
+                rng = np.random.RandomState(42)
+                pairs_s = [(struct_idx[a], struct_idx[b])
+                           for a in range(len(struct_idx)) for b in range(a+1, len(struct_idx))]
+                if len(pairs_s) > 50:
+                    sel = rng.choice(len(pairs_s), 50, replace=False)
+                    pairs_s = [pairs_s[p] for p in sel]
+                s_sims = [_cosine_sim(embeddings[a], embeddings[b]) for a, b in pairs_s]
+
+                # Within-control mean sim
+                pairs_c = [(ctrl_idx[a], ctrl_idx[b])
+                           for a in range(len(ctrl_idx)) for b in range(a+1, len(ctrl_idx))]
+                c_sims = [_cosine_sim(embeddings[a], embeddings[b]) for a, b in pairs_c]
+
+                if s_sims and c_sims:
+                    diffs.append(sum(s_sims)/len(s_sims) - sum(c_sims)/len(c_sims))
+
+            _cached_diffs[mk] = diffs
+            all_diffs_b.extend(diffs)
+            mean_d = np.mean(diffs) if diffs else 0
+            se = np.std(diffs, ddof=1) / np.sqrt(len(diffs)) if len(diffs) > 1 else 0
+            b_labels.append(name)
+            b_effects.append(mean_d)
+            b_ci_los.append(mean_d - 1.96 * se)
+            b_ci_his.append(mean_d + 1.96 * se)
+
+        # Save cache (convert numpy floats to Python floats)
+        serializable = {k: [float(v) for v in vals] for k, vals in _cached_diffs.items()}
+        embed_cache_path.write_text(
+            _json.dumps({"per_model_diffs": serializable}, indent=2),
+            encoding="utf-8",
+        )
+
+        # Pooled
+        pm = np.mean(all_diffs_b)
+        pse = np.std(all_diffs_b, ddof=1) / np.sqrt(len(all_diffs_b))
+        b_labels.append("Pooled")
+        b_effects.append(pm)
+        b_ci_los.append(pm - 1.96 * pse)
+        b_ci_his.append(pm + 1.96 * pse)
+
+    # ── Draw ──
+    n_panels = 2 if has_embeddings else 1
+    fig, axes = plt.subplots(1, n_panels, figsize=(7 * n_panels, 4.5))
+    if n_panels == 1:
+        axes = [axes]
+
+    def _draw_forest(ax, labels, effects, ci_los, ci_his, xlabel):
+        n = len(labels)
+        y_pos = list(range(n))
+        color_list = list(COLORS.values())
+        for i in range(n - 1):
+            c = color_list[i] if i < len(color_list) else "#333333"
+            ax.plot(effects[i], y_pos[i], "o", color=c, markersize=10, zorder=5)
+            ax.plot([ci_los[i], ci_his[i]], [y_pos[i], y_pos[i]],
+                    color=c, linewidth=2.5, zorder=4)
+        # Pooled
+        pi = n - 1
+        ax.plot(effects[pi], y_pos[pi], "D", color="black", markersize=11, zorder=5)
+        ax.plot([ci_los[pi], ci_his[pi]], [y_pos[pi], y_pos[pi]],
+                color="black", linewidth=3, zorder=4)
+        ax.axhline(y=n - 1.5, color="#CCCCCC", linewidth=1, linestyle="-")
+        ax.axvline(x=0, color="#999999", linewidth=1, linestyle="--", zorder=1)
+        ax.set_yticks(y_pos)
+        ax.set_yticklabels(labels, fontsize=11, fontweight="bold")
+        ax.invert_yaxis()
+        ax.set_xlabel(xlabel, fontsize=10)
+        ax.set_xlim(-0.01, None)
+
+    _draw_forest(axes[0], a_labels, a_effects, a_ci_los, a_ci_his,
+                 "Mean Difference in |Shift|\n(Structural − Control)")
+
+    if has_embeddings:
+        ax = axes[1]
+        model_colors_map = {
+            "llama-8b": "#E69F00", "llama-70b": "#0072B2",
+            "deepseek": "#D55E00", "qwen": "#009E73", "gemini": "#CC79A7",
+        }
+        model_key_order = ["llama-8b", "llama-70b", "deepseek", "qwen", "gemini"]
+
+        # Reconstruct per-model structural vs control means from cached diffs
+        # diffs = structural_sim - control_sim per question, so we need the raw values
+        # Instead, show the paired bar chart (structural vs control similarity)
+        x_pos = np.arange(len(model_key_order))
+        width = 0.35
+
+        # Recompute structural and control means from the embedding data
+        struct_means, ctrl_means = [], []
+        struct_cis, ctrl_cis = [], []
+
+        for mk in model_key_order:
+            model_questions = set(qid for (m, qid) in model_q_index if m == mk)
+            s_vals, c_vals = [], []
+            for qid in model_questions:
+                entries = model_q_index[(mk, qid)]
+                ctrl_idx = [idx for is_ctrl, idx in entries if is_ctrl]
+                struct_idx = [idx for is_ctrl, idx in entries if not is_ctrl]
+                if len(ctrl_idx) < 2 or len(struct_idx) < 2:
+                    continue
+
+                rng = np.random.RandomState(42)
+                pairs_s = [(struct_idx[a], struct_idx[b])
+                           for a in range(len(struct_idx)) for b in range(a+1, len(struct_idx))]
+                if len(pairs_s) > 50:
+                    sel = rng.choice(len(pairs_s), 50, replace=False)
+                    pairs_s = [pairs_s[p] for p in sel]
+
+                def _cos(a, b):
+                    d = np.dot(a, b)
+                    na, nb = np.linalg.norm(a), np.linalg.norm(b)
+                    return d / (na * nb) if na > 0 and nb > 0 else 0.0
+
+                ss = [_cos(embeddings[a], embeddings[b]) for a, b in pairs_s]
+                pairs_c = [(ctrl_idx[a], ctrl_idx[b])
+                           for a in range(len(ctrl_idx)) for b in range(a+1, len(ctrl_idx))]
+                cs = [_cos(embeddings[a], embeddings[b]) for a, b in pairs_c]
+
+                if ss and cs:
+                    s_vals.append(sum(ss) / len(ss))
+                    c_vals.append(sum(cs) / len(cs))
+
+            # Means
+            s_m = sum(s_vals) / len(s_vals) if s_vals else 0
+            c_m = sum(c_vals) / len(c_vals) if c_vals else 0
+            struct_means.append(s_m)
+            ctrl_means.append(c_m)
+
+            # Bootstrap CIs
+            for vals, ci_list in [(s_vals, struct_cis), (c_vals, ctrl_cis)]:
+                m = sum(vals) / len(vals) if vals else 0
+                boot_rng = np.random.RandomState(42)
+                boot = []
+                for _ in range(2000):
+                    sample = boot_rng.choice(vals, len(vals), replace=True)
+                    boot.append(sum(sample) / len(sample))
+                boot.sort()
+                lo = boot[int(0.025 * len(boot))]
+                hi = boot[int(0.975 * len(boot))]
+                ci_list.append((m - lo, hi - m))
+
+        _MODEL_DISPLAY_SHORT = {
+            "llama-8b": "Llama\n8B", "llama-70b": "Llama\n70B",
+            "deepseek": "DeepSeek\nV3", "qwen": "Qwen3\n235B",
+            "gemini": "Gemini\nFlash-Lite",
+        }
+
+        # Solid = structural, hatched = control
+        ax.bar(x_pos, struct_means, width,
+               yerr=[[c[0] for c in struct_cis], [c[1] for c in struct_cis]],
+               color=[model_colors_map[m] for m in model_key_order],
+               edgecolor="black", linewidth=0.5, capsize=3,
+               error_kw={"linewidth": 1}, label="Structural Probes")
+        ax.bar(x_pos + width, ctrl_means, width,
+               yerr=[[c[0] for c in ctrl_cis], [c[1] for c in ctrl_cis]],
+               color=[model_colors_map[m] for m in model_key_order],
+               edgecolor="black", linewidth=0.5, capsize=3, hatch="//",
+               error_kw={"linewidth": 1}, alpha=0.7, label="Control Probes")
+
+        # Paired t-test brackets
+        from forecast_bench.analysis_causal import _t_to_p as _ttp
+        for i, mk in enumerate(model_key_order):
+            diffs = _cached_diffs.get(mk, [])
+            if len(diffs) > 1:
+                mean_d = sum(diffs) / len(diffs)
+                var_d = sum((d - mean_d) ** 2 for d in diffs) / (len(diffs) - 1)
+                se_d = (var_d / len(diffs)) ** 0.5 if var_d > 0 else 1e-10
+                p = _ttp(abs(mean_d / se_d), len(diffs) - 1)
+            else:
+                p = 1.0
+            stars = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "n.s."
+            y_top = max(struct_means[i], ctrl_means[i]) + 0.015
+            h = 0.005
+            x_l, x_r = x_pos[i], x_pos[i] + width
+            ax.plot([x_l, x_l, x_r, x_r], [y_top, y_top + h, y_top + h, y_top],
+                    color="black", linewidth=0.8, clip_on=False)
+            ax.annotate(stars, xy=((x_l + x_r) / 2, y_top + h), xytext=(0, 1),
+                        textcoords="offset points", ha="center", fontsize=9, fontweight="bold")
+
+        ax.set_ylabel("Within-Question Cosine Similarity\n(Reasoning Text)")
+        ax.set_xticks(x_pos + width / 2)
+        ax.set_xticklabels([_MODEL_DISPLAY_SHORT[m] for m in model_key_order], fontsize=8)
+        ax.set_ylim(0.55, 0.86)
+        # Custom legend with neutral gray swatches
+        from matplotlib.patches import Patch
+        legend_handles = [
+            Patch(facecolor="#888888", edgecolor="black", linewidth=0.5,
+                  label="Structural Probes"),
+            Patch(facecolor="#888888", edgecolor="black", linewidth=0.5,
+                  alpha=0.7, hatch="//", label="Control Probes"),
+        ]
+        ax.legend(handles=legend_handles, fontsize=8, loc="upper left", frameon=False)
+
+    _label_axes(axes)
     plt.tight_layout()
-    plt.savefig(SUPPLEMENT_DIR / "null_test.png")
-    plt.savefig(SUPPLEMENT_DIR / "null_test.pdf")
+    plt.savefig(SUPPLEMENT_DIR / "null_test.png", dpi=300, bbox_inches="tight")
+    plt.savefig(SUPPLEMENT_DIR / "null_test.pdf", bbox_inches="tight")
     plt.close()
     print("  Saved supplementary/null_test.png/pdf")
 
@@ -789,7 +1207,7 @@ def fig_null_test(runs: dict):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_paired_initial_probabilities(runs: dict):
-    """Scatter matrix showing how models rate the same questions differently."""
+    """Correlation heatmap of initial probabilities across models."""
     model_names = list(runs.keys())
     if len(model_names) < 2:
         print("  [SKIP] Need at least 2 models for paired comparison")
@@ -805,50 +1223,54 @@ def fig_paired_initial_probabilities(runs: dict):
                 probs[qid] = p
         model_probs[name] = probs
 
-    # Find shared questions across all pairs
-    n_pairs = len(model_names)
-    # For 3 models: 3 pairwise comparisons
-    pairs = []
-    for i in range(n_pairs):
-        for j in range(i + 1, n_pairs):
-            pairs.append((model_names[i], model_names[j]))
+    # Build correlation matrix
+    n = len(model_names)
+    corr_matrix = np.ones((n, n))
+    n_shared_matrix = np.zeros((n, n), dtype=int)
 
-    fig, axes = plt.subplots(1, len(pairs), figsize=(5.5 * len(pairs), 5), squeeze=False)
-    axes = axes[0]
+    for i in range(n):
+        for j in range(i + 1, n):
+            m1, m2 = model_names[i], model_names[j]
+            shared = sorted(set(model_probs[m1].keys()) & set(model_probs[m2].keys()))
+            n_shared_matrix[i, j] = n_shared_matrix[j, i] = len(shared)
+            if shared:
+                x = [model_probs[m1][qid] for qid in shared]
+                y = [model_probs[m2][qid] for qid in shared]
+                rho = _spearman_correlation(x, y)
+                corr_matrix[i, j] = corr_matrix[j, i] = rho
 
-    for idx, (m1, m2) in enumerate(pairs):
-        ax = axes[idx]
-        shared = set(model_probs[m1].keys()) & set(model_probs[m2].keys())
-        if not shared:
-            ax.text(0.5, 0.5, "No shared questions", transform=ax.transAxes, ha="center")
-            continue
+    fig, ax = plt.subplots(figsize=(5.5, 4.5))
+    # Mask lower triangle and diagonal
+    mask = np.tri(n, k=0, dtype=bool)
+    masked = np.ma.array(corr_matrix, mask=mask)
+    im = ax.imshow(masked, cmap="BuGn", vmin=0, vmax=1, aspect="equal")
 
-        x = [model_probs[m1][qid] for qid in shared]
-        y = [model_probs[m2][qid] for qid in shared]
+    # White out masked cells (lower triangle + diagonal)
+    for i in range(n):
+        for j in range(i + 1):
+            ax.add_patch(plt.Rectangle((j - 0.5, i - 0.5), 1, 1,
+                                       facecolor="white", edgecolor="white", linewidth=0))
 
-        ax.scatter(x, y, alpha=0.5, s=30, color="#0072B2", edgecolor="none")
-        ax.plot([0, 1], [0, 1], "k--", alpha=0.3, linewidth=1)
+    # Hide spines and ticks on masked side
+    ax.spines[:].set_visible(False)
 
-        # Compute correlation
-        rho = _spearman_correlation(x, y)
+    # Annotate upper triangle only (no diagonal)
+    for i in range(n):
+        for j in range(i + 1, n):
+            rho = corr_matrix[i, j]
+            ns = n_shared_matrix[i, j]
+            ax.text(j, i, f"ρ={rho:.2f}\n(n={ns})", ha="center", va="center",
+                    fontsize=9, color="white" if rho > 0.65 else "black")
 
-        # Mean absolute difference
-        diffs = [abs(a - b) for a, b in zip(x, y)]
-        mad = sum(diffs) / len(diffs)
+    ax.set_xticks(range(n))
+    ax.set_yticks(range(n))
+    short_names = [_short_model_name(nm).replace("\n", " ") for nm in model_names]
+    ax.set_xticklabels(short_names, fontsize=9, rotation=30, ha="right")
+    ax.set_yticklabels(short_names, fontsize=9)
 
-        ax.set_xlabel(m1)
-        ax.set_ylabel(m2)
-        ax.set_xlim(0, 1)
-        ax.set_ylim(0, 1)
-        ax.set_aspect("equal")
-        ax.grid(True, alpha=0.2)
+    cbar = fig.colorbar(im, ax=ax, shrink=0.8, label="Spearman ρ")
+    cbar.ax.tick_params(labelsize=9)
 
-        ax.annotate(f"ρ = {rho:.3f}\nMAD = {mad:.3f}\nn = {len(shared)}",
-                    xy=(0.05, 0.88), xycoords="axes fraction", fontsize=10,
-                    va="top",
-                    bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
-
-    _label_axes(axes)
     plt.tight_layout()
     plt.savefig(SUPPLEMENT_DIR / "paired_initial_probs.png")
     plt.savefig(SUPPLEMENT_DIR / "paired_initial_probs.pdf")
@@ -872,25 +1294,20 @@ def _wilson_ci(k, n, z=1.96):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_superforecasting_analysis(runs: dict):
-    """Four-panel analysis of superforecasting traits in LLM forecasters.
+    """Two-panel analysis of superforecasting traits in LLM forecasters.
 
-    (a) Reasoning uncertainty — hedging language frequency vs |shift|
-    (b) Network richness vs Brier score
-    (c) Source-stratified calibration (data-anchored vs speculative)
-    (d) Probability granularity by model
+    (a) Reasoning uncertainty — LLM-judge rating vs |shift|
+    (b) Probability granularity by model
     """
     import json as _json
-    import re
 
-    freeze_vals = _load_freeze_values()
-
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-    ax_a, ax_b, ax_c, ax_d = axes.flat
+    fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(11, 5))
 
     # ── (a) Uncertainty rating (LLM judge) vs shift — pooled boxplot ──
     judge_rating_path = CAUSAL_DIR / "uncertainty_judge_ratings.json"
     judge_key_map = {"Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
-                     "DeepSeek-V3-0324": "deepseek", "Qwen3-235B": "qwen"}
+                     "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
+                     "Gemini-Flash-Lite": "gemini"}
 
     if judge_rating_path.exists():
         judge_ratings = _json.loads(judge_rating_path.read_text(encoding="utf-8"))
@@ -935,115 +1352,7 @@ def fig_superforecasting_analysis(runs: dict):
     else:
         ax_a.text(0.5, 0.5, "No uncertainty ratings", transform=ax_a.transAxes, ha="center")
 
-    # ── (b) Anchoring bias — initial probability vs mean |shift| ──
-    # Bin initial probabilities and show mean shift per bin
-    for name, (rows, q_data) in runs.items():
-        prob_shifts = defaultdict(list)
-        for qid, qd in q_data.items():
-            init_p = qd.get("initial_probability")
-            if init_p is None:
-                continue
-            for pr in qd.get("probe_results", []):
-                if pr.get("success") and pr.get("absolute_shift") is not None:
-                    prob_shifts[qid].append(pr["absolute_shift"])
-
-        if not prob_shifts:
-            continue
-
-        points = []
-        for qid, shifts in prob_shifts.items():
-            init_p = q_data[qid]["initial_probability"]
-            mean_shift = sum(shifts) / len(shifts)
-            points.append((init_p, mean_shift))
-
-        points.sort(key=lambda p: p[0])
-        xs = [p[0] for p in points]
-        ys = [p[1] for p in points]
-        ax_b.scatter(xs, ys, alpha=0.5, s=30, color=COLORS[name],
-                     label=name, edgecolor="none")
-
-    # Add linear regression per model
-    from scipy import stats as _sp_stats
-    for name, (rows, q_data) in runs.items():
-        prob_shifts = defaultdict(list)
-        for qid, qd in q_data.items():
-            init_p = qd.get("initial_probability")
-            if init_p is None:
-                continue
-            for pr in qd.get("probe_results", []):
-                if pr.get("success") and pr.get("absolute_shift") is not None:
-                    prob_shifts[qid].append(pr["absolute_shift"])
-        if not prob_shifts:
-            continue
-        xs = [q_data[qid]["initial_probability"] for qid in prob_shifts]
-        ys = [sum(s) / len(s) for s in prob_shifts.values()]
-        if len(xs) >= 5:
-            slope, intercept, r_val, _, _ = _sp_stats.linregress(xs, ys)
-            x_fit = np.linspace(min(xs), max(xs), 100)
-            ax_b.plot(x_fit, slope * x_fit + intercept,
-                      color=COLORS[name], linewidth=2, alpha=0.8)
-
-    ax_b.set_xlabel("Initial Probability")
-    ax_b.set_ylabel("Mean |Shift| per Question")
-    ax_b.legend(fontsize=8, frameon=False)
-    ax_b.set_xlim(0, 1)
-
-    # ── (c) Source-stratified calibration ──
-    DATA_SOURCES = {"fred", "dbnomics", "yfinance"}
-    SPECULATIVE_SOURCES = {"manifold", "metaculus", "infer", "polymarket"}
-
-    if freeze_vals:
-        for src_type, src_set, color, marker in [
-            ("Data-anchored", DATA_SOURCES, "#009E73", "o"),
-            ("Speculative", SPECULATIVE_SOURCES, "#D55E00", "s"),
-        ]:
-            all_pairs = []
-            for name, (rows, q_data) in runs.items():
-                for qid, qd in q_data.items():
-                    if qid not in freeze_vals:
-                        continue
-                    source = qd.get("source", "")
-                    if source not in src_set:
-                        continue
-                    pred = qd.get("initial_probability")
-                    if pred is not None:
-                        all_pairs.append((pred, freeze_vals[qid]))
-
-            if len(all_pairs) < 3:
-                continue
-
-            # Compute mean Brier
-            brier = sum((p - a) ** 2 for p, a in all_pairs) / len(all_pairs)
-
-            # Bin for calibration curve
-            all_pairs.sort(key=lambda p: p[0])
-            n_bins = min(4, len(all_pairs) // 2)
-            if n_bins < 2:
-                continue
-            bin_size = len(all_pairs) // n_bins
-            bin_preds, bin_actuals = [], []
-            for i in range(n_bins):
-                start = i * bin_size
-                end = start + bin_size if i < n_bins - 1 else len(all_pairs)
-                chunk = all_pairs[start:end]
-                bin_preds.append(sum(p for p, _ in chunk) / len(chunk))
-                bin_actuals.append(sum(a for _, a in chunk) / len(chunk))
-
-            ax_c.plot(bin_preds, bin_actuals, f"{marker}-", color=color,
-                      markersize=8, linewidth=2,
-                      label=f"{src_type} (n={len(all_pairs)}, Brier={brier:.3f})")
-
-        ax_c.plot([0, 1], [0, 1], "k--", alpha=0.3, linewidth=1)
-        ax_c.set_xlabel("Predicted Probability")
-        ax_c.set_ylabel("Ground Truth Probability")
-        ax_c.set_xlim(0, 1)
-        ax_c.set_ylim(0, 1)
-        ax_c.set_aspect("equal")
-        ax_c.legend(fontsize=8, loc="upper left", frameon=False)
-    else:
-        ax_c.text(0.5, 0.5, "No ground truth", transform=ax_c.transAxes, ha="center")
-
-    # ── (d) Probability granularity with Wilson CIs ──
+    # ── (b) Probability granularity with Wilson CIs ──
     model_names = list(runs.keys())
     granularities = []
     ci_lows, ci_highs = [], []
@@ -1065,19 +1374,19 @@ def fig_superforecasting_analysis(runs: dict):
         ci_lows.append(centre - lo)
         ci_highs.append(hi - centre)
 
-    ax_d.bar(range(len(model_names)), granularities,
+    ax_b.bar(range(len(model_names)), granularities,
              yerr=[ci_lows, ci_highs], capsize=5,
              color=[COLORS[n] for n in model_names],
              edgecolor="black", linewidth=0.5)
-    ax_d.set_xticks(range(len(model_names)))
-    ax_d.set_xticklabels([n.replace("-", "\n", 1) for n in model_names], fontsize=9)
-    ax_d.set_ylabel("Granularity Score\n(Fraction of Non-Round Probabilities)")
-    ax_d.set_ylim(0, 1)
+    ax_b.set_xticks(range(len(model_names)))
+    ax_b.set_xticklabels([n.replace("-", "\n", 1) for n in model_names], fontsize=8)
+    ax_b.set_ylabel("Granularity Score\n(Fraction of Non-Round Probabilities)")
+    ax_b.set_ylim(0, 1)
 
-    _label_axes(axes.flat)
+    _label_axes([ax_a, ax_b])
     plt.tight_layout()
-    plt.savefig(SUPPLEMENT_DIR / "superforecasting_analysis.png")
-    plt.savefig(SUPPLEMENT_DIR / "superforecasting_analysis.pdf")
+    plt.savefig(SUPPLEMENT_DIR / "superforecasting_analysis.png", dpi=300, bbox_inches="tight")
+    plt.savefig(SUPPLEMENT_DIR / "superforecasting_analysis.pdf", bbox_inches="tight")
     plt.close()
     print("  Saved supplementary/superforecasting_analysis.png/pdf")
 
@@ -1175,6 +1484,955 @@ def fig_granularity(runs: dict):
 
 
 # ═════════════════════════════════════════════════════════════════════════════
+# FIGURE: Shift Directionality
+# ═════════════════════════════════════════════════════════════════════════════
+
+def fig_shift_directionality(runs: dict):
+    """Bar chart: % of probes that shift in the expected direction, by model.
+
+    (a) Negate probes → should decrease confidence (move toward 0.5)
+    (b) Strengthen probes → should increase confidence (move away from 0.5)
+    (c) Irrelevant probes → mean signed shift ≈ 0 (no systematic bias)
+    """
+    negation_types = {
+        "node_negate_high", "node_negate_medium", "node_negate_low",
+        "edge_negate_critical", "edge_negate_peripheral",
+    }
+    strengthen_types = {"node_strengthen", "node_strengthen_medium", "node_strengthen_low",
+                        "edge_strengthen_critical", "edge_strengthen_peripheral"}
+
+    model_names = list(runs.keys())
+    neg_pcts = []
+    str_pcts = []
+    ctrl_means = []
+    ctrl_cis = []
+
+    for name in model_names:
+        rows, _ = runs[name]
+        neg_correct, neg_total = 0, 0
+        str_correct, str_total = 0, 0
+        ctrl_shifts = []
+
+        for r in rows:
+            if not r.get("success") or r.get("updated_probability") is None:
+                continue
+            pt = r.get("probe_type", "")
+            if pt == "irlevant":
+                pt = "irrelevant"
+            initial = r.get("initial_probability")
+            updated = r.get("updated_probability")
+            if initial is None or updated is None:
+                continue
+
+            initial_conf = abs(initial - 0.5)
+            updated_conf = abs(updated - 0.5)
+
+            if pt in negation_types:
+                neg_total += 1
+                if updated_conf < initial_conf:
+                    neg_correct += 1
+            elif pt in strengthen_types:
+                str_total += 1
+                if updated_conf > initial_conf:
+                    str_correct += 1
+            elif pt == "irrelevant":
+                ctrl_shifts.append(updated - initial)
+
+        neg_pcts.append(neg_correct / neg_total * 100 if neg_total else 0)
+        str_pcts.append(str_correct / str_total * 100 if str_total else 0)
+
+        if ctrl_shifts:
+            m = sum(ctrl_shifts) / len(ctrl_shifts)
+            se = (sum((s - m) ** 2 for s in ctrl_shifts) / (len(ctrl_shifts) - 1)) ** 0.5 / len(ctrl_shifts) ** 0.5
+            ctrl_means.append(m)
+            ctrl_cis.append(1.96 * se)
+        else:
+            ctrl_means.append(0)
+            ctrl_cis.append(0)
+
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+    _label_axes(axes)
+    x = np.arange(len(model_names))
+    short_names = [_short_model_name(n) for n in model_names]
+    bar_colors = [COLORS[n] for n in model_names]
+
+    # (a) Negation
+    axes[0].bar(x, neg_pcts, color=bar_colors, edgecolor="none")
+    axes[0].axhline(50, color="#999", linestyle="--", linewidth=1, zorder=0)
+    axes[0].set_ylabel("% Correct Direction")
+    axes[0].set_title("Negate Probes\n(should decrease confidence)")
+    axes[0].set_xticks(x)
+    axes[0].set_xticklabels(short_names, fontsize=9)
+    axes[0].set_ylim(0, 100)
+
+    # (b) Strengthen
+    axes[1].bar(x, str_pcts, color=bar_colors, edgecolor="none")
+    axes[1].axhline(50, color="#999", linestyle="--", linewidth=1, zorder=0)
+    axes[1].set_title("Strengthen Probes\n(should increase confidence)")
+    axes[1].set_xticks(x)
+    axes[1].set_xticklabels(short_names, fontsize=9)
+    axes[1].set_ylim(0, 100)
+
+    # (c) Irrelevant mean signed shift
+    axes[2].bar(x, ctrl_means, yerr=ctrl_cis, color=bar_colors, edgecolor="none",
+                capsize=4, error_kw={"linewidth": 1.5})
+    axes[2].axhline(0, color="#999", linestyle="--", linewidth=1, zorder=0)
+    axes[2].set_ylabel("Mean Signed Shift")
+    axes[2].set_title("Irrelevant Probes\n(should be ≈ 0)")
+    axes[2].set_xticks(x)
+    axes[2].set_xticklabels(short_names, fontsize=9)
+
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "shift_directionality.png")
+    plt.savefig(FIGURES_DIR / "shift_directionality.pdf")
+    plt.close()
+    print("  Saved shift_directionality.png/pdf")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FIGURE: Causal Bottleneck Sensitivity
+# ═════════════════════════════════════════════════════════════════════════════
+
+def fig_bottleneck_sensitivity(runs: dict):
+    """Test whether removing a bottleneck node (sole path to outcome) causes
+    larger shifts than removing a node with redundant paths.
+
+    For each question DAG, we classify probed factor nodes as:
+    - Bottleneck: removing the node would disconnect at least one source from
+      the outcome (i.e., it's a cut vertex on some source→outcome path).
+    - Redundant: alternative paths exist even if the node is removed.
+
+    (a) Mean |shift| for bottleneck vs redundant nodes per model.
+    (b) Scatter of path_relevance vs |shift| pooled across models.
+    """
+    import networkx as nx
+
+    model_names = list(runs.keys())
+    bottleneck_shifts = {n: [] for n in model_names}
+    redundant_shifts = {n: [] for n in model_names}
+    all_path_rel = []
+    all_shifts = []
+
+    for name, (rows, q_data) in runs.items():
+        for qid, qinfo in q_data.items():
+            nodes = qinfo.get("nodes", [])
+            edges = qinfo.get("edges", [])
+            na = qinfo.get("network_analysis", {})
+            outcome = na.get("outcome_node")
+            if not outcome or len(nodes) < 3:
+                continue
+
+            # Build the graph
+            G = nx.DiGraph()
+            for n in nodes:
+                G.add_node(n["id"])
+            for e in edges:
+                if e.get("from") in G and e.get("to") in G:
+                    G.add_edge(e["from"], e["to"])
+
+            if outcome not in G:
+                continue
+
+            # Find sources (factor nodes with in-degree 0 that can reach outcome)
+            factor_ids = {n["id"] for n in nodes if n.get("role") != "outcome"}
+            sources = [n for n in factor_ids if G.in_degree(n) == 0 and nx.has_path(G, n, outcome)]
+            if not sources:
+                # Fallback: any factor that can reach outcome
+                sources = [n for n in factor_ids if nx.has_path(G, n, outcome)]
+
+            # Classify each factor node as bottleneck or redundant
+            node_is_bottleneck = {}
+            for nid in factor_ids:
+                if nid not in G:
+                    continue
+                # Remove node and check if any source loses its path to outcome
+                G_reduced = G.copy()
+                G_reduced.remove_node(nid)
+                is_bottleneck = False
+                for src in sources:
+                    if src == nid:
+                        continue
+                    if src in G_reduced and outcome in G_reduced:
+                        if not nx.has_path(G_reduced, src, outcome):
+                            is_bottleneck = True
+                            break
+                node_is_bottleneck[nid] = is_bottleneck
+
+            # Map probe results
+            node_metrics = {m["node_id"]: m for m in na.get("node_metrics", [])}
+            for pr in qinfo.get("probe_results", []):
+                if not pr.get("success") or pr.get("absolute_shift") is None:
+                    continue
+                if pr.get("target_type") != "node":
+                    continue
+                tid = pr.get("target_id", "")
+                if tid not in node_is_bottleneck:
+                    continue
+
+                shift = pr["absolute_shift"]
+                if node_is_bottleneck[tid]:
+                    bottleneck_shifts[name].append(shift)
+                else:
+                    redundant_shifts[name].append(shift)
+
+                # For scatter
+                pr_val = node_metrics.get(tid, {}).get("path_relevance", 0)
+                all_path_rel.append(pr_val)
+                all_shifts.append(shift)
+
+    # Check we have data
+    total_b = sum(len(v) for v in bottleneck_shifts.values())
+    total_r = sum(len(v) for v in redundant_shifts.values())
+    if total_b < 5 or total_r < 5:
+        print(f"  [SKIP] bottleneck: not enough data (bottleneck={total_b}, redundant={total_r})")
+        return
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+    _label_axes([ax1, ax2])
+
+    # (a) Grouped bar: bottleneck vs redundant per model
+    x = np.arange(len(model_names))
+    width = 0.35
+    b_means, b_cis, r_means, r_cis = [], [], [], []
+    for name in model_names:
+        bv = bottleneck_shifts[name]
+        rv = redundant_shifts[name]
+        bm = sum(bv) / len(bv) if bv else 0
+        rm = sum(rv) / len(rv) if rv else 0
+        b_means.append(bm)
+        r_means.append(rm)
+        if len(bv) > 1:
+            bse = (sum((v - bm)**2 for v in bv) / (len(bv)-1))**0.5 / len(bv)**0.5
+            b_cis.append(1.96 * bse)
+        else:
+            b_cis.append(0)
+        if len(rv) > 1:
+            rse = (sum((v - rm)**2 for v in rv) / (len(rv)-1))**0.5 / len(rv)**0.5
+            r_cis.append(1.96 * rse)
+        else:
+            r_cis.append(0)
+
+    ax1.bar(x - width/2, b_means, width, yerr=b_cis, label="Bottleneck",
+            color="#D55E00", edgecolor="none", capsize=4, error_kw={"linewidth": 1.5})
+    ax1.bar(x + width/2, r_means, width, yerr=r_cis, label="Redundant",
+            color="#999999", edgecolor="none", capsize=4, error_kw={"linewidth": 1.5})
+    ax1.set_xticks(x)
+    ax1.set_xticklabels([_short_model_name(n) for n in model_names], fontsize=9)
+    ax1.set_ylabel("Mean |Probability Shift|")
+    ax1.legend(frameon=False, fontsize=9)
+
+    # (b) Scatter: path_relevance vs |shift|
+    ax2.scatter(all_path_rel, all_shifts, alpha=0.15, s=15, color="#0072B2", edgecolors="none")
+    # Binned means
+    bins = np.linspace(0, 1, 6)
+    bin_centers, bin_means, bin_cis_lo, bin_cis_hi = [], [], [], []
+    for i in range(len(bins) - 1):
+        mask = [(bins[i] <= p < bins[i+1]) for p in all_path_rel]
+        vals = [s for s, m in zip(all_shifts, mask) if m]
+        if len(vals) >= 5:
+            m = sum(vals) / len(vals)
+            se = (sum((v-m)**2 for v in vals) / (len(vals)-1))**0.5 / len(vals)**0.5
+            bin_centers.append((bins[i] + bins[i+1]) / 2)
+            bin_means.append(m)
+            bin_cis_lo.append(1.96 * se)
+            bin_cis_hi.append(1.96 * se)
+    if bin_centers:
+        ax2.errorbar(bin_centers, bin_means, yerr=[bin_cis_lo, bin_cis_hi],
+                     fmt="o-", color="#D55E00", markersize=7, linewidth=2,
+                     capsize=4, markeredgecolor="black", markeredgewidth=0.5, zorder=5)
+    ax2.set_xlabel("Path Relevance\n(fraction of source→outcome paths through node)")
+    ax2.set_ylabel("Mean |Probability Shift|")
+    ax2.set_xlim(-0.05, 1.05)
+
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "bottleneck_sensitivity.png")
+    plt.savefig(FIGURES_DIR / "bottleneck_sensitivity.pdf")
+    plt.close()
+    print("  Saved bottleneck_sensitivity.png/pdf")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FIGURE: Bayesian Coherence (log-odds shift independence from prior)
+# ═════════════════════════════════════════════════════════════════════════════
+
+def fig_bayesian_coherence(runs: dict):
+    """Test whether LLM belief updates are Bayesian.
+
+    A Bayesian agent's log-odds shift should depend only on evidence strength
+    (probe type + structural importance), not on the initial probability.
+
+    (a) Log-odds shift vs initial probability, pooled, with regression line
+        controlling for probe type and betweenness centrality.
+    (b) Partial correlation coefficient (initial_prob → log-odds shift,
+        controlling for probe type + betweenness) per model. 0 = Bayesian.
+    """
+    from scipy import stats as sp_stats
+
+    model_names = list(runs.keys())
+    model_results = {}
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4.5),
+                                    gridspec_kw={"width_ratios": [1.3, 1]})
+    _label_axes([ax1, ax2])
+
+    all_p0 = []
+    all_lo_shift = []
+
+    for name, (rows, q_data) in runs.items():
+        # Build betweenness lookup from question data
+        betweenness_map = {}  # (qid, target_id) -> betweenness
+        for qid, qinfo in q_data.items():
+            na = qinfo.get("network_analysis", {})
+            for nm in na.get("node_metrics", []):
+                betweenness_map[(qid, nm["node_id"])] = nm.get("betweenness", 0)
+            for em in na.get("edge_metrics", []):
+                edge_id = f"{em['source']}->{em['target']}"
+                betweenness_map[(qid, edge_id)] = em.get("edge_betweenness", 0)
+
+        p0_vals = []
+        lo_shifts = []
+        betweenness_vals = []
+        probe_types = []
+
+        for r in rows:
+            if not r.get("success") or r.get("updated_probability") is None:
+                continue
+            pt = r.get("probe_type", "")
+            if pt == "irlevant":
+                pt = "irrelevant"
+            initial = r.get("initial_probability")
+            updated = r.get("updated_probability")
+            if initial is None or updated is None:
+                continue
+            # Clamp to avoid log(0)
+            initial = max(0.01, min(0.99, initial))
+            updated = max(0.01, min(0.99, updated))
+
+            lo_initial = np.log(initial / (1 - initial))
+            lo_updated = np.log(updated / (1 - updated))
+            lo_shift = lo_updated - lo_initial
+
+            qid = r.get("question_id", "")
+            tid = r.get("target_id", "")
+            btwn = betweenness_map.get((qid, tid), 0)
+
+            p0_vals.append(initial)
+            lo_shifts.append(lo_shift)
+            betweenness_vals.append(btwn)
+            probe_types.append(pt)
+
+        if len(p0_vals) < 20:
+            continue
+
+        p0_arr = np.array(p0_vals)
+        lo_arr = np.array(lo_shifts)
+        btwn_arr = np.array(betweenness_vals)
+
+        # Encode probe types as dummy variables
+        unique_pts = sorted(set(probe_types))
+        pt_dummies = np.zeros((len(probe_types), len(unique_pts)))
+        for i, pt in enumerate(probe_types):
+            pt_dummies[i, unique_pts.index(pt)] = 1
+
+        # Build design matrix: [initial_prob, betweenness, probe_type_dummies]
+        # Drop first probe type dummy to avoid multicollinearity
+        X = np.column_stack([p0_arr, btwn_arr, pt_dummies[:, 1:]])
+        X_with_intercept = np.column_stack([np.ones(len(X)), X])
+
+        # OLS regression
+        try:
+            beta = np.linalg.lstsq(X_with_intercept, lo_arr, rcond=None)[0]
+            # beta[1] is the coefficient on initial_probability
+            coef_p0 = beta[1]
+
+            # Compute standard error of beta[1]
+            residuals = lo_arr - X_with_intercept @ beta
+            n, k = X_with_intercept.shape
+            mse = np.sum(residuals**2) / (n - k)
+            cov = mse * np.linalg.inv(X_with_intercept.T @ X_with_intercept)
+            se_p0 = np.sqrt(cov[1, 1])
+            t_stat = coef_p0 / se_p0
+            # Two-tailed p-value
+            p_val = 2 * (1 - sp_stats.t.cdf(abs(t_stat), n - k))
+
+            model_results[name] = {
+                "coef": coef_p0,
+                "se": se_p0,
+                "p": p_val,
+                "n": len(p0_arr),
+            }
+        except np.linalg.LinAlgError:
+            continue
+
+        all_p0.extend(p0_vals)
+        all_lo_shift.extend(lo_shifts)
+
+    # (a) Scatter: log-odds shift vs initial probability (pooled)
+    ax1.scatter(all_p0, all_lo_shift, alpha=0.08, s=8, color="#0072B2", edgecolors="none")
+    ax1.axhline(0, color="#999", linestyle="--", linewidth=1, zorder=0)
+
+    # LOESS-style smoothed line via moving average on sorted data
+    p0_all = np.array(all_p0)
+    lo_all = np.array(all_lo_shift)
+    sort_idx = np.argsort(p0_all)
+    p0_sorted = p0_all[sort_idx]
+    lo_sorted = lo_all[sort_idx]
+    # Gaussian kernel smooth
+    x_grid = np.linspace(0.05, 0.95, 100)
+    y_smooth = np.zeros_like(x_grid)
+    bw = 0.08  # bandwidth
+    for i, xg in enumerate(x_grid):
+        weights = np.exp(-0.5 * ((p0_sorted - xg) / bw) ** 2)
+        if weights.sum() > 0:
+            y_smooth[i] = np.average(lo_sorted, weights=weights)
+    ax1.plot(x_grid, y_smooth, color="#D55E00", linewidth=2.5, zorder=5)
+
+    ax1.set_xlabel("Initial Probability")
+    ax1.set_ylabel("Log-Odds Shift")
+    ax1.set_xlim(0, 1)
+    # Trim y-axis to avoid extreme outliers
+    lo_arr_all = np.array(all_lo_shift)
+    q01, q99 = np.percentile(lo_arr_all, [1, 99])
+    ax1.set_ylim(q01 * 1.2, q99 * 1.2)
+
+    # (b) Coefficient on initial_probability per model
+    if model_results:
+        names = list(model_results.keys())
+        coefs = [model_results[n]["coef"] for n in names]
+        ses = [model_results[n]["se"] for n in names]
+        bar_colors = [COLORS[n] for n in names]
+        short_names = [_short_model_name(n) for n in names]
+
+        x = np.arange(len(names))
+        ax2.bar(x, coefs, yerr=[1.96 * s for s in ses], color=bar_colors,
+                edgecolor="none", capsize=4, error_kw={"linewidth": 1.5})
+        ax2.axhline(0, color="#444", linestyle="--", linewidth=1.5, zorder=0)
+        ax2.set_xticks(x)
+        ax2.set_xticklabels(short_names, fontsize=8)
+        ax2.set_ylabel("β (Initial Prob → Log-Odds Shift)\nControlling for probe type + betweenness")
+        # Add significance stars above/below bars with enough clearance
+        max_extent = max(abs(c) + 1.96 * s for c, s in zip(coefs, ses))
+        for i, n in enumerate(names):
+            p = model_results[n]["p"]
+            if p < 0.001:
+                star = "***"
+            elif p < 0.01:
+                star = "**"
+            elif p < 0.05:
+                star = "*"
+            else:
+                star = "n.s."
+            if coefs[i] >= 0:
+                y_pos = coefs[i] + 1.96 * ses[i] + 0.03 * max_extent
+                va = "bottom"
+            else:
+                y_pos = coefs[i] - 1.96 * ses[i] - 0.03 * max_extent
+                va = "top"
+            ax2.text(i, y_pos, star, ha="center", va=va, fontsize=9)
+
+        # Expand y-axis so stars aren't clipped at edges
+        ylo, yhi = ax2.get_ylim()
+        pad = (yhi - ylo) * 0.15
+        ax2.set_ylim(ylo - pad, yhi + pad)
+
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "bayesian_coherence.png")
+    plt.savefig(FIGURES_DIR / "bayesian_coherence.pdf")
+    plt.close()
+    print("  Saved bayesian_coherence.png/pdf")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FIGURE: Test-Retest Reliability
+# ═════════════════════════════════════════════════════════════════════════════
+
+def fig_test_retest(runs: dict):
+    """Test-retest reliability across all models: bar chart of Spearman ρ for probabilities and shifts."""
+    from scipy import stats as sp_stats
+
+    RETEST_DIRS = {
+        "Llama-3.1-8B": (CAUSAL_DIR / "llama_one_turn", CAUSAL_DIR / "llama_one_turn_retest"),
+        "Llama-3.3-70B": (CAUSAL_DIR / "70b_one_turn", CAUSAL_DIR / "70b_one_turn_retest"),
+        "DeepSeek-V3": (CAUSAL_DIR / "deepseek_one_turn", CAUSAL_DIR / "deepseek_one_turn_retest"),
+        "Qwen3-235B": (CAUSAL_DIR / "qwen_one_turn", CAUSAL_DIR / "qwen_one_turn_retest"),
+        "Gemini-Flash-Lite": (CAUSAL_DIR / "gemini_flash_lite_one_turn", CAUSAL_DIR / "gemini_flash_lite_one_turn_retest"),
+    }
+
+    def _mean_shift(qdata):
+        probes = qdata.get("probe_results", [])
+        s = [r["absolute_shift"] for r in probes
+             if r.get("success") and r.get("absolute_shift") is not None]
+        return sum(s) / len(s) if s else None
+
+    model_results = {}
+    for model_name, (dir1, dir2) in RETEST_DIRS.items():
+        if not dir1.exists() or not dir2.exists():
+            print(f"  [SKIP] test-retest {model_name}: missing data")
+            continue
+        run1 = load_question_jsons(dir1)
+        run2 = load_question_jsons(dir2)
+        shared = sorted(set(run1) & set(run2))
+        if len(shared) < 10:
+            print(f"  [SKIP] test-retest {model_name}: only {len(shared)} shared")
+            continue
+
+        probs_1, probs_2, shifts_1, shifts_2 = [], [], [], []
+        for qid in shared:
+            p1 = run1[qid].get("initial_probability")
+            p2 = run2[qid].get("initial_probability")
+            if p1 is not None and p2 is not None:
+                probs_1.append(p1)
+                probs_2.append(p2)
+            s1, s2 = _mean_shift(run1[qid]), _mean_shift(run2[qid])
+            if s1 is not None and s2 is not None:
+                shifts_1.append(s1)
+                shifts_2.append(s2)
+
+        rho_p, _ = sp_stats.spearmanr(probs_1, probs_2) if len(probs_1) >= 3 else (None, None)
+        rho_s, _ = sp_stats.spearmanr(shifts_1, shifts_2) if len(shifts_1) >= 3 else (None, None)
+        mad = float(np.mean([abs(a - b) for a, b in zip(probs_1, probs_2)])) if probs_1 else None
+        model_results[model_name] = {
+            "rho_prob": rho_p, "rho_shift": rho_s, "mad_prob": mad,
+            "n_shared": len(shared),
+        }
+        print(f"  {model_name}: rho_prob={rho_p:.3f}, rho_shift={rho_s:.3f}, MAD={mad:.3f}, n={len(shared)}")
+
+    if not model_results:
+        print("  [SKIP] test-retest: no valid pairs")
+        return
+
+    # Bar chart: ρ for probabilities and shifts side by side
+    names = list(model_results.keys())
+    x = np.arange(len(names))
+    width = 0.35
+
+    fig, ax = plt.subplots(figsize=(10, 4.5))
+    rho_probs = [model_results[n]["rho_prob"] or 0 for n in names]
+    rho_shifts = [model_results[n]["rho_shift"] or 0 for n in names]
+    colors_list = [COLORS.get(n, "#999") for n in names]
+
+    bars1 = ax.bar(x - width / 2, rho_probs, width, label="Initial Probability ρ",
+                   color=colors_list, alpha=0.9, edgecolor="none")
+    bars2 = ax.bar(x + width / 2, rho_shifts, width, label="Mean |Shift| ρ",
+                   color=colors_list, alpha=0.5, edgecolor="none", hatch="//")
+
+    ax.set_ylabel("Spearman ρ (Run 1 vs Run 2)")
+    ax.set_xticks(x)
+    ax.set_xticklabels([n.replace("-", "\n", 1) for n in names], fontsize=9)
+    ax.set_ylim(0, 1.05)
+    ax.axhline(1.0, color="#999", linestyle="--", linewidth=0.8)
+    ax.legend(frameon=False, fontsize=9)
+
+    # Add value labels
+    for bar in bars1:
+        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02,
+                f"{bar.get_height():.2f}", ha="center", fontsize=8)
+    for bar in bars2:
+        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02,
+                f"{bar.get_height():.2f}", ha="center", fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(SUPPLEMENT_DIR / "test_retest.png", dpi=300, bbox_inches="tight")
+    plt.savefig(SUPPLEMENT_DIR / "test_retest.pdf", bbox_inches="tight")
+    plt.close()
+    print("  Saved supplementary/test_retest.png/pdf")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FIGURE: Inter-Model Agreement on Initial Probabilities
+# ═════════════════════════════════════════════════════════════════════════════
+
+def fig_inter_model_agreement(runs: dict):
+    """Pairwise Spearman ρ heatmap for initial probability estimates across models."""
+    from scipy import stats as sp_stats
+
+    model_names = list(MODEL_DIRS.keys())
+    # Load initial probabilities per model per question
+    model_probs = {}
+    for name in model_names:
+        d = MODEL_DIRS[name]
+        q_data = load_question_jsons(d)
+        model_probs[name] = {qid: qd.get("initial_probability")
+                             for qid, qd in q_data.items()
+                             if qd.get("initial_probability") is not None}
+
+    n = len(model_names)
+    rho_matrix = np.ones((n, n))
+    count_matrix = np.zeros((n, n), dtype=int)
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            shared = sorted(set(model_probs[model_names[i]]) & set(model_probs[model_names[j]]))
+            if len(shared) < 5:
+                rho_matrix[i, j] = rho_matrix[j, i] = np.nan
+                continue
+            p_i = [model_probs[model_names[i]][q] for q in shared]
+            p_j = [model_probs[model_names[j]][q] for q in shared]
+            rho, _ = sp_stats.spearmanr(p_i, p_j)
+            rho_matrix[i, j] = rho_matrix[j, i] = rho
+            count_matrix[i, j] = count_matrix[j, i] = len(shared)
+
+    fig, ax = plt.subplots(figsize=(7, 6))
+    im = ax.imshow(rho_matrix, cmap="RdYlBu", vmin=0, vmax=1, aspect="equal")
+
+    ax.set_xticks(range(n))
+    ax.set_yticks(range(n))
+    ax.set_xticklabels([_short_model_name(n) for n in model_names], fontsize=9, rotation=45, ha="right")
+    ax.set_yticklabels([_short_model_name(n) for n in model_names], fontsize=9)
+
+    # Annotate cells
+    for i in range(n):
+        for j in range(n):
+            val = rho_matrix[i, j]
+            if not np.isnan(val):
+                color = "white" if val < 0.5 else "black"
+                ax.text(j, i, f"{val:.2f}", ha="center", va="center",
+                        fontsize=10, color=color, fontweight="bold" if i == j else "normal")
+
+    cbar = fig.colorbar(im, ax=ax, shrink=0.8)
+    cbar.set_label("Spearman ρ", fontsize=10)
+
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "inter_model_agreement.png", dpi=300, bbox_inches="tight")
+    plt.savefig(FIGURES_DIR / "inter_model_agreement.pdf", bbox_inches="tight")
+    plt.close()
+    print("  Saved inter_model_agreement.png/pdf")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# SUPPLEMENTARY: Network Size Comparison (Small / Medium / Large)
+# ═════════════════════════════════════════════════════════════════════════════
+
+def fig_network_size_comparison():
+    """Compare SSR, within-question tau, and mean shift across network sizes."""
+    from forecast_bench.analysis_causal import (
+        load_causal_results,
+        structural_sensitivity_ratio,
+    )
+
+    SIZE_DIRS = {
+        "Small\n(3–5 nodes)": CAUSAL_DIR / "70b_one_turn_small",
+        "Medium\n(4–8 nodes)": CAUSAL_DIR / "70b_one_turn",
+        "Large\n(6–10 nodes)": CAUSAL_DIR / "70b_one_turn_large",
+    }
+    size_colors = ["#56B4E9", "#0072B2", "#003f5c"]  # light to dark blue
+
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.5))
+    labels = list(SIZE_DIRS.keys())
+    x = range(len(labels))
+
+    all_rows = {}
+    for label, d in SIZE_DIRS.items():
+        csv_path = d / "sensitivity_results.csv"
+        if csv_path.exists():
+            all_rows[label] = load_causal_results(csv_path)
+        else:
+            all_rows[label] = []
+
+    # Node probe types for tau
+    node_probe_types = {
+        "node_negate_high", "node_negate_medium", "node_negate_low",
+        "node_strengthen",
+    }
+
+    # (a) SSR
+    ssrs, ssr_los, ssr_his = [], [], []
+    for label in labels:
+        rows = all_rows[label]
+        def _ssr(r):
+            res = structural_sensitivity_ratio(r)
+            return res.get("ssr", 0)
+        pt, lo, hi = _bootstrap_metric(rows, _ssr)
+        ssrs.append(pt)
+        ssr_los.append(pt - lo)
+        ssr_his.append(hi - pt)
+    axes[0].bar(x, ssrs, yerr=[ssr_los, ssr_his], color=size_colors,
+                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
+    axes[0].axhline(y=1, color="#444444", linestyle="--", linewidth=1.5)
+    axes[0].set_ylabel("Structural Sensitivity Ratio (SSR)")
+    axes[0].set_xticks(list(x))
+    axes[0].set_xticklabels(labels, fontsize=9)
+
+    # (b) Within-question tau
+    taus, tau_los, tau_his = [], [], []
+    for label in labels:
+        rows = all_rows[label]
+        def _tau(rows):
+            from collections import defaultdict as _dd
+            q_probes = _dd(list)
+            for r in rows:
+                if (r.get("success") and r.get("absolute_shift") is not None
+                    and r.get("target_importance") is not None
+                    and r.get("probe_type") in node_probe_types):
+                    q_probes[r["question_id"]].append(r)
+            tau_vals = []
+            for qid, probes in q_probes.items():
+                if len(probes) < 4:
+                    continue
+                imp = [p["target_importance"] for p in probes]
+                sh = [p["absolute_shift"] for p in probes]
+                tau = _kendall_tau(imp, sh)
+                if tau is not None:
+                    tau_vals.append(tau)
+            return sum(tau_vals) / len(tau_vals) if tau_vals else 0
+        pt, lo, hi = _bootstrap_metric(all_rows[label], _tau)
+        taus.append(pt)
+        tau_los.append(pt - lo)
+        tau_his.append(hi - pt)
+    axes[1].bar(x, taus, yerr=[tau_los, tau_his], color=size_colors,
+                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
+    axes[1].axhline(y=0, color="#444444", linestyle="--", linewidth=1.5)
+    axes[1].set_ylabel("Within-Question Kendall τ")
+    axes[1].set_xticks(list(x))
+    axes[1].set_xticklabels(labels, fontsize=9)
+
+    # (c) Mean absolute shift
+    shifts, shift_los, shift_his = [], [], []
+    for label in labels:
+        rows = all_rows[label]
+        def _mean_shift(r):
+            vals = [row["absolute_shift"] for row in r if row.get("success") and row.get("absolute_shift") is not None]
+            return sum(vals) / len(vals) if vals else 0
+        pt, lo, hi = _bootstrap_metric(rows, _mean_shift)
+        shifts.append(pt)
+        shift_los.append(pt - lo)
+        shift_his.append(hi - pt)
+    axes[2].bar(x, shifts, yerr=[shift_los, shift_his], color=size_colors,
+                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
+    axes[2].set_ylabel("Mean |Probability Shift|")
+    axes[2].set_xticks(list(x))
+    axes[2].set_xticklabels(labels, fontsize=9)
+
+    # ── Add pairwise significance brackets ──
+    from forecast_bench.analysis_causal import _t_to_p
+
+    def _get_per_question_vals(rows, metric_fn):
+        """Compute a per-question metric value for paired testing."""
+        from collections import defaultdict as _dd
+        q_rows = _dd(list)
+        for r in rows:
+            if r.get("success") and r.get("absolute_shift") is not None:
+                q_rows[r["question_id"]].append(r)
+        return {qid: metric_fn(qr) for qid, qr in q_rows.items()}
+
+    def _mean_shift_q(qr):
+        vals = [r["absolute_shift"] for r in qr if r.get("absolute_shift") is not None]
+        return sum(vals) / len(vals) if vals else None
+
+    def _ssr_q(qr):
+        HIGH = {"node_negate_high", "node_strengthen", "edge_negate_critical", "edge_strengthen_critical"}
+        LOW = {"node_negate_low", "node_strengthen_low", "edge_negate_peripheral", "edge_strengthen_peripheral", "irrelevant"}
+        hi = [r["absolute_shift"] for r in qr if r.get("probe_type") in HIGH and r.get("absolute_shift") is not None]
+        lo = [r["absolute_shift"] for r in qr if r.get("probe_type") in LOW and r.get("absolute_shift") is not None]
+        if hi and lo:
+            mean_lo = sum(lo) / len(lo)
+            return (sum(hi) / len(hi)) / mean_lo if mean_lo > 0 else None
+        return None
+
+    def _tau_q(qr):
+        node_pts = {"node_negate_high", "node_negate_medium", "node_negate_low", "node_strengthen"}
+        filtered = [r for r in qr if r.get("probe_type") in node_pts
+                     and r.get("target_importance") is not None and r.get("absolute_shift") is not None]
+        if len(filtered) < 4:
+            return None
+        return _kendall_tau([r["target_importance"] for r in filtered],
+                            [r["absolute_shift"] for r in filtered])
+
+    # For each panel, compute paired tests between conditions
+    panel_configs = [
+        (axes[0], ssrs, ssr_his, _ssr_q, "SSR"),
+        (axes[1], taus, tau_his, _tau_q, "tau"),
+        (axes[2], shifts, shift_his, _mean_shift_q, "shift"),
+    ]
+
+    comparisons = [(0, 1), (1, 2), (0, 2)]  # small-med, med-large, small-large
+
+    for ax, vals, hi_errs, q_fn, metric_name in panel_configs:
+        # Get per-question values for each condition
+        q_vals = {}
+        for li, label in enumerate(labels):
+            q_vals[li] = _get_per_question_vals(all_rows[label], q_fn)
+
+        bracket_offsets = [0, 1, 2]  # vertical offset for nested brackets
+        y_max = max(v + h for v, h in zip(vals, hi_errs))
+        bracket_base = y_max * 1.08
+
+        for bi, (i, j) in enumerate(comparisons):
+            # Paired t-test on shared questions
+            shared = set(q_vals[i].keys()) & set(q_vals[j].keys())
+            diffs = []
+            for qid in shared:
+                v_i, v_j = q_vals[i].get(qid), q_vals[j].get(qid)
+                if v_i is not None and v_j is not None:
+                    diffs.append(v_i - v_j)
+
+            if len(diffs) > 1:
+                mean_d = sum(diffs) / len(diffs)
+                var_d = sum((d - mean_d) ** 2 for d in diffs) / (len(diffs) - 1)
+                se_d = (var_d / len(diffs)) ** 0.5 if var_d > 0 else 1e-10
+                t_stat = mean_d / se_d
+                p = _t_to_p(abs(t_stat), len(diffs) - 1)
+            else:
+                p = 1.0
+
+            if p < 0.001:
+                stars = "***"
+            elif p < 0.01:
+                stars = "**"
+            elif p < 0.05:
+                stars = "*"
+            else:
+                stars = "n.s."
+
+            # Draw bracket
+            y_brack = bracket_base + bi * y_max * 0.1
+            h = y_max * 0.02
+            ax.plot([i, i, j, j], [y_brack, y_brack + h, y_brack + h, y_brack],
+                    color="black", linewidth=0.8, clip_on=False)
+            ax.annotate(stars, xy=((i + j) / 2, y_brack + h), xytext=(0, 1),
+                        textcoords="offset points", ha="center", fontsize=9, fontweight="bold")
+
+    _label_axes(axes)
+    plt.tight_layout()
+    plt.savefig(SUPPLEMENT_DIR / "network_size.png", dpi=300, bbox_inches="tight")
+    plt.savefig(SUPPLEMENT_DIR / "network_size.pdf", bbox_inches="tight")
+    plt.close()
+    print("  Saved supplementary/network_size.png/pdf")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# SUPPLEMENTARY: Structural Ablation (Node/Edge Removal)
+# ═════════════════════════════════════════════════════════════════════════════
+
+def fig_structural_ablation():
+    """Ablation: remove each node/edge from the DAG and re-forecast.
+
+    (a) Scatter of betweenness centrality vs |shift| for removed elements.
+    (b) Bar chart: mean shift for on-path vs off-path removed elements.
+    """
+    import json as _json
+
+    ablation_dir = CAUSAL_DIR / "70b_ablation" / "question_results"
+    if not ablation_dir.exists():
+        print("  [SKIP] structural_ablation: no ablation data")
+        return
+
+    files = sorted(ablation_dir.glob("q_*.json"))
+    if not files:
+        print("  [SKIP] structural_ablation: no question files")
+        return
+
+    # Collect per-question data
+    per_question = []  # list of dicts with results per question
+
+    for f in files:
+        data = _json.loads(f.read_text(encoding="utf-8"))
+        results = data.get("ablation_results", [])
+        successful = [r for r in results if r.get("success")]
+        if len(successful) < 3:
+            continue
+        per_question.append({
+            "qid": data["question_id"],
+            "results": successful,
+        })
+
+    # Compute within-question Kendall tau (betweenness vs shift) — nodes only
+    per_q_taus = []
+    for q in per_question:
+        nodes_only = [r for r in q["results"] if r.get("ablation_type") == "node"]
+        if len(nodes_only) < 3:
+            continue
+        betw = [r.get("betweenness", 0) for r in nodes_only]
+        shift = [r.get("absolute_shift", 0) for r in nodes_only]
+        tau = _kendall_tau(betw, shift)
+        if tau is not None:
+            per_q_taus.append(tau)
+
+    # Collect on-path vs off-path per question (paired)
+    per_q_on = []
+    per_q_off = []
+    for q in per_question:
+        on = [r["absolute_shift"] for r in q["results"] if r.get("path_relevance", 0) > 0]
+        off = [r["absolute_shift"] for r in q["results"] if r.get("path_relevance", 0) == 0]
+        if on and off:
+            per_q_on.append(sum(on) / len(on))
+            per_q_off.append(sum(off) / len(off))
+
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
+
+    # (a) Distribution of within-question tau
+    ax = axes[0]
+    ax.hist(per_q_taus, bins=20, color="#0072B2", edgecolor="black", linewidth=0.5, alpha=0.8)
+    mean_tau = sum(per_q_taus) / len(per_q_taus) if per_q_taus else 0
+    ax.axvline(mean_tau, color="#D55E00", linewidth=2, linestyle="--",
+               label=f"Mean τ = {mean_tau:.3f}")
+    ax.axvline(0, color="#444444", linewidth=1, linestyle=":")
+
+    ax.set_xlabel("Within-Question Kendall τ\n(Node Betweenness vs |Shift|)")
+    ax.set_ylabel("Number of Questions")
+    ax.legend(fontsize=9)
+
+    # (b) On-path vs off-path mean shift (within-question paired)
+    ax = axes[1]
+
+    means = [
+        sum(per_q_on) / len(per_q_on) if per_q_on else 0,
+        sum(per_q_off) / len(per_q_off) if per_q_off else 0,
+    ]
+
+    # Bootstrap CIs on per-question means
+    cis = []
+    for vals in [per_q_on, per_q_off]:
+        if len(vals) < 2:
+            cis.append((0, 0))
+            continue
+        m = sum(vals) / len(vals)
+        boot = []
+        rng = np.random.RandomState(42)
+        for _ in range(5000):
+            sample = rng.choice(vals, len(vals), replace=True)
+            boot.append(sum(sample) / len(sample))
+        boot.sort()
+        lo = boot[int(0.025 * len(boot))]
+        hi = boot[int(0.975 * len(boot))]
+        cis.append((m - lo, hi - m))
+
+    # Paired t-test
+    if len(per_q_on) > 1:
+        diffs = [per_q_on[i] - per_q_off[i] for i in range(len(per_q_on))]
+        mean_d = sum(diffs) / len(diffs)
+        var_d = sum((d - mean_d) ** 2 for d in diffs) / (len(diffs) - 1)
+        se_d = (var_d / len(diffs)) ** 0.5 if var_d > 0 else 1e-10
+        t_stat = mean_d / se_d
+        from forecast_bench.analysis_causal import _t_to_p
+        p_path = _t_to_p(abs(t_stat), len(diffs) - 1)
+    else:
+        p_path = 1.0
+
+    bar_colors = ["#0072B2", "#999999"]
+    ax.bar([0, 1], means, yerr=[[c[0] for c in cis], [c[1] for c in cis]],
+           color=bar_colors, edgecolor="black", linewidth=0.5, capsize=5,
+           error_kw={"linewidth": 1.5})
+    # Bracket with significance
+    stars = "***" if p_path < 0.001 else "**" if p_path < 0.01 else "*" if p_path < 0.05 else "n.s."
+    y_top = max(means) + max(c[1] for c in cis) + 0.003
+    ax.plot([0, 0, 1, 1], [y_top, y_top + 0.002, y_top + 0.002, y_top],
+            color="black", linewidth=1.0)
+    ax.annotate(stars, xy=(0.5, y_top + 0.002), xytext=(0, 2),
+                textcoords="offset points", ha="center", fontsize=12, fontweight="bold")
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels(["On Shortest Path", "Off Shortest Path"], fontsize=9)
+    ax.set_ylabel("Mean |Probability Shift|\n(per-question average)")
+
+    _label_axes(axes)
+    plt.tight_layout()
+    plt.savefig(SUPPLEMENT_DIR / "structural_ablation.png", dpi=300, bbox_inches="tight")
+    plt.savefig(SUPPLEMENT_DIR / "structural_ablation.pdf", bbox_inches="tight")
+    plt.close()
+    print("  Saved supplementary/structural_ablation.png/pdf")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
 # MAIN
 # ═════════════════════════════════════════════════════════════════════════════
 
@@ -1190,25 +2448,294 @@ def main():
 
     # Main figures (1-7)
     print("\n--- Main figures ---")
-    fig_dose_response(runs)
+    # fig_dose_response — dropped; ssr_comparison panel (c) shows the same ρ
     fig_ssr_comparison(runs)
     fig_shift_by_probe_type(runs)
     fig_calibration(runs)
     fig_within_question_consistency(runs)
     fig_reasoning_coherence(runs)
-    fig_probability_distributions(runs)
+    fig_shift_directionality(runs)
+    fig_bottleneck_sensitivity(runs)
+    fig_bayesian_coherence(runs)
+    fig_inter_model_agreement(runs)
+    # fig_probability_distributions — merged into fig_calibration as panel (a)
 
     # Supplementary figures
     print("\n--- Supplementary figures ---")
     fig_superforecasting_analysis(runs)
-    fig_cross_model_shifts(runs)
+    # fig_cross_model_shifts removed — report consistency in text
     fig_null_test(runs)
-    fig_paired_initial_probabilities(runs)
-    fig_hedge_vs_confidence(runs)
+    fig_test_retest(runs)
+    # fig_paired_initial_probabilities removed — report ρ range in text
+
+    # fig_reasoning_embeddings — merged into fig_null_test as panel (b)
+    fig_network_size_comparison()
+    fig_structural_ablation()
 
     main_n = len(list(FIGURES_DIR.glob("*.png")))
     supp_n = len(list(SUPPLEMENT_DIR.glob("*.png")))
     print(f"\nDone! {main_n} main + {supp_n} supplementary figures")
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FIGURE: Reasoning Embedding Analysis
+# ═════════════════════════════════════════════════════════════════════════════
+
+# Importance tier for each probe type (used for UMAP coloring)
+_IMPORTANCE_TIER = {
+    "node_negate_high": "High",
+    "node_strengthen": "High",
+    "edge_negate_critical": "High",
+    "edge_strengthen_critical": "High",
+    "node_negate_medium": "Medium",
+    "node_strengthen_medium": "Medium",
+    "node_negate_low": "Low",
+    "node_strengthen_low": "Low",
+    "edge_negate_peripheral": "Low",
+    "edge_strengthen_peripheral": "Low",
+    "edge_reverse": "Low",
+    "edge_spurious": "Control",
+    "edge_fabricate": "Control",
+    "missing_node": "Control",
+    "irrelevant": "Control",
+}
+
+# Normalize non-standard probe types (same as loader)
+_EMBED_PROBE_NORMALIZE = {
+    "irlevant": "irrelevant",
+    "edge_missing": "edge_spurious",
+    "edge_omitted": "edge_spurious",
+    "edge_added": "edge_fabricate",
+    "edge_addition": "edge_fabricate",
+    "edge_add": "edge_fabricate",
+    "edge_add_causal": "edge_fabricate",
+    "edge_add_direct": "edge_fabricate",
+    "edge_feedback": "edge_spurious",
+}
+
+_TIER_COLORS = {
+    "High": "#D55E00",       # vermillion
+    "Medium": "#E69F00",     # orange
+    "Low": "#0072B2",        # blue
+    "Control": "#999999",    # gray
+}
+
+_MODEL_DISPLAY = {
+    "llama-8b": "Llama-3.1-8B",
+    "llama-70b": "Llama-3.3-70B",
+    "deepseek": "DeepSeek-V3",
+    "qwen": "Qwen3-235B",
+    "gemini": "Gemini-Flash-Lite",
+}
+
+
+def fig_reasoning_embeddings(runs: dict):
+    """Two-panel reasoning embedding analysis.
+
+    (a) Within-question cosine similarity: control vs structural probes by model.
+        For each model × question, compute mean cosine similarity between
+        control probe reasoning and structural probe reasoning. Lower similarity
+        means the model produces semantically distinct reasoning for controls.
+    (b) Cross-model reasoning convergence by probe type (bar chart).
+    """
+    import json as _json
+
+    embeddings_path = CAUSAL_DIR / "reasoning_embeddings.npz"
+    keys_path = CAUSAL_DIR / "reasoning_embeddings_keys.json"
+    analysis_path = CAUSAL_DIR / "reasoning_similarity_analysis.json"
+
+    if not embeddings_path.exists() or not keys_path.exists():
+        print("  [SKIP] reasoning_embeddings: missing cached embeddings")
+        return
+
+    print("  Computing embedding separation...", end=" ", flush=True)
+
+    keys = _json.loads(keys_path.read_text(encoding="utf-8"))
+    data = np.load(str(embeddings_path))
+    embeddings = data["embeddings"]
+
+    # Parse metadata: qid|probe_type|probe_idx|model
+    CONTROL_TYPES = {"irrelevant", "edge_spurious", "edge_fabricate", "missing_node"}
+
+    # Index embeddings by (model, qid) -> list of (is_control, embedding_idx)
+    model_q_index = defaultdict(list)
+    for i, k in enumerate(keys):
+        parts = k.split("|")
+        if len(parts) < 4:
+            continue
+        pt = _EMBED_PROBE_NORMALIZE.get(parts[1], parts[1])
+        if pt not in _IMPORTANCE_TIER:
+            continue
+        model_key = parts[3]
+        qid = parts[0]
+        is_control = pt in CONTROL_TYPES
+        model_q_index[(model_key, qid)].append((is_control, i))
+
+    # For each model, compute within-question control vs structural similarity
+    model_order = ["llama-8b", "llama-70b", "deepseek", "qwen", "gemini"]
+    model_separations = {}  # model -> list of per-question mean(control-structural sim)
+    model_within_control = {}  # model -> list of per-question mean(control-control sim)
+    model_within_structural = {}  # model -> list of per-question mean(structural-structural sim)
+
+    def _cosine_sim(a, b):
+        dot = np.dot(a, b)
+        na = np.linalg.norm(a)
+        nb = np.linalg.norm(b)
+        if na == 0 or nb == 0:
+            return 0.0
+        return dot / (na * nb)
+
+    for model_key in model_order:
+        between_sims = []
+        ctrl_sims = []
+        struct_sims = []
+
+        # Get all questions for this model
+        model_questions = set(qid for (mk, qid) in model_q_index if mk == model_key)
+
+        for qid in model_questions:
+            entries = model_q_index[(model_key, qid)]
+            ctrl_indices = [idx for is_ctrl, idx in entries if is_ctrl]
+            struct_indices = [idx for is_ctrl, idx in entries if not is_ctrl]
+
+            if len(ctrl_indices) < 2 or len(struct_indices) < 2:
+                continue
+
+            # Between-class: control vs structural
+            q_between = []
+            for ci in ctrl_indices:
+                for si in struct_indices:
+                    q_between.append(_cosine_sim(embeddings[ci], embeddings[si]))
+            if q_between:
+                between_sims.append(sum(q_between) / len(q_between))
+
+            # Within-class: control-control
+            q_ctrl = []
+            for ii in range(len(ctrl_indices)):
+                for jj in range(ii + 1, len(ctrl_indices)):
+                    q_ctrl.append(_cosine_sim(embeddings[ctrl_indices[ii]], embeddings[ctrl_indices[jj]]))
+            if q_ctrl:
+                ctrl_sims.append(sum(q_ctrl) / len(q_ctrl))
+
+            # Within-class: structural-structural
+            # Sample to avoid O(n^2) explosion for large structural sets
+            rng = np.random.RandomState(42)
+            if len(struct_indices) > 10:
+                pairs = [(struct_indices[a], struct_indices[b])
+                         for a in range(len(struct_indices))
+                         for b in range(a + 1, len(struct_indices))]
+                if len(pairs) > 50:
+                    pair_idx = rng.choice(len(pairs), 50, replace=False)
+                    pairs = [pairs[p] for p in pair_idx]
+            else:
+                pairs = [(struct_indices[a], struct_indices[b])
+                         for a in range(len(struct_indices))
+                         for b in range(a + 1, len(struct_indices))]
+            q_struct = [_cosine_sim(embeddings[a], embeddings[b]) for a, b in pairs]
+            if q_struct:
+                struct_sims.append(sum(q_struct) / len(q_struct))
+
+        model_separations[model_key] = between_sims
+        model_within_control[model_key] = ctrl_sims
+        model_within_structural[model_key] = struct_sims
+
+    print("done.")
+
+    fig, ax = plt.subplots(figsize=(7, 4.5))
+
+    model_colors_map = {
+        "llama-8b": "#E69F00",
+        "llama-70b": "#0072B2",
+        "deepseek": "#D55E00",
+        "qwen": "#009E73",
+        "gemini": "#CC79A7",
+    }
+
+    x_pos = np.arange(len(model_order))
+    width = 0.35
+
+    for gi, (label, data_dict, hatch) in enumerate([
+        ("Structural Probes", model_within_structural, None),
+        ("Control Probes", model_within_control, "//"),
+    ]):
+        means = []
+        cis = []
+        for mk in model_order:
+            vals = data_dict.get(mk, [])
+            if vals:
+                m = sum(vals) / len(vals)
+                means.append(m)
+                boot = []
+                boot_rng = np.random.RandomState(42)
+                for _ in range(2000):
+                    sample = boot_rng.choice(vals, len(vals), replace=True)
+                    boot.append(sum(sample) / len(sample))
+                boot.sort()
+                lo = boot[int(0.025 * len(boot))]
+                hi = boot[int(0.975 * len(boot))]
+                cis.append((m - lo, hi - m))
+            else:
+                means.append(0)
+                cis.append((0, 0))
+
+        err_lo = [c[0] for c in cis]
+        err_hi = [c[1] for c in cis]
+        ax.bar(x_pos + gi * width, means, width,
+               yerr=[err_lo, err_hi],
+               label=label, hatch=hatch,
+               color=[model_colors_map[m] for m in model_order],
+               edgecolor="black", linewidth=0.5, capsize=3,
+               error_kw={"linewidth": 1}, alpha=0.7 if hatch else 1.0)
+
+    # Paired t-test per model and add significance stars
+    from forecast_bench.analysis_causal import _t_to_p
+    for i, mk in enumerate(model_order):
+        s_vals = model_within_structural.get(mk, [])
+        c_vals = model_within_control.get(mk, [])
+        # Pair by question (same index = same question)
+        n_pairs = min(len(s_vals), len(c_vals))
+        if n_pairs > 1:
+            diffs = [s_vals[j] - c_vals[j] for j in range(n_pairs)]
+            mean_d = sum(diffs) / len(diffs)
+            var_d = sum((d - mean_d) ** 2 for d in diffs) / (len(diffs) - 1)
+            se_d = (var_d / len(diffs)) ** 0.5 if var_d > 0 else 1e-10
+            t_stat = mean_d / se_d
+            p = _t_to_p(abs(t_stat), len(diffs) - 1)
+        else:
+            p = 1.0
+        if p < 0.001:
+            stars = "***"
+        elif p < 0.01:
+            stars = "**"
+        elif p < 0.05:
+            stars = "*"
+        else:
+            stars = "n.s."
+        # Draw bracket between the two bars with stars above
+        x_left = x_pos[i]  # structural bar center
+        x_right = x_pos[i] + width  # control bar center
+        s_mean = sum(s_vals) / len(s_vals) if s_vals else 0
+        c_mean = sum(c_vals) / len(c_vals) if c_vals else 0
+        y_top = max(s_mean, c_mean) + 0.015
+        bracket_h = 0.005
+        ax.plot([x_left, x_left, x_right, x_right],
+                [y_top, y_top + bracket_h, y_top + bracket_h, y_top],
+                color="black", linewidth=1.0, clip_on=False)
+        ax.annotate(stars, xy=((x_left + x_right) / 2, y_top + bracket_h),
+                     xytext=(0, 2), textcoords="offset points",
+                     ha="center", fontsize=11, fontweight="bold")
+
+    ax.set_ylabel("Within-Question Cosine Similarity")
+    ax.set_xticks(x_pos + width / 2)
+    ax.set_xticklabels([_MODEL_DISPLAY.get(m, m) for m in model_order], fontsize=9)
+    ax.set_ylim(0.55, 0.86)
+    ax.legend(fontsize=9, bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0)
+
+    plt.tight_layout()
+    plt.savefig(FIGURES_DIR / "reasoning_embeddings.png", dpi=300, bbox_inches="tight")
+    plt.savefig(FIGURES_DIR / "reasoning_embeddings.pdf", bbox_inches="tight")
+    plt.close()
+    print("  Saved reasoning_embeddings.png/pdf")
 
 
 if __name__ == "__main__":

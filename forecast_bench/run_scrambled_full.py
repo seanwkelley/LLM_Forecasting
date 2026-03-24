@@ -294,23 +294,30 @@ def run_scrambled_full(args):
         save_question_json(results_dir, qid, q_output)
 
         # Write CSV rows
-        for result in probe_results:
+        for pi, result in enumerate(probe_results):
             csv_writer.writerow({
                 "question_id": qid,
                 "question_text": question["question"][:200],
-                "source": question.get("source", ""),
+                "condition": "scrambled_full",
                 "initial_probability": initial_prob,
+                "probe_index": pi,
                 "probe_type": result.get("probe_type", ""),
-                "probe_text": result.get("probe_text", "")[:500],
-                "target_type": result.get("target_type", ""),
+                "probe_category": result.get("probe_category", ""),
                 "target_id": result.get("target_id", ""),
-                "importance": result.get("target_importance", 0),
-                "centrality_rank": result.get("target_centrality_rank", 0),
-                "on_critical_path": result.get("target_on_critical_path", False),
+                "target_description": result.get("description", ""),
+                "target_importance": result.get("target_importance", 0),
+                "target_centrality_rank": result.get("target_centrality_rank", 0),
+                "target_on_critical_path": result.get("target_on_critical_path", False),
+                "probe_text": result.get("probe_text", "")[:500],
+                "probe_generated": True,
                 "updated_probability": result.get("updated_probability"),
                 "absolute_shift": result.get("absolute_shift"),
+                "shift_direction": result.get("shift_direction", ""),
                 "success": result.get("success", False),
                 "reasoning": result.get("reasoning", "")[:500],
+                "n_nodes": len(nodes),
+                "n_edges": len(edges),
+                "graph_density": len(edges) / max(1, len(nodes) * (len(nodes) - 1)),
             })
         csv_file.flush()
 

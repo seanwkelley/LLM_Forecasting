@@ -418,15 +418,51 @@ def _plot_exemplar_pair(temp_data, available_temps, shared_all):
     d_lo = temp_data[T_LO][EXEMPLAR_QID]
     d_hi = temp_data[T_HI][EXEMPLAR_QID]
 
-    # Shared node IDs (excluding outcome)
-    nodes_lo = {n["id"] for n in d_lo["nodes"] if n.get("role") != "outcome"}
-    nodes_hi = {n["id"] for n in d_hi["nodes"] if n.get("role") != "outcome"}
-    shared_nodes = nodes_lo & nodes_hi
+    # Semantic matching for shared nodes
+    from forecast_bench.semantic_graph_match import semantic_jaccard_pair
+    nodes_lo_list = [n for n in d_lo["nodes"] if n.get("role") != "outcome"]
+    nodes_hi_list = [n for n in d_hi["nodes"] if n.get("role") != "outcome"]
 
-    # Compute nGED for subtitle
+    try:
+        sem = semantic_jaccard_pair(
+            nodes_lo_list, nodes_hi_list,
+            edges1=d_lo.get("edges", []), edges2=d_hi.get("edges", []),
+            condition1="temp0.0", condition2="temp1.0",
+            qid=EXEMPLAR_QID,
+        )
+        sem_jaccard = sem["node_jaccard"]
+    except Exception:
+        sem_jaccard = 0.0
+
+    # Build shared set via semantic matching
+    from forecast_bench.semantic_graph_match import (
+        _ensure_embeddings, _cosine_matrix, _hungarian_match,
+        _get_api_key, NODE_EMB_CACHE, NODE_EMB_KEYS_CACHE,
+    )
+    api_key = _get_api_key()
+    texts = {}
+    for n in nodes_lo_list:
+        texts[f"node|{EXEMPLAR_QID}|temp0.0|{n['id']}"] = f"{n['id']}: {n.get('description', n['id'])}"
+    for n in nodes_hi_list:
+        texts[f"node|{EXEMPLAR_QID}|temp1.0|{n['id']}"] = f"{n['id']}: {n.get('description', n['id'])}"
+    idx, mat = _ensure_embeddings(texts, NODE_EMB_CACHE, NODE_EMB_KEYS_CACHE, api_key)
+    v_lo = mat[np.array([idx[f"node|{EXEMPLAR_QID}|temp0.0|{n['id']}"] for n in nodes_lo_list])]
+    v_hi = mat[np.array([idx[f"node|{EXEMPLAR_QID}|temp1.0|{n['id']}"] for n in nodes_hi_list])]
+    sim = _cosine_matrix(v_lo, v_hi)
+    matches = _hungarian_match(sim, threshold=0.7)
+
+    # Map: lo_id -> hi_id for matched pairs
+    shared_nodes_lo = set()
+    shared_nodes_hi = set()
+    for m in matches:
+        shared_nodes_lo.add(nodes_lo_list[m[0]]["id"])
+        shared_nodes_hi.add(nodes_hi_list[m[1]]["id"])
+    # Union for coloring
+    shared_nodes = shared_nodes_lo | shared_nodes_hi
+
+    # Edge comparison (string-based, since edges reference node IDs)
     edges_lo_set = {(e["from"], e["to"]) for e in d_lo["edges"]}
     edges_hi_set = {(e["from"], e["to"]) for e in d_hi["edges"]}
-    nged = normalized_ged(nodes_lo, edges_lo_set, nodes_hi, edges_hi_set)
     shared_edge_set = edges_lo_set & edges_hi_set
 
     # ── Build unified layout from union graph ──
@@ -548,7 +584,7 @@ def _plot_exemplar_pair(temp_data, available_temps, shared_all):
                fontsize=10, frameon=False, bbox_to_anchor=(0.5, -0.02))
 
     # nGED annotation
-    fig.text(0.5, -0.06, f"Normalized Graph Edit Distance = {nged:.2f}",
+    fig.text(0.5, -0.06, f"Semantic Node Jaccard = {sem_jaccard:.2f}",
              ha="center", fontsize=12, fontstyle="italic", color="#555")
 
     plt.tight_layout()

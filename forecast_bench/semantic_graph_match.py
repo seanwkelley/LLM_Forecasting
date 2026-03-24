@@ -92,14 +92,15 @@ def _save_cache(key_to_idx: dict[str, int], matrix: np.ndarray,
     keys = [""] * len(key_to_idx)
     for k, i in key_to_idx.items():
         keys[i] = k
-    # Write to temp files first, then rename atomically to prevent corruption
-    # from concurrent processes
+    # Write to temp files first, then rename to prevent corruption
     tmp_keys = keys_path.with_suffix(".json.tmp")
-    tmp_npz = npz_path.with_suffix(".npz.tmp")
+    # np.savez_compressed appends .npz if not present, so use .tmp suffix before .npz
+    tmp_npz = npz_path.parent / (npz_path.stem + "_tmp.npz")
     tmp_keys.write_text(json.dumps(keys), encoding="utf-8")
     np.savez_compressed(str(tmp_npz), embeddings=matrix.astype(np.float32))
-    tmp_keys.replace(keys_path)
-    tmp_npz.replace(npz_path)
+    import shutil
+    shutil.move(str(tmp_keys), str(keys_path))
+    shutil.move(str(tmp_npz), str(npz_path))
 
 
 def _ensure_embeddings(texts_by_key: dict[str, str],

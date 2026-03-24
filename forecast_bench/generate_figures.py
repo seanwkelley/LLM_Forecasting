@@ -2399,7 +2399,7 @@ def fig_structural_ablation():
     mean_tau = sum(per_q_taus) / len(per_q_taus) if per_q_taus else 0
     ax.axvline(mean_tau, color="#D55E00", linewidth=2, linestyle="--")
 
-    ax.set_xlabel("Within-Question Kendall τ\n(Node Betweenness vs |Shift|)")
+    ax.set_xlabel("Within-Question Kendall τ")
     ax.set_ylabel("Number of Questions")
 
     # (b) On-path vs off-path mean shift (within-question paired)

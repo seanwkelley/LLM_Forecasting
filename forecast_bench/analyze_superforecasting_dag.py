@@ -262,11 +262,11 @@ def main():
     sf_props = [extract_graph_props(sf[qid]) for qid in shared_qids]
     n_q = len(shared_qids)
 
-    # Observed means
-    obs_node_j = np.mean(node_j)
-    obs_edge_j = np.mean(edge_j)
+    # Observed means (use semantic matching for nodes and edges)
+    obs_node_j = np.mean(sem_node_j)
+    obs_edge_j = np.mean(sem_edge_j)
     obs_ged = np.mean(norm_geds)
-    obs_spectral = np.mean(spectral_dists)
+    obs_spectral = np.mean(sem_spectral)
 
     # Permutation null: shuffle SF DAG assignments across questions
     perm_node_j = np.zeros(N_PERM)

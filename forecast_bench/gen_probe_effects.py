@@ -14,10 +14,10 @@ import networkx as nx
 plt.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
-    "font.size": 11,
-    "axes.labelsize": 12,
-    "axes.titlesize": 13,
-    "legend.fontsize": 10,
+    "font.size": 15,
+    "axes.labelsize": 16,
+    "axes.titlesize": 17,
+    "legend.fontsize": 13,
     "figure.dpi": 300,
     "savefig.dpi": 300,
     "savefig.bbox": "tight",
@@ -127,16 +127,16 @@ def main():
     y = list(range(len(labels)))
     for i, (m, lo, hi, color) in enumerate(zip(means, ci_los, ci_his, face_colors)):
         ax1.plot([m - lo, m + hi], [i, i], color=color, linewidth=3, solid_capstyle="round")
-        ax1.plot(m, i, "o", color="black", markersize=4, zorder=5)
+        ax1.plot(m, i, "o", color=color, markersize=4, zorder=5)
     ax1.set_yticks(y)
-    ax1.set_yticklabels(pretty, fontsize=9)
+    ax1.set_yticklabels(pretty, fontsize=12)
     ax1.set_xlabel("Mean |Probability Shift|")
     ax1.axvline(x=0, color="#333333", linewidth=1.0, linestyle="--", zorder=0)
     ax1.legend(handles=[
         Patch(facecolor=CAT_COLORS["node"], alpha=0.7, label="Node"),
         Patch(facecolor=CAT_COLORS["edge"], alpha=0.7, label="Edge"),
         Patch(facecolor=CAT_COLORS["control"], alpha=0.7, label="Control"),
-    ], loc="lower right", frameon=False, fontsize=9)
+    ], loc="lower right", frameon=False, fontsize=12)
 
     # ── Collect path data ───────────────────────────────────────────────
     model_names = list(runs.keys())
@@ -223,7 +223,7 @@ def main():
                    color=["#332288", "#BBBBBB"], edgecolor="none", capsize=5,
                    error_kw={"linewidth": 1.5}, width=0.6)
     ax2.set_xticks([0, 1])
-    ax2.set_xticklabels(["On Shortest\nPath", "Off Shortest\nPath"], fontsize=11)
+    ax2.set_xticklabels(["On Shortest\nPath", "Off Shortest\nPath"], fontsize=14)
     ax2.set_ylabel("Mean |Probability Shift|")
 
     # Significance
@@ -233,7 +233,7 @@ def main():
     ax2.plot([0, 0, 1, 1], [y_top, y_top + 0.002, y_top + 0.002, y_top],
              color="black", linewidth=1.0)
     ax2.text(0.5, y_top + 0.003, stars, ha="center", va="bottom",
-             fontsize=10, fontweight="bold")
+             fontsize=14, fontweight="bold")
     ax2.set_ylim(bottom=0)
 
     # ── (c) Path relevance scatter with linear fit ───────────────────────
@@ -247,10 +247,11 @@ def main():
         x_line = np.linspace(0, 1, 100)
         ax3.plot(x_line, slope * x_line + intercept, color="#882255", linewidth=2, zorder=5)
         stars = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else ""
-        ax3.text(0.95, 0.95, f"r = {r:.2f}", transform=ax3.transAxes, ha="right", va="top", fontsize=10)
-        ax3.text(0.958, 0.97, stars, transform=ax3.transAxes, ha="left", va="top", fontsize=8, fontweight="bold")
-    ax3.set_xlabel("Path Relevance")
-    ax3.set_ylabel("Mean |Probability Shift|")
+        ax3.text(0.95, 0.95, f"r = {r:.2f}", transform=ax3.transAxes, ha="right", va="top", fontsize=14)
+        ax3.text(0.958, 0.97, stars, transform=ax3.transAxes, ha="left", va="top", fontsize=12, fontweight="bold")
+    ax3.set_xlabel("Path Relevance", fontsize=16)
+    ax3.set_ylabel("Mean |Probability Shift|", fontsize=16)
+    ax3.tick_params(axis="both", labelsize=13)
     ax3.set_xlim(-0.05, 1.05)
 
     # Panel labels

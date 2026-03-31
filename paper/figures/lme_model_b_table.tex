@@ -1,0 +1,33 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Model B: Path Relevance --- Model-Specific Slopes}
+\label{tab:lme_model_b_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.1011*** & 0.0034 & 30.15 & $<$0.001 & [0.095, 0.108] \\
+  path\_relevance\_z & 0.0083** & 0.0028 & 2.97 & 0.003 & [0.003, 0.014] \\
+  DeepSeek-V3 & -0.0031 & 0.0035 & -0.88 & 0.378 & [-0.010, 0.004] \\
+  Gemini-Flash-Lite & 0.0389*** & 0.0036 & 10.83 & $<$0.001 & [0.032, 0.046] \\
+  GPT-OSS-120B & 0.0318*** & 0.0035 & 9.18 & $<$0.001 & [0.025, 0.039] \\
+  Llama-3.1-8B & 0.0136*** & 0.0035 & 3.93 & $<$0.001 & [0.007, 0.020] \\
+  Qwen3-235B & -0.0020 & 0.0035 & -0.58 & 0.563 & [-0.009, 0.005] \\
+  path\_relevance\_z:modelDeepSeek-V3 & 0.0006 & 0.0037 & 0.16 & 0.874 & [-0.007, 0.008] \\
+  path\_relevance\_z:modelGemini-Flash-Lite & 0.0213*** & 0.0043 & 4.93 & $<$0.001 & [0.013, 0.030] \\
+  path\_relevance\_z:modelGPT-OSS-120B & 0.0052 & 0.0036 & 1.42 & 0.155 & [-0.002, 0.012] \\
+  path\_relevance\_z:modelLlama-3.1-8B & -0.0076* & 0.0039 & -1.97 & 0.048 & [-0.015, -0.000] \\
+  path\_relevance\_z:modelQwen3-235B & 0.0034 & 0.0035 & 0.98 & 0.328 & [-0.003, 0.010] \\
+\midrule
+  N observations & \multicolumn{5}{c}{4790} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{5854.49} \\
+  AIC / BIC & \multicolumn{5}{c}{-11681.0 / -11590.3} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0671} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.1594} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0048} \\
+\bottomrule
+\end{tabular}
+\end{table}

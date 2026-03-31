@@ -186,69 +186,67 @@ def build_causal_probe_prompt(
     target_id = probe_target["target_id"]
     target_desc = probe_target["description"]
 
+    # Neutral instructions: no importance labels (HIGH/LOW/CRITICAL/PERIPHERAL)
     type_instructions = {
         "node_negate_high": (
             f"Create a direct negation of the causal factor '{target_id}' "
-            f"({target_desc}). This is a HIGH-IMPORTANCE factor in the network. "
-            f"Frame it as: 'What if this factor is completely wrong or irrelevant?' "
+            f"({target_desc}). "
             f"Provide a specific, plausible argument for why this factor might not "
             f"matter or why the opposite might be true."
         ),
         "node_negate_medium": (
             f"Create a direct negation of the causal factor '{target_id}' "
-            f"({target_desc}). This is a MEDIUM-IMPORTANCE factor. "
+            f"({target_desc}). "
             f"Argue why this factor might be wrong or irrelevant, with a specific "
             f"mechanism or piece of evidence."
         ),
         "node_negate_low": (
             f"Create a direct negation of the causal factor '{target_id}' "
-            f"({target_desc}). This is a LOW-IMPORTANCE factor. "
+            f"({target_desc}). "
             f"Argue why this factor might be wrong or irrelevant."
         ),
         "node_strengthen": (
             f"Create a plausible piece of evidence or argument that REINFORCES "
             f"the causal factor '{target_id}' ({target_desc}), making it even "
-            f"more likely to be true and more causally important. This is a "
-            f"HIGH-IMPORTANCE factor. Provide a strong new data point, expert "
-            f"endorsement, or development that strongly supports this factor's "
+            f"more likely to be true and more causally important. "
+            f"Provide a strong new data point, expert "
+            f"endorsement, or development that supports this factor's "
             f"role in the causal network."
         ),
         "node_strengthen_medium": (
             f"Create a plausible piece of evidence or argument that REINFORCES "
             f"the causal factor '{target_id}' ({target_desc}), making it even "
-            f"more likely to be true and more causally important. This is a "
-            f"MEDIUM-IMPORTANCE factor. Provide a specific piece of evidence "
+            f"more likely to be true and more causally important. "
+            f"Provide a specific piece of evidence "
             f"or development that supports this factor."
         ),
         "node_strengthen_low": (
             f"Create a plausible piece of evidence or argument that REINFORCES "
             f"the causal factor '{target_id}' ({target_desc}), making it even "
-            f"more likely to be true and more causally important. This is a "
-            f"LOW-IMPORTANCE factor. Provide evidence that supports this factor."
+            f"more likely to be true and more causally important. "
+            f"Provide evidence that supports this factor."
         ),
         "edge_negate_critical": (
             f"Challenge the causal link '{target_id}' ({target_desc}). "
-            f"This is a CRITICAL edge on the shortest path to the outcome. "
             f"Argue why this causal mechanism might be broken, spurious, or "
             f"much weaker than assumed. Provide a specific counter-mechanism "
             f"or piece of evidence."
         ),
         "edge_negate_peripheral": (
             f"Challenge the causal link '{target_id}' ({target_desc}). "
-            f"This is a PERIPHERAL edge not on the main causal path. "
             f"Argue why this causal mechanism might not hold."
         ),
         "edge_strengthen_critical": (
             f"Provide evidence or argument that REINFORCES the causal link "
-            f"'{target_id}' ({target_desc}). This is a CRITICAL edge on the "
-            f"shortest path to the outcome. Argue why this causal mechanism "
+            f"'{target_id}' ({target_desc}). "
+            f"Argue why this causal mechanism "
             f"is even stronger than assumed, with a specific piece of evidence "
             f"or recent development that confirms this link."
         ),
         "edge_strengthen_peripheral": (
             f"Provide evidence or argument that REINFORCES the causal link "
-            f"'{target_id}' ({target_desc}). This is a PERIPHERAL edge not "
-            f"on the main causal path. Argue why this causal mechanism is "
+            f"'{target_id}' ({target_desc}). "
+            f"Argue why this causal mechanism is "
             f"stronger than assumed."
         ),
         "edge_reverse": (
@@ -307,15 +305,8 @@ CAUSAL_PROBED_FORECAST_SYSTEM = """\
 You are an expert forecaster updating your estimate in light of new information \
 about your causal model.
 
-When presented with a challenge to an element of your causal network, you should:
-- Consider how the challenge affects the causal paths leading to the outcome
-- Evaluate whether the challenged element is structurally important to your reasoning
-- Update your probability estimate appropriately
-- Explain which causal paths are affected and why
-
-Be honest about uncertainty. Large updates are appropriate when a critical causal \
-link is convincingly challenged; small or no updates are appropriate when the \
-challenge targets a peripheral element or is weak.
+When presented with new information, consider how it affects your causal network \
+and update your probability estimate accordingly.
 
 Respond with ONLY valid JSON. No other text."""
 
@@ -377,18 +368,15 @@ Now consider the following ({challenge_desc}):
 
 "{probe_text}"
 
-Think about how this would change the causal paths leading to the outcome.
-
 Provide your updated forecast as JSON:
 {{
   "updated_probability": <float between 0.01 and 0.99>,
   "shift_direction": "increased" or "decreased" or "unchanged",
-  "reasoning": "<explain which causal paths are affected and how this changes your estimate>"
+  "reasoning": "<explain how this new information affects your estimate>"
 }}
 
 Requirements:
-- updated_probability must be between 0.01 and 0.99.
-- Be honest: if a critical causal path is broken, update substantially. If a peripheral element is challenged, small or no update is fine."""
+- updated_probability must be between 0.01 and 0.99."""
 
 
 def build_causal_conversational_probe_message(

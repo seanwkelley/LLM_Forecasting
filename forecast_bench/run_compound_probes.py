@@ -81,14 +81,8 @@ COMPOUND_SYSTEM = """\
 You are an expert forecaster updating your estimate in light of new information \
 about your causal model.
 
-When presented with challenges to elements of your causal network, you should:
-- Consider how each challenge affects the causal paths leading to the outcome
-- Consider how the challenges interact with each other through the network
-- Update your probability estimate appropriately
-
-Be honest about uncertainty. Large updates are appropriate when critical causal \
-links are convincingly challenged; small or no updates are appropriate when the \
-challenges target peripheral elements or are weak.
+When presented with new information, consider how it affects your causal network \
+and update your probability estimate accordingly.
 
 Respond with ONLY valid JSON. No other text."""
 

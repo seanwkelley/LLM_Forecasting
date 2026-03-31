@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Ablation: Node Removal --- Betweenness Predicts Shift}
+\label{tab:lme_ablation_node_betw_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.0531*** & 0.0025 & 20.99 & $<$0.001 & [0.048, 0.058] \\
+  betweenness\_z & 0.0045*** & 0.0012 & 3.81 & $<$0.001 & [0.002, 0.007] \\
+\midrule
+  N observations & \multicolumn{5}{c}{585} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{1140.78} \\
+  AIC / BIC & \multicolumn{5}{c}{-2273.6 / -2256.1} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0165} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.3481} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0009} \\
+\bottomrule
+\end{tabular}
+\end{table}

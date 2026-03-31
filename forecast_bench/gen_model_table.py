@@ -140,11 +140,12 @@ def _generate_permutation_table():
 
     CAUSAL = BASE / "outputs" / "sensitivity" / "causal"
     MODEL_DIRS = {
-        "Llama-3.1-8B":  CAUSAL / "llama_one_turn",
-        "Llama-3.3-70B": CAUSAL / "70b_one_turn",
-        "DeepSeek-V3":   CAUSAL / "deepseek_one_turn",
-        "Qwen3-235B":    CAUSAL / "qwen_one_turn",
-        "Gemini-Flash-Lite": CAUSAL / "gemini_flash_lite_one_turn",
+        "Llama-3.1-8B":  CAUSAL / "llama_neutral",
+        "Llama-3.3-70B": CAUSAL / "llama_70b_neutral",
+        "DeepSeek-V3":   CAUSAL / "deepseek_neutral",
+        "Qwen3-235B":    CAUSAL / "qwen_neutral",
+        "Gemini-Flash-Lite": CAUSAL / "gemini_flash_lite_neutral",
+        "GPT-OSS-120B":  CAUSAL / "gpt_oss_neutral",
     }
 
     def jaccard(a, b):
@@ -159,7 +160,7 @@ def _generate_permutation_table():
         q_data[name] = load_question_jsons(d)
         print(f"  Loaded {name}: {len(q_data[name])} questions")
 
-    model_names = ["Llama-3.1-8B", "Llama-3.3-70B", "DeepSeek-V3", "Qwen3-235B", "Gemini-Flash-Lite"]
+    model_names = ["Llama-3.1-8B", "Llama-3.3-70B", "DeepSeek-V3", "Qwen3-235B", "Gemini-Flash-Lite", "GPT-OSS-120B"]
     N_PERM = 5000
     rng = np.random.default_rng(42)
 

@@ -42,17 +42,19 @@ COLORS = {
     "DeepSeek-V3": "#D55E00",
     "Qwen3-235B": "#009E73",
     "Gemini-Flash-Lite": "#CC79A7",
+    "GPT-OSS-120B": "#882255",
 }
 
 JUDGE_KEY_MAP = {"Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
                  "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
-                 "Gemini-Flash-Lite": "gemini"}
+                 "Gemini-Flash-Lite": "gemini", "GPT-OSS-120B": "gpt-oss"}
 
 
 def _short_model_name(name):
     return {"Llama-3.1-8B": "Llama\n8B", "Llama-3.3-70B": "Llama\n70B",
             "DeepSeek-V3": "DeepSeek\nV3", "Qwen3-235B": "Qwen3\n235B",
-            "Gemini-Flash-Lite": "Gemini\nFlash-Lite"}.get(name, name)
+            "Gemini-Flash-Lite": "Gemini\nFlash-Lite",
+            "GPT-OSS-120B": "GPT-OSS\n120B"}.get(name, name)
 
 
 def panel_a_reasoning(ax, runs):
@@ -208,7 +210,7 @@ def panel_d_embeddings(ax, runs):
     keys = json.loads(keys_path.read_text(encoding="utf-8"))
     embeddings = np.load(str(emb_path))["embeddings"]
 
-    CONTROL_TYPES = {"irrelevant", "edge_spurious", "missing_node"}
+    CONTROL_TYPES = {"irrelevant"}
     model_key_map = {"Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
                      "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
                      "Gemini-Flash-Lite": "gemini"}
@@ -270,7 +272,7 @@ def panel_d_embeddings(ax, runs):
            color=["#332288", "#BBBBBB"], alpha=0.8,
            capsize=5, error_kw={"linewidth": 1.5}, width=0.6)
     ax.set_xticks([0, 1])
-    ax.set_xticklabels(["Structural\nProbes", "Control\nProbes"], fontsize=12)
+    ax.set_xticklabels(["Targeted\nProbes", "Irrelevant\nProbes"], fontsize=12)
     ax.set_ylabel("Within-Question\nCosine Similarity")
 
     from scipy.stats import mannwhitneyu

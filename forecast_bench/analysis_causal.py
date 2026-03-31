@@ -308,13 +308,12 @@ def structural_sensitivity_ratio(rows: list[dict]) -> dict:
     High-importance: node_negate_high, node_strengthen, edge_negate_critical, edge_strengthen_critical
     Low-importance: node_negate_low, node_strengthen_low, edge_negate_peripheral, edge_strengthen_peripheral, irrelevant
     """
+    # Node-only SSR: restrict to node probes + irrelevant control
     high_types = {
         "node_negate_high", "node_strengthen",
-        "edge_negate_critical", "edge_strengthen_critical",
     }
     low_types = {
         "node_negate_low", "node_strengthen_low",
-        "edge_negate_peripheral", "edge_strengthen_peripheral",
         "irrelevant",
     }
 

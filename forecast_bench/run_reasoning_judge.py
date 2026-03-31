@@ -30,11 +30,12 @@ CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 OUTPUT_PATH = CAUSAL_DIR / "reasoning_judge_ratings.json"
 
 MODEL_DIRS = {
-    "llama-70b": CAUSAL_DIR / "70b_one_turn",
-    "llama-8b": CAUSAL_DIR / "llama_one_turn",
-    "deepseek": CAUSAL_DIR / "deepseek_one_turn",
-    "qwen": CAUSAL_DIR / "qwen_one_turn",
-    "gemini": CAUSAL_DIR / "gemini_flash_lite_one_turn",
+    "llama-8b": CAUSAL_DIR / "llama_neutral",
+    "llama-70b": CAUSAL_DIR / "llama_70b_neutral",
+    "deepseek": CAUSAL_DIR / "deepseek_neutral",
+    "qwen": CAUSAL_DIR / "qwen_neutral",
+    "gemini": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "gpt-oss": CAUSAL_DIR / "gpt_oss_neutral",
 }
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "") or \

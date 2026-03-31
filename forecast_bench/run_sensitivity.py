@@ -68,8 +68,9 @@ MODEL_MAP = {
     "gemini": "google/gemini-2.5-flash",
     "mistral": "mistralai/mistral-small-3.2-24b-instruct",
     "gpt5nano": "openai/gpt-5-nano",
-    "gpt-oss": "openai/gpt-oss-120b",
+    "gpt-oss": "openai/gpt-oss-120b:nitro",
     "gemini-flash-lite": "google/gemini-2.5-flash-lite",
+    "qwen-32b": "qwen/qwen3-32b:nitro",
 }
 
 
@@ -98,7 +99,7 @@ def _parse_probe_result(
         return result
 
     data = parse_json_response(text)
-    if data is None:
+    if data is None or not isinstance(data, dict):
         client.stats.parse_failures += 1
         return result
 
@@ -146,6 +147,14 @@ def run_causal_forecast(
 
         data = parse_json_response(text)
         if data is None:
+            if attempt < max_retries:
+                client.rate_limit_wait()
+                continue
+            client.stats.parse_failures += 1
+            return None
+
+        # Validate response is a dict
+        if not isinstance(data, dict):
             if attempt < max_retries:
                 client.rate_limit_wait()
                 continue
@@ -282,6 +291,16 @@ def _generate_single_causal_probe(
             **{k: probe_target[k] for k in ("target_type", "importance", "centrality_rank", "on_critical_path")},
         }
 
+    if not isinstance(data, dict):
+        client.stats.parse_failures += 1
+        return {
+            "probe_text": fallback_text,
+            "probe_type": probe_target["probe_type"],
+            "target_id": probe_target["target_id"],
+            "generated": False,
+            **{k: probe_target[k] for k in ("target_type", "importance", "centrality_rank", "on_critical_path")},
+        }
+
     data.setdefault("probe_type", probe_target["probe_type"])
     data.setdefault("target_id", probe_target["target_id"])
     data["generated"] = True
@@ -329,10 +348,14 @@ def run_causal_independent_probing(
             question["question"], initial_prob, nodes, edges, probe, probe_target,
         )
 
-        text, ok = client.call_single(CAUSAL_PROBED_FORECAST_SYSTEM, user_prompt)
-        client.rate_limit_wait()
-
-        result = _parse_probe_result(client, probe, initial_prob, text, ok)
+        # Retry up to 2 times on parse failure
+        result = None
+        for _attempt in range(3):
+            text, ok = client.call_single(CAUSAL_PROBED_FORECAST_SYSTEM, user_prompt)
+            client.rate_limit_wait()
+            result = _parse_probe_result(client, probe, initial_prob, text, ok)
+            if result.get("success"):
+                break
         # Enrich with causal metadata
         result["target_id"] = probe.get("target_id", "")
         result["target_type"] = probe.get("target_type", "")

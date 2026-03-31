@@ -1,0 +1,17 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Scrambled Edge Placebo: Grounding Coefficient Comparison}
+\label{tab:lme_scrambled_comparison}
+\begin{tabular}{lccccc}
+\toprule
+Condition & $\beta_1$ & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  Original 70B & 0.0043 & 0.0025 & 1.72 & 0.085 & [-0.001, 0.009] \\
+  Scrambled 70B & 0.0112*** & 0.0025 & 4.56 & $<$0.001 & [0.006, 0.016] \\
+\midrule
+  Original N & \multicolumn{5}{c}{808} \\
+  Scrambled N & \multicolumn{5}{c}{671} \\
+\bottomrule
+\end{tabular}
+\end{table}

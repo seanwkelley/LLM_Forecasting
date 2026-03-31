@@ -91,7 +91,7 @@ where $\sigma_{st}$ is the number of shortest paths from $s$ to $t$ and $\sigma_
 
 \paragraph{Edge classification.} For probe target selection, edges are classified by \textbf{shortest-path membership} (whether the edge lies on any shortest path from a factor to the outcome). Shortest-path edges receive both negate and strengthen probes; non-shortest-path (peripheral) edges serve as edge-level baselines.
 
-\paragraph{Probe target selection.} We select ${\sim}$20 targets per question using a structured allocation that spans the importance spectrum (Table~\ref{tab:probe_types}). Factor nodes are sorted by betweenness centrality and each importance tier receives both negate and strengthen probes: the top 2 nodes (high), the median node (medium), and the lowest-centrality node (low). Edges are similarly partitioned: shortest-path edges receive both negate and strengthen probes, as does a non-shortest-path (peripheral) edge. Two control probe types---\texttt{missing\_node} and \texttt{irrelevant}---are included as structural validity checks. High-importance nodes receive two probes each because the top-centrality nodes typically mediate distinct causal paths, providing broader coverage of the network's core structure, while the single lowest-centrality node serves as a peripheral baseline.
+\paragraph{Probe target selection.} We select ${\sim}$20 targets per question using a structured allocation that spans the importance spectrum (Table~\ref{tab:probe_types}). Factor nodes are sorted by betweenness centrality and each importance tier receives both negate and strengthen probes: the top 2 nodes (high), the median node (medium), and the lowest-centrality node (low). Edges are similarly partitioned: shortest-path edges receive both negate and strengthen probes, as does the highest-betweenness non-shortest-path (peripheral) edge. Two control probe types---\texttt{missing\_node} and \texttt{irrelevant}---are included as structural validity checks. High-importance nodes receive two probes each because the top-centrality nodes typically mediate distinct causal paths, providing broader coverage of the network's core structure, while the single lowest-centrality node serves as a peripheral baseline.
 
 \begin{table}[t]
 \centering
@@ -100,37 +100,35 @@ where $\sigma_{st}$ is the number of shortest paths from $s$ to $t$ and $\sigma_
 \toprule
 \textbf{Category} & \textbf{Probe Type} & \textbf{Description} & \textbf{$n$} \\
 \midrule
-\multirow{5}{*}{Strengthen}
+\multirow{4}{*}{Strengthen}
   & node\_strengthen (high) & Reinforce top-2 importance nodes & 2 \\
-  & node\_strengthen (medium) & Reinforce median node & 1 \\
-  & node\_strengthen (low) & Reinforce lowest node & 1 \\
+  & node\_strengthen (med/low) & Reinforce median and lowest nodes & 2 \\
   & edge\_strengthen (critical) & Reinforce edges on shortest path & 2 \\
   & edge\_strengthen (peripheral) & Reinforce edge not on shortest path & 1 \\
 \midrule
-\multirow{5}{*}{Negate}
+\multirow{4}{*}{Negate}
   & node\_negate (high) & Challenge top-2 importance nodes & 2 \\
-  & node\_negate (medium) & Challenge median node & 1 \\
-  & node\_negate (low) & Challenge lowest node & 1 \\
+  & node\_negate (med/low) & Challenge median and lowest nodes & 2 \\
   & edge\_negate (critical) & Challenge edges on shortest path & 2 \\
   & edge\_negate (peripheral) & Challenge edge not on shortest path & 1 \\
 \midrule
 \multirow{3}{*}{\shortstack[l]{Structural\\Challenge}}
   & edge\_reverse & Argue causal direction is reversed & 1 \\
-  & edge\_structural & Propose a missing causal link & 1--2 \\
+  & edge\_structural & Propose a missing causal link & 1 \\
   & missing\_node & Suggest an omitted factor & 2 \\
 \midrule
 Control
   & irrelevant & Introduce irrelevant info & 2 \\
 \bottomrule
 \end{tabular}
-\caption{Probe types and allocation per question. Each question receives ${\sim}$21 probes (19--21 depending on graph structure) spanning four intervention categories. The symmetric negate/strengthen design at each importance level enables comparison of disconfirmatory vs.\ confirmatory sensitivity at both node and edge levels. Structural challenge probes test graph architecture rather than variable states. Nodes are ranked by betweenness centrality; edges by shortest-path membership.}
+\caption{Probe types and allocation per question. Each question receives ${\sim}$21 probes (19--25 depending on graph structure) spanning four intervention categories. The symmetric negate/strengthen design at each importance level enables comparison of disconfirmatory vs.\ confirmatory sensitivity at both node and edge levels. Structural challenge probes test graph architecture rather than variable states. Nodes are ranked by betweenness centrality; edges by shortest-path membership.}
 \label{tab:probe_types}
 \end{table}
 
 \subsection{Probe Generation}
 \label{sec:probes}
 
-For each target, we prompt the LLM with the original question, initial probability, the full causal network, and type-specific instructions (Table~\ref{tab:probe_instructions}). For example, a node negate probe instructs the model to generate a plausible challenge arguing that the target factor is incorrect or irrelevant; a node strengthen probe instructs it to generate evidence reinforcing that factor. Importantly, the probe generation instructions do not reveal the structural importance of the target---the same instruction template is used for high-, medium-, and low-importance nodes, ensuring that any linguistic differences between probes reflect the semantic content of the target rather than experimenter-imposed framing. Structural challenge probes (\texttt{edge\_reverse}, \texttt{edge\_structural}, \texttt{missing\_node}) question the graph architecture rather than variable states. Control probes (\texttt{irrelevant}) are generated freely without a specific structural target.
+For each target, we prompt the LLM with the original question, initial probability, the full causal network, and type-specific instructions. For example, a \texttt{node\_negate\_high} probe instructs the model to generate a plausible challenge arguing that the high-importance factor is incorrect or irrelevant. A \texttt{node\_strengthen} probe instructs it to generate evidence reinforcing that factor. Structural challenge probes (\texttt{edge\_reverse}, \texttt{edge\_structural}, \texttt{missing\_node}) question the graph architecture rather than variable states. Control probes (\texttt{irrelevant}) are generated freely without a specific structural target.
 
 
 \subsection{Probed Forecast}
@@ -152,7 +150,7 @@ We fit models of the general form:
 \end{equation}
 where $x_{qi}^{(z)}$ is the topological predictor $z$-scored within each question $q$ (to normalize for graph size), $\gamma_m$ is a model fixed effect, $u_q \sim \mathcal{N}(0, \sigma_q^2)$ is a random intercept by question, and $\varepsilon_{mqi}$ is residual error. The key parameter is $\beta_1$: a positive $\beta_1$ indicates that more structurally important elements elicit larger probability shifts.
 
-We fit two variants for each predictor: (1) a \textbf{shared-slope} model (single $\beta_1$ across all models, used for headline results) and (2) an \textbf{interaction model} ($\beta_1 \times \text{model}$, yielding model-specific slopes). For each model, we compute the total slope ($\beta_1 + \beta_{1 \times m}$) and its standard error from the variance--covariance matrix, testing against zero to determine whether that model individually exhibits the topological effect.
+We fit two variants for each predictor: (1) a \textbf{shared-slope} model (single $\beta_1$ across all models, used for headline results) and (2) an \textbf{interaction model} ($\beta_1 \times \text{model}$, testing whether grounding strength varies across LLMs).
 
 \paragraph{Topological predictors.}
 We test two node-level predictors, each in a separate LME model:
@@ -195,7 +193,7 @@ We evaluate five models spanning four architecture families and a range of scale
 \end{itemize}
 Training data cutoffs are reported where officially documented; DeepSeek and Qwen do not publish cutoff dates. All ForecastBench questions have resolution dates in late 2025, after all known cutoffs.
 
-All models use temperature 0.7 for all stages (causal forecast, probe generation, and probed forecast).
+All models use temperature 0.7 for Stages 1--3 (1: causal forecast, 2: probe generation, 3: probe text).
 
 \subsection{Data Collection}
 
@@ -207,7 +205,7 @@ We release an interactive web application, the \textbf{Causal Forecast Lab}, tha
 
 \subsection{Robustness Analyses}
 
-We conduct the following supplementary analyses, all using Llama 3.3 70B as the testbed model unless otherwise noted:
+We conduct five supplementary analyses, all using Llama 3.3 70B as the testbed model unless otherwise noted:
 
 \paragraph{Test--retest reliability.} We run the full pipeline twice on the same 100 questions for all five models. For each run we compute the initial probability and the per-question mean $|\Delta_i|$ (averaged across all probes for that question). We then correlate these 100 paired values across runs using Spearman $\rho$: $\rho_p$ for initial probabilities and $\rho_s$ for mean shifts. We also compute semantic node Jaccard similarity between same-question DAGs across runs using the same embedding-based Hungarian matching described in \S\ref{sec:metrics}.
 
@@ -221,17 +219,17 @@ DAG structure shows moderate reproducibility. Semantic node Jaccard similarity--
 \end{equation}
 where $\triangle$ denotes symmetric difference. nGED ranges from 0 (identical graphs) to 1 (completely disjoint). This measures the fraction of graph elements (nodes and edges) that must be inserted or deleted to transform one DAG into the other.
 
-\paragraph{Edge permutation condition.} For each of the 100 questions, we construct a permuted DAG by preserving the original nodes but randomly rewiring the edges (maintaining graph density and DAG constraints). We then present this permuted DAG to Llama 3.3 70B as if it were the model's own reasoning and re-run the full probing pipeline. We fit the same shared-slope LME models (betweenness $\rightarrow |\Delta|$ and outcome mediation $\rightarrow |\Delta|$) on the permuted data and compare the grounding coefficients $\beta_1$ to the originals. If structural sensitivity is genuine, $\beta_1$ should degrade when edges no longer support the node's theoretical centrality; if sensitivity is merely sycophantic, $\beta_1$ should be comparable.
+\paragraph{Scrambled edge placebo.} For each of the 100 questions, we construct a scrambled DAG by preserving the original nodes but randomly rewiring the edges (maintaining graph density and DAG constraints). We then present this scrambled DAG to Llama 3.3 70B as if it were the model's own reasoning and re-run the full probing pipeline. We fit the same shared-slope LME model (betweenness $\rightarrow |\Delta|$) on the scrambled data and compare the grounding coefficient $\beta_1$ to the original. If structural sensitivity is genuine, $\beta_1$ should degrade when edges no longer support the node's theoretical centrality; if sensitivity is merely sycophantic, $\beta_1$ should be comparable.
 
 \paragraph{Structural ablation.} For each of the 100 questions, we take the Llama 70B DAG and systematically remove each factor node (along with all its incident edges), then re-elicit a probability forecast with the ablated network. This yields ${\sim}$6 ablation forecasts per question (585 node removals). We fit separate LME models predicting $|\Delta|$ from node betweenness and node outcome mediation, with random intercepts by question. This tests whether the model's probability estimate is structurally grounded in the DAG---i.e., whether removing a high-mediation node causes a larger revision than removing a peripheral one.
 
 \paragraph{Spurious context control.} We test whether the DAG elicitation process is robust to irrelevant background information. For each of the 100 questions, we prepend a factual but topically unrelated paragraph (e.g., medieval Scandinavian runestones for a stock price question, deep-sea hydrothermal vent biology for a geopolitics question). Backgrounds are generated by GPT-4o-mini and independently verified as irrelevant by a second GPT-4o-mini call. We then run Stage 1 on the augmented prompts and use a GPT-4o-mini judge to evaluate whether any DAG node was semantically derived from the spurious background. We additionally compare the resulting probabilities and node sets to the original (unaugmented) DAGs.
 
-\paragraph{Network size.} We vary the Stage 1 prompt across three conditions: 4--8 factor nodes (the default), 6--10 nodes, and 12--16 nodes. For each condition, we fit the shared-slope LME models (betweenness $\rightarrow |\Delta|$ and outcome mediation $\rightarrow |\Delta|$) and compare the grounding coefficients $\beta_1$ across graph sizes. Larger networks provide more intermediate nodes with varying betweenness, potentially enabling finer-grained importance discrimination.
+\paragraph{Network size.} We vary the Stage 1 prompt across three conditions: 4--8 factor nodes (the default), 6--10 nodes, and 12--16 nodes. For each condition, we fit the shared-slope LME model (betweenness $\rightarrow |\Delta|$) and compare the grounding coefficient $\beta_1$ across graph sizes. Larger networks provide more intermediate nodes with varying betweenness, potentially enabling finer-grained importance discrimination.
 
 \paragraph{Factor ranking.} To test whether the structural sensitivity revealed by probing reflects explicit or implicit knowledge, we ask each model to rank the key factors for each question by importance---without providing the DAG. We then match the stated ranks to DAG nodes using embedding-based semantic matching (Hungarian algorithm on \texttt{text-embedding-3-large} cosine similarities, threshold $\geq 0.5$) and compute Spearman $\rho$ between stated rank and betweenness centrality. A significant negative correlation would indicate that the model's explicit importance judgments align with DAG topology; a null result would suggest structural sensitivity is implicit (revealed through behavior but not accessible to introspection).
 
-\paragraph{Persuasiveness control.} Because probe generation targets nodes of varying structural importance, probes challenging central nodes may be inherently more persuasive than those challenging peripheral nodes---not due to experimenter framing (which is held constant; see \S\ref{sec:probes}) but because central topics admit stronger arguments. To rule out persuasiveness as a confound, we have an independent LLM judge (GPT-4o-mini) rate the rhetorical persuasiveness of each probe text on a 1--5 scale, blind to the target's structural importance. We then compute partial correlations between structural importance and $|\Delta|$ controlling for persuasiveness, and report mean persuasiveness by importance level. If the importance$\rightarrow$shift relationship survives after controlling for persuasiveness, the topological signal is independent of rhetorical force.
+\paragraph{Neutral-probe ablation.} The Stage~2 probe generation instructions include importance labels (e.g., ``HIGH-IMPORTANCE factor,'' ``LOW-IMPORTANCE factor'') that could introduce linguistic framing differences between probes targeting structurally central vs.\ peripheral nodes. To test whether the observed topological sensitivity is driven by these framing cues rather than by the DAG structure itself, we run a neutral-probe ablation on Llama 3.3 70B. We regenerate all probes with uniform instructions that omit importance labels (e.g., ``Create a direct negation of the causal factor [X]'' without specifying importance level) and re-run Stage~3 with a minimal system prompt that omits guidance about scaling updates to structural importance. We compare the betweenness$\rightarrow|\Delta|$ slope between the original and neutral conditions. To quantify the framing asymmetry, we report mean counts of intensity words, hedge words, absolute quantifiers, and qualified quantifiers per probe for high- vs.\ low-importance targets under both conditions.
 
 \paragraph{Propagation decay.} Using Llama 3.3 70B, we test whether the model's causal reasoning respects graph locality by measuring how probe effects attenuate with graph distance. For each of the 100 questions, we take the existing node-level probes (\texttt{negate\_high}, \texttt{negate\_low}, \texttt{strengthen}, \texttt{strengthen\_low}) and re-prompt the model with the full DAG and probe text, asking it to rate how each \emph{other} factor node's causal influence would change on a $[-1, +1]$ scale ($-1$ = strongly weakened, $+1$ = strongly reinforced, $0$ = unaffected). We annotate each rated node with its undirected shortest-path distance from the probed node and report (i) mean $|\text{impact}|$ and (ii) fraction of affected nodes (impact $\neq 0$) as a function of graph distance. We test for monotonic decay using Spearman $\rho$ between distance and $|\text{impact}|$ across all node--probe pairs.
 
@@ -302,27 +300,27 @@ The user prompt provides the question, initial probability, full causal network,
 \toprule
 \textbf{Probe Type} & \textbf{Instruction Summary} \\
 \midrule
-node\_negate (high) & ``Create a direct negation of the causal factor [X]. Provide a specific, plausible argument for why this factor might not matter or why the opposite might be true.'' \\
-node\_negate (medium) & ``Create a direct negation of the causal factor [X]. Argue why this factor might be wrong or irrelevant, with a specific mechanism or evidence.'' \\
-node\_negate (low) & ``Create a direct negation of the causal factor [X]. Argue why this factor might be wrong or irrelevant.'' \\
-node\_strengthen (high) & ``Create evidence that REINFORCES the causal factor [X], making it more likely to be true and more causally important. Provide a strong new data point or development that supports this factor's role in the causal network.'' \\
-node\_strengthen (medium) & ``Create evidence that REINFORCES the causal factor [X], making it more likely to be true. Provide a specific piece of evidence or development that supports this factor.'' \\
-node\_strengthen (low) & ``Create evidence that REINFORCES the causal factor [X], making it more likely to be true. Provide evidence that supports this factor.'' \\
-edge\_negate (critical) & ``Challenge the causal link [X]. Argue why this causal mechanism might be broken, spurious, or much weaker than assumed. Provide a specific counter-mechanism or evidence.'' \\
-edge\_negate (peripheral) & ``Challenge the causal link [X]. Argue why this causal mechanism might not hold.'' \\
-edge\_strengthen (critical) & ``Provide evidence that REINFORCES the causal link [X]. Argue why this mechanism is even stronger than assumed, with a specific piece of evidence or recent development.'' \\
-edge\_strengthen (peripheral) & ``Provide evidence that REINFORCES the causal link [X]. Argue why this mechanism is stronger than assumed.'' \\
-\midrule
-\multicolumn{2}{l}{\textit{Structural challenge probes}} \\
+node\_negate\_high & ``Create a direct negation of the causal factor [X]. This is a HIGH-IMPORTANCE factor. Frame it as: `What if this factor is completely wrong or irrelevant?' Provide a specific, plausible argument.'' \\
+node\_negate\_medium & ``Create a direct negation of the causal factor [X]. This is a MEDIUM-IMPORTANCE factor. Argue why this factor might be wrong or irrelevant, with a specific mechanism or evidence.'' \\
+node\_negate\_low & ``Create a direct negation of the causal factor [X]. This is a LOW-IMPORTANCE factor. Argue why this factor might be wrong or irrelevant.'' \\
+node\_strengthen & ``Create evidence that REINFORCES the causal factor [X], making it more likely to be true and more causally important. This is a HIGH-IMPORTANCE factor. Provide a strong new data point or development.'' \\
+node\_strengthen\_medium & ``Reinforce the causal factor [X], making it more likely to be true. This is a MEDIUM-IMPORTANCE factor. Provide a specific piece of evidence or development that supports this factor.'' \\
+node\_strengthen\_low & ``Reinforce the causal factor [X], making it more likely to be true. This is a LOW-IMPORTANCE factor. Provide evidence that supports this factor.'' \\
+edge\_negate\_critical & ``Challenge the causal link [X]. This is a CRITICAL edge on the shortest path to the outcome. Argue why this mechanism might be broken, spurious, or much weaker than assumed.'' \\
+edge\_negate\_peripheral & ``Challenge the causal link [X]. This is a PERIPHERAL edge not on the main causal path. Argue why this causal mechanism might not hold.'' \\
+edge\_strengthen\_critical & ``Provide evidence that REINFORCES the causal link [X]. This is a CRITICAL edge. Argue why this mechanism is even stronger than assumed.'' \\
+edge\_strengthen\_peripheral & ``Reinforce the causal link [X]. This is a PERIPHERAL edge not on the main causal path. Argue why this mechanism is stronger than assumed.'' \\
 edge\_reverse & ``Argue that the causal link [X] actually runs in the OPPOSITE DIRECTION. Provide a specific mechanism for reverse causation.'' \\
 edge\_structural & ``The network does NOT include a direct link [X]. Argue that this missing link DOES exist and is important. Describe a specific causal mechanism.'' \\
+\midrule
+\multicolumn{2}{l}{\textit{Structural challenge probes}} \\
 missing\_node & ``Identify an important causal factor MISSING from the network that could significantly influence the outcome.'' \\
 \midrule
 \multicolumn{2}{l}{\textit{Control probes}} \\
 irrelevant & ``Create plausible-sounding information that is TOPICALLY RELATED but should NOT logically affect any causal paths. It should sound relevant at first but have no causal bearing.'' \\
 \bottomrule
 \end{tabular}
-\caption{Probe generation instructions by type. Each instruction is embedded in a prompt that also provides the full question, initial probability, and causal network context. [X] denotes the target node or edge ID and description. Crucially, instructions do not reveal the structural importance of the target to the probe-generating model. While the level of instructional detail varies (e.g., high-importance negate probes request a more specific argument), no instruction mentions the target's centrality, importance rank, or position in the network.}
+\caption{Probe generation instructions by type. Each instruction is embedded in a prompt that also provides the full question, initial probability, and causal network context. [X] denotes the target node or edge ID and description. In the neutral-probe ablation (\S\ref{sec:setup}), all importance labels (HIGH-IMPORTANCE, LOW-IMPORTANCE, CRITICAL, PERIPHERAL) are removed from these instructions.}
 \label{tab:probe_instructions}
 \end{table*}
 
@@ -335,12 +333,23 @@ The system prompt for the probed forecast stage:
 \small
 \texttt{You are an expert forecaster updating your estimate in light of new information about your causal model.}
 
-\texttt{When presented with new information, consider how it affects your causal network and update your probability estimate accordingly.}
+\texttt{When presented with a challenge to an element of your causal network, you should:}
+\begin{itemize}
+\small
+\item \texttt{Consider how the challenge affects the causal paths leading to the outcome}
+\item \texttt{Evaluate whether the challenged element is structurally important to your reasoning}
+\item \texttt{Update your probability estimate appropriately}
+\item \texttt{Explain which causal paths are affected and why}
+\end{itemize}
+
+\texttt{Be honest about uncertainty. Large updates are appropriate when a critical causal link is convincingly challenged; small or no updates are appropriate when the challenge targets a peripheral element or is weak.}
 
 \texttt{Respond with ONLY valid JSON. No other text.}
 \end{quote}
 
-The user prompt provides the original question, initial probability $p_0$, the full causal network (nodes and edges with mechanisms), and the probe text. The model outputs \texttt{updated\_probability}, \texttt{shift\_direction}, and \texttt{reasoning}. The prompt does not indicate which elements are structurally important or instruct the model to scale updates by importance---any differential sensitivity to structural importance must arise from the model's own assessment of the DAG.
+The user prompt provides the original question, initial probability $p_0$, the full causal network (nodes and edges with mechanisms), and the probe text. The model outputs \texttt{updated\_probability}, \texttt{shift\_direction}, and \texttt{reasoning}. The prompt explicitly states: ``if a critical causal path is broken, update substantially. If a peripheral element is challenged, small or no update is fine.''
+
+In the \textbf{neutral-probe ablation} (\S\ref{sec:setup}), the Stage~3 system prompt is reduced to: \texttt{``You are an expert forecaster updating your estimate in light of new information about your causal model. When presented with new information, consider how it affects your causal network and update your probability estimate accordingly.''} The user prompt omits all references to structural importance, critical paths, and peripheral elements.
 
 \subsection{Propagation Decay Prompt}
 \label{app:prompt-propagation}
@@ -386,7 +395,7 @@ Negate (peripheral) & Academy voters decide based on performances, not reviews\l
 Strengthen (shortest-path) & Erivo's stage performance elevates her Oscar narrative\ldots & 0.42 & 0.53 & +0.11 \\
 Strengthen (peripheral) & Academy voters heavily influenced by critical consensus\ldots & 0.42 & 0.55 & +0.13 \\
 Reverse & Award buzz often precedes film release, not the reverse\ldots & 0.42 & 0.38 & $-$0.04 \\
-Structural (missing edge) & Popular acclaimed films failed to secure nominations\ldots & 0.42 & 0.38 & $-$0.04 \\
+Spurious & Popular acclaimed films failed to secure nominations\ldots & 0.42 & 0.38 & $-$0.04 \\
 \midrule
 \multicolumn{5}{l}{\textit{Structural and control probes}} \\
 Missing node & Erivo's performance compared to a previous iconic portrayal\ldots & 0.42 & 0.31 & $-$0.11 \\
@@ -421,7 +430,7 @@ The probe target selection algorithm operates on the output of network analysis 
 \item \textbf{Control probes:} 2 \texttt{missing\_node} + 2 \texttt{irrelevant} (generated freely by the LLM without a specific target).
 \end{enumerate}
 
-The exact count varies by graph structure (19--21 probes, mean ${\sim}$21) because some graphs have fewer shortest-path edges or non-adjacent node pairs.
+The exact count varies by graph structure (19--25 probes, mean ${\sim}$21) because some graphs have fewer shortest-path edges or non-adjacent node pairs.
 
 \section{Metric Definitions and Statistical Tests}
 \label{app:metrics}

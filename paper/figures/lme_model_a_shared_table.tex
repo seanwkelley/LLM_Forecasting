@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Model A: Node Importance --- Shared Slope}
+\label{tab:lme_model_a_shared_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.1010*** & 0.0033 & 30.35 & $<$0.001 & [0.094, 0.107] \\
+  importance\_z & 0.0100*** & 0.0010 & 9.68 & $<$0.001 & [0.008, 0.012] \\
+  DeepSeek-V3 & -0.0025 & 0.0035 & -0.73 & 0.465 & [-0.009, 0.004] \\
+  Gemini-Flash-Lite & 0.0328*** & 0.0035 & 9.33 & $<$0.001 & [0.026, 0.040] \\
+  GPT-OSS-120B & 0.0335*** & 0.0035 & 9.67 & $<$0.001 & [0.027, 0.040] \\
+  Llama-3.1-8B & 0.0119*** & 0.0035 & 3.42 & $<$0.001 & [0.005, 0.019] \\
+  Qwen3-235B & -0.0007 & 0.0035 & -0.20 & 0.839 & [-0.008, 0.006] \\
+\midrule
+  N observations & \multicolumn{5}{c}{4777} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{5839.10} \\
+  AIC / BIC & \multicolumn{5}{c}{-11660.2 / -11601.9} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0534} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.1436} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0048} \\
+\bottomrule
+\end{tabular}
+\end{table}

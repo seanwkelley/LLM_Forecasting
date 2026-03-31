@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Ablation: Node Removal --- Path Relevance Predicts Shift}
+\label{tab:lme_ablation_node_pr_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.0489*** & 0.0025 & 19.25 & $<$0.001 & [0.044, 0.054] \\
+  path\_relevance\_z & 0.0045*** & 0.0010 & 4.40 & $<$0.001 & [0.002, 0.006] \\
+\midrule
+  N observations & \multicolumn{5}{c}{585} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{1142.98} \\
+  AIC / BIC & \multicolumn{5}{c}{-2278.0 / -2260.5} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0215} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.3556} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0009} \\
+\bottomrule
+\end{tabular}
+\end{table}

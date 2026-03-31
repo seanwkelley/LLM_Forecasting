@@ -49,11 +49,12 @@ SUPPLEMENT_DIR = BASE / "paper" / "figures" / "supplementary"
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 
 MODEL_DIRS = {
-    "Llama-3.1-8B": CAUSAL_DIR / "llama_one_turn",
-    "Llama-3.3-70B": CAUSAL_DIR / "70b_one_turn",
-    "DeepSeek-V3": CAUSAL_DIR / "deepseek_one_turn",
-    "Qwen3-235B": CAUSAL_DIR / "qwen_one_turn",
-    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_one_turn",
+    "Llama-3.1-8B": CAUSAL_DIR / "llama_neutral",
+    "Llama-3.3-70B": CAUSAL_DIR / "llama_70b_neutral",
+    "DeepSeek-V3": CAUSAL_DIR / "deepseek_neutral",
+    "Qwen3-235B": CAUSAL_DIR / "qwen_neutral",
+    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "GPT-OSS-120B": CAUSAL_DIR / "gpt_oss_neutral",
 }
 
 # Colorblind-safe palette (Wong 2011 / IBM Design)
@@ -64,6 +65,7 @@ COLORS = {
     "DeepSeek-V3": "#D55E00",    # vermillion
     "Qwen3-235B": "#009E73",          # green
     "Gemini-Flash-Lite": "#CC79A7",  # reddish purple
+    "GPT-OSS-120B": "#882255",       # wine
 }
 
 # Category palette for probe types (colorblind-safe)
@@ -2137,195 +2139,65 @@ def fig_inter_model_agreement(runs: dict):
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_network_size_comparison():
-    """Compare SSR, within-question tau, and mean shift across network sizes."""
-    from forecast_bench.analysis_causal import (
-        load_causal_results,
-        structural_sensitivity_ratio,
-    )
+    """Compare grounding slopes across network sizes using LME regression lines.
 
-    SIZE_DIRS = {
-        "Small\n(3–5 nodes)": CAUSAL_DIR / "70b_one_turn_small",
-        "Medium\n(4–8 nodes)": CAUSAL_DIR / "70b_one_turn",
-        "Large\n(6–10 nodes)": CAUSAL_DIR / "70b_one_turn_large",
-    }
-    size_colors = ["#56B4E9", "#0072B2", "#003f5c"]  # light to dark blue
+    Single panel: one regression line per network size condition (Small/Medium/Large),
+    showing how the betweenness → |shift| slope varies with graph complexity.
+    Reads LME results from lme_results.json.
+    """
+    import json as _json
 
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4.5))
-    labels = list(SIZE_DIRS.keys())
-    x = range(len(labels))
+    lme_path = CAUSAL_DIR / "lme_results.json"
+    if not lme_path.exists():
+        print("  [SKIP] network_size: no LME results")
+        return
 
-    all_rows = {}
-    for label, d in SIZE_DIRS.items():
-        csv_path = d / "sensitivity_results.csv"
-        if csv_path.exists():
-            all_rows[label] = load_causal_results(csv_path)
-        else:
-            all_rows[label] = []
+    lme = _json.loads(lme_path.read_text(encoding="utf-8"))
 
-    # Node probe types for tau
-    node_probe_types = {
-        "node_negate_high", "node_negate_medium", "node_negate_low",
-        "node_strengthen",
-    }
-
-    # (a) SSR
-    ssrs, ssr_los, ssr_his = [], [], []
-    for label in labels:
-        rows = all_rows[label]
-        def _ssr(r):
-            res = structural_sensitivity_ratio(r)
-            return res.get("ssr", 0)
-        pt, lo, hi = _bootstrap_metric(rows, _ssr)
-        ssrs.append(pt)
-        ssr_los.append(pt - lo)
-        ssr_his.append(hi - pt)
-    axes[0].bar(x, ssrs, yerr=[ssr_los, ssr_his], color=size_colors,
-                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
-    axes[0].axhline(y=1, color="#444444", linestyle="--", linewidth=1.5)
-    axes[0].set_ylabel("Structural Sensitivity Ratio (SSR)")
-    axes[0].set_xticks(list(x))
-    axes[0].set_xticklabels(labels, fontsize=9)
-
-    # (b) Within-question tau
-    taus, tau_los, tau_his = [], [], []
-    for label in labels:
-        rows = all_rows[label]
-        def _tau(rows):
-            from collections import defaultdict as _dd
-            q_probes = _dd(list)
-            for r in rows:
-                if (r.get("success") and r.get("absolute_shift") is not None
-                    and r.get("target_importance") is not None
-                    and r.get("probe_type") in node_probe_types):
-                    q_probes[r["question_id"]].append(r)
-            tau_vals = []
-            for qid, probes in q_probes.items():
-                if len(probes) < 4:
-                    continue
-                imp = [p["target_importance"] for p in probes]
-                sh = [p["absolute_shift"] for p in probes]
-                tau = _kendall_tau(imp, sh)
-                if tau is not None:
-                    tau_vals.append(tau)
-            return sum(tau_vals) / len(tau_vals) if tau_vals else 0
-        pt, lo, hi = _bootstrap_metric(all_rows[label], _tau)
-        taus.append(pt)
-        tau_los.append(pt - lo)
-        tau_his.append(hi - pt)
-    axes[1].bar(x, taus, yerr=[tau_los, tau_his], color=size_colors,
-                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
-    axes[1].axhline(y=0, color="#444444", linestyle="--", linewidth=1.5)
-    axes[1].set_ylabel("Within-Question Kendall τ")
-    axes[1].set_xticks(list(x))
-    axes[1].set_xticklabels(labels, fontsize=9)
-
-    # (c) Mean absolute shift
-    shifts, shift_los, shift_his = [], [], []
-    for label in labels:
-        rows = all_rows[label]
-        def _mean_shift(r):
-            vals = [row["absolute_shift"] for row in r if row.get("success") and row.get("absolute_shift") is not None]
-            return sum(vals) / len(vals) if vals else 0
-        pt, lo, hi = _bootstrap_metric(rows, _mean_shift)
-        shifts.append(pt)
-        shift_los.append(pt - lo)
-        shift_his.append(hi - pt)
-    axes[2].bar(x, shifts, yerr=[shift_los, shift_his], color=size_colors,
-                edgecolor="black", linewidth=0.5, capsize=5, error_kw={"linewidth": 1.5})
-    axes[2].set_ylabel("Mean |Probability Shift|")
-    axes[2].set_xticks(list(x))
-    axes[2].set_xticklabels(labels, fontsize=9)
-
-    # ── Add pairwise significance brackets ──
-    from forecast_bench.analysis_causal import _t_to_p
-
-    def _get_per_question_vals(rows, metric_fn):
-        """Compute a per-question metric value for paired testing."""
-        from collections import defaultdict as _dd
-        q_rows = _dd(list)
-        for r in rows:
-            if r.get("success") and r.get("absolute_shift") is not None:
-                q_rows[r["question_id"]].append(r)
-        return {qid: metric_fn(qr) for qid, qr in q_rows.items()}
-
-    def _mean_shift_q(qr):
-        vals = [r["absolute_shift"] for r in qr if r.get("absolute_shift") is not None]
-        return sum(vals) / len(vals) if vals else None
-
-    def _ssr_q(qr):
-        HIGH = {"node_negate_high", "node_strengthen", "edge_negate_critical", "edge_strengthen_critical"}
-        LOW = {"node_negate_low", "node_strengthen_low", "edge_negate_peripheral", "edge_strengthen_peripheral", "irrelevant"}
-        hi = [r["absolute_shift"] for r in qr if r.get("probe_type") in HIGH and r.get("absolute_shift") is not None]
-        lo = [r["absolute_shift"] for r in qr if r.get("probe_type") in LOW and r.get("absolute_shift") is not None]
-        if hi and lo:
-            mean_lo = sum(lo) / len(lo)
-            return (sum(hi) / len(hi)) / mean_lo if mean_lo > 0 else None
-        return None
-
-    def _tau_q(qr):
-        node_pts = {"node_negate_high", "node_negate_medium", "node_negate_low", "node_strengthen"}
-        filtered = [r for r in qr if r.get("probe_type") in node_pts
-                     and r.get("target_importance") is not None and r.get("absolute_shift") is not None]
-        if len(filtered) < 4:
-            return None
-        return _kendall_tau([r["target_importance"] for r in filtered],
-                            [r["absolute_shift"] for r in filtered])
-
-    # For each panel, compute paired tests between conditions
-    panel_configs = [
-        (axes[0], ssrs, ssr_his, _ssr_q, "SSR"),
-        (axes[1], taus, tau_his, _tau_q, "tau"),
-        (axes[2], shifts, shift_his, _mean_shift_q, "shift"),
+    size_configs = [
+        ("net_medium", "4–8 nodes",   "#56B4E9"),
+        ("net_large",  "6–10 nodes",  "#0072B2"),
+        ("net_xl",     "12–16 nodes", "#003f5c"),
     ]
 
-    comparisons = [(0, 1), (1, 2), (0, 2)]  # small-med, med-large, small-large
+    available = [(k, label, color) for k, label, color in size_configs
+                 if lme.get(k) is not None]
+    if not available:
+        print("  [SKIP] network_size: no network size LME results")
+        return
 
-    for ax, vals, hi_errs, q_fn, metric_name in panel_configs:
-        # Get per-question values for each condition
-        q_vals = {}
-        for li, label in enumerate(labels):
-            q_vals[li] = _get_per_question_vals(all_rows[label], q_fn)
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4.5))
+    x_range = np.linspace(-2, 3, 100)
 
-        bracket_offsets = [0, 1, 2]  # vertical offset for nested brackets
-        y_max = max(v + h for v, h in zip(vals, hi_errs))
-        bracket_base = y_max * 1.08
+    for key, label, color in available:
+        result = lme[key]
+        fe = result["fixed_effects"]
 
-        for bi, (i, j) in enumerate(comparisons):
-            # Paired t-test on shared questions
-            shared = set(q_vals[i].keys()) & set(q_vals[j].keys())
-            diffs = []
-            for qid in shared:
-                v_i, v_j = q_vals[i].get(qid), q_vals[j].get(qid)
-                if v_i is not None and v_j is not None:
-                    diffs.append(v_i - v_j)
+        intercept_key = [k for k in fe if "Intercept" in k]
+        slope_key = [k for k in fe if k not in intercept_key and "model" not in k.lower()]
 
-            if len(diffs) > 1:
-                mean_d = sum(diffs) / len(diffs)
-                var_d = sum((d - mean_d) ** 2 for d in diffs) / (len(diffs) - 1)
-                se_d = (var_d / len(diffs)) ** 0.5 if var_d > 0 else 1e-10
-                t_stat = mean_d / se_d
-                p = _t_to_p(abs(t_stat), len(diffs) - 1)
-            else:
-                p = 1.0
+        if not intercept_key or not slope_key:
+            continue
 
-            if p < 0.001:
-                stars = "***"
-            elif p < 0.01:
-                stars = "**"
-            elif p < 0.05:
-                stars = "*"
-            else:
-                stars = "n.s."
+        b0 = fe[intercept_key[0]]["coef"]
+        b1 = fe[slope_key[0]]["coef"]
+        b1_se = fe[slope_key[0]]["se"]
+        p_val = fe[slope_key[0]]["p"]
 
-            # Draw bracket
-            y_brack = bracket_base + bi * y_max * 0.1
-            h = y_max * 0.02
-            ax.plot([i, i, j, j], [y_brack, y_brack + h, y_brack + h, y_brack],
-                    color="black", linewidth=0.8, clip_on=False)
-            ax.annotate(stars, xy=((i + j) / 2, y_brack + h), xytext=(0, 1),
-                        textcoords="offset points", ha="center", fontsize=9, fontweight="bold")
+        stars = "***" if p_val < 0.001 else "**" if p_val < 0.01 else "*" if p_val < 0.05 else ""
 
-    _label_axes(axes)
+        y_pred = b0 + b1 * x_range
+        ax.plot(x_range, y_pred, color=color, linewidth=2.5, zorder=5,
+                label=f"{label} ($\\beta_1$={b1:.3f}{stars})")
+
+        y_lo = b0 + (b1 - 1.96 * b1_se) * x_range
+        y_hi = b0 + (b1 + 1.96 * b1_se) * x_range
+        ax.fill_between(x_range, y_lo, y_hi, color=color, alpha=0.15, zorder=2)
+
+    ax.set_xlabel("Betweenness Centrality (z-scored)")
+    ax.set_ylabel("Predicted |$\\Delta$|")
+    ax.legend(frameon=False, fontsize=10, loc="upper left")
+
     plt.tight_layout()
     plt.savefig(SUPPLEMENT_DIR / "network_size.png", dpi=300, bbox_inches="tight")
     plt.savefig(SUPPLEMENT_DIR / "network_size.pdf", bbox_inches="tight")
@@ -2338,123 +2210,69 @@ def fig_network_size_comparison():
 # ═════════════════════════════════════════════════════════════════════════════
 
 def fig_structural_ablation():
-    """Ablation: remove each node/edge from the DAG and re-forecast.
+    """Ablation: LME regression lines for node/edge removal.
 
-    (a) Scatter of betweenness centrality vs |shift| for removed elements.
-    (b) Bar chart: mean shift for on-path vs off-path removed elements.
+    (a) Node removal: betweenness → |shift| with 95% CI.
+    (b) Node removal: path relevance → |shift| with 95% CI.
+    (c) Edge removal: edge betweenness → |shift| with 95% CI (expected null).
+
+    Reads LME results from lme_results.json.
     """
     import json as _json
 
-    ablation_dir = CAUSAL_DIR / "70b_ablation" / "question_results"
-    if not ablation_dir.exists():
-        print("  [SKIP] structural_ablation: no ablation data")
+    lme_path = CAUSAL_DIR / "lme_results.json"
+    if not lme_path.exists():
+        print("  [SKIP] structural_ablation: no LME results")
         return
 
-    files = sorted(ablation_dir.glob("q_*.json"))
-    if not files:
-        print("  [SKIP] structural_ablation: no question files")
-        return
+    lme = _json.loads(lme_path.read_text(encoding="utf-8"))
 
-    # Collect per-question data
-    per_question = []  # list of dicts with results per question
-
-    for f in files:
-        data = _json.loads(f.read_text(encoding="utf-8"))
-        results = data.get("ablation_results", [])
-        successful = [r for r in results if r.get("success")]
-        if len(successful) < 3:
-            continue
-        per_question.append({
-            "qid": data["question_id"],
-            "results": successful,
-        })
-
-    # Compute within-question Kendall tau (betweenness vs shift) — nodes only
-    per_q_taus = []
-    for q in per_question:
-        nodes_only = [r for r in q["results"] if r.get("ablation_type") == "node"]
-        if len(nodes_only) < 3:
-            continue
-        betw = [r.get("betweenness", 0) for r in nodes_only]
-        shift = [r.get("absolute_shift", 0) for r in nodes_only]
-        tau = _kendall_tau(betw, shift)
-        if tau is not None:
-            per_q_taus.append(tau)
-
-    # Collect on-path vs off-path per question (paired)
-    per_q_on = []
-    per_q_off = []
-    for q in per_question:
-        on = [r["absolute_shift"] for r in q["results"] if r.get("path_relevance", 0) > 0]
-        off = [r["absolute_shift"] for r in q["results"] if r.get("path_relevance", 0) == 0]
-        if on and off:
-            per_q_on.append(sum(on) / len(on))
-            per_q_off.append(sum(off) / len(off))
-
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
-
-    # (a) Distribution of within-question tau
-    ax = axes[0]
-    ax.hist(per_q_taus, bins=20, color="#0072B2", edgecolor="black", linewidth=0.5, alpha=0.8)
-    mean_tau = sum(per_q_taus) / len(per_q_taus) if per_q_taus else 0
-    ax.axvline(mean_tau, color="#D55E00", linewidth=2, linestyle="--")
-
-    ax.set_xlabel("Within-Question Kendall τ")
-    ax.set_ylabel("Number of Questions")
-
-    # (b) On-path vs off-path mean shift (within-question paired)
-    ax = axes[1]
-
-    means = [
-        sum(per_q_on) / len(per_q_on) if per_q_on else 0,
-        sum(per_q_off) / len(per_q_off) if per_q_off else 0,
+    lines_to_plot = [
+        ("ablation_node_betw", "Node Betweenness", "#0072B2"),
+        ("ablation_node_path_rel", "Node Path Relevance", "#009E73"),
+        ("ablation_edge_betw", "Edge Betweenness", "#D55E00"),
     ]
 
-    # Bootstrap CIs on per-question means
-    cis = []
-    for vals in [per_q_on, per_q_off]:
-        if len(vals) < 2:
-            cis.append((0, 0))
+    available = [(k, label, color) for k, label, color in lines_to_plot
+                 if lme.get(k) is not None]
+    if not available:
+        print("  [SKIP] structural_ablation: no ablation LME results")
+        return
+
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4.5))
+    x_range = np.linspace(-2, 3, 100)
+
+    for key, label, color in available:
+        result = lme[key]
+        fe = result["fixed_effects"]
+
+        intercept_key = [k for k in fe if "Intercept" in k]
+        slope_key = [k for k in fe if k not in intercept_key and "model" not in k.lower()]
+
+        if not intercept_key or not slope_key:
             continue
-        m = sum(vals) / len(vals)
-        boot = []
-        rng = np.random.RandomState(42)
-        for _ in range(5000):
-            sample = rng.choice(vals, len(vals), replace=True)
-            boot.append(sum(sample) / len(sample))
-        boot.sort()
-        lo = boot[int(0.025 * len(boot))]
-        hi = boot[int(0.975 * len(boot))]
-        cis.append((m - lo, hi - m))
 
-    # Paired t-test
-    if len(per_q_on) > 1:
-        diffs = [per_q_on[i] - per_q_off[i] for i in range(len(per_q_on))]
-        mean_d = sum(diffs) / len(diffs)
-        var_d = sum((d - mean_d) ** 2 for d in diffs) / (len(diffs) - 1)
-        se_d = (var_d / len(diffs)) ** 0.5 if var_d > 0 else 1e-10
-        t_stat = mean_d / se_d
-        from forecast_bench.analysis_causal import _t_to_p
-        p_path = _t_to_p(abs(t_stat), len(diffs) - 1)
-    else:
-        p_path = 1.0
+        b0 = fe[intercept_key[0]]["coef"]
+        b1 = fe[slope_key[0]]["coef"]
+        b1_se = fe[slope_key[0]]["se"]
+        p_val = fe[slope_key[0]]["p"]
 
-    bar_colors = ["#0072B2", "#999999"]
-    ax.bar([0, 1], means, yerr=[[c[0] for c in cis], [c[1] for c in cis]],
-           color=bar_colors, edgecolor="black", linewidth=0.5, capsize=5,
-           error_kw={"linewidth": 1.5})
-    # Bracket with significance
-    stars = "***" if p_path < 0.001 else "**" if p_path < 0.01 else "*" if p_path < 0.05 else "n.s."
-    y_top = max(means) + max(c[1] for c in cis) + 0.003
-    ax.plot([0, 0, 1, 1], [y_top, y_top + 0.002, y_top + 0.002, y_top],
-            color="black", linewidth=1.0)
-    ax.annotate(stars, xy=(0.5, y_top + 0.002), xytext=(0, 2),
-                textcoords="offset points", ha="center", fontsize=12, fontweight="bold")
-    ax.set_xticks([0, 1])
-    ax.set_xticklabels(["On Shortest Path", "Off Shortest Path"], fontsize=13)
-    ax.set_ylabel("Mean |Probability Shift|\n(per-question average)")
+        stars = "***" if p_val < 0.001 else "**" if p_val < 0.01 else "*" if p_val < 0.05 else ""
 
-    _label_axes(axes)
+        # Regression line
+        y_pred = b0 + b1 * x_range
+        ax.plot(x_range, y_pred, color=color, linewidth=2.5, zorder=5,
+                label=f"{label} ($\\beta_1$={b1:.3f}{stars})")
+
+        # CI band
+        y_lo = b0 + (b1 - 1.96 * b1_se) * x_range
+        y_hi = b0 + (b1 + 1.96 * b1_se) * x_range
+        ax.fill_between(x_range, y_lo, y_hi, color=color, alpha=0.15, zorder=2)
+
+    ax.set_xlabel("Topological Importance (z-scored)")
+    ax.set_ylabel("Predicted |$\\Delta$| (ablation)")
+    ax.legend(frameon=False, fontsize=10, loc="upper left")
+
     plt.tight_layout()
     plt.savefig(SUPPLEMENT_DIR / "structural_ablation.png", dpi=300, bbox_inches="tight")
     plt.savefig(SUPPLEMENT_DIR / "structural_ablation.pdf", bbox_inches="tight")
@@ -2476,10 +2294,10 @@ def main():
         print("[ERROR] No data loaded")
         return
 
-    # Main figures (1-7)
+    # Main figures
     print("\n--- Main figures ---")
-    # fig_dose_response — dropped; ssr_comparison panel (c) shows the same ρ
-    fig_ssr_comparison(runs)
+    # fig_dose_response — dropped
+    # fig_ssr_comparison — dropped; SSR used only in Causal Forecast Lab, not paper
     fig_shift_by_probe_type(runs)
     fig_calibration(runs)
     fig_within_question_consistency(runs)

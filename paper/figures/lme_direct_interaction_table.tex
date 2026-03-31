@@ -1,0 +1,30 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Direct vs Indirect Causes --- Interaction}
+\label{tab:lme_direct_interaction_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.0963*** & 0.0035 & 27.45 & $<$0.001 & [0.089, 0.103] \\
+  is\_directDirect & 0.0091*** & 0.0021 & 4.25 & $<$0.001 & [0.005, 0.013] \\
+  betweenness\_z & 0.0067*** & 0.0015 & 4.40 & $<$0.001 & [0.004, 0.010] \\
+  DeepSeek-V3 & -0.0027 & 0.0035 & -0.78 & 0.438 & [-0.010, 0.004] \\
+  Gemini-Flash-Lite & 0.0316*** & 0.0036 & 8.90 & $<$0.001 & [0.025, 0.039] \\
+  GPT-OSS-120B & 0.0334*** & 0.0035 & 9.59 & $<$0.001 & [0.027, 0.040] \\
+  Llama-3.1-8B & 0.0117*** & 0.0035 & 3.37 & $<$0.001 & [0.005, 0.019] \\
+  Qwen3-235B & 0.0002 & 0.0035 & 0.07 & 0.948 & [-0.007, 0.007] \\
+  is\_directDirect:betweenness\_z & 0.0045* & 0.0021 & 2.15 & 0.031 & [0.000, 0.009] \\
+\midrule
+  N observations & \multicolumn{5}{c}{4790} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{5842.44} \\
+  AIC / BIC & \multicolumn{5}{c}{-11662.9 / -11591.7} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0579} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.1503} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0048} \\
+\bottomrule
+\end{tabular}
+\end{table}

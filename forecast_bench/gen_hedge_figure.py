@@ -14,19 +14,22 @@ from forecast_bench.analysis_full import load_question_jsons
 
 plt.rcParams.update({"font.family": "Arial", "font.size": 10, "figure.dpi": 300})
 
-BLUE, ORANGE, VERMILLION, GREEN = "#0072B2", "#E69F00", "#D55E00", "#009E73"
+BLUE, ORANGE, VERMILLION, GREEN, REDDISH_PURPLE = "#0072B2", "#E69F00", "#D55E00", "#009E73", "#CC79A7"
 
 BASE = Path(__file__).parent.parent
 CAUSAL = BASE / "outputs" / "sensitivity" / "causal"
 OUT = BASE / "paper" / "figures" / "supplementary"
 
+WINE = "#882255"
 MODEL_DIRS = {
-    "Llama-3.1-8B":  ("llama-8b",  CAUSAL / "llama_one_turn"),
-    "Llama-3.3-70B": ("llama-70b", CAUSAL / "70b_one_turn"),
-    "DeepSeek-V3":   ("deepseek",  CAUSAL / "deepseek_one_turn"),
-    "Qwen3-235B":    ("qwen",      CAUSAL / "qwen_one_turn"),
+    "Llama-3.1-8B":      ("llama-8b",  CAUSAL / "llama_neutral"),
+    "Llama-3.3-70B":     ("llama-70b", CAUSAL / "llama_70b_neutral"),
+    "DeepSeek-V3":       ("deepseek",  CAUSAL / "deepseek_neutral"),
+    "Qwen3-235B":        ("qwen",      CAUSAL / "qwen_neutral"),
+    "Gemini-Flash-Lite": ("gemini",    CAUSAL / "gemini_flash_lite_neutral"),
+    "GPT-OSS-120B":      ("gpt-oss",   CAUSAL / "gpt_oss_neutral"),
 }
-MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN}
+MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN, "Gemini-Flash-Lite": REDDISH_PURPLE, "GPT-OSS-120B": WINE}
 
 
 def main():

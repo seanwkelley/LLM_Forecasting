@@ -21,11 +21,12 @@ CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 FIGURES_DIR = BASE / "paper" / "figures"
 
 MODEL_DIRS = {
-    "llama-8b": CAUSAL_DIR / "llama_one_turn",
-    "llama-70b": CAUSAL_DIR / "70b_one_turn",
-    "deepseek": CAUSAL_DIR / "deepseek_one_turn",
-    "qwen": CAUSAL_DIR / "qwen_one_turn",
-    "gemini": CAUSAL_DIR / "gemini_flash_lite_one_turn",
+    "llama-8b": CAUSAL_DIR / "llama_neutral",
+    "llama-70b": CAUSAL_DIR / "llama_70b_neutral",
+    "deepseek": CAUSAL_DIR / "deepseek_neutral",
+    "qwen": CAUSAL_DIR / "qwen_neutral",
+    "gemini": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "gpt-oss": CAUSAL_DIR / "gpt_oss_neutral",
 }
 
 
@@ -138,7 +139,7 @@ def main():
         r"coefficient; LRT $\chi^2$ tests whether adding Elo improves fit over "
         r"$|p_0 - 0.5|$ alone. $R^2_m$ = marginal (fixed effects); "
         r"$R^2_c$ = conditional (fixed + random). "
-        r"$N = 500$ (100 questions $\times$ 5 models) except Brier "
+        r"$N = 600$ (100 questions $\times$ 6 models) except Brier "
         r"($N = 240$, 48 questions with ground truth). Bold = $p < .05$.}",
         r"\label{tab:elo_regression}",
         r"\end{table*}",

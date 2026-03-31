@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Model B: Path Relevance --- Shared Slope}
+\label{tab:lme_model_b_shared_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.1012*** & 0.0034 & 30.19 & $<$0.001 & [0.095, 0.108] \\
+  path\_relevance\_z & 0.0112*** & 0.0010 & 10.86 & $<$0.001 & [0.009, 0.013] \\
+  DeepSeek-V3 & -0.0032 & 0.0035 & -0.93 & 0.352 & [-0.010, 0.004] \\
+  Gemini-Flash-Lite & 0.0335*** & 0.0035 & 9.60 & $<$0.001 & [0.027, 0.040] \\
+  GPT-OSS-120B & 0.0319*** & 0.0035 & 9.17 & $<$0.001 & [0.025, 0.039] \\
+  Llama-3.1-8B & 0.0138*** & 0.0035 & 3.98 & $<$0.001 & [0.007, 0.021] \\
+  Qwen3-235B & -0.0020 & 0.0035 & -0.57 & 0.567 & [-0.009, 0.005] \\
+\midrule
+  N observations & \multicolumn{5}{c}{4790} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{5854.09} \\
+  AIC / BIC & \multicolumn{5}{c}{-11690.2 / -11631.9} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0582} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.1496} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0048} \\
+\bottomrule
+\end{tabular}
+\end{table}

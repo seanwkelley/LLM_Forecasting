@@ -53,8 +53,9 @@ MODEL_DIRS = {
     "Llama-3.3-70B": CAUSAL_DIR / "llama_70b_neutral",
     "DeepSeek-V3": CAUSAL_DIR / "deepseek_neutral",
     "Qwen3-235B": CAUSAL_DIR / "qwen_neutral",
-    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_fl_neutral",
     "GPT-OSS-120B": CAUSAL_DIR / "gpt_oss_neutral",
+    "Qwen3-32B": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
 # Colorblind-safe palette (Wong 2011 / IBM Design)
@@ -66,6 +67,7 @@ COLORS = {
     "Qwen3-235B": "#009E73",          # green
     "Gemini-Flash-Lite": "#CC79A7",  # reddish purple
     "GPT-OSS-120B": "#882255",       # wine
+    "Qwen3-32B": "#56B4E9",          # sky blue
 }
 
 # Category palette for probe types (colorblind-safe)
@@ -508,30 +510,33 @@ def fig_calibration(runs: dict):
                                          gridspec_kw={"width_ratios": [1, 1.1, 1],
                                                       "wspace": 0.35})
 
-    # ── (a) Connected dot plot ──
-    q_means = []
-    for qid in shared_qids:
-        vals = [model_probs[m][qid] for m in model_names]
-        q_means.append((qid, sum(vals) / len(vals)))
-    q_means.sort(key=lambda x: x[1])
-    sorted_qids = [qid for qid, _ in q_means]
+    # ── (a) Ridge plot of initial probability distributions ──
+    from scipy.stats import gaussian_kde
+    short_names = [_short_model_name(nm) for nm in model_names]
+    x_grid = np.linspace(0, 1, 200)
+    ridge_spacing = 0.6  # vertical offset between ridges
 
-    y_positions = range(len(sorted_qids))
+    for i, name in enumerate(model_names):
+        probs = list(model_probs[name].values())
+        if len(probs) < 5:
+            continue
+        kde = gaussian_kde(probs, bw_method=0.15)
+        density = kde(x_grid)
+        # Normalize so max height is consistent
+        density = density / density.max() * 0.5
+        baseline = i * ridge_spacing
+        ax1.fill_between(x_grid, baseline, baseline + density,
+                         color=COLORS[name], alpha=0.6, zorder=2)
+        ax1.plot(x_grid, baseline + density,
+                 color=COLORS[name], linewidth=1.5, zorder=3)
 
-    for yi, qid in enumerate(sorted_qids):
-        vals = [model_probs[m][qid] for m in model_names]
-        ax1.plot([min(vals), max(vals)], [yi, yi], color="gray",
-                 linewidth=1.0, alpha=0.5, zorder=1)
-
-    for name in model_names:
-        x_vals = [model_probs[name][qid] for qid in sorted_qids]
-        ax1.scatter(x_vals, y_positions, alpha=0.8, s=40, color=COLORS[name],
-                    edgecolor="white", linewidth=0.5, zorder=3)
-
+    ax1.set_yticks([i * ridge_spacing for i in range(len(model_names))])
+    ax1.set_yticklabels(short_names, fontsize=9)
     ax1.set_xlabel("Initial Probability")
-    ax1.set_ylabel("Questions (sorted by mean probability)")
     ax1.set_xlim(0, 1)
-    ax1.set_yticks([])
+    ax1.set_ylim(-0.1, len(model_names) * ridge_spacing)
+    ax1.spines["left"].set_visible(False)
+    ax1.tick_params(axis="y", length=0)
 
     # ── (b) Inter-model agreement heatmap ──
     n = len(model_names)

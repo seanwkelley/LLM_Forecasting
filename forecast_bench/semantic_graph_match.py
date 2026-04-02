@@ -54,25 +54,36 @@ def _get_api_key() -> str:
     return api_key
 
 
-def _get_embedding(text: str, api_key: str) -> list[float] | None:
-    try:
-        resp = requests.post(
-            "https://openrouter.ai/api/v1/embeddings",
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
-            json={"model": "openai/text-embedding-3-large", "input": text[:8000]},
-            timeout=30,
-        )
-        if resp.status_code == 200:
-            return resp.json()["data"][0]["embedding"]
-        else:
-            print(f"  Embedding API error: {resp.status_code}")
+def _get_embedding(text: str, api_key: str, max_retries: int = 3) -> list[float] | None:
+    import time as _time
+    for attempt in range(max_retries):
+        try:
+            resp = requests.post(
+                "https://openrouter.ai/api/v1/embeddings",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                },
+                json={"model": "openai/text-embedding-3-large", "input": text[:8000]},
+                timeout=60,
+            )
+            if resp.status_code == 200:
+                return resp.json()["data"][0]["embedding"]
+            elif resp.status_code == 429:
+                wait = 2 ** attempt
+                print(f"  Rate limited, waiting {wait}s...")
+                _time.sleep(wait)
+                continue
+            else:
+                print(f"  Embedding API error: {resp.status_code}")
+                return None
+        except Exception as e:
+            if attempt < max_retries - 1:
+                _time.sleep(1)
+                continue
+            print(f"  Embedding error after {max_retries} retries: {e}")
             return None
-    except Exception as e:
-        print(f"  Embedding error: {e}")
-        return None
+    return None
 
 
 # ── Cache ────────────────────────────────────────────────────────────────
@@ -122,8 +133,19 @@ def _ensure_embeddings(texts_by_key: dict[str, str],
             new_vecs.append(emb)
         if (i + 1) % 20 == 0:
             time.sleep(0.5)
-        if (i + 1) % 100 == 0:
-            print(f"    [{i+1}/{len(missing)}]")
+        # Incremental save every 50 embeddings
+        if len(new_vecs) > 0 and len(new_vecs) % 50 == 0:
+            new_matrix = np.array(new_vecs, dtype=np.float32)
+            if matrix is not None:
+                matrix = np.vstack([matrix, new_matrix])
+            else:
+                matrix = new_matrix
+            offset = len(key_to_idx)
+            for j, k2 in enumerate(new_keys):
+                key_to_idx[k2] = offset + j
+            _save_cache(key_to_idx, matrix, npz_path, keys_path)
+            print(f"    checkpoint: {len(key_to_idx)} embeddings saved")
+            new_keys, new_vecs = [], []
 
     if new_vecs:
         new_matrix = np.array(new_vecs, dtype=np.float32)

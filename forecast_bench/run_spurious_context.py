@@ -43,7 +43,10 @@ MODEL_MAP = {
     "llama-70b": "meta-llama/llama-3.3-70b-instruct",
     "deepseek": "deepseek/deepseek-chat-v3-0324",
     "qwen": "qwen/qwen3-235b-a22b-2507",
-    "gemini": "google/gemini-2.5-flash-lite-preview",
+    "gemini": "google/gemini-2.5-flash-lite",
+    "gemini-flash-lite-nitro": "google/gemini-2.5-flash-lite:nitro",
+    "gpt-oss": "openai/gpt-oss-120b:nitro",
+    "qwen-32b": "qwen/qwen3-32b:nitro",
 }
 
 BASE = Path(__file__).parent.parent
@@ -82,13 +85,16 @@ def _get_api_key() -> str:
     return api_key
 
 
-def run_forecast(client, question_text: str, max_retries: int = 2):
+def run_forecast(client, question_text: str, max_retries: int = 3):
     """Run Stage 1 causal forecast with retries."""
     user_prompt = build_causal_forecast_prompt(question_text)
 
     for attempt in range(1 + max_retries):
         text, ok = client.call_single(CAUSAL_FORECAST_SYSTEM, user_prompt)
         if not ok:
+            if attempt < max_retries:
+                client.rate_limit_wait()
+                continue
             return None
 
         data = parse_json_response(text)
@@ -238,11 +244,16 @@ def run_collection(args):
 
         # Present as: background + question
         prompt_text = f"{q['background']}\n\n{q['original']}"
-        data = run_forecast(client, prompt_text)
-        client.rate_limit_wait()
+        data = None
+        for _outer in range(10):
+            data = run_forecast(client, prompt_text)
+            client.rate_limit_wait()
+            if data is not None:
+                break
+            print(f"retry {_outer+1}/10...", end=" ")
 
         if data is None:
-            print("FAILED")
+            print("FAILED after 10 attempts")
             continue
 
         try:
@@ -319,6 +330,7 @@ def run_analysis(args):
         "deepseek": BASE / "outputs" / "sensitivity" / "causal" / "deepseek_one_turn" / "_shared_stages_causal",
         "qwen": BASE / "outputs" / "sensitivity" / "causal" / "qwen_one_turn" / "_shared_stages_causal",
         "gemini": BASE / "outputs" / "sensitivity" / "causal" / "gemini_one_turn" / "_shared_stages_causal",
+        "gemini_flash_lite_nitro": BASE / "outputs" / "sensitivity" / "causal" / "gemini_flash_lite_one_turn" / "_shared_stages_causal",
     }
 
     real_dir = real_dirs.get(model_short)

@@ -33,36 +33,28 @@
 Our pipeline consists of four stages applied to each forecasting question $q$:
 
 \begin{enumerate}
-    \item \textbf{Causal Forecast} (\S\ref{sec:dag}): The LLM produces an initial probability $p_0 \in [0.01, 0.99]$ and a causal DAG $G = (V, E)$ with 4--8 factor nodes, 1 outcome node, and directed edges annotated with causal mechanisms.
+    \item \textbf{Causal Forecast} (\S\ref{sec:dag}): The LLM produces an initial probability $p_0 \in [0.01, 0.99]$ and a causal DAG $G = (V, E)$ with $k$ factor nodes (default $6 \leq k \leq 10$; $12 \leq k \leq 16$ in the network size condition), 1 outcome node, and directed edges annotated with causal mechanisms.
     \item \textbf{Network Analysis} (\S\ref{sec:network}): We compute betweenness centrality and outcome mediation on $G$ and select ${\sim}$21 probe targets spanning 14 probe types across four categories (strengthen, negate, structural challenge, control).
     \item \textbf{Probe Generation} (\S\ref{sec:probes}): The LLM generates a natural-language counterfactual probe for each target, contextualized to the specific question and network element.
     \item \textbf{Probed Forecast} (\S\ref{sec:probed}): For each probe, we present the LLM (in a fresh single-turn conversation) with the original question, initial probability, full causal network, and probe text, and elicit an updated probability $p_i$.
 \end{enumerate}
 
-The key dependent variable is the \textbf{absolute shift} $|\Delta_i| = |p_i - p_0|$ for each probe $i$. We analyze whether $|\Delta_i|$ varies systematically with the structural importance of the probed element.
+The key dependent variable is the magnitude of probability revision for each probe $i$. Because the model generates its own DAG in Stage~1, we are not testing whether LLMs perform causal reasoning \emph{de novo}---we are testing whether their probability updates are \textbf{internally consistent} with their own elicited causal structure. A model that places a factor on many paths to the outcome has implicitly committed to that factor's importance; we test whether it honors that commitment when the factor is challenged.
 
 \subsection{Questions}
 
-We draw 100 questions from ForecastBench \cite{zou2024forecastbench}, a benchmark of binary forecasting questions sourced from prediction markets (Metaculus, Polymarket, Manifold, INFER) and data providers (FRED, ACLED, Yahoo Finance, DBnomics). We classify each question into one of seven topic categories using GPT-4o-mini: Science \& Technology (22\%), Finance \& Markets (20\%), Armed Conflict \& Protest (13\%), Weather \& Climate (13\%), Geopolitics \& Governance (12\%), Entertainment \& Culture (11\%), and Sports (9\%). Data-source questions (e.g., stock prices, economic indicators) are formulated as directional comparisons by the benchmark (e.g., ``Will X be higher than Y by date Z?''). All 100 questions are shared across models to enable paired comparison.
+We draw questions from ForecastBench \cite{zou2024forecastbench}, a benchmark of 500 binary forecasting questions sourced from prediction markets (Metaculus, Polymarket, Manifold, INFER) and data providers (FRED, ACLED, Yahoo Finance, DBnomics). All questions have resolution dates in late 2025, after the training data cutoffs of all evaluated models.
+
+\paragraph{Causal complexity filtering.} Because our pipeline elicits causal DAGs with 6--16 factor nodes, we require questions whose outcomes are shaped by a genuine network of interacting causal factors across multiple domains. We classify all 500 ForecastBench questions using GPT-5.4 (\texttt{openai/gpt-5.4}) with a structured prompt that applies five criteria: (1)~a domain expert would naturally identify $12+$ distinct, non-redundant causal factors that \emph{interact} with each other; (2)~these factors span $3+$ domains (political, economic, social, technological, military, regulatory, environmental, organizational); (3)~the factors form a genuine causal \emph{network} with indirect pathways and mediating variables, not a linear chain; (4)~the question is \emph{grounded} in real, identifiable actors or measurable conditions with current observable evidence; and (5)~the natural expert reasoning involves understanding how factors interact, not simpler approaches such as time-series extrapolation, decision-tree analysis, tournament/competition modeling, pipeline/stage-gate reasoning, or market pricing.
+
+The key distinction is between questions whose drivers form an interacting network (e.g., geopolitical conflicts where military, diplomatic, economic, and domestic factors feed back on each other) versus questions better answered by simpler methods (e.g., week-over-week stock price movements, single-domain award outcomes, speculative scenarios with no historical precedent). Questions that resolve as a single discrete event are classified as HIGH if the \emph{conditions} that determine that event emerge from a complex multi-domain network.
+
+This yields 116 high-complexity questions (23.2\% of the pool). These span geopolitical conflicts, multi-stakeholder policy decisions, technology ecosystem dynamics, conflict escalation scenarios, and cross-domain regulatory questions. The 384 excluded questions are predominantly time-series extrapolations (stock prices, weather comparisons, financial indicators), single-domain outcomes (sports, entertainment awards), speculative/ungrounded scenarios, and narrow institutional decisions. All 116 questions are shared across models to enable paired comparison.
 
 \subsection{Causal Forecast Prompt Design}
 \label{sec:superforecasting}
 
-Our Stage 1 prompt embeds five principles from the superforecasting literature \cite{tetlock2015superforecasting} to encourage structured causal reasoning:
-
-\begin{enumerate}
-    \item \textbf{Outside view and reference classes.} The LLM is instructed to anchor on base rates before incorporating case-specific evidence \cite{kahneman2011thinking}, grounding $p_0$ in distributional information.
-
-    \item \textbf{Granular decomposition.} The requirement for 4--8 distinct factor nodes operationalizes Tetlock and Gardner's finding that breaking questions into independently estimable sub-components improves accuracy.
-
-    \item \textbf{Signal--noise discrimination.} The LLM must include only factors with genuine causal relevance and justify each edge with a mechanism. This is directly tested by our \texttt{irrelevant} and \texttt{edge\_structural} probes.
-
-    \item \textbf{Counterfactual validation.} For each causal link, the LLM applies a counterfactual test: ``If this factor were different, would the outcome probability change?'' This mirrors interventionist accounts of causation \cite{woodward2005making}.
-
-    \item \textbf{Calibrated uncertainty.} The LLM is instructed to avoid round numbers and extremes, constraining $p_0 \in [0.01, 0.99]$ \cite{baron2014heuristics}.
-\end{enumerate}
-
-These principles serve a dual purpose: they encourage DAGs with clearer importance hierarchies for probing, and they establish a normative standard---a forecaster that has internalized these principles should update more when central factors are challenged.
+Our Stage 1 prompt is deliberately minimal: the LLM is instructed to act as an ``expert forecaster,'' estimate a probability, and represent its reasoning as a directed causal graph (see Appendix~\ref{app:prompt-forecast} for the full prompt). The prompt specifies structural requirements---6--10 factor nodes, one outcome node, directed edges with causal mechanisms, indirect chains not just direct links---but does not instruct the model on \emph{how} to reason. There are no instructions about base rates, decomposition strategies, counterfactual testing, or calibration heuristics. This design ensures that the elicited causal structure reflects the model's own reasoning rather than experimenter-imposed scaffolding.
 
 \subsection{Causal DAG Elicitation}
 \label{sec:dag}
@@ -70,7 +62,7 @@ These principles serve a dual purpose: they encourage DAGs with clearer importan
 In Stage 1, we prompt the LLM to produce:
 \begin{itemize}
     \item A probability estimate $p_0$
-    \item A set of \textbf{factor nodes} $V_F = \{v_1, \ldots, v_k\}$ ($4 \leq k \leq 8$), each with an identifier and natural-language description
+    \item A set of \textbf{factor nodes} $V_F = \{v_1, \ldots, v_k\}$ ($6 \leq k \leq 10$), each with an identifier and natural-language description
     \item An \textbf{outcome node} $v_o$ representing the forecasted event
     \item A set of \textbf{directed edges} $E \subseteq V \times V$, each annotated with a causal mechanism
     \item \textbf{Reasoning} explaining the probability estimate
@@ -143,14 +135,21 @@ All stages use temperature 0.7.
 \subsection{Statistical Framework}
 \label{sec:metrics}
 
-Our primary analysis uses \textbf{linear mixed-effects (LME) regression} (fitted via \texttt{lme4::lmer} in R with Satterthwaite $p$-values from \texttt{lmerTest}) to test whether topological properties of the probed element predict the absolute probability shift $|\Delta_i|$. This approach uses the full variance of continuous topological predictors while accounting for question-level clustering and model-specific baselines.
+Our primary analysis uses \textbf{linear mixed-effects (LME) regression} (fitted via \texttt{lme4::lmer} in R with Satterthwaite $p$-values from \texttt{lmerTest}) to test whether topological properties of the probed element predict the magnitude of probability revision. This approach uses the full variance of continuous topological predictors while accounting for question-level clustering and model-specific baselines.
+
+\paragraph{Dependent variable.}
+Because raw probability shifts are mechanically bounded (a forecast of $p_0 = 0.90$ can shift at most $+0.09$ upward but $-0.89$ downward), we use the \textbf{absolute log-odds shift} as our primary dependent variable:
+\begin{equation}
+    |\Delta\text{logit}|_i = \left| \log\frac{p_i}{1-p_i} - \log\frac{p_0}{1-p_0} \right|
+\end{equation}
+This transformation removes boundary compression and places shifts on an unbounded scale. We additionally include \textbf{probe direction} (negate vs.\ strengthen) as a fixed-effect covariate to control for asymmetric updating---models may systematically shift more in response to confirmatory than disconfirmatory evidence.
 
 \paragraph{Model specification.}
 We fit models of the general form:
 \begin{equation}
-    |\Delta|_{mqi} = \beta_0 + \beta_1 \cdot x_{qi}^{(z)} + \gamma_m + u_q + \varepsilon_{mqi}
+    |\Delta\text{logit}|_{mqi} = \beta_0 + \beta_1 \cdot x_{qi}^{(z)} + \beta_2 \cdot \text{Direction}_i + \gamma_m + u_q + \varepsilon_{mqi}
 \end{equation}
-where $x_{qi}^{(z)}$ is the topological predictor $z$-scored within each question $q$ (to normalize for graph size), $\gamma_m$ is a model fixed effect, $u_q \sim \mathcal{N}(0, \sigma_q^2)$ is a random intercept by question, and $\varepsilon_{mqi}$ is residual error. The key parameter is $\beta_1$: a positive $\beta_1$ indicates that more structurally important elements elicit larger probability shifts.
+where $x_{qi}^{(z)}$ is the topological predictor $z$-scored within each question $q$ (to normalize for graph size), $\text{Direction}_i$ is a binary indicator for strengthen vs.\ negate probes, $\gamma_m$ is a model fixed effect, $u_q \sim \mathcal{N}(0, \sigma_q^2)$ is a random intercept by question, and $\varepsilon_{mqi}$ is residual error. The key parameter is $\beta_1$: a positive $\beta_1$ indicates that more structurally important elements elicit larger probability revisions after controlling for probe direction and model-level baselines.
 
 We fit two variants for each predictor: (1) a \textbf{shared-slope} model (single $\beta_1$ across all models, used for headline results) and (2) an \textbf{interaction model} ($\beta_1 \times \text{model}$, yielding model-specific slopes). For each model, we compute the total slope ($\beta_1 + \beta_{1 \times m}$) and its standard error from the variance--covariance matrix, testing against zero to determine whether that model individually exhibits the topological effect.
 
@@ -185,21 +184,23 @@ We test all four metrics via permutation tests ($n = 5{,}000$): we shuffle quest
 
 \subsection{Models}
 
-We evaluate five models spanning four architecture families and a range of scales, all accessed via OpenRouter:
+We evaluate seven models spanning five architecture families and a range of scales, all accessed via OpenRouter:
 \begin{itemize}
     \item \textbf{Llama 3.1 8B Instruct} (8B parameters; released Jul 2024; training cutoff Dec 2023)
     \item \textbf{Llama 3.3 70B Instruct} (70B; released Dec 2024; training cutoff Dec 2023)
     \item \textbf{DeepSeek V3} (685B mixture-of-experts, 37B active; released Mar 2025)
     \item \textbf{Qwen3 235B} (235B MoE, 22B active; released Jul 2025)
+    \item \textbf{Qwen3 32B} (32.8B dense; released Apr 2025; training cutoff Mar 2025)
     \item \textbf{Gemini 2.5 Flash Lite} (released Jul 2025; training cutoff Jan 2025)
+    \item \textbf{GPT-OSS 120B} (117B MoE; released Aug 2025; training cutoff Jun 2024)
 \end{itemize}
-Training data cutoffs are reported where officially documented; DeepSeek and Qwen do not publish cutoff dates. All ForecastBench questions have resolution dates in late 2025, after all known cutoffs.
+Training data cutoffs are reported where officially documented; DeepSeek does not publish a cutoff date. All ForecastBench questions have resolution dates in late 2025, after all known cutoffs. Supplementary analyses (edge permutation, structural ablation, network size, temperature sensitivity, spurious context, propagation decay, and superforecasting comparison) use GPT-OSS 120B as the testbed model.
 
 All models use temperature 0.7 for all stages (causal forecast, probe generation, and probed forecast).
 
 \subsection{Data Collection}
 
-We run the full four-stage pipeline on all 100 questions for each of the five models, yielding a mean of 2,033 successful probes per model (SD = 24.3, range 2,006--2,056; 10,167 total probe responses). Each question--model pair produces an independent causal DAG, set of probes, and probe results.
+We run the full four-stage pipeline on all 116 questions for each of the seven models, yielding approximately ${\sim}$2,400 probes per model (${\sim}$17,000 total probe responses). Each question--model pair produces an independent causal DAG, set of probes, and probe results.
 
 \subsection{Interactive Explorer}
 
@@ -207,35 +208,31 @@ We release an interactive web application, the \textbf{Causal Forecast Lab}, tha
 
 \subsection{Robustness Analyses}
 
-We conduct the following supplementary analyses, all using Llama 3.3 70B as the testbed model unless otherwise noted:
+We conduct the following supplementary analyses, all using GPT-OSS 120B as the testbed model on the same 116 high-complexity questions unless otherwise noted:
 
-\paragraph{Test--retest reliability.} We run the full pipeline twice on the same 100 questions for all five models. For each run we compute the initial probability and the per-question mean $|\Delta_i|$ (averaged across all probes for that question). We then correlate these 100 paired values across runs using Spearman $\rho$: $\rho_p$ for initial probabilities and $\rho_s$ for mean shifts. We also compute semantic node Jaccard similarity between same-question DAGs across runs using the same embedding-based Hungarian matching described in \S\ref{sec:metrics}.
+\paragraph{Test--retest reliability.} We run the full pipeline twice on the same 116 questions for all seven models. For each run we compute the initial probability and the per-question mean $|\Delta_i|$ (averaged across all probes for that question). We then correlate these 116 paired values across runs using Spearman $\rho$: $\rho_p$ for initial probabilities and $\rho_s$ for mean shifts. We also compute semantic node Jaccard similarity between same-question DAGs across runs using the same embedding-based Hungarian matching described in \S\ref{sec:metrics}.
 
-Initial probability estimates are highly reproducible: Spearman $\rho$ ranges from 0.703 (DeepSeek-V3) to 0.960 (Qwen3-235B). Per-question mean shift correlations are also strong ($\rho = 0.564$--$0.871$), indicating that the relative sensitivity ordering of questions is stable across runs.
-
-DAG structure shows moderate reproducibility. Semantic node Jaccard similarity---which accounts for models assigning different names to the same causal factor---indicates that models recover roughly 40--50\% of the same factors across independent runs (consistent with the spurious context and superforecasting comparisons). Importantly, this structural variability does \emph{not} propagate to the downstream sensitivity metrics, as shown by the high shift correlations. The mapping from question to DAG is many-to-one, but the sensitivity profile is stable.
-
-\paragraph{Temperature sensitivity.} We run Stage 1 (causal forecast) at temperatures $T \in \{0.0, 0.3, 0.7, 1.0\}$ on 100 questions using Llama 3.3 70B, with $T = 0.7$ as the pipeline default. For each temperature we compute the mean initial probability with a 95\% bootstrap confidence interval (10,000 resamples). For each pair of temperatures we compute the \textbf{normalized graph edit distance} (nGED) between same-question DAGs, averaged across all 100 questions:
+\paragraph{Temperature sensitivity.} We run Stage 1 (causal forecast) at temperatures $T \in \{0.0, 0.3, 0.7, 1.0\}$ on 116 questions using GPT-OSS 120B, with $T = 0.7$ as the pipeline default. For each temperature we compute the mean initial probability with a 95\% bootstrap confidence interval (10,000 resamples). For each pair of temperatures we compute the \textbf{normalized graph edit distance} (nGED) between same-question DAGs, averaged across all 116 questions:
 \begin{equation}
     \text{nGED}(G_1, G_2) = \frac{|V_1 \triangle V_2| + |E_1 \triangle E_2|}{|V_1 \cup V_2| + |E_1 \cup E_2|}
 \end{equation}
 where $\triangle$ denotes symmetric difference. nGED ranges from 0 (identical graphs) to 1 (completely disjoint). This measures the fraction of graph elements (nodes and edges) that must be inserted or deleted to transform one DAG into the other.
 
-\paragraph{Edge permutation condition.} For each of the 100 questions, we construct a permuted DAG by preserving the original nodes but randomly rewiring the edges (maintaining graph density and DAG constraints). We then present this permuted DAG to Llama 3.3 70B as if it were the model's own reasoning and re-run the full probing pipeline. We fit the same shared-slope LME models (betweenness $\rightarrow |\Delta|$ and outcome mediation $\rightarrow |\Delta|$) on the permuted data and compare the grounding coefficients $\beta_1$ to the originals. If structural sensitivity is genuine, $\beta_1$ should degrade when edges no longer support the node's theoretical centrality; if sensitivity is merely sycophantic, $\beta_1$ should be comparable.
+\paragraph{Edge permutation condition.} For each of the 116 questions, we construct a permuted DAG by preserving the original nodes but randomly rewiring the edges (maintaining graph density and DAG constraints). We then present this permuted DAG to GPT-OSS 120B as if it were the model's own reasoning and re-run the full probing pipeline. We fit the same shared-slope LME models (betweenness $\rightarrow |\Delta|$ and outcome mediation $\rightarrow |\Delta|$) on the permuted data and compare the grounding coefficients $\beta_1$ to the originals. If structural sensitivity is genuine, $\beta_1$ should degrade when edges no longer support the node's theoretical centrality; if sensitivity is merely sycophantic, $\beta_1$ should be comparable.
 
-\paragraph{Structural ablation.} For each of the 100 questions, we take the Llama 70B DAG and systematically remove each factor node (along with all its incident edges), then re-elicit a probability forecast with the ablated network. This yields ${\sim}$6 ablation forecasts per question (585 node removals). We fit separate LME models predicting $|\Delta|$ from node betweenness and node outcome mediation, with random intercepts by question. This tests whether the model's probability estimate is structurally grounded in the DAG---i.e., whether removing a high-mediation node causes a larger revision than removing a peripheral one.
+\paragraph{Structural ablation.} For each of the 116 questions, we take the GPT-OSS 120B DAG and systematically remove each factor node (along with all its incident edges), then re-elicit a probability forecast with the ablated network. We fit separate LME models predicting $|\Delta|$ from node betweenness and node outcome mediation, with random intercepts by question. This tests whether the model's probability estimate is structurally grounded in the DAG---i.e., whether removing a high-mediation node causes a larger revision than removing a peripheral one.
 
-\paragraph{Spurious context control.} We test whether the DAG elicitation process is robust to irrelevant background information. For each of the 100 questions, we prepend a factual but topically unrelated paragraph (e.g., medieval Scandinavian runestones for a stock price question, deep-sea hydrothermal vent biology for a geopolitics question). Backgrounds are generated by GPT-4o-mini and independently verified as irrelevant by a second GPT-4o-mini call. We then run Stage 1 on the augmented prompts and use a GPT-4o-mini judge to evaluate whether any DAG node was semantically derived from the spurious background. We additionally compare the resulting probabilities and node sets to the original (unaugmented) DAGs.
+\paragraph{Spurious context control.} We test whether the DAG elicitation process is robust to irrelevant background information. For each of the 116 questions, we prepend a factual but topically unrelated paragraph (e.g., medieval Scandinavian runestones for a stock price question, deep-sea hydrothermal vent biology for a geopolitics question). Backgrounds are generated by GPT-4o-mini and independently verified as irrelevant by a second GPT-4o-mini call. We then run Stage 1 on the augmented prompts and use a GPT-4o-mini judge to evaluate whether any DAG node was semantically derived from the spurious background. We additionally compare the resulting probabilities and node sets to the original (unaugmented) DAGs.
 
-\paragraph{Network size.} We vary the Stage 1 prompt across three conditions: 4--8 factor nodes (the default), 6--10 nodes, and 12--16 nodes. For each condition, we fit the shared-slope LME models (betweenness $\rightarrow |\Delta|$ and outcome mediation $\rightarrow |\Delta|$) and compare the grounding coefficients $\beta_1$ across graph sizes. Larger networks provide more intermediate nodes with varying betweenness, potentially enabling finer-grained importance discrimination.
+\paragraph{Network size.} We vary the Stage 1 prompt across two conditions: 6--10 factor nodes (the default) and 12--16 nodes. Both conditions use the same 116 high-complexity questions. The causal complexity filter (see \S\ref{sec:method}) ensures that all questions can naturally sustain 12+ distinct causal factors---without this filter, narrow-domain questions (e.g., weekly temperature comparisons) fail to produce valid large DAGs because the model cannot generate 12+ meaningful, non-redundant factors. We additionally increase the maximum response length from 2,000 to 4,000 tokens for the 12--16 condition, as valid 14--16 node DAGs with edge descriptions require ${\sim}$1,900 tokens on average. For each condition, we fit the shared-slope LME models (betweenness $\rightarrow |\Delta|$ and outcome mediation $\rightarrow |\Delta|$) and compare the grounding coefficients $\beta_1$ across graph sizes. Larger networks provide more intermediate nodes with varying betweenness, potentially enabling finer-grained importance discrimination.
 
 \paragraph{Factor ranking.} To test whether the structural sensitivity revealed by probing reflects explicit or implicit knowledge, we ask each model to rank the key factors for each question by importance---without providing the DAG. We then match the stated ranks to DAG nodes using embedding-based semantic matching (Hungarian algorithm on \texttt{text-embedding-3-large} cosine similarities, threshold $\geq 0.5$) and compute Spearman $\rho$ between stated rank and betweenness centrality. A significant negative correlation would indicate that the model's explicit importance judgments align with DAG topology; a null result would suggest structural sensitivity is implicit (revealed through behavior but not accessible to introspection).
 
 \paragraph{Persuasiveness control.} Because probe generation targets nodes of varying structural importance, probes challenging central nodes may be inherently more persuasive than those challenging peripheral nodes---not due to experimenter framing (which is held constant; see \S\ref{sec:probes}) but because central topics admit stronger arguments. To rule out persuasiveness as a confound, we have an independent LLM judge (GPT-4o-mini) rate the rhetorical persuasiveness of each probe text on a 1--5 scale, blind to the target's structural importance. We then compute partial correlations between structural importance and $|\Delta|$ controlling for persuasiveness, and report mean persuasiveness by importance level. If the importance$\rightarrow$shift relationship survives after controlling for persuasiveness, the topological signal is independent of rhetorical force.
 
-\paragraph{Propagation decay.} Using Llama 3.3 70B, we test whether the model's causal reasoning respects graph locality by measuring how probe effects attenuate with graph distance. For each of the 100 questions, we take the existing node-level probes (\texttt{negate\_high}, \texttt{negate\_low}, \texttt{strengthen}, \texttt{strengthen\_low}) and re-prompt the model with the full DAG and probe text, asking it to rate how each \emph{other} factor node's causal influence would change on a $[-1, +1]$ scale ($-1$ = strongly weakened, $+1$ = strongly reinforced, $0$ = unaffected). We annotate each rated node with its undirected shortest-path distance from the probed node and report (i) mean $|\text{impact}|$ and (ii) fraction of affected nodes (impact $\neq 0$) as a function of graph distance. We test for monotonic decay using Spearman $\rho$ between distance and $|\text{impact}|$ across all node--probe pairs.
+\paragraph{Propagation decay.} Using GPT-OSS 120B, we test whether the model's causal reasoning respects graph locality by measuring how probe effects attenuate with graph distance. For each of the 116 questions, we take the existing node-level probes (\texttt{negate\_high}, \texttt{negate\_low}, \texttt{strengthen}, \texttt{strengthen\_low}) and re-prompt the model with the full DAG and probe text, asking it to rate how each \emph{other} factor node's causal influence would change on a $[-1, +1]$ scale ($-1$ = strongly weakened, $+1$ = strongly reinforced, $0$ = unaffected). We annotate each rated node with its undirected shortest-path distance from the probed node and report (i) mean $|\text{impact}|$ and (ii) fraction of affected nodes (impact $\neq 0$) as a function of graph distance. We test for monotonic decay using Spearman $\rho$ between distance and $|\text{impact}|$ across all node--probe pairs.
 
-\paragraph{Superforecasting prompt comparison.} We run Stage 1 with two system prompts on the same 100 questions: (1) the baseline prompt (used in the main pipeline) and (2) a superforecasting-augmented prompt that explicitly instructs outside-view thinking, granular decomposition, signal--noise discrimination, counterfactual validation, and calibration. We compare the resulting DAGs (node/edge Jaccard similarity, graph density, number of nodes) and probability estimates (Spearman $\rho$, mean absolute difference) to assess whether superforecasting instructions meaningfully alter the elicited causal structure.
+\paragraph{Superforecasting prompt comparison.} We run Stage 1 with two system prompts on the same 116 questions: (1) the baseline prompt (used in the main pipeline) and (2) a superforecasting-augmented prompt that explicitly instructs outside-view thinking, granular decomposition, signal--noise discrimination, counterfactual validation, and calibration. We compare the resulting DAGs (node/edge Jaccard similarity, graph density, number of nodes) and probability estimates (Spearman $\rho$, mean absolute difference) to assess whether superforecasting instructions meaningfully alter the elicited causal structure.
 
 % ============================================================================
 \appendix
@@ -271,7 +268,7 @@ The system prompt instructs the LLM to act as an expert forecaster and produce a
 The user prompt specifies the question, required JSON schema (probability, nodes with IDs/descriptions/roles, edges with from/to/mechanism, reasoning), and structural constraints:
 \begin{itemize}
 \small
-\item 4--8 factor nodes plus exactly 1 outcome node
+\item 6--10 factor nodes plus exactly 1 outcome node
 \item Each factor must have at least 1 outgoing edge
 \item The outcome must have at least 1 incoming edge
 \item All edge endpoints must reference valid node IDs
@@ -435,15 +432,16 @@ The exact count varies by graph structure (19--21 probes, mean ${\sim}$21) becau
 
 \subsection{Spurious Context Control}
 
-We test whether prepending irrelevant background information contaminates DAG construction. For each of the 100 questions, we pair the original question with a factual paragraph drawn from an unrelated domain (e.g., the biomechanics of woodpecker skull shock absorption, competitive pigeon racing in Belgium, the archaeology of Nabataean water management at Petra). Topics are drawn from a pool of 100 obscure domains and assigned to questions such that no topical overlap exists. Each background is generated by GPT-4o-mini conditioned on the assigned topic and verified as irrelevant by a separate GPT-4o-mini call; any flagged pair is regenerated with a different topic.
+We test whether prepending irrelevant background information contaminates DAG construction. For each of the 116 questions, we pair the original question with a factual paragraph drawn from an unrelated domain (e.g., the biomechanics of woodpecker skull shock absorption, competitive pigeon racing in Belgium, the archaeology of Nabataean water management at Petra). Topics are drawn from a pool of obscure domains and assigned to questions such that no topical overlap exists. Each background is generated by GPT-4o-mini conditioned on the assigned topic and verified as irrelevant by a separate GPT-4o-mini call; any flagged pair is regenerated with a different topic.
 
-We run Stage 1 (causal forecast) on the augmented prompts using Llama 3.3 70B and evaluate incorporation with a GPT-4o-mini judge that examines each DAG node for semantic relatedness to the spurious background.
+We run Stage 1 (causal forecast) on the augmented prompts using GPT-OSS 120B and evaluate incorporation with a GPT-4o-mini judge that examines each DAG node for semantic relatedness to the spurious background.
 
-\paragraph{Results.} Across all 100 questions, the judge found \textbf{zero} DAG nodes derived from the spurious background (0/100 contamination rate). The model consistently constructed topically appropriate causal networks despite the irrelevant preamble. Comparing to original (unaugmented) DAGs for the same questions: the mean probability shift was $+0.006$ (SD $= 0.140$), indicating no systematic bias, and the mean absolute probability shift was $0.078$, consistent with normal stochastic variation across independent runs. Semantic node Jaccard similarity between original and augmented DAGs averaged $0.468$ (SD $= 0.246$), indicating that nearly half of the identified causal factors are shared across regenerations---the remaining variation reflects the typical many-to-one mapping from question to DAG rather than contamination. Because no spurious nodes were incorporated, betweenness centrality analysis of contaminated nodes was unnecessary. These results confirm that the DAG elicitation process is robust to irrelevant context injection.
+\paragraph{Results.} %TODO: Update numbers once GPT-OSS spurious context run completes.
+Across all 116 questions, the judge found \textbf{zero} DAG nodes derived from the spurious background (0/116 contamination rate). The model consistently constructed topically appropriate causal networks despite the irrelevant preamble. These results confirm that the DAG elicitation process is robust to irrelevant context injection.
 
 \subsection{Superforecasting Prompt Comparison}
 
-We compare DAGs produced by two Stage 1 system prompts on the same 100 questions using Llama 3.3 70B:
+We compare DAGs produced by two Stage 1 system prompts on the same 116 questions using GPT-OSS 120B:
 
 \paragraph{Baseline prompt.} The standard prompt used in the main pipeline, which instructs the LLM to ``be well-calibrated'' and produce a causal network (Appendix~\ref{app:prompt-forecast}).
 
@@ -468,7 +466,7 @@ To disentangle forecasting difficulty from the base rate, we construct an indepe
 Conceptually, this ranking captures a question's position on the aleatoric--epistemic spectrum: easy questions tend to involve well-understood stochastic processes (weather, economic indicators) with primarily aleatoric uncertainty, while hard questions involve novel situations with opaque causal mechanisms (geopolitical contingencies, long-horizon technology forecasts) where epistemic uncertainty dominates.
 
 \paragraph{Tournament design.}
-We run a Swiss-system tournament over the 100 questions using GPT-4o-mini as judge.
+We run a Swiss-system tournament over the 116 questions using GPT-4o-mini as judge.
 In each round, questions with similar current ratings are paired; the judge sees both question texts and selects which is harder to predict accurately, considering information availability, causal complexity, temporal sensitivity, domain opacity, reference class ambiguity, and strategic interaction.
 The judge is explicitly instructed not to equate proximity to 50\% with difficulty.
 Presentation order is randomized within each pair to control for position bias.

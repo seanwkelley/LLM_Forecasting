@@ -34,6 +34,10 @@ MODEL_MAP = {
     "llama-70b": "meta-llama/llama-3.3-70b-instruct",
     "deepseek": "deepseek/deepseek-chat-v3-0324",
     "qwen": "qwen/qwen3-235b-a22b-2507",
+    "gpt-oss": "openai/gpt-oss-120b:nitro",
+    "qwen-32b": "qwen/qwen3-32b:nitro",
+    "gemini-flash-lite": "google/gemini-2.5-flash-lite",
+    "gemini-flash-lite-nitro": "google/gemini-2.5-flash-lite:nitro",
 }
 
 # ── Superforecasting-augmented system prompt ─────────────────────────────
@@ -74,27 +78,43 @@ Build a causal network where:
 Respond with ONLY valid JSON. No other text."""
 
 
-def run_stage1(client, question_text, system_prompt):
+def run_stage1(client, question_text, system_prompt, max_retries=5):
     """Run Stage 1 (causal forecast) with a given system prompt.
 
     Returns parsed dict or None on failure.
     """
     user_prompt = build_causal_forecast_prompt(question_text)
-    text, ok = client.call_single(system_prompt, user_prompt)
-    if not ok:
-        return None
 
-    data = parse_json_response(text)
-    if data is None:
-        client.stats.parse_failures += 1
-        return None
+    for attempt in range(1 + max_retries):
+        text, ok = client.call_single(system_prompt, user_prompt)
+        if not ok:
+            if attempt < max_retries:
+                print(f"  Retry {attempt+1}/{max_retries}...")
+                client.rate_limit_wait()
+                continue
+            return None
 
-    prob = data.get("probability")
-    nodes = data.get("nodes")
-    edges = data.get("edges")
-    if prob is None or not isinstance(nodes, list) or not isinstance(edges, list):
-        client.stats.parse_failures += 1
-        return None
+        data = parse_json_response(text)
+        if data is None or not isinstance(data, dict):
+            if attempt < max_retries:
+                print(f"  Retry {attempt+1}/{max_retries}...")
+                client.rate_limit_wait()
+                continue
+            client.stats.parse_failures += 1
+            return None
+
+        prob = data.get("probability")
+        nodes = data.get("nodes")
+        edges = data.get("edges")
+        if prob is None or not isinstance(nodes, list) or not isinstance(edges, list):
+            if attempt < max_retries:
+                print(f"  Retry {attempt+1}/{max_retries}...")
+                client.rate_limit_wait()
+                continue
+            client.stats.parse_failures += 1
+            return None
+
+        break  # Success
 
     prob = max(0.01, min(0.99, float(prob)))
     data["probability"] = prob
@@ -138,6 +158,7 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output-dir", type=str, default=None)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--questions-file", default=None, help="Path to local JSON file with questions")
     args = parser.parse_args()
 
     model_id = MODEL_MAP[args.model]
@@ -162,7 +183,8 @@ def main():
     )
 
     # Load questions (same set as baseline)
-    questions = load_forecastbench_questions(seed=args.seed, max_questions=args.max_questions)
+    questions = load_forecastbench_questions(seed=args.seed, max_questions=args.max_questions,
+                                                questions_file=args.questions_file)
     print(f"Loaded {len(questions)} questions for model={args.model} ({model_id})")
     print(f"Output: {output_dir}")
 
@@ -182,15 +204,15 @@ def main():
 
         # Run superforecasting-augmented Stage 1
         sf_result = None
-        for attempt in range(3):
+        for attempt in range(10):
             sf_result = run_stage1(client, q["question"], SUPERFORECASTING_SYSTEM)
             if sf_result is not None:
                 break
-            print(f"  Retry {attempt+1}/3...")
+            print(f"  Retry {attempt+1}/10...")
             time.sleep(2)
 
         if sf_result is None:
-            print(f"  FAILED — skipping")
+            print(f"  FAILED after 10 attempts — skipping")
             continue
 
         # Network analysis

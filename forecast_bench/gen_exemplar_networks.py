@@ -22,11 +22,11 @@ plt.rcParams.update({"font.family": "Arial", "font.size": 12, "figure.dpi": 300}
 BASE = Path(__file__).parent.parent
 OUT = BASE / "paper" / "figures"
 
-# Question IDs (70b_one_turn)
-CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal" / "70b_one_turn" / "_shared_stages_causal"
+# Question IDs (GPT-OSS neutral, 116 high-complexity questions)
+CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal" / "gpt_oss_neutral" / "_shared_stages_causal"
 QUESTIONS = {
-    "geopolitical": "q_0x62b0cd598091a179147acbd4616400f804acfdff6f76f029944b481b37cbd45f.json",
-    "pharma": "q_c150752b0fa15c095b60111b38a411aeebf04a4b39802edf4dc4c82a2fe89cf8.json",
+    "economics": "q_Qgg9Rc8PIy.json",
+    "geopolitical": "q_x0N5kcbmFRaaxlj49kzO.json",
 }
 
 
@@ -67,10 +67,32 @@ def draw_network(ax, nodes, edges, analysis, initial_prob=None, label="(a)",
     # Importance lookup
     importance_map = {nm.node_id: nm.betweenness for nm in analysis.node_metrics}
 
-    # Layout — use spring with high k for maximum spacing
-    pos = nx.spring_layout(G, seed=42, k=3.5, iterations=100)
-    # Scale positions aggressively to spread nodes out
-    pos = {n: (x * 3.0, y * 3.0) for n, (x, y) in pos.items()}
+    # Layout — strict hierarchical, no spring refinement
+    outcome = [n for n in G.nodes if G.nodes[n].get("role") == "outcome"]
+    if outcome:
+        R = G.reverse()
+        try:
+            dists = nx.shortest_path_length(R, source=outcome[0])
+        except Exception:
+            dists = {}
+        layers = {}
+        for n in G.nodes:
+            d = dists.get(n, max(dists.values()) if dists else 1)
+            layers.setdefault(d, []).append(n)
+
+        pos = {}
+        layer_width = 4.0   # horizontal spacing between nodes in same layer
+        layer_height = 3.5  # vertical spacing between layers
+        for layer_y, nodes_in_layer in sorted(layers.items()):
+            n_in_layer = len(nodes_in_layer)
+            # Sort nodes for deterministic layout
+            sorted_nodes = sorted(nodes_in_layer)
+            for i, n in enumerate(sorted_nodes):
+                x = (i - (n_in_layer - 1) / 2) * layer_width
+                pos[n] = (x, layer_y * layer_height)
+    else:
+        pos = nx.kamada_kawai_layout(G)
+        pos = {n: (x * 4.0, y * 4.0) for n, (x, y) in pos.items()}
 
     # --- Nodes (large, so text fits inside) ---
     factor_nodes = [n for n in G.nodes if G.nodes[n].get("role") != "outcome"]
@@ -101,8 +123,8 @@ def draw_network(ax, nodes, edges, analysis, initial_prob=None, label="(a)",
             G, pos, edgelist=all_edges, ax=ax,
             edge_color="#333333", width=1.8, alpha=0.8,
             arrows=True, arrowsize=20, arrowstyle="-|>",
-            connectionstyle="arc3,rad=0.15",
-            min_source_margin=42, min_target_margin=42,
+            connectionstyle="arc3,rad=0.12",
+            min_source_margin=48, min_target_margin=48,
         )
 
     # --- Labels inside nodes (no background box) ---
@@ -155,8 +177,8 @@ def main():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10))
     fig.patch.set_facecolor("white")
 
-    n1, e1, a1, p1, q1 = panels["geopolitical"]
-    n2, e2, a2, p2, q2 = panels["pharma"]
+    n1, e1, a1, p1, q1 = panels["economics"]
+    n2, e2, a2, p2, q2 = panels["geopolitical"]
     draw_network(ax1, n1, e1, a1, p1, label="(a)", question_text=q1)
     draw_network(ax2, n2, e2, a2, p2, label="(b)", question_text=q2)
 

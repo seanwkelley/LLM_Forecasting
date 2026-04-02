@@ -1,0 +1,25 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Ablation: Edge Removal --- Edge Betweenness Predicts Shift}
+\label{tab:lme_ablation_edge_betw_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.0443*** & 0.0021 & 21.48 & $<$0.001 & [0.040, 0.048] \\
+  betweenness\_z & 0.0024 & 0.0028 & 0.83 & 0.410 & [-0.003, 0.008] \\
+\midrule
+  N observations & \multicolumn{5}{c}{686} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{1304.51} \\
+  AIC / BIC & \multicolumn{5}{c}{-2597.0 / -2569.8} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0015} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.4034} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0002} \\
+  RE var (betweenness\_z) & \multicolumn{5}{c}{0.0004} \\
+  RE var ((Intercept):betweenness\_z) & \multicolumn{5}{c}{-0.0000} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0010} \\
+\bottomrule
+\end{tabular}
+\end{table}

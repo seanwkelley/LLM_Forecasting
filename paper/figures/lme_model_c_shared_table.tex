@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Model C: Edge Betweenness --- Shared Slope}
+\label{tab:lme_model_c_shared_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.0716*** & 0.0024 & 30.27 & $<$0.001 & [0.067, 0.076] \\
+  edge\_betweenness\_z & 0.0010 & 0.0007 & 1.46 & 0.145 & [-0.000, 0.002] \\
+  DeepSeek-V3 & -0.0078** & 0.0024 & -3.27 & 0.001 & [-0.012, -0.003] \\
+  Gemini-Flash-Lite & 0.0052* & 0.0024 & 2.15 & 0.032 & [0.000, 0.010] \\
+  GPT-OSS-120B & 0.0346*** & 0.0024 & 14.55 & $<$0.001 & [0.030, 0.039] \\
+  Llama-3.1-8B & 0.0238*** & 0.0023 & 10.16 & $<$0.001 & [0.019, 0.028] \\
+  Qwen3-235B & -0.0008 & 0.0024 & -0.34 & 0.734 & [-0.005, 0.004] \\
+\midrule
+  N observations & \multicolumn{5}{c}{4912} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{7764.27} \\
+  AIC / BIC & \multicolumn{5}{c}{-15510.5 / -15452.1} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0789} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.1780} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0003} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0024} \\
+\bottomrule
+\end{tabular}
+\end{table}

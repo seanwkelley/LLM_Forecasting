@@ -27,7 +27,10 @@ plt.rcParams.update({
 })
 
 BASE = Path(__file__).parent.parent
-PROP_DIR = BASE / "outputs" / "sensitivity" / "causal" / "70b_one_turn" / "propagation_results"
+PROP_DIRS = {
+    "GPT-OSS": BASE / "outputs" / "sensitivity" / "causal" / "gpt_oss_propagation" / "propagation_results",
+}
+PROP_DIR = PROP_DIRS["GPT-OSS"]  # default for single-model functions
 OUT_DIR = BASE / "paper" / "figures" / "supplementary"
 
 
@@ -45,10 +48,12 @@ def _importance_tier(probe_type: str) -> str:
     return "low"
 
 
-def load_propagation_data() -> list[dict]:
+def load_propagation_data(prop_dir=None) -> list[dict]:
     """Load all (direction, importance, distance, abs_impact) triples."""
+    if prop_dir is None:
+        prop_dir = PROP_DIR
     rows = []
-    for f in sorted(glob.glob(str(PROP_DIR / "q_*.json"))):
+    for f in sorted(glob.glob(str(prop_dir / "q_*.json"))):
         data = json.load(open(f))
         for pr in data.get("propagation_results", []):
             if not pr.get("success"):
@@ -94,14 +99,15 @@ def compute_decay_curve(rows, max_dist=5, n_boot=10_000):
 
 
 def main():
-    rows = load_propagation_data()
-    print(f"Total pairs: {len(rows)}")
+    # ── Single panel: negate + strengthen overlaid (GPT-OSS) ──
+    prop_dir = PROP_DIRS["GPT-OSS"]
+    rows = load_propagation_data(prop_dir)
+    print(f"GPT-OSS: {len(rows)} total pairs")
+
+    fig, ax = plt.subplots(figsize=(5, 4))
 
     negate_rows = [r for r in rows if r["direction"] == "negate"]
     strengthen_rows = [r for r in rows if r["direction"] == "strengthen"]
-
-    # ── Figure: single panel, overlaid ──────────────────────────────────
-    fig, ax = plt.subplots(1, 1, figsize=(5, 3.8))
 
     configs = [
         (negate_rows, "Negate", "#D55E00"),
@@ -115,15 +121,15 @@ def main():
                 linewidth=1.5, zorder=3, label=label)
         ax.fill_between(dists, ci_los, ci_his, color=color, alpha=0.15)
 
-        print(f"\n{label}: rho={rho:.3f}, p={p:.1e}, n={len(data)}")
+        print(f"\n  {label}: rho={rho:.3f}, p={p:.1e}, n={len(data)}")
         for d, m, n in zip(dists, means, ns):
-            print(f"  d={d}: mean={m:.3f} (n={n})")
+            print(f"    d={d}: mean={m:.3f} (n={n})")
 
     ax.set_xlabel("Graph distance from probed node")
     ax.set_ylabel("Mean |impact| on downstream node")
-    ax.set_xticks(dists)
+    ax.set_xticks(range(1, 6))
     ax.set_ylim(bottom=0)
-    ax.legend(frameon=False)
+    ax.legend(frameon=False, fontsize=10)
 
     # ── Save ─────────────────────────────────────────────────────────────
     OUT_DIR.mkdir(parents=True, exist_ok=True)

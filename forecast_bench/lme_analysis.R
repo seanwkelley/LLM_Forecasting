@@ -76,7 +76,8 @@ extract_results <- function(fit, label, formula_str, re_formula_str, df) {
   # Detect the predictor variable (importance_z, path_relevance_z, edge_betweenness_z)
   all_params <- rownames(fe)
   pred_var <- NULL
-  for (candidate in c("importance_z", "path_relevance_z", "edge_betweenness_z", "betweenness_z")) {
+  for (candidate in c("importance_z", "path_relevance_z", "edge_betweenness_z", "betweenness_z",
+                       "rating", "uncertainty_numeric", "initial_logit", "is_structuralStructural")) {
     if (candidate %in% all_params) { pred_var <- candidate; break }
   }
 
@@ -328,6 +329,49 @@ result_b <- fit_lme(
 # Model C (Edge Betweenness) removed — edge-level predictors dropped from analysis.
 
 # ============================================================================
+# LOG-ODDS MODELS: absolute log-odds shift with direction covariate
+# ============================================================================
+cat("\n--- Log-odds models ---\n")
+
+# Model A (log-odds): betweenness with direction covariate
+result_a_logit_shared <- NULL
+result_a_logit <- NULL
+if ("abs_logit_shift" %in% names(df_node) && "direction" %in% names(df_node)) {
+  df_node$direction <- factor(df_node$direction, levels = c("negate", "strengthen", "other"))
+
+  result_a_logit_shared <- fit_lme(
+    "abs_logit_shift ~ importance_z + direction + model + (importance_z | question_id)",
+    "~importance_z", df_node,
+    "Model A (log-odds): Node Importance + Direction — shared slope"
+  )
+
+  result_a_logit <- fit_lme(
+    "abs_logit_shift ~ importance_z * model + direction + (importance_z | question_id)",
+    "~importance_z", df_node,
+    "Model A (log-odds): Node Importance + Direction — interaction"
+  )
+}
+
+# Model B (log-odds): outcome mediation with direction covariate
+result_b_logit_shared <- NULL
+result_b_logit <- NULL
+if ("abs_logit_shift" %in% names(df_path_rel) && "direction" %in% names(df_path_rel)) {
+  df_path_rel$direction <- factor(df_path_rel$direction, levels = c("negate", "strengthen", "other"))
+
+  result_b_logit_shared <- fit_lme(
+    "abs_logit_shift ~ path_relevance_z + direction + model + (path_relevance_z | question_id)",
+    "~path_relevance_z", df_path_rel,
+    "Model B (log-odds): Outcome Mediation + Direction — shared slope"
+  )
+
+  result_b_logit <- fit_lme(
+    "abs_logit_shift ~ path_relevance_z * model + direction + (path_relevance_z | question_id)",
+    "~path_relevance_z", df_path_rel,
+    "Model B (log-odds): Outcome Mediation + Direction — interaction"
+  )
+}
+
+# ============================================================================
 # ORIGINAL 70B (for placebo comparison)
 # ============================================================================
 re_orig <- "~importance_z"
@@ -574,6 +618,142 @@ if (file.exists(net_size_csv)) {
 }
 
 # ============================================================================
+# COHERENCE: Stated-Impact Rating → |Logit Shift|
+# ============================================================================
+coherence_reasoning_csv <- file.path(causal_dir, "lme_coherence_reasoning.csv")
+result_coherence_reasoning <- NULL
+result_coherence_reasoning_interaction <- NULL
+
+if (file.exists(coherence_reasoning_csv)) {
+  df_coh_reason <- read.csv(coherence_reasoning_csv, stringsAsFactors = FALSE)
+  df_coh_reason$model <- factor(df_coh_reason$model)
+  cat(sprintf("  Coherence Reasoning: %d rows\n", nrow(df_coh_reason)))
+
+  if (nrow(df_coh_reason) >= 20) {
+    result_coherence_reasoning <- fit_lme(
+      "abs_logit_shift ~ rating + model + (1 | question_id)",
+      "~1", df_coh_reason,
+      "Coherence: Stated-Impact Rating (1-5) → |Logit Shift|"
+    )
+  }
+  # Interaction model: per-model slopes
+  result_coherence_reasoning_interaction <- NULL
+  if (nrow(df_coh_reason) >= 20) {
+    result_coherence_reasoning_interaction <- fit_lme(
+      "abs_logit_shift ~ rating * model + (1 | question_id)",
+      "~1", df_coh_reason,
+      "Coherence: Stated-Impact Rating — interaction (per-model slopes)"
+    )
+  }
+} else {
+  cat("  [SKIP] No coherence reasoning CSV\n")
+}
+
+# ============================================================================
+# COHERENCE: Uncertainty Rating → |Logit Shift|
+# ============================================================================
+coherence_uncertainty_csv <- file.path(causal_dir, "lme_coherence_uncertainty.csv")
+result_coherence_uncertainty <- NULL
+result_coherence_uncertainty_interaction <- NULL
+
+if (file.exists(coherence_uncertainty_csv)) {
+  df_coh_uncert <- read.csv(coherence_uncertainty_csv, stringsAsFactors = FALSE)
+  df_coh_uncert$model <- factor(df_coh_uncert$model)
+  # Treat uncertainty as ordered factor (2=Confident, 3=Mixed, 4=Hedging)
+  df_coh_uncert$uncertainty <- factor(df_coh_uncert$uncertainty, levels = c(2, 3, 4),
+                                       labels = c("Confident", "Mixed", "Hedging"))
+  cat(sprintf("  Coherence Uncertainty: %d rows\n", nrow(df_coh_uncert)))
+
+  if (nrow(df_coh_uncert) >= 20) {
+    result_coherence_uncertainty <- fit_lme(
+      "abs_logit_shift ~ uncertainty + model + (1 | question_id)",
+      "~1", df_coh_uncert,
+      "Coherence: Uncertainty (Confident/Mixed/Hedging) → |Logit Shift|"
+    )
+  }
+
+  # Interaction model: uncertainty_numeric (continuous 0-2) × model for per-model slopes
+  result_coherence_uncertainty_interaction <- NULL
+  if ("uncertainty_numeric" %in% names(df_coh_uncert) && nrow(df_coh_uncert) >= 20) {
+    result_coherence_uncertainty_interaction <- fit_lme(
+      "abs_logit_shift ~ uncertainty_numeric * model + (1 | question_id)",
+      "~1", df_coh_uncert,
+      "Coherence: Uncertainty (numeric) — interaction (per-model slopes)"
+    )
+  }
+} else {
+  cat("  [SKIP] No coherence uncertainty CSV\n")
+}
+
+# ============================================================================
+# COHERENCE: Bayesian — Initial Logit → Signed Logit Shift
+# ============================================================================
+coherence_bayesian_csv <- file.path(causal_dir, "lme_coherence_bayesian.csv")
+result_coherence_bayesian <- NULL
+result_coherence_bayesian_interaction <- NULL
+
+if (file.exists(coherence_bayesian_csv)) {
+  df_coh_bayes <- read.csv(coherence_bayesian_csv, stringsAsFactors = FALSE)
+  df_coh_bayes$model <- factor(df_coh_bayes$model)
+  cat(sprintf("  Coherence Bayesian: %d rows\n", nrow(df_coh_bayes)))
+
+  if (nrow(df_coh_bayes) >= 20) {
+    result_coherence_bayesian <- fit_lme(
+      "logit_shift ~ initial_logit + model + (1 | question_id)",
+      "~1", df_coh_bayes,
+      "Coherence: Bayesian (Initial Logit → Signed Logit Shift)"
+    )
+  }
+
+  # Interaction model: per-model initial_logit slopes
+  result_coherence_bayesian_interaction <- NULL
+  if (nrow(df_coh_bayes) >= 20) {
+    result_coherence_bayesian_interaction <- fit_lme(
+      "logit_shift ~ initial_logit * model + (1 | question_id)",
+      "~1", df_coh_bayes,
+      "Coherence: Bayesian — interaction (per-model slopes)"
+    )
+  }
+} else {
+  cat("  [SKIP] No coherence Bayesian CSV\n")
+}
+
+# ============================================================================
+# COHERENCE: Embedding — Structural vs Control Cosine Similarity
+# ============================================================================
+coherence_embedding_csv <- file.path(causal_dir, "lme_coherence_embedding.csv")
+result_coherence_embedding <- NULL
+result_coherence_embedding_interaction <- NULL
+
+if (file.exists(coherence_embedding_csv)) {
+  df_coh_emb <- read.csv(coherence_embedding_csv, stringsAsFactors = FALSE)
+  df_coh_emb$model <- factor(df_coh_emb$model)
+  df_coh_emb$is_structural <- factor(df_coh_emb$is_structural, levels = c(0, 1),
+                                      labels = c("Control", "Structural"))
+  cat(sprintf("  Coherence Embedding: %d rows\n", nrow(df_coh_emb)))
+
+  if (nrow(df_coh_emb) >= 20) {
+    result_coherence_embedding <- fit_lme(
+      "mean_cosine_sim ~ is_structural + model + (1 | question_id)",
+      "~1", df_coh_emb,
+      "Coherence: Embedding Similarity (Structural vs Control)"
+    )
+  }
+
+  # Interaction model: per-model structural effect
+  result_coherence_embedding_interaction <- NULL
+  if (nrow(df_coh_emb) >= 20) {
+    result_coherence_embedding_interaction <- fit_lme(
+      "mean_cosine_sim ~ is_structural * model + (1 | question_id)",
+      "~1", df_coh_emb,
+      "Coherence: Embedding — interaction (per-model structural effect)"
+    )
+  }
+} else {
+  cat("  [SKIP] No coherence embedding CSV\n")
+}
+
+# ============================================================================
 # SAVE JSON RESULTS
 # ============================================================================
 all_results <- list(
@@ -598,7 +778,19 @@ all_results <- list(
   net_small              = result_net_small,
   net_medium             = result_net_medium,
   net_large              = result_net_large,
-  net_xl                 = result_net_xl
+  net_xl                 = result_net_xl,
+  model_a_logit_shared   = result_a_logit_shared,
+  model_a_logit          = result_a_logit,
+  model_b_logit_shared   = result_b_logit_shared,
+  model_b_logit          = result_b_logit,
+  coherence_reasoning              = result_coherence_reasoning,
+  coherence_reasoning_interaction  = result_coherence_reasoning_interaction,
+  coherence_uncertainty            = result_coherence_uncertainty,
+  coherence_uncertainty_interaction = result_coherence_uncertainty_interaction,
+  coherence_bayesian               = result_coherence_bayesian,
+  coherence_bayesian_interaction   = result_coherence_bayesian_interaction,
+  coherence_embedding              = result_coherence_embedding,
+  coherence_embedding_interaction  = result_coherence_embedding_interaction
 )
 
 json_path <- file.path(causal_dir, "lme_results.json")

@@ -37,16 +37,24 @@ MODEL_MAP = {
     "llama-70b": "meta-llama/llama-3.3-70b-instruct",
     "deepseek": "deepseek/deepseek-chat-v3-0324",
     "qwen": "qwen/qwen3-235b-a22b-2507",
+    "gpt-oss": "openai/gpt-oss-120b:nitro",
+    "qwen-32b": "qwen/qwen3-32b:nitro",
+    "gemini-flash-lite": "google/gemini-2.5-flash-lite",
+    "gemini-flash-lite-nitro": "google/gemini-2.5-flash-lite:nitro",
 }
 
 CAUSAL_BASE = Path(__file__).parent.parent / "outputs" / "sensitivity" / "causal"
 
-# Map model arg to shared stages directory
+# Source dirs for loading DAGs (_shared_stages_causal cache)
 MODEL_DIRS = {
     "llama": "llama_one_turn",
     "llama-70b": "70b_one_turn",
     "deepseek": "deepseek_one_turn",
     "qwen": "qwen_one_turn",
+    "gpt-oss": "gpt_oss_neutral",
+    "qwen-32b": "qwen32b_one_turn",
+    "gemini-flash-lite": "gemini_flash_lite_one_turn",
+    "gemini-flash-lite-nitro": "gemini_flash_lite_one_turn",
 }
 
 
@@ -93,7 +101,7 @@ def build_ablation_prompt(
     removed_id: str,
     removed_desc: str,
 ) -> str:
-    """Build prompt for re-forecasting with an ablated DAG."""
+    """Build prompt for re-forecasting while ignoring a specific factor."""
     node_text = "\n".join(
         f"  - {n['id']}: {n.get('description', '')} [{n.get('role', 'factor')}]"
         for n in nodes
@@ -104,14 +112,13 @@ def build_ablation_prompt(
     )
 
     return f"""\
-Question: "{question}"
+You previously forecasted the following question:
 
-Your original probability estimate was {initial_prob:.2f}.
+"{question}"
 
-Your original causal network has been modified. The following {removed_type} \
-has been REMOVED: {removed_id} ({removed_desc}).
+Your initial estimate: probability = {initial_prob:.2f}
 
-Here is the MODIFIED causal network (after removal):
+Your causal network:
 
 Nodes:
 {node_text}
@@ -119,11 +126,16 @@ Nodes:
 Edges:
 {edge_text}
 
-Given this modified network (without {removed_id}), what is your updated \
-probability estimate? Consider how the removal of this {removed_type} \
-affects the causal paths to the outcome.
+Now re-estimate the probability, but DO NOT consider the {removed_type} \
+"{removed_id}" ({removed_desc}). Assume this {removed_type} is completely \
+irrelevant and should have no influence on the outcome. All other \
+factors and causal relationships remain as stated.
 
-Respond with ONLY valid JSON: {{"probability": <float>, "reasoning": "<text>"}}"""
+Provide your updated forecast as JSON:
+{{"updated_probability": <float between 0.01 and 0.99>, "reasoning": "<explain how ignoring this {removed_type} affects your estimate>"}}
+
+Requirements:
+- updated_probability must be between 0.01 and 0.99."""
 
 
 def ablate_node(nodes: list[dict], edges: list[dict], node_id: str):
@@ -149,7 +161,7 @@ def run_ablation_forecast(
     removed_type: str,
     removed_id: str,
     removed_desc: str,
-    max_retries: int = 2,
+    max_retries: int = 9,
 ) -> dict | None:
     """Run a single ablation forecast."""
     prompt = build_ablation_prompt(
@@ -174,7 +186,7 @@ def run_ablation_forecast(
             client.stats.parse_failures += 1
             return None
 
-        prob = data.get("probability")
+        prob = data.get("updated_probability", data.get("probability"))
         if prob is None:
             if attempt < max_retries:
                 client.rate_limit_wait()
@@ -207,6 +219,7 @@ def run_ablation(args):
     # Load questions
     questions = load_forecastbench_questions(
         max_questions=args.max_questions, seed=42,
+        questions_file=args.questions_file,
     )
     question_map = {q["id"]: q for q in questions}
 
@@ -271,15 +284,14 @@ def run_ablation(args):
 
         ablation_results = []
 
-        # Node ablations
+        # Node ablations — present full graph, instruct model to ignore each factor
         for node in factor_nodes:
             nid = node["id"]
             ndesc = node.get("description", "")
-            abl_nodes, abl_edges = ablate_node(nodes, edges, nid)
 
             result = run_ablation_forecast(
                 client, question["question"], initial_prob,
-                abl_nodes, abl_edges,
+                nodes, edges,
                 "node", nid, ndesc,
             )
             client.rate_limit_wait()
@@ -291,33 +303,6 @@ def run_ablation(args):
                 "removed_description": ndesc,
                 "betweenness": metrics.get("betweenness", 0),
                 "path_relevance": metrics.get("path_relevance", 0),
-                "success": result is not None,
-            }
-            if result:
-                entry.update(result)
-            ablation_results.append(entry)
-
-        # Edge ablations
-        for edge in edges:
-            efrom, eto = edge["from"], edge["to"]
-            eid = f"{efrom}->{eto}"
-            edesc = edge.get("mechanism", f"{efrom} causes {eto}")
-            abl_nodes, abl_edges = ablate_edge(nodes, edges, efrom, eto)
-
-            result = run_ablation_forecast(
-                client, question["question"], initial_prob,
-                abl_nodes, abl_edges,
-                "edge", eid, edesc,
-            )
-            client.rate_limit_wait()
-
-            metrics = edge_metrics.get((efrom, eto), {})
-            entry = {
-                "ablation_type": "edge",
-                "removed_id": eid,
-                "removed_description": edesc,
-                "betweenness": metrics.get("edge_betweenness", 0),
-                "on_critical_path": metrics.get("on_critical_path", False),
                 "success": result is not None,
             }
             if result:
@@ -362,6 +347,7 @@ def main():
     parser.add_argument("--max-questions", type=int, default=100)
     parser.add_argument("--temperature", type=float, default=0.7)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--questions-file", default=None, help="Path to local JSON file with questions")
     args = parser.parse_args()
 
     if args.output_dir is None:

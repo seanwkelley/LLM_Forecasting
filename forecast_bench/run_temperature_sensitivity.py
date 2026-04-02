@@ -51,6 +51,10 @@ MODEL_MAP = {
     "llama-70b": "meta-llama/llama-3.3-70b-instruct",
     "deepseek": "deepseek/deepseek-chat-v3-0324",
     "qwen": "qwen/qwen3-235b-a22b-2507",
+    "gpt-oss": "openai/gpt-oss-120b:nitro",
+    "qwen-32b": "qwen/qwen3-32b:nitro",
+    "gemini-flash-lite": "google/gemini-2.5-flash-lite",
+    "gemini-flash-lite-nitro": "google/gemini-2.5-flash-lite:nitro",
 }
 
 TEMPERATURES = [0.0, 0.3, 0.7, 1.0]
@@ -76,13 +80,16 @@ def _get_api_key() -> str:
     return api_key
 
 
-def run_forecast(client, question_text: str, max_retries: int = 2):
+def run_forecast(client, question_text: str, max_retries: int = 3):
     """Run Stage 1 causal forecast with retries."""
     user_prompt = build_causal_forecast_prompt(question_text)
 
     for attempt in range(1 + max_retries):
         text, ok = client.call_single(CAUSAL_FORECAST_SYSTEM, user_prompt)
         if not ok:
+            if attempt < max_retries:
+                client.rate_limit_wait()
+                continue
             return None
 
         data = parse_json_response(text)
@@ -171,6 +178,7 @@ def run_collection(args):
 
     questions = load_forecastbench_questions(
         max_questions=args.max_questions, seed=42,
+        questions_file=args.questions_file,
     )
 
     output_dir = Path(args.output_dir)
@@ -206,11 +214,16 @@ def run_collection(args):
 
             print(f"  [{q_idx+1}/{len(questions)}] {qid[:40]}...", end=" ")
 
-            data = run_forecast(client, question["question"])
-            client.rate_limit_wait()
+            data = None
+            for _outer in range(10):
+                data = run_forecast(client, question["question"])
+                client.rate_limit_wait()
+                if data is not None:
+                    break
+                print(f"retry {_outer+1}/10...", end=" ")
 
             if data is None:
-                print("FAILED")
+                print("FAILED after 10 attempts")
                 continue
 
             # Run network analysis
@@ -604,6 +617,7 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output-dir", type=str, default=None)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--questions-file", default=None, help="Path to local JSON file with questions")
     parser.add_argument("--analyze-only", action="store_true",
                         help="Skip data collection, just run analysis on existing data")
     args = parser.parse_args()

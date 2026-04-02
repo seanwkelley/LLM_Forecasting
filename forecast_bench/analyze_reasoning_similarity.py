@@ -36,9 +36,10 @@ MODEL_DIRS = {
     "llama-8b": CAUSAL_DIR / "llama_neutral",
     "llama-70b": CAUSAL_DIR / "llama_70b_neutral",
     "deepseek": CAUSAL_DIR / "deepseek_neutral",
-    "qwen": CAUSAL_DIR / "qwen_neutral",
-    "gemini": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "qwen-235b": CAUSAL_DIR / "qwen_neutral",
+    "gemini": CAUSAL_DIR / "gemini_fl_neutral",
     "gpt-oss": CAUSAL_DIR / "gpt_oss_neutral",
+    "qwen-32b": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
 EMBEDDINGS_CACHE = CAUSAL_DIR / "reasoning_embeddings.npz"
@@ -152,6 +153,19 @@ def _save_embedding_cache(key_to_idx: dict[str, int], matrix: np.ndarray):
     np.savez_compressed(EMBEDDINGS_CACHE, embeddings=matrix)
 
 
+def _merge_and_save(key_to_idx, matrix, new_keys, new_embeddings):
+    """Merge new embeddings into cache and save to disk."""
+    new_matrix = np.array(new_embeddings, dtype=np.float32)
+    if matrix is not None:
+        matrix = np.vstack([matrix, new_matrix])
+    else:
+        matrix = new_matrix
+    base_idx = len(key_to_idx)
+    for j, k in enumerate(new_keys):
+        key_to_idx[k] = base_idx + j
+    _save_embedding_cache(key_to_idx, matrix)
+
+
 def compute_embeddings(reasoning_map: dict, api_key: str) -> dict:
     """Compute embeddings for all reasoning texts. Returns {key|model: [embedding]}."""
     key_to_idx, matrix = _load_embedding_cache()
@@ -196,25 +210,21 @@ def compute_embeddings(reasoning_map: dict, api_key: str) -> dict:
             new_keys.append(emb_key)
             new_embeddings.append(emb)
 
-        if (i + 1) % 100 == 0:
-            print(f"  [{i+1}/{len(missing_keys)}] {len(new_keys)} new embeddings...")
-
         if (i + 1) % 20 == 0:
             time.sleep(0.5)
 
-    # Merge with existing
+        # Save incrementally every 50 embeddings
+        if len(new_embeddings) > 0 and len(new_embeddings) % 50 == 0:
+            _merge_and_save(key_to_idx, matrix, new_keys, new_embeddings)
+            # Reload so we don't double-count
+            key_to_idx, matrix = _load_embedding_cache()
+            new_keys, new_embeddings = [], []
+            print(f"  [{i+1}/{len(missing_keys)}] checkpoint saved ({len(key_to_idx)} total)")
+
+    # Final merge
     if new_embeddings:
-        new_matrix = np.array(new_embeddings, dtype=np.float32)
-        if matrix is not None:
-            matrix = np.vstack([matrix, new_matrix])
-        else:
-            matrix = new_matrix
-
-        base_idx = len(key_to_idx)
-        for j, k in enumerate(new_keys):
-            key_to_idx[k] = base_idx + j
-
-        _save_embedding_cache(key_to_idx, matrix)
+        _merge_and_save(key_to_idx, matrix, new_keys, new_embeddings)
+        key_to_idx, matrix = _load_embedding_cache()
         print(f"  Saved {len(key_to_idx)} total embeddings")
 
     # Convert to dict format

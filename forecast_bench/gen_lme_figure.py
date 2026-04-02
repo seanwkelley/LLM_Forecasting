@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Three-panel figure for structural grounding results.
+"""Two-panel figure for structural grounding results.
 
-Panel A (Taxonomy): Horizontal bar chart of mean |shift| by intervention category.
-Panel B (Mechanism): LME predicted effects — model-specific grounding slopes.
-Panel C (Topology): Edge path relevance scatter with Model B fit line.
+Panel A (Taxonomy): Horizontal bar chart of mean |log-odds shift| by intervention
+    category, split by Node/Edge level.
+Panel B (Forest): Per-model LME slopes for betweenness centrality,
+    tested against zero, from the log-odds interaction model.
 
 Reads LME results from outputs/sensitivity/causal/lme_results.json.
 
@@ -20,7 +21,6 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import Patch
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -46,39 +46,24 @@ OUT = BASE / "paper" / "figures"
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 
 # ── Colors ─────────────────────────────────────────────────────────────────
-COLORS = {
+MODEL_COLORS = {
     "Llama-3.1-8B": "#E69F00",
     "Llama-3.3-70B": "#0072B2",
     "DeepSeek-V3": "#D55E00",
     "Qwen3-235B": "#009E73",
     "Gemini-Flash-Lite": "#CC79A7",
     "GPT-OSS-120B": "#882255",
+    "Qwen3-32B": "#56B4E9",
 }
 
-# Intervention category colors
-CAT_COLORS = {
-    "Strengthen": "#009E73",           # green
-    "Negate": "#D55E00",               # vermillion
-    "Structural Challenge": "#CC79A7", # reddish purple
-    "Control": "#999999",              # gray
-}
-
-# Probe type → intervention category mapping
-INTERVENTION_MAP = {
-    "node_strengthen": "Strengthen",
-    "node_strengthen_medium": "Strengthen",
-    "node_strengthen_low": "Strengthen",
-    "edge_strengthen_critical": "Strengthen",
-    "edge_strengthen_peripheral": "Strengthen",
-    "node_negate_high": "Negate",
-    "node_negate_medium": "Negate",
-    "node_negate_low": "Negate",
-    "edge_negate_critical": "Negate",
-    "edge_negate_peripheral": "Negate",
-    "edge_spurious": "Structural Challenge",
-    "missing_node": "Structural Challenge",
-    "edge_reverse": "Structural Challenge",
-    "irrelevant": "Control",
+MODEL_DIRS = {
+    "Llama-3.1-8B": CAUSAL_DIR / "llama_neutral",
+    "Llama-3.3-70B": CAUSAL_DIR / "llama_70b_neutral",
+    "DeepSeek-V3": CAUSAL_DIR / "deepseek_neutral",
+    "Qwen3-235B": CAUSAL_DIR / "qwen_neutral",
+    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_fl_neutral",
+    "GPT-OSS-120B": CAUSAL_DIR / "gpt_oss_neutral",
+    "Qwen3-32B": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
 PROBE_TYPE_NORMALIZE = {
@@ -88,22 +73,17 @@ PROBE_TYPE_NORMALIZE = {
     "edge_feedback": "edge_spurious", "edge_fabricate": "edge_spurious",
 }
 
-MODEL_DIRS = {
-    "Llama-3.1-8B": CAUSAL_DIR / "llama_neutral",
-    "Llama-3.3-70B": CAUSAL_DIR / "llama_70b_neutral",
-    "DeepSeek-V3": CAUSAL_DIR / "deepseek_neutral",
-    "Qwen3-235B": CAUSAL_DIR / "qwen_neutral",
-    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_neutral",
-    "GPT-OSS-120B": CAUSAL_DIR / "gpt_oss_neutral",
-}
-
-REFERENCE_MODEL = "Llama-3.3-70B"
-
 
 def _short_model_name(name):
-    return {"Llama-3.1-8B": "Llama 8B", "Llama-3.3-70B": "Llama 70B",
-            "DeepSeek-V3": "DeepSeek V3", "Qwen3-235B": "Qwen3 235B",
-            "Gemini-Flash-Lite": "Gemini FL"}.get(name, name)
+    return {
+        "Llama-3.1-8B": "Llama 8B",
+        "Llama-3.3-70B": "Llama 70B",
+        "DeepSeek-V3": "DeepSeek V3",
+        "Qwen3-235B": "Qwen3 235B",
+        "Gemini-Flash-Lite": "Gemini FL",
+        "GPT-OSS-120B": "GPT-OSS",
+        "Qwen3-32B": "Qwen3 32B",
+    }.get(name, name)
 
 
 def _label_axes(axes, fontsize=14):
@@ -138,13 +118,18 @@ def _bootstrap_mean_ci(vals, n_boot=10_000, seed=42):
     return m, lo, hi
 
 
+def _logit(p):
+    eps = 1e-4
+    p = np.clip(p, eps, 1 - eps)
+    return np.log(p / (1 - p))
+
+
 # ═══════════════════════════════════════════════════════════════════════════
-# PANEL A: Intervention Taxonomy Bar Chart
+# PANEL A: Intervention Taxonomy Bar Chart (log-odds shift)
 # ═══════════════════════════════════════════════════════════════════════════
 
 def panel_a(ax, rows):
-    """Horizontal bar chart of mean |shift| by intervention category, split by node/edge."""
-    # Map probe types to (category, level)
+    """Horizontal bar chart of mean |log-odds shift| by category, split by node/edge."""
     LEVEL_MAP = {
         "node_strengthen": ("Strengthen", "Node"),
         "node_strengthen_medium": ("Strengthen", "Node"),
@@ -166,13 +151,19 @@ def panel_a(ax, rows):
     for r in rows:
         if not r.get("success") or r.get("absolute_shift") is None:
             continue
+        p0 = r.get("initial_probability")
+        p1 = r.get("updated_probability")
+        if p0 is None or p1 is None:
+            continue
+        abs_logit = abs(_logit(p1) - _logit(p0))
+
         pt = PROBE_TYPE_NORMALIZE.get(r.get("probe_type", ""), r.get("probe_type", ""))
         mapping = LEVEL_MAP.get(pt)
         if mapping:
             cat, level = mapping
-            group_shifts[(cat, level)].append(r["absolute_shift"])
+            group_shifts[(cat, level)].append(abs_logit)
 
-    # Define display order: group by category, node before edge within each
+    # Display order: group by category, node before edge
     category_order = ["Control", "Negate", "Structural Challenge", "Strengthen"]
     ordered = []
     for cat in category_order:
@@ -207,76 +198,67 @@ def panel_a(ax, rows):
         ax.barh(i, m, color=color, edgecolor="none", height=0.6, alpha=0.85)
         ax.errorbar(m, i, xerr=[[m - lo], [hi - m]], color="black",
                     capsize=3, capthick=1.0, linewidth=1.0, fmt="none")
-        ax.text(m + (hi - m) + 0.002, i, f"n={len(vals)}", va="center",
-                fontsize=7, color="#555555")
 
     ax.set_yticks(y)
     ax.set_yticklabels(labels, fontsize=9)
-    ax.set_xlabel("Mean |Probability Shift|")
+    ax.set_xlabel("Mean |Log-Odds Shift|")
     ax.axvline(x=0, color="#333333", linewidth=0.8, linestyle="--", zorder=0)
     ax.set_xlim(left=0)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# SHARED: Model-specific predicted effects panel
-# ═══════════════════════════════════════════════════════════════════════════
-
-def _plot_model_slopes(ax, lme_model, xlabel, x_lo=-2, x_hi=3):
-    """Plot per-model regression lines with 95% CI bands from LME results."""
-    if lme_model is None:
-        ax.text(0.5, 0.5, "No results", ha="center", va="center",
-                transform=ax.transAxes)
-        return
-
-    slopes = lme_model.get("per_model_slopes", {})
-    if not slopes:
-        ax.text(0.5, 0.5, "No per-model slopes", ha="center", va="center",
-                transform=ax.transAxes)
-        return
-
-    x_range = np.linspace(x_lo, x_hi, 100)
-
-    for model_name in COLORS:
-        if model_name not in slopes:
-            continue
-        s = slopes[model_name]
-        intercept = s["intercept"]
-        slope = s["slope"]
-        slope_se = s["slope_se"]
-
-        y_pred = intercept + slope * x_range
-        ax.plot(x_range, y_pred, color=COLORS[model_name], linewidth=2,
-                label=_short_model_name(model_name), zorder=3)
-
-        # CI band based on slope uncertainty
-        y_lo = intercept + (slope - 1.96 * slope_se) * x_range
-        y_hi = intercept + (slope + 1.96 * slope_se) * x_range
-        ax.fill_between(x_range, y_lo, y_hi,
-                        color=COLORS[model_name], alpha=0.12, zorder=1)
-
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel("Predicted |$\\Delta$|")
-    ax.legend(frameon=False, fontsize=8, loc="upper left")
-
-
-# ═══════════════════════════════════════════════════════════════════════════
-# PANEL B: Node Betweenness (Model A)
+# PANEL B: Forest plot — per-model betweenness slopes
 # ═══════════════════════════════════════════════════════════════════════════
 
 def panel_b(ax, lme_results):
-    """LME predicted effects: model-specific grounding slopes from Model A."""
-    _plot_model_slopes(ax, lme_results.get("model_a"),
-                       "Betweenness Centrality (z-scored)")
+    """Forest plot: each model as a row, betweenness centrality slope + 95% CI."""
+    model_a = lme_results.get("model_a_logit")
 
+    if model_a is None:
+        ax.text(0.5, 0.5, "No log-odds LME results", ha="center", va="center",
+                transform=ax.transAxes)
+        return
 
-# ═══════════════════════════════════════════════════════════════════════════
-# PANEL C: Path Relevance (Model B)
-# ═══════════════════════════════════════════════════════════════════════════
+    slopes = model_a.get("per_model_slopes", {})
 
-def panel_c(ax, lme_results):
-    """LME predicted effects: model-specific path relevance slopes from Model B."""
-    _plot_model_slopes(ax, lme_results.get("model_b"),
-                       "Path Relevance (z-scored)")
+    # Sort by slope (descending)
+    model_order = sorted(slopes.keys(), key=lambda m: slopes[m]["slope"], reverse=True)
+
+    n_models = len(model_order)
+    y_positions = np.arange(n_models)
+
+    for i, model_name in enumerate(model_order):
+        s = slopes[model_name]
+        color = MODEL_COLORS.get(model_name, "#333333")
+
+        ax.errorbar(
+            s["slope"], i,
+            xerr=[[s["slope"] - s["slope_ci_lower"]], [s["slope_ci_upper"] - s["slope"]]],
+            fmt="o", color=color, markersize=8, capsize=4, capthick=1.2, linewidth=1.5,
+            markeredgecolor="white", markeredgewidth=0.5, zorder=3,
+        )
+
+    # Zero line
+    ax.axvline(x=0, color="#333333", linewidth=0.8, linestyle="--", zorder=0)
+
+    # Y axis
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels([_short_model_name(m) for m in model_order], fontsize=10)
+    ax.set_xlabel("$\\beta_1$ (|log-odds shift| per SD betweenness)")
+
+    # Add significance stars
+    xleft, xright = ax.get_xlim()
+    x_range = xright - xleft
+    for i, model_name in enumerate(model_order):
+        s = slopes[model_name]
+        p = s.get("p_vs_zero", 1.0)
+        stars = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else ""
+        if stars:
+            ax.text(s["slope_ci_upper"] + x_range * 0.02, i,
+                    stars, va="center", ha="left", fontsize=10, fontweight="bold",
+                    color=MODEL_COLORS.get(model_name, "#333333"))
+
+    ax.set_xlim(left=min(ax.get_xlim()[0], -0.02))
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -298,26 +280,14 @@ def main():
     rows = _load_all_rows()
     print(f"Loaded {len(rows)} probe rows across {len(MODEL_DIRS)} models")
 
-    # Create figure
-    fig = plt.figure(figsize=(16, 4.5))
-    gs = fig.add_gridspec(1, 3, width_ratios=[0.8, 1.0, 1.0], wspace=0.38)
-    ax1 = fig.add_subplot(gs[0])
-    ax2 = fig.add_subplot(gs[1])
-    ax3 = fig.add_subplot(gs[2])
+    # Create figure: 2 panels
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5),
+                                    gridspec_kw={"width_ratios": [0.9, 1.1], "wspace": 0.35})
 
     panel_a(ax1, rows)
     panel_b(ax2, lme_results)
-    panel_c(ax3, lme_results)
 
-    # Shared y-axis scale for (b) and (c)
-    y_lo = min(ax2.get_ylim()[0], ax3.get_ylim()[0])
-    y_hi = max(ax2.get_ylim()[1], ax3.get_ylim()[1])
-    margin = (y_hi - y_lo) * 0.15
-    shared_lim = (max(y_lo - margin, 0), y_hi + margin)
-    ax2.set_ylim(shared_lim)
-    ax3.set_ylim(shared_lim)
-
-    _label_axes([ax1, ax2, ax3])
+    _label_axes([ax1, ax2])
 
     OUT.mkdir(parents=True, exist_ok=True)
     for ext in ("pdf", "png"):

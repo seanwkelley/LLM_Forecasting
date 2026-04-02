@@ -54,11 +54,17 @@ from forecast_bench.run_sensitivity import (
 
 
 # All model output directories for pooling nodes
+# Source dirs for loading DAGs (_shared_stages_causal cache)
+# These point to full pipeline dirs which have the cache
 MODEL_DIRS = {
     "llama": "llama_one_turn",
     "llama-70b": "70b_one_turn",
     "deepseek": "deepseek_one_turn",
     "qwen": "qwen_one_turn",
+    "gemini-flash-lite": "gemini_flash_lite_neutral",
+    "gemini-flash-lite-nitro": "gemini_flash_lite_neutral",
+    "gpt-oss": "gpt_oss_neutral",
+    "qwen-32b": "qwen32b_one_turn",
 }
 
 CAUSAL_BASE = Path(__file__).parent.parent / "outputs" / "sensitivity" / "causal"
@@ -265,6 +271,7 @@ def run_scrambled(args):
 
     questions = load_forecastbench_questions(
         max_questions=args.max_questions, seed=42,
+        questions_file=args.questions_file,
     )
 
     print(f"\n{'='*60}")
@@ -367,10 +374,14 @@ def run_scrambled(args):
                 question["question"], initial_prob, nodes, edges, probe, probe_target,
             )
 
-            text, ok = client.call_single(CAUSAL_PROBED_FORECAST_SYSTEM, user_prompt)
-            client.rate_limit_wait()
-
-            result = _parse_probe_result(client, probe, initial_prob, text, ok)
+            # Retry up to 10 times on parse failure
+            result = None
+            for _attempt in range(10):
+                text, ok = client.call_single(CAUSAL_PROBED_FORECAST_SYSTEM, user_prompt)
+                client.rate_limit_wait()
+                result = _parse_probe_result(client, probe, initial_prob, text, ok)
+                if result.get("success"):
+                    break
             result["target_id"] = probe.get("target_id", "")
             result["target_type"] = probe.get("target_type", "")
             result["target_importance"] = probe.get("importance", 0.0)
@@ -452,6 +463,7 @@ def main():
     parser.add_argument("--max-questions", type=int, default=100)
     parser.add_argument("--temperature", type=float, default=0.7)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--questions-file", default=None, help="Path to local JSON file with questions")
     args = parser.parse_args()
 
     if args.output_dir is None:

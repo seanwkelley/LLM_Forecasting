@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Ablation: Path Relevance LME --- Fixed Effects}
+\label{tab:lme_ablation_pr_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.0512*** & 0.0025 & 20.64 & $<$0.001 & [0.046, 0.056] \\
+  path\_relevance\_z & 0.0061*** & 0.0014 & 4.49 & $<$0.001 & [0.003, 0.009] \\
+\midrule
+  N observations & \multicolumn{5}{c}{585} \\
+  N groups (questions) & \multicolumn{5}{c}{100} \\
+  Log-likelihood & \multicolumn{5}{c}{1143.67} \\
+  AIC / BIC & \multicolumn{5}{c}{-2279.3 / -2261.8} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0223} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.3555} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0009} \\
+\bottomrule
+\end{tabular}
+\end{table}

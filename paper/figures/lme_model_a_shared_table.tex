@@ -7,22 +7,25 @@
 \toprule
 Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
 \midrule
-  (Intercept) & 0.1010*** & 0.0033 & 30.35 & $<$0.001 & [0.094, 0.107] \\
-  importance\_z & 0.0100*** & 0.0010 & 9.68 & $<$0.001 & [0.008, 0.012] \\
-  DeepSeek-V3 & -0.0025 & 0.0035 & -0.73 & 0.465 & [-0.009, 0.004] \\
-  Gemini-Flash-Lite & 0.0328*** & 0.0035 & 9.33 & $<$0.001 & [0.026, 0.040] \\
-  GPT-OSS-120B & 0.0335*** & 0.0035 & 9.67 & $<$0.001 & [0.027, 0.040] \\
-  Llama-3.1-8B & 0.0119*** & 0.0035 & 3.42 & $<$0.001 & [0.005, 0.019] \\
-  Qwen3-235B & -0.0007 & 0.0035 & -0.20 & 0.839 & [-0.008, 0.006] \\
+  (Intercept) & 0.0968*** & 0.0027 & 35.22 & $<$0.001 & [0.091, 0.102] \\
+  importance\_z & 0.0093*** & 0.0007 & 12.83 & $<$0.001 & [0.008, 0.011] \\
+  DeepSeek-V3 & 0.0026 & 0.0025 & 1.01 & 0.314 & [-0.002, 0.008] \\
+  Gemini-Flash-Lite & 0.0263*** & 0.0026 & 10.29 & $<$0.001 & [0.021, 0.031] \\
+  GPT-OSS-120B & 0.0352*** & 0.0026 & 13.49 & $<$0.001 & [0.030, 0.040] \\
+  Llama-3.1-8B & 0.0039 & 0.0026 & 1.50 & 0.133 & [-0.001, 0.009] \\
+  Qwen3-235B & 0.0058* & 0.0026 & 2.23 & 0.026 & [0.001, 0.011] \\
+  Qwen3-32B & -0.0128*** & 0.0024 & -5.37 & $<$0.001 & [-0.017, -0.008] \\
 \midrule
-  N observations & \multicolumn{5}{c}{4777} \\
-  N groups (questions) & \multicolumn{5}{c}{100} \\
-  Log-likelihood & \multicolumn{5}{c}{5839.10} \\
-  AIC / BIC & \multicolumn{5}{c}{-11660.2 / -11601.9} \\
-  Marginal $R^2$ & \multicolumn{5}{c}{0.0534} \\
-  Conditional $R^2$ & \multicolumn{5}{c}{0.1436} \\
+  N observations & \multicolumn{5}{c}{7324} \\
+  N groups (questions) & \multicolumn{5}{c}{116} \\
+  Log-likelihood & \multicolumn{5}{c}{10372.76} \\
+  AIC / BIC & \multicolumn{5}{c}{-20721.5 / -20638.7} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.0795} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.2094} \\
   RE var ((Intercept)) & \multicolumn{5}{c}{0.0005} \\
-  RE var (Residual) & \multicolumn{5}{c}{0.0048} \\
+  RE var (importance\_z) & \multicolumn{5}{c}{0.0000} \\
+  RE var ((Intercept):importance\_z) & \multicolumn{5}{c}{0.0000} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0033} \\
 \bottomrule
 \end{tabular}
 \end{table}

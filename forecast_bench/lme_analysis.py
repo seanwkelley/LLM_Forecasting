@@ -32,8 +32,9 @@ MODEL_DIRS = {
     "Llama-3.3-70B": CAUSAL_DIR / "llama_70b_neutral",
     "DeepSeek-V3": CAUSAL_DIR / "deepseek_neutral",
     "Qwen3-235B": CAUSAL_DIR / "qwen_neutral",
-    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_fl_neutral",
     "GPT-OSS-120B": CAUSAL_DIR / "gpt_oss_neutral",
+    "Qwen3-32B": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
 # Original prompt runs (for comparison / legacy)
@@ -45,7 +46,7 @@ MODEL_DIRS_ORIGINAL = {
     "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_one_turn",
 }
 
-SCRAMBLED_DIR = CAUSAL_DIR / "70b_scrambled"
+SCRAMBLED_DIR = CAUSAL_DIR / "gpt_oss_permuted"
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -81,12 +82,23 @@ def build_node_dataframe(model_dirs: dict[str, Path] | None = None) -> pd.DataFr
                     and r.get("absolute_shift") is not None
                     and r.get("target_importance") is not None
                     and r.get("probe_category") == "node"):
+                # Determine probe direction
+                pt = r.get("probe_type", "")
+                if "negate" in pt:
+                    direction = "negate"
+                elif "strengthen" in pt:
+                    direction = "strengthen"
+                else:
+                    direction = "other"
                 all_rows.append({
                     "question_id": r["question_id"],
                     "model": r["model"],
                     "absolute_shift": r["absolute_shift"],
+                    "initial_probability": r.get("initial_probability", 0.5),
+                    "updated_probability": r.get("updated_probability", 0.5),
                     "target_importance": r["target_importance"],
                     "probe_type": r.get("probe_type", "unknown"),
+                    "direction": direction,
                 })
 
     df = pd.DataFrame(all_rows)
@@ -101,6 +113,14 @@ def build_node_dataframe(model_dirs: dict[str, Path] | None = None) -> pd.DataFr
     # Drop questions with no variance in importance (z=0 for all)
     question_var = df.groupby("question_id")["importance_z"].transform("std")
     df = df[question_var > 0].copy()
+
+    # Compute log-odds shift
+    import numpy as np
+    eps = 1e-4  # avoid log(0)
+    p0 = df["initial_probability"].clip(eps, 1 - eps)
+    p1 = df["updated_probability"].clip(eps, 1 - eps)
+    df["logit_shift"] = np.log(p1 / (1 - p1)) - np.log(p0 / (1 - p0))
+    df["abs_logit_shift"] = df["logit_shift"].abs()
 
     print(f"  Node DataFrame: {len(df)} rows, {df['question_id'].nunique()} questions, "
           f"{df['model'].nunique()} models")
@@ -134,12 +154,23 @@ def build_path_relevance_dataframe(model_dirs: dict[str, Path] | None = None) ->
                 pr_val = node_metrics.get(tid, {}).get("path_relevance")
                 if pr_val is None:
                     continue
+                pt = pr.get("probe_type", "")
+                if "negate" in pt:
+                    direction = "negate"
+                elif "strengthen" in pt:
+                    direction = "strengthen"
+                else:
+                    direction = "other"
                 all_rows.append({
                     "question_id": qid,
                     "model": name,
                     "absolute_shift": pr["absolute_shift"],
+                    "initial_probability": pr.get("initial_probability",
+                                                   qinfo.get("initial_probability", 0.5)),
+                    "updated_probability": pr.get("updated_probability", 0.5),
                     "path_relevance": pr_val,
-                    "probe_type": pr.get("probe_type", "unknown"),
+                    "probe_type": pt,
+                    "direction": direction,
                 })
 
     df = pd.DataFrame(all_rows)
@@ -151,6 +182,14 @@ def build_path_relevance_dataframe(model_dirs: dict[str, Path] | None = None) ->
     )
     question_var = df.groupby("question_id")["path_relevance_z"].transform("std")
     df = df[question_var > 0].copy()
+
+    # Compute log-odds shift
+    import numpy as np
+    eps = 1e-4
+    p0 = df["initial_probability"].clip(eps, 1 - eps)
+    p1 = df["updated_probability"].clip(eps, 1 - eps)
+    df["logit_shift"] = np.log(p1 / (1 - p1)) - np.log(p0 / (1 - p0))
+    df["abs_logit_shift"] = df["logit_shift"].abs()
 
     print(f"  Path Relevance DataFrame: {len(df)} rows, {df['question_id'].nunique()} questions, "
           f"{df['model'].nunique()} models")
@@ -458,7 +497,7 @@ def build_ablation_dataframe() -> pd.DataFrame:
     """
     import json
 
-    ablation_dir = CAUSAL_DIR / "70b_ablation" / "question_results"
+    ablation_dir = CAUSAL_DIR / "gpt_oss_ablation" / "question_results"
     if not ablation_dir.exists():
         print("  [SKIP] Ablation: no data directory")
         return pd.DataFrame()
@@ -513,27 +552,284 @@ def build_ablation_dataframe() -> pd.DataFrame:
 
 
 def build_network_size_dataframes() -> dict[str, pd.DataFrame]:
-    """Build node DataFrames for each network size condition (70B only)."""
+    """Build node DataFrames for each network size condition (GPT-OSS)."""
     size_dirs = {
-        "Small (3-5)": CAUSAL_DIR / "70b_one_turn_small",
-        "Medium (4-8)": CAUSAL_DIR / "70b_one_turn",
-        "Large (6-10)": CAUSAL_DIR / "70b_one_turn_large",
-        "XL (12-16)": CAUSAL_DIR / "70b_one_turn_xl",
+        "Medium (4-8)": CAUSAL_DIR / "gpt_oss_neutral",
+        "Large (6-10)": CAUSAL_DIR / "gpt_oss_6_10",
+        "XL (12-16)": CAUSAL_DIR / "gpt_oss_12_16",
     }
     results = {}
     for label, d in size_dirs.items():
-        df = build_node_dataframe({f"Llama-3.3-70B": d})
+        df = build_node_dataframe({"GPT-OSS-120B": d})
         if not df.empty:
             df["network_size"] = label
             results[label] = df
     return results
 
 
-def build_original_70b_dataframe(df_node: pd.DataFrame) -> pd.DataFrame:
-    """Extract original 70B rows from the full node DataFrame."""
-    df_70b = df_node[df_node["model"] == "Llama-3.3-70B"].copy()
-    print(f"  Original 70B: {len(df_70b)} rows, {df_70b['question_id'].nunique()} questions")
-    return df_70b
+def build_original_testbed_dataframe(df_node: pd.DataFrame) -> pd.DataFrame:
+    """Extract GPT-OSS rows from the full node DataFrame (for permutation comparison)."""
+    df = df_node[df_node["model"] == "GPT-OSS-120B"].copy()
+    print(f"  Original GPT-OSS: {len(df)} rows, {df['question_id'].nunique()} questions")
+    return df
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# COHERENCE DATA BUILDERS
+# ═══════════════════════════════════════════════════════════════════════════
+
+def build_coherence_reasoning_dataframe() -> pd.DataFrame:
+    """Build DataFrame for coherence: stated-impact rating (1-5) vs |logit shift|.
+
+    Uses reasoning judge ratings (keyed to original prompt runs).
+    """
+    import json
+    import numpy as np
+    from forecast_bench.analysis_full import load_question_jsons
+
+    ratings_path = CAUSAL_DIR / "reasoning_judge_ratings.json"
+    if not ratings_path.exists():
+        print("  [SKIP] No reasoning judge ratings")
+        return pd.DataFrame()
+
+    ratings = json.loads(ratings_path.read_text(encoding="utf-8"))
+    model_key_map = {
+        "Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
+        "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
+        "Gemini-Flash-Lite": "gemini",
+    }
+
+    all_rows = []
+    for display_name, d in MODEL_DIRS_ORIGINAL.items():
+        jk = model_key_map.get(display_name)
+        if not jk:
+            continue
+        q_data = load_question_jsons(d)
+        for qid, qinfo in q_data.items():
+            init_p = qinfo.get("initial_probability")
+            if init_p is None:
+                continue
+            for i, pr in enumerate(qinfo.get("probe_results", [])):
+                if not pr.get("success"):
+                    continue
+                up = pr.get("updated_probability")
+                if up is None:
+                    continue
+                key = f"{jk}|{qid}|{i}"
+                if key not in ratings:
+                    continue
+                r = ratings[key].get("rating")
+                if r is None or r < 1 or r > 5:
+                    continue
+
+                eps = 1e-4
+                p0 = max(eps, min(1 - eps, init_p))
+                p1 = max(eps, min(1 - eps, up))
+                logit_shift = np.log(p1 / (1 - p1)) - np.log(p0 / (1 - p0))
+
+                all_rows.append({
+                    "question_id": qid,
+                    "model": display_name,
+                    "rating": int(r),
+                    "abs_logit_shift": abs(logit_shift),
+                })
+
+    df = pd.DataFrame(all_rows)
+    if not df.empty:
+        print(f"  Coherence Reasoning DataFrame: {len(df)} rows, "
+              f"{df['question_id'].nunique()} questions, {df['model'].nunique()} models")
+    return df
+
+
+def build_coherence_uncertainty_dataframe() -> pd.DataFrame:
+    """Build DataFrame for coherence: uncertainty rating (2-4) vs |logit shift|.
+
+    Uses uncertainty judge ratings (keyed to original prompt runs).
+    """
+    import json
+    import numpy as np
+    from forecast_bench.analysis_full import load_question_jsons
+
+    ratings_path = CAUSAL_DIR / "uncertainty_judge_ratings.json"
+    if not ratings_path.exists():
+        print("  [SKIP] No uncertainty judge ratings")
+        return pd.DataFrame()
+
+    ratings = json.loads(ratings_path.read_text(encoding="utf-8"))
+    model_key_map = {
+        "Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
+        "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
+        "Gemini-Flash-Lite": "gemini",
+    }
+
+    all_rows = []
+    for display_name, d in MODEL_DIRS_ORIGINAL.items():
+        jk = model_key_map.get(display_name)
+        if not jk:
+            continue
+        q_data = load_question_jsons(d)
+        for qid, qinfo in q_data.items():
+            init_p = qinfo.get("initial_probability")
+            if init_p is None:
+                continue
+            for i, pr in enumerate(qinfo.get("probe_results", [])):
+                if not pr.get("success"):
+                    continue
+                up = pr.get("updated_probability")
+                if up is None:
+                    continue
+                key = f"{jk}|{qid}|{i}"
+                if key not in ratings:
+                    continue
+                r = ratings[key].get("rating")
+                if r is None or r not in (2, 3, 4):
+                    continue
+
+                eps = 1e-4
+                p0 = max(eps, min(1 - eps, init_p))
+                p1 = max(eps, min(1 - eps, up))
+                logit_shift = np.log(p1 / (1 - p1)) - np.log(p0 / (1 - p0))
+
+                all_rows.append({
+                    "question_id": qid,
+                    "model": display_name,
+                    "uncertainty": int(r),
+                    "uncertainty_numeric": int(r) - 2,  # 0=Confident, 1=Mixed, 2=Hedging
+                    "abs_logit_shift": abs(logit_shift),
+                })
+
+    df = pd.DataFrame(all_rows)
+    if not df.empty:
+        print(f"  Coherence Uncertainty DataFrame: {len(df)} rows, "
+              f"{df['question_id'].nunique()} questions, {df['model'].nunique()} models")
+    return df
+
+
+def build_coherence_bayesian_dataframe(model_dirs: dict[str, Path] | None = None) -> pd.DataFrame:
+    """Build DataFrame for coherence: initial logit → signed logit shift.
+
+    Uses neutral prompt runs (all models). A negative β indicates
+    regression-toward-mean (Bayesian-coherent updating).
+    """
+    import numpy as np
+
+    if model_dirs is None:
+        model_dirs = MODEL_DIRS
+
+    all_rows = []
+    for name, d in model_dirs.items():
+        rows = _load_model_rows(name, d)
+        for r in rows:
+            if not r.get("success") or r.get("updated_probability") is None:
+                continue
+            init_p = r.get("initial_probability")
+            up = r.get("updated_probability")
+            if init_p is None or up is None:
+                continue
+
+            eps = 1e-4
+            p0 = max(eps, min(1 - eps, init_p))
+            p1 = max(eps, min(1 - eps, up))
+            logit_shift = np.log(p1 / (1 - p1)) - np.log(p0 / (1 - p0))
+            initial_logit = np.log(p0 / (1 - p0))
+
+            all_rows.append({
+                "question_id": r["question_id"],
+                "model": name,
+                "initial_probability": init_p,
+                "initial_logit": initial_logit,
+                "logit_shift": logit_shift,
+                "abs_logit_shift": abs(logit_shift),
+            })
+
+    df = pd.DataFrame(all_rows)
+    if not df.empty:
+        print(f"  Coherence Bayesian DataFrame: {len(df)} rows, "
+              f"{df['question_id'].nunique()} questions, {df['model'].nunique()} models")
+    return df
+
+
+def build_coherence_embedding_dataframe() -> pd.DataFrame:
+    """Build DataFrame for coherence: embedding similarity by probe type.
+
+    For each probe, computes mean cosine similarity to other same-type
+    probes in the same question. Probe types: structural vs control.
+    """
+    import json
+    import numpy as np
+
+    emb_path = CAUSAL_DIR / "reasoning_embeddings.npz"
+    keys_path = CAUSAL_DIR / "reasoning_embeddings_keys.json"
+
+    if not (emb_path.exists() and keys_path.exists()):
+        print("  [SKIP] No reasoning embeddings")
+        return pd.DataFrame()
+
+    from forecast_bench.generate_figures import _EMBED_PROBE_NORMALIZE, _IMPORTANCE_TIER
+
+    keys = json.loads(keys_path.read_text(encoding="utf-8"))
+    embeddings = np.load(str(emb_path))["embeddings"]
+
+    CONTROL_TYPES = {"irrelevant"}
+    model_key_map = {
+        "llama-8b": "Llama-3.1-8B", "llama-70b": "Llama-3.3-70B",
+        "deepseek": "DeepSeek-V3", "qwen": "Qwen3-235B",
+        "gemini": "Gemini-Flash-Lite",
+    }
+
+    # Index: (model_key, question_id) → list of (is_control, embedding_index)
+    from collections import defaultdict
+    model_q_index = defaultdict(list)
+    for i, k in enumerate(keys):
+        parts = k.split("|")
+        if len(parts) < 4:
+            continue
+        pt = _EMBED_PROBE_NORMALIZE.get(parts[1], parts[1])
+        if pt not in _IMPORTANCE_TIER:
+            continue
+        is_control = pt in CONTROL_TYPES
+        model_q_index[(parts[3], parts[0])].append((is_control, i))
+
+    def _cosine_sim(a, b):
+        dot = np.dot(a, b)
+        na, nb = np.linalg.norm(a), np.linalg.norm(b)
+        return dot / (na * nb) if na > 0 and nb > 0 else 0.0
+
+    all_rows = []
+    for (mk, qid), entries in model_q_index.items():
+        display_name = model_key_map.get(mk)
+        if not display_name:
+            continue
+        ctrl_idx = [idx for is_ctrl, idx in entries if is_ctrl]
+        struct_idx = [idx for is_ctrl, idx in entries if not is_ctrl]
+        if len(ctrl_idx) < 2 or len(struct_idx) < 2:
+            continue
+
+        # Per-probe mean similarity to same-type probes
+        for idx in struct_idx:
+            others = [j for j in struct_idx if j != idx]
+            sims = [_cosine_sim(embeddings[idx], embeddings[j]) for j in others]
+            all_rows.append({
+                "question_id": qid,
+                "model": display_name,
+                "is_structural": 1,
+                "mean_cosine_sim": np.mean(sims),
+            })
+        for idx in ctrl_idx:
+            others = [j for j in ctrl_idx if j != idx]
+            sims = [_cosine_sim(embeddings[idx], embeddings[j]) for j in others]
+            all_rows.append({
+                "question_id": qid,
+                "model": display_name,
+                "is_structural": 0,
+                "mean_cosine_sim": np.mean(sims),
+            })
+
+    df = pd.DataFrame(all_rows)
+    if not df.empty:
+        print(f"  Coherence Embedding DataFrame: {len(df)} rows, "
+              f"{df['question_id'].nunique()} questions, {df['model'].nunique()} models")
+    return df
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -554,9 +850,16 @@ def main():
     df_ext_node = build_extended_node_dataframe()
     df_ext_edge = build_extended_edge_dataframe()
     df_scrambled = build_scrambled_dataframe()
-    df_orig_70b = build_original_70b_dataframe(df_node)
+    df_orig_70b = build_original_testbed_dataframe(df_node)
     df_ablation = build_ablation_dataframe()
     net_size_dfs = build_network_size_dataframes()
+
+    # ── Coherence DataFrames ──────────────────────────────────────────
+    print("\nBuilding Coherence DataFrames...")
+    df_coh_reasoning = build_coherence_reasoning_dataframe()
+    df_coh_uncertainty = build_coherence_uncertainty_dataframe()
+    df_coh_bayesian = build_coherence_bayesian_dataframe()
+    df_coh_embedding = build_coherence_embedding_dataframe()
 
     # ── Step 2: Export CSVs for R ──────────────────────────────────────
     # Combine network size dataframes into one CSV with a size column
@@ -576,6 +879,10 @@ def main():
         "lme_extended_node_data.csv": df_ext_node,
         "lme_extended_edge_data.csv": df_ext_edge,
         "lme_network_size_data.csv": df_net_size,
+        "lme_coherence_reasoning.csv": df_coh_reasoning,
+        "lme_coherence_uncertainty.csv": df_coh_uncertainty,
+        "lme_coherence_bayesian.csv": df_coh_bayesian,
+        "lme_coherence_embedding.csv": df_coh_embedding,
     }
 
     print(f"\nExported CSVs:")

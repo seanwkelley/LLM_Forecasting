@@ -70,6 +70,7 @@ MODEL_MAP = {
     "gpt5nano": "openai/gpt-5-nano",
     "gpt-oss": "openai/gpt-oss-120b:nitro",
     "gemini-flash-lite": "google/gemini-2.5-flash-lite",
+    "gemini-flash-lite-nitro": "google/gemini-2.5-flash-lite:nitro",
     "qwen-32b": "qwen/qwen3-32b:nitro",
 }
 
@@ -127,8 +128,8 @@ def _parse_probe_result(
 def run_causal_forecast(
     client: LLMClient,
     question: dict,
-    node_range: tuple[int, int] = (4, 8),
-    max_retries: int = 2,
+    node_range: tuple[int, int] = (6, 10),
+    max_retries: int = 3,
 ) -> dict | None:
     """Get initial probability + causal network for a question.
 
@@ -143,6 +144,9 @@ def run_causal_forecast(
     for attempt in range(1 + max_retries):
         text, ok = client.call_single(CAUSAL_FORECAST_SYSTEM, user_prompt)
         if not ok:
+            if attempt < max_retries:
+                client.rate_limit_wait()
+                continue
             return None
 
         data = parse_json_response(text)
@@ -266,22 +270,21 @@ def _generate_single_causal_probe(
         question["question"], initial_prob, nodes, edges, probe_target,
     )
 
-    text, ok = client.call_single(CAUSAL_PROBE_GENERATION_SYSTEM, user_prompt)
-    client.rate_limit_wait()
-
     fallback_text = f"What if '{probe_target.get('description', 'this element')}' is wrong?"
 
-    if not ok:
-        return {
-            "probe_text": fallback_text,
-            "probe_type": probe_target["probe_type"],
-            "target_id": probe_target["target_id"],
-            "generated": False,
-            **{k: probe_target[k] for k in ("target_type", "importance", "centrality_rank", "on_critical_path")},
-        }
+    # Retry until we get a valid probe (up to 10 attempts)
+    for _probe_attempt in range(10):
+        text, ok = client.call_single(CAUSAL_PROBE_GENERATION_SYSTEM, user_prompt)
+        client.rate_limit_wait()
 
-    data = parse_json_response(text)
-    if data is None:
+        if not ok:
+            continue
+
+        data = parse_json_response(text)
+        if data is not None:
+            break
+    else:
+        # All attempts failed — use fallback
         client.stats.parse_failures += 1
         return {
             "probe_text": fallback_text,
@@ -348,12 +351,15 @@ def run_causal_independent_probing(
             question["question"], initial_prob, nodes, edges, probe, probe_target,
         )
 
-        # Retry up to 2 times on parse failure
+        # Retry until success (up to 10 rounds of 3 attempts each)
         result = None
-        for _attempt in range(3):
-            text, ok = client.call_single(CAUSAL_PROBED_FORECAST_SYSTEM, user_prompt)
-            client.rate_limit_wait()
-            result = _parse_probe_result(client, probe, initial_prob, text, ok)
+        for _round in range(10):
+            for _attempt in range(3):
+                text, ok = client.call_single(CAUSAL_PROBED_FORECAST_SYSTEM, user_prompt)
+                client.rate_limit_wait()
+                result = _parse_probe_result(client, probe, initial_prob, text, ok)
+                if result.get("success"):
+                    break
             if result.get("success"):
                 break
         # Enrich with causal metadata
@@ -581,7 +587,11 @@ def run_pipeline(args):
     )
 
     # Parse node range
-    node_range = tuple(args.node_range) if hasattr(args, 'node_range') and args.node_range else (4, 8)
+    node_range = tuple(args.node_range) if hasattr(args, 'node_range') and args.node_range else (6, 10)
+
+    # Bump max_tokens for larger networks (12-16 node DAGs need ~2500+ tokens)
+    if node_range[1] > 10:
+        client.max_tokens = 4000
     print(f"Node range: {node_range[0]}-{node_range[1]} factors")
 
     # Stages 1, 1.5, 2 (shared across conditions)
@@ -746,12 +756,19 @@ def _run_shared_stages_causal(
 
         print(f"  [{q_idx+1}/{len(questions)}] {question['id'][:40]}...", end=" ")
 
-        # Stage 1: Causal forecast
-        forecast = run_causal_forecast(client, question, node_range=node_range)
-        client.rate_limit_wait()
-
+        # Stage 1: Causal forecast (retry indefinitely)
+        forecast = None
+        stage1_attempts = 0
+        while forecast is None:
+            stage1_attempts += 1
+            forecast = run_causal_forecast(client, question, node_range=node_range)
+            client.rate_limit_wait()
+            if forecast is None:
+                print(f"RETRY (stage 1 attempt {stage1_attempts} failed)", end=" ")
+                if stage1_attempts >= 10:
+                    print("GIVING UP after 10 attempts")
+                    break
         if forecast is None:
-            print("FAILED (stage 1: causal forecast)")
             continue
 
         initial_prob = forecast["probability"]

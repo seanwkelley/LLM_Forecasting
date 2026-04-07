@@ -108,18 +108,7 @@ Source: [github.com/seanwkelley/causal-forecast-lab](https://github.com/seanwkel
 - **Key finding**: Models plateau at ~10–15 interventions, can't distinguish direct vs. indirect effects, don't prune, and stop exploring once comfortable
 - **Explorer**: `known_causal_models/causal_discovery/explorer.html` — interactive visualization of intervention results
 
-### Earlier Findings (Phase 1: Theory of Mind forecasting)
-
-The market/conflict simulation work originally tested whether knowledge of agent personas (Theory of Mind) helps external forecasters predict next-period outcomes. The result: **opposite effects by domain.**
-
-| Domain | ToM Effect | Direction | $p$ | Interpretation |
-|---|---|---|---|---|
-| Market | $-17.27$ MSE | **Helps** | $0.027$ | Direct mechanistic link from agent strategies to prices |
-| Conflict | $+0.286$ MSE | **Hurts** | $0.010$ | Personas cause overfitting to expected behavior |
-
-PID analysis showed market coordination is *mechanistic* (rule-based agents have highest emergence capacity) while conflict coordination is *reasoning-driven* (LLM agents exceed baseline by 8–9×).
-
-This work motivated the move to known-causal-model interventional discovery (the current direction).
+See `known_causal_models/docs/` for design notes, prior simulation/PID writeups, and the historical research log.
 
 ---
 

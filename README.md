@@ -21,12 +21,12 @@ This repository contains code, data, and paper drafts for two related research t
 
 A four-stage pipeline applied to each forecasting question:
 
-1. **Causal Forecast** — LLM produces an initial probability $p_0$ and a causal DAG (6–10 factor nodes + 1 outcome node + directed edges with mechanisms)
+1. **Causal Forecast** — LLM produces an initial probability p₀ and a causal DAG (6–10 factor nodes + 1 outcome node + directed edges with mechanisms)
 2. **Network Analysis** — Pure computation: betweenness centrality, outcome mediation, shortest-path membership. Selects ~21 probe targets per question
 3. **Probe Generation** — LLM writes natural-language counterfactual probes targeting specific structural elements (14 probe types: node negate/strengthen at 3 importance tiers, edge negate/strengthen for shortest-path/peripheral, edge reverse, edge structural, missing node, irrelevant control)
-4. **Probed Forecast** — Each probe is presented in a fresh single-turn conversation. The model produces an updated probability $p_i$.
+4. **Probed Forecast** — Each probe is presented in a fresh single-turn conversation. The model produces an updated probability pᵢ.
 
-The key DV is the **absolute log-odds shift** $|\Delta\text{logit}_i|$, regressed on topological predictors via linear mixed-effects models.
+The key DV is the **absolute log-odds shift** |Δlogit|, regressed on topological predictors via linear mixed-effects models.
 
 ### Models (7 total, 5 architecture families, all via OpenRouter)
 
@@ -49,9 +49,9 @@ The key DV is the **absolute log-odds shift** $|\Delta\text{logit}_i|$, regresse
 
 ### Key Results
 
-- **Topological predictors significantly predict probe sensitivity** across all 7 models in shared-slope LME (betweenness $\beta=0.044$, $p<.001$ in log-odds; outcome mediation $\beta=0.050$, $p<.001$). Per-model slopes range from Gemini (strongest) to Llama 8B (only model with non-significant slope).
-- **Cross-model DAG convergence**: Same-question DAGs are significantly more similar across models than chance (semantic nGED $=0.83$ vs.\ null $=1.01$, $p<.001$), confirming models converge on similar causal representations.
-- **Robustness**: Effect survives test-retest, edge permutation placebo, structural ablation ("ignore this factor"), network size variation (6–10 vs.\ 12–16 nodes), temperature sensitivity (T=0.0–1.0), spurious context, and persuasiveness control (high/low importance probes equally persuasive, $p=.17$).
+- **Topological predictors significantly predict probe sensitivity** across all 7 models in shared-slope LME (betweenness β=0.044, p<.001 in log-odds; outcome mediation β=0.050, p<.001). Per-model slopes range from Gemini (strongest) to Llama 8B (only model with non-significant slope).
+- **Cross-model DAG convergence**: Same-question DAGs are significantly more similar across models than chance (semantic nGED = 0.83 vs. null = 1.01, p<.001), confirming models converge on similar causal representations.
+- **Robustness**: Effect survives test-retest, edge permutation placebo, structural ablation ("ignore this factor"), network size variation (6–10 vs. 12–16 nodes), temperature sensitivity (T=0.0–1.0), spurious context, and persuasiveness control (high/low importance probes equally persuasive, p=.17).
 
 ### Quick Start
 

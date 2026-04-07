@@ -2,6 +2,8 @@
 
 LLM-based causal discovery and forecasting using simulation engines with known ground-truth causal structures. This code supports a planned paper on whether LLMs can actively discover causal structure through interventional queries.
 
+See `docs/` for the historical research log (`EXPERIMENT_NOTES.md`), the original simulation/PID writeups (`MARKET_EXPERIMENT.md`, `RESULTS_FORECASTING_AND_PID.md`), and the current causal discovery design (`CAUSAL_DISCOVERY_DESIGN.md`).
+
 ## Directory Structure
 
 ### `causal_discovery/`

@@ -33,6 +33,7 @@ NODE_EMB_CACHE = CAUSAL_DIR / "node_embeddings.npz"
 NODE_EMB_KEYS_CACHE = CAUSAL_DIR / "node_embeddings_keys.json"
 EDGE_EMB_CACHE = CAUSAL_DIR / "edge_embeddings.npz"
 EDGE_EMB_KEYS_CACHE = CAUSAL_DIR / "edge_embeddings_keys.json"
+JUDGE_CACHE_PATH = CAUSAL_DIR / "node_match_judge_cache.json"
 
 
 # ── API ──────────────────────────────────────────────────────────────────
@@ -52,6 +53,92 @@ def _get_api_key() -> str:
         except ImportError:
             pass
     return api_key
+
+
+# ── LLM-as-judge for ambiguous node matches ────────────────────────────
+
+_judge_cache: dict[str, bool] | None = None
+
+
+def _load_judge_cache() -> dict[str, bool]:
+    """Load cached judge decisions from disk."""
+    global _judge_cache
+    if _judge_cache is not None:
+        return _judge_cache
+    if JUDGE_CACHE_PATH.exists():
+        _judge_cache = json.loads(JUDGE_CACHE_PATH.read_text(encoding="utf-8"))
+    else:
+        _judge_cache = {}
+    return _judge_cache
+
+
+def _save_judge_cache():
+    """Persist judge cache to disk."""
+    if _judge_cache is not None:
+        JUDGE_CACHE_PATH.write_text(
+            json.dumps(_judge_cache, indent=2), encoding="utf-8")
+
+
+def _judge_cache_key(id1: str, desc1: str, id2: str, desc2: str) -> str:
+    """Canonical cache key (order-independent)."""
+    a = f"{id1}|{desc1}"
+    b = f"{id2}|{desc2}"
+    return f"{min(a, b)}|||{max(a, b)}"
+
+
+def _judge_node_match(
+    id1: str, desc1: str, id2: str, desc2: str, api_key: str
+) -> bool:
+    """Ask GPT-4o-mini whether two nodes represent the same causal factor.
+
+    Used for pairs with cosine similarity in [0.5, 0.7) where embeddings
+    are ambiguous. Results are cached to avoid repeated API calls.
+    """
+    cache = _load_judge_cache()
+    key = _judge_cache_key(id1, desc1, id2, desc2)
+    if key in cache:
+        return cache[key]
+
+    prompt = (
+        "You are comparing two causal factor nodes from two DAGs built for "
+        "the same forecasting question. Decide whether they represent the "
+        "same underlying causal factor (possibly with different wording).\n\n"
+        f"Node A: {id1}\n"
+        f"  Description: {desc1}\n\n"
+        f"Node B: {id2}\n"
+        f"  Description: {desc2}\n\n"
+        'Respond with ONLY a JSON object: {"same": true} or {"same": false}'
+    )
+
+    try:
+        resp = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "openai/gpt-4o-mini",
+                "messages": [
+                    {"role": "system", "content": "You are a precise classifier."},
+                    {"role": "user", "content": prompt},
+                ],
+                "max_tokens": 20,
+                "temperature": 0,
+            },
+            timeout=30,
+        )
+        if resp.status_code == 200:
+            text = resp.json()["choices"][0]["message"]["content"].strip()
+            result = "true" in text.lower()
+        else:
+            result = False
+    except Exception:
+        result = False
+
+    cache[key] = result
+    _save_judge_cache()
+    return result
 
 
 def _get_embedding(text: str, api_key: str, max_retries: int = 3) -> list[float] | None:
@@ -103,15 +190,25 @@ def _save_cache(key_to_idx: dict[str, int], matrix: np.ndarray,
     keys = [""] * len(key_to_idx)
     for k, i in key_to_idx.items():
         keys[i] = k
-    # Write to temp files first, then rename to prevent corruption
-    tmp_keys = keys_path.with_suffix(".json.tmp")
-    # np.savez_compressed appends .npz if not present, so use .tmp suffix before .npz
-    tmp_npz = npz_path.parent / (npz_path.stem + "_tmp.npz")
+    # Write to PID-unique temp files, then rename to prevent corruption
+    pid = os.getpid()
+    tmp_keys = keys_path.with_suffix(f".{pid}.tmp")
+    tmp_npz = npz_path.parent / f"{npz_path.stem}_{pid}_tmp.npz"
     tmp_keys.write_text(json.dumps(keys), encoding="utf-8")
     np.savez_compressed(str(tmp_npz), embeddings=matrix.astype(np.float32))
-    import shutil
-    shutil.move(str(tmp_keys), str(keys_path))
-    shutil.move(str(tmp_npz), str(npz_path))
+    # On Windows, replace handles locked files better than move
+    try:
+        tmp_keys.replace(keys_path)
+    except OSError:
+        import shutil
+        shutil.copy2(str(tmp_keys), str(keys_path))
+        tmp_keys.unlink(missing_ok=True)
+    try:
+        tmp_npz.replace(npz_path)
+    except OSError:
+        import shutil
+        shutil.copy2(str(tmp_npz), str(npz_path))
+        tmp_npz.unlink(missing_ok=True)
 
 
 def _ensure_embeddings(texts_by_key: dict[str, str],
@@ -173,16 +270,42 @@ def _cosine_matrix(vecs_a: np.ndarray, vecs_b: np.ndarray) -> np.ndarray:
 
 # ── Matching ─────────────────────────────────────────────────────────────
 
-def _hungarian_match(sim_matrix: np.ndarray, threshold: float = 0.7
-                     ) -> list[tuple[int, int, float]]:
-    """Bipartite matching maximizing similarity. Returns matched (i, j, sim) pairs above threshold."""
+def _hungarian_match(
+    sim_matrix: np.ndarray,
+    threshold: float = 0.7,
+    nodes1: list[dict] | None = None,
+    nodes2: list[dict] | None = None,
+    api_key: str | None = None,
+    judge_low: float = 0.5,
+) -> list[tuple[int, int, float]]:
+    """Bipartite matching maximizing similarity.
+
+    Returns matched (i, j, sim) pairs above *threshold*.  For pairs with
+    similarity in [judge_low, threshold), an LLM judge (GPT-4o-mini) is
+    consulted to decide whether the nodes are the same factor.  This
+    requires *nodes1* and *nodes2* to be provided (list of node dicts with
+    'id' and optionally 'description' keys).  Results are cached on disk.
+    """
     cost = 1.0 - sim_matrix
     row_ind, col_ind = linear_sum_assignment(cost)
     matches = []
+    use_judge = (nodes1 is not None and nodes2 is not None)
+    if use_judge and api_key is None:
+        api_key = _get_api_key()
+
     for r, c in zip(row_ind, col_ind):
-        s = sim_matrix[r, c]
+        s = float(sim_matrix[r, c])
         if s >= threshold:
-            matches.append((r, c, float(s)))
+            matches.append((r, c, s))
+        elif use_judge and s >= judge_low:
+            n1, n2 = nodes1[r], nodes2[c]
+            is_same = _judge_node_match(
+                n1["id"], n1.get("description", n1["id"]),
+                n2["id"], n2.get("description", n2["id"]),
+                api_key,
+            )
+            if is_same:
+                matches.append((r, c, s))
     return matches
 
 
@@ -400,6 +523,68 @@ def _aligned_spectral_distance(nodes1, edges1, nodes2, edges2, node_map):
     return float(np.linalg.norm(spec1 - spec2))
 
 
+def semantic_nged_for_pair(
+    nodes1: list[dict], edges1: list[dict],
+    nodes2: list[dict], edges2: list[dict],
+    node_idx: dict[str, int], node_mat: np.ndarray,
+    model1: str, model2: str,
+    qid1: str, qid2: str,
+    threshold: float = 0.7,
+) -> float:
+    """Compute semantic normalized Graph Edit Distance for a single graph pair.
+
+    1. Hungarian-match nodes by cosine similarity (threshold).
+    2. node_ops = unmatched nodes from each graph.
+    3. Remap edges through matched node mapping; edge_ops = |symmetric difference|.
+    4. nGED = (node_ops + edge_ops) / (|union_nodes| + |union_edges|).
+
+    Returns nGED in [0, 1] where 0 = identical, 1 = disjoint.
+    """
+    if not nodes1 and not nodes2:
+        return 0.0
+    if not nodes1 or not nodes2:
+        return 1.0
+
+    def _get_vecs(nodes, model, qid):
+        keys = [f"node|{qid}|{model}|{n['id']}" for n in nodes]
+        idxs = [node_idx.get(k) for k in keys]
+        if any(i is None for i in idxs):
+            return None
+        return node_mat[np.array(idxs)]
+
+    vecs1 = _get_vecs(nodes1, model1, qid1)
+    vecs2 = _get_vecs(nodes2, model2, qid2)
+    if vecs1 is None or vecs2 is None:
+        return 1.0
+
+    sim = _cosine_matrix(vecs1, vecs2)
+    matches = _hungarian_match(sim, threshold)
+
+    # Build node remap: graph2 id -> graph1 id
+    remap = {}
+    matched_1 = set()
+    matched_2 = set()
+    for mi, mj, _ in matches:
+        remap[nodes2[mj]["id"]] = nodes1[mi]["id"]
+        matched_1.add(nodes1[mi]["id"])
+        matched_2.add(nodes2[mj]["id"])
+
+    # Node operations: unmatched from each side
+    ids1 = {n["id"] for n in nodes1}
+    ids2 = {n["id"] for n in nodes2}
+    n_matched = len(matches)
+    node_ops = (len(ids1) - n_matched) + (len(ids2) - n_matched)
+
+    # Edge operations: remap graph2 edges into graph1 namespace, then symmetric diff
+    ei = {(e["from"], e["to"]) for e in edges1}
+    ej_remapped = {(remap.get(e["from"], e["from"]), remap.get(e["to"], e["to"]))
+                   for e in edges2}
+    edge_ops = len(ei ^ ej_remapped)
+
+    total = len(ids1 | ids2) + len(ei | ej_remapped)
+    return (node_ops + edge_ops) / total if total > 0 else 0.0
+
+
 def _semantic_scores_for_pair(
     nodes1: list[dict], edges1: list[dict],
     nodes2: list[dict], edges2: list[dict],
@@ -408,6 +593,7 @@ def _semantic_scores_for_pair(
     model1: str, model2: str,
     qid1: str, qid2: str,
     threshold: float = 0.7,
+    use_judge: bool = True,
 ) -> tuple[float, float, float, float]:
     """Compute all three semantic Jaccards + aligned spectral distance for a single graph pair.
 

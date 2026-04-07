@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Causal Discovery Lab</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #222; }
+
+.header { background: #1a1a2e; color: white; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+.header h1 { font-size: 18px; font-weight: 600; }
+.header .subtitle { font-size: 13px; color: #aaa; }
+
+.container { display: grid; grid-template-columns: 1fr 400px; grid-template-rows: auto 1fr; height: calc(100vh - 56px); }
+
+/* Timeline */
+.timeline { grid-column: 1 / -1; background: white; border-bottom: 1px solid #ddd; padding: 12px 24px; display: flex; align-items: center; gap: 12px; }
+.timeline button { padding: 6px 14px; border: 1px solid #ccc; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.timeline button:hover { background: #e8e8e8; }
+.timeline button.active { background: #0072B2; color: white; border-color: #0072B2; }
+.timeline button:disabled { opacity: 0.4; cursor: default; }
+.step-label { font-size: 14px; font-weight: 600; min-width: 180px; }
+.step-dots { display: flex; gap: 4px; flex-wrap: wrap; }
+.step-dot { width: 12px; height: 12px; border-radius: 50%; background: #ddd; cursor: pointer; transition: all 0.2s; }
+.step-dot.active { background: #0072B2; transform: scale(1.3); }
+.step-dot.completed { background: #009E73; }
+.step-dot:hover { transform: scale(1.4); }
+
+/* Tabs */
+.tab-container { position: relative; }
+.tab-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 10; display: flex; background: #f0f0f0; border-bottom: 1px solid #ddd; }
+.tab-btn { padding: 8px 20px; border: none; background: transparent; cursor: pointer; font-size: 13px; font-weight: 500; color: #666; border-bottom: 2px solid transparent; }
+.tab-btn:hover { color: #333; }
+.tab-btn.active { color: #0072B2; border-bottom-color: #0072B2; background: white; }
+.tab-panel { display: none; position: absolute; top: 36px; left: 0; right: 0; bottom: 0; }
+.tab-panel.active { display: block; }
+
+/* Graph panel */
+.graph-panel { background: white; position: relative; overflow: hidden; width: 100%; height: 100%; }
+.graph-panel svg { width: 100%; height: 100%; }
+.graph-stats { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.95); padding: 8px 12px; border-radius: 6px; font-size: 12px; border: 1px solid #ddd; }
+.graph-stats .stat { display: flex; gap: 8px; align-items: center; }
+.graph-stats .stat-label { color: #666; }
+.graph-stats .stat-value { font-weight: 600; }
+.legend { position: absolute; bottom: 12px; left: 12px; background: rgba(255,255,255,0.95); padding: 8px 12px; border-radius: 6px; font-size: 11px; border: 1px solid #ddd; }
+.legend-item { display: flex; align-items: center; gap: 6px; margin: 2px 0; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Market dynamics panel */
+.dynamics-panel { background: white; padding: 16px; padding-top: 8px; overflow-y: auto; width: 100%; height: 100%; }
+.dynamics-panel h3 { font-size: 13px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin: 12px 0 6px; }
+.dynamics-panel svg { width: 100%; }
+.intervention-marker { font-size: 10px; fill: #D55E00; }
+.trajectory-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+.trajectory-table th { text-align: left; padding: 4px 8px; background: #f0f0f0; border-bottom: 1px solid #ddd; font-weight: 600; }
+.trajectory-table td { padding: 4px 8px; border-bottom: 1px solid #f0f0f0; }
+.trajectory-table .positive { color: #009E73; }
+.trajectory-table .negative { color: #D55E00; }
+
+/* Detail panel */
+.detail-panel { background: white; border-left: 1px solid #ddd; overflow-y: auto; padding: 16px; }
+.detail-section { margin-bottom: 16px; }
+.detail-section h3 { font-size: 13px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #eee; }
+.intervention-card { background: #f8f9fa; border-radius: 6px; padding: 12px; margin-bottom: 8px; border-left: 3px solid #0072B2; }
+.intervention-card.event { border-left-color: #E69F00; }
+.intervention-card.trait { border-left-color: #D55E00; }
+.intervention-card.action { border-left-color: #009E73; }
+.intervention-type { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.intervention-type.event { color: #E69F00; }
+.intervention-type.trait { color: #D55E00; }
+.intervention-type.action { color: #009E73; }
+.intervention-desc { font-size: 13px; margin-bottom: 8px; }
+.result-text { font-size: 12px; color: #555; font-family: 'SF Mono', 'Fira Code', monospace; background: #eef; padding: 6px 8px; border-radius: 4px; word-break: break-all; }
+.analysis-text { font-size: 13px; line-height: 1.5; color: #333; margin-top: 8px; }
+.edge-list { font-size: 12px; }
+.edge-item { padding: 3px 0; display: flex; align-items: center; gap: 6px; }
+.edge-item .conf { font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+.edge-item .conf.high { background: #d4f0e7; color: #009E73; }
+.edge-item .conf.medium { background: #fff3d4; color: #b8860b; }
+.edge-item .conf.low { background: #f7d4d4; color: #D55E00; }
+.edge-new { color: #009E73; font-weight: 600; }
+.edge-removed { color: #D55E00; text-decoration: line-through; }
+
+/* Ground truth comparison */
+.gt-section { margin-top: 12px; }
+.gt-row { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; }
+.gt-correct { color: #009E73; }
+.gt-fp { color: #D55E00; }
+.gt-fn { color: #999; }
+
+/* File upload */
+.upload-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.upload-box { background: white; padding: 40px; border-radius: 12px; text-align: center; max-width: 500px; }
+.upload-box h2 { margin-bottom: 16px; }
+.upload-box p { color: #666; margin-bottom: 24px; font-size: 14px; }
+.upload-box input[type=file] { margin: 16px 0; }
+.upload-box .demo-btn { margin-top: 12px; padding: 8px 20px; background: #0072B2; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Causal Discovery Lab</h1>
+    <span class="subtitle" id="model-info"></span>
+</div>
+
+<div id="upload-overlay" class="upload-overlay">
+    <div class="upload-box">
+        <h2>Load Experiment Results</h2>
+        <p>Upload a <code>pilot_results.json</code> or <code>checkpoint.json</code> from a causal discovery run, or skip to browse simulation data.</p>
+        <input type="file" id="file-input" accept=".json">
+        <br>
+        <button class="demo-btn" onclick="loadDemo()">Load Demo Data</button>
+        <button class="demo-btn" onclick="skipToSimulations()" style="background:#666;margin-left:8px">Browse Simulations Only</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="timeline">
+        <button id="btn-prev" onclick="prevStep()" disabled>&larr; Prev</button>
+        <button id="btn-next" onclick="nextStep()">Next &rarr;</button>
+        <button id="btn-play" onclick="togglePlay()">&#9654; Play</button>
+        <button onclick="goToStep(-2)">&#8634; Reset</button>
+        <span class="step-label" id="step-label">Observation</span>
+        <div class="step-dots" id="step-dots"></div>
+    </div>
+
+    <div class="tab-container">
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('graph')">Causal Graph</button>
+            <button class="tab-btn" onclick="switchTab('dynamics')">Intervention Effects</button>
+            <button class="tab-btn" onclick="switchTab('simulations')">Simulations</button>
+        </div>
+        <div class="tab-panel active" id="tab-graph">
+            <div class="graph-panel" id="graph-panel">
+                <svg id="graph-svg"></svg>
+                <div class="graph-stats" id="graph-stats"></div>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:#009E73"></div> Correct edge</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#D55E00"></div> False positive</div>
+                    <div class="legend-item" id="legend-missing"><div class="legend-dot" style="background:#e8e8e8;border:1px solid #ccc"></div> Missing (ground truth)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#2196F3;opacity:0.4"></div> Newly added this step</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:#F7D4D4;border:2px dashed #D55E00"></div> Hallucinated node</div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-panel" id="tab-dynamics">
+            <div class="dynamics-panel" id="dynamics-panel">
+                <p style="color:#999;font-size:13px">Load data and step through interventions to see market dynamics.</p>
+            </div>
+        </div>
+        <div class="tab-panel" id="tab-simulations">
+            <div class="dynamics-panel" id="simulations-panel">
+                <p style="color:#999;font-size:13px">Loading simulations...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-panel" id="detail-panel">
+        <div class="detail-section">
+            <h3>Select a step to view details</h3>
+        </div>
+    </div>
+</div>
+
+<script>
+let data = null;
+let currentStep = -1; // -1 = observation
+let detailScenario = null;
+let totalSteps = 0;
+let playInterval = null;
+let groundTruth = null;
+let simulation = null;
+
+// Ground truth edges for market domain (from ground_truth.py)
+const MARKET_GT_EDGES = [
+    ["shock","production_cost"],["shock","demand_per_period"],["shock","storage_cost"],["shock","cash"],
+    ["production_cost","cash"],["production_cost","inventory"],["production_cost","agent_orders"],["production_cost","fundamental_price"],
+    ["demand_per_period","inventory"],["demand_per_period","agent_orders"],
+    ["demand_value","cash"],["demand_value","agent_orders"],["demand_value","fundamental_price"],
+    ["storage_cost","cash"],["storage_cost","agent_orders"],
+    ["cash","agent_orders"],["inventory","agent_orders"],["price_history","agent_orders"],
+    ["agent_orders","clearing_price"],["agent_orders","volume"],
+    ["clearing_price","cash"],["clearing_price","inventory"],["clearing_price","price_history"],
+];
+
+document.getElementById('file-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        try {
+            const json = JSON.parse(ev.target.result);
+            loadData(json);
+        } catch (err) {
+            alert('Failed to parse JSON: ' + err.message);
+        }
+    };
+    reader.readAsText(file);
+});
+
+function loadDemo() {
+    // Generate demo data for testing
+    const demo = {
+        config: { model: "demo", budget: 5, domain: "market" },
+        observation: {
+            confident_edges: [
+                { from: "agent_orders", to: "clearing_price", confidence: "high", reasoning: "Orders directly determine price" },
+                { from: "agent_orders", to: "volume", confidence: "high", reasoning: "Orders determine trade volume" },
+            ],
+            uncertain_edges: [
+                { from: "clearing_price", to: "cash", confidence: "low", reasoning: "Price changes may affect wealth" },
+            ],
+        },
+        interventions: [
+            {
+                step: 1,
+                intervention: { type: "event", target: { shock_type: "supply_disruption", magnitude: 2.0 }, description: "Inject supply shock to test shock -> price pathway" },
+                result_summary: "clearing_price=+5.93, volume=-33.33, fundamental_price=+30.96",
+                hypothesis_update: {
+                    analysis: "Supply shock caused large increase in fundamental_price and moderate increase in clearing_price. Volume decreased sharply.",
+                    current_graph: [
+                        { from: "agent_orders", to: "clearing_price", confidence: "high" },
+                        { from: "agent_orders", to: "volume", confidence: "high" },
+                        { from: "shock", to: "production_cost", confidence: "high" },
+                        { from: "production_cost", to: "fundamental_price", confidence: "high" },
+                    ],
+                },
+                accumulated_graph_size: 4,
+            },
+            {
+                step: 2,
+                intervention: { type: "trait", target: { role: "producer", param: "production_cost", value: 0 }, description: "Set production cost to zero" },
+                result_summary: "clearing_price=-16.65, fundamental_price=-61.92, total_cash=+5400",
+                hypothesis_update: {
+                    analysis: "Zero production cost caused fundamental_price to drop sharply, confirming production_cost -> fundamental_price. Clearing price also dropped, and cash increased.",
+                    current_graph: [
+                        { from: "agent_orders", to: "clearing_price", confidence: "high" },
+                        { from: "agent_orders", to: "volume", confidence: "high" },
+                        { from: "shock", to: "production_cost", confidence: "high" },
+                        { from: "production_cost", to: "fundamental_price", confidence: "high" },
+                        { from: "production_cost", to: "agent_orders", confidence: "medium" },
+                        { from: "production_cost", to: "cash", confidence: "low" },
+                        { from: "clearing_price", to: "cash", confidence: "medium" },
+                    ],
+                },
+                accumulated_graph_size: 7,
+            },
+            {
+                step: 3,
+                intervention: { type: "action", target: { agent_id: "speculator_A", param: "quantity", value: 0 }, description: "Remove speculator to test order flow effects" },
+                result_summary: "clearing_price=-1.74, volume=-1.67",
+                hypothesis_update: {
+                    analysis: "Removing one speculator had minimal effect on price and volume, suggesting individual agents have limited market impact.",
+                    current_graph: [
+                        { from: "agent_orders", to: "clearing_price", confidence: "high" },
+                        { from: "agent_orders", to: "volume", confidence: "high" },
+                        { from: "shock", to: "production_cost", confidence: "high" },
+                        { from: "production_cost", to: "fundamental_price", confidence: "high" },
+                        { from: "production_cost", to: "agent_orders", confidence: "medium" },
+                        { from: "production_cost", to: "cash", confidence: "low" },
+                        { from: "clearing_price", to: "cash", confidence: "medium" },
+                        { from: "cash", to: "agent_orders", confidence: "medium" },
+                    ],
+                },
+                accumulated_graph_size: 8,
+            },
+        ],
+        scores: { f1: 0.476, precision: 0.786, recall: 0.478, hamming_distance: 20 },
+    };
+    loadData(demo);
+}
+
+function loadData(json) {
+    // Handle both pilot_results.json and checkpoint.json formats
+    if (json.interventions) {
+        data = json;
+    } else {
+        alert('Unrecognized format');
+        return;
+    }
+
+    totalSteps = data.interventions.length;
+    document.getElementById('upload-overlay').style.display = 'none';
+
+    // Model info
+    const model = data.config?.model || 'unknown';
+    const domain = data.config?.domain || 'market';
+    const budget = data.config?.budget || totalSteps;
+    document.getElementById('model-info').textContent = `${model} | ${domain} | ${totalSteps}/${budget} interventions`;
+
+    if (domain === 'market') {
+        groundTruth = MARKET_GT_EDGES;
+    }
+
+    // Compute stable layout from all nodes/edges across all steps
+    initLayout();
+
+    // Build step dots
+    const dotsDiv = document.getElementById('step-dots');
+    dotsDiv.innerHTML = '';
+    // Ground truth dot
+    const gtDot = document.createElement('div');
+    gtDot.className = 'step-dot';
+    gtDot.style.background = '#009E73';
+    gtDot.title = 'Ground Truth';
+    gtDot.onclick = () => goToStep(-2);
+    dotsDiv.appendChild(gtDot);
+    // Observation dot
+    const obsDot = document.createElement('div');
+    obsDot.className = 'step-dot';
+    obsDot.title = 'Observation';
+    obsDot.onclick = () => goToStep(-1);
+    dotsDiv.appendChild(obsDot);
+    // Intervention dots
+    for (let i = 0; i < totalSteps; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'step-dot completed';
+        dot.title = `Intervention ${i + 1}`;
+        dot.onclick = () => goToStep(i);
+        dotsDiv.appendChild(dot);
+    }
+
+    goToStep(-2);
+}
+
+// step -2 = ground truth, step -1 = observation, step 0+ = interventions
+function goToStep(step) {
+    currentStep = step;
+    updateDots();
+    updateButtons();
+    if (document.getElementById('tab-graph').classList.contains('active')) {
+        updateGraph();
+    } else {
+        updateDynamics();
+    }
+    updateDetails();
+}
+
+function prevStep() { if (currentStep > -1) goToStep(currentStep - 1); }
+function nextStep() { if (currentStep < totalSteps - 1) goToStep(currentStep + 1); }
+
+function togglePlay() {
+    if (playInterval) {
+        clearInterval(playInterval);
+        playInterval = null;
+        document.getElementById('btn-play').innerHTML = '&#9654; Play';
+    } else {
+        document.getElementById('btn-play').innerHTML = '&#9646;&#9646; Pause';
+        playInterval = setInterval(() => {
+            if (currentStep < totalSteps - 1) nextStep();
+            else { togglePlay(); }
+        }, 2000);
+    }
+}
+
+function updateButtons() {
+    document.getElementById('btn-prev').disabled = currentStep <= -2;
+    document.getElementById('btn-next').disabled = currentStep >= totalSteps - 1;
+    if (currentStep === -2) {
+        document.getElementById('step-label').textContent = 'Ground Truth';
+    } else if (currentStep === -1) {
+        document.getElementById('step-label').textContent = 'Phase 1: Observation';
+    } else {
+        const intv = data.interventions[currentStep];
+        document.getElementById('step-label').textContent = `Intervention ${intv.step || currentStep + 1}/${totalSteps}`;
+    }
+}
+
+function updateDots() {
+    const dots = document.querySelectorAll('.step-dot');
+    dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        if (i === currentStep + 2) dot.classList.add('active'); // +2 because GT dot is at index 0
+    });
+}
+
+function getEdgesAtStep(step) {
+    if (step === -2) {
+        // Ground truth — all true edges
+        if (!groundTruth) return [];
+        return groundTruth.map(([s, t]) => ({ from: s, to: t, confidence: 'high' }));
+    }
+    if (step === -1) {
+        // Observation: use confident_edges
+        const edges = [];
+        for (const e of (data.observation?.confident_edges || [])) {
+            edges.push({ from: e.from, to: e.to, confidence: e.confidence || 'medium' });
+        }
+        return edges;
+    }
+    // Use current_graph from hypothesis_update
+    const intv = data.interventions[step];
+    const hu = intv?.hypothesis_update || {};
+    const graph = (hu.current_graph || []).filter(e => typeof e === 'object' && e.from && e.to);
+
+    // If this step has no graph (error/crash), carry forward from previous step
+    if (graph.length === 0 && step > -1) {
+        return getEdgesAtStep(step - 1);
+    }
+
+    return graph.map(e => ({ from: e.from, to: e.to, confidence: e.confidence || 'medium' }));
+}
+
+function updateGraph() {
+    const edges = getEdgesAtStep(currentStep);
+    const prevEdges = currentStep > -2 ? getEdgesAtStep(currentStep - 1) : [];
+
+    // Collect nodes
+    const nodeSet = new Set();
+    edges.forEach(e => { nodeSet.add(e.from); nodeSet.add(e.to); });
+    // Also add GT nodes if available
+    if (groundTruth) {
+        groundTruth.forEach(([s, t]) => { nodeSet.add(s); nodeSet.add(t); });
+    }
+    const nodes = Array.from(nodeSet).map(id => ({ id }));
+
+    // Track new/removed edges
+    const prevEdgeSet = new Set(prevEdges.map(e => `${e.from}|${e.to}`));
+    const currEdgeSet = new Set(edges.map(e => `${e.from}|${e.to}`));
+
+    const edgesWithStatus = edges.map(e => ({
+        ...e,
+        isNew: !prevEdgeSet.has(`${e.from}|${e.to}`),
+    }));
+
+    // GT edges not in current graph
+    const gtMissing = [];
+    if (groundTruth) {
+        for (const [s, t] of groundTruth) {
+            if (!currEdgeSet.has(`${s}|${t}`)) {
+                gtMissing.push({ from: s, to: t });
+            }
+        }
+    }
+
+    // Check GT correctness
+    const gtSet = groundTruth ? new Set(groundTruth.map(([s,t]) => `${s}|${t}`)) : new Set();
+
+    const isLastStep = currentStep === totalSteps - 1;
+    drawGraph(nodes, edgesWithStatus, gtMissing, gtSet, isLastStep);
+
+    // Stats
+    const correct = edges.filter(e => gtSet.has(`${e.from}|${e.to}`)).length;
+    const fp = edges.filter(e => !gtSet.has(`${e.from}|${e.to}`)).length;
+    const fn = groundTruth ? groundTruth.length - correct : 0;
+    const prec = edges.length > 0 ? (correct / edges.length) : 0;
+    const rec = groundTruth ? (correct / groundTruth.length) : 0;
+    const f1 = (prec + rec) > 0 ? (2 * prec * rec / (prec + rec)) : 0;
+
+    document.getElementById('graph-stats').innerHTML = `
+        <div class="stat"><span class="stat-label">Edges:</span> <span class="stat-value">${edges.length}</span></div>
+        <div class="stat"><span class="stat-label">Correct:</span> <span class="stat-value gt-correct">${correct}</span></div>
+        <div class="stat"><span class="stat-label">False +:</span> <span class="stat-value gt-fp">${fp}</span></div>
+        <div class="stat"><span class="stat-label">Missing:</span> <span class="stat-value gt-fn">${fn}</span></div>
+        <div class="stat"><span class="stat-label">F1:</span> <span class="stat-value">${f1.toFixed(3)}</span></div>
+    `;
+
+    // Update legend missing color based on step
+    const isLast = currentStep === totalSteps - 1;
+    const legendMissing = document.getElementById('legend-missing');
+    if (legendMissing) {
+        const dot = legendMissing.querySelector('.legend-dot');
+        if (isLast) {
+            dot.style.background = '#E69F00';
+            dot.style.border = 'none';
+        } else {
+            dot.style.background = '#e8e8e8';
+            dot.style.border = '1px solid #ccc';
+        }
+    }
+}
+
+// Persistent node positions — computed once, reused across steps
+let nodePositions = {};
+
+function computeStableLayout(allNodes, allEdges, width, height) {
+    // Run force simulation to completion (no animation), cache positions
+    const simNodes = allNodes.map(id => ({
+        id,
+        x: nodePositions[id]?.x || width/2 + (Math.random() - 0.5) * width * 0.6,
+        y: nodePositions[id]?.y || height/2 + (Math.random() - 0.5) * height * 0.6,
+    }));
+
+    const simLinks = allEdges.map(([s, t]) => ({ source: s, target: t }));
+
+    const sim = d3.forceSimulation(simNodes)
+        .force('link', d3.forceLink(simLinks).id(d => d.id).distance(180))
+        .force('charge', d3.forceManyBody().strength(-800))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('collision', d3.forceCollide(60))
+        .stop();
+
+    // Run to convergence
+    for (let i = 0; i < 300; i++) sim.tick();
+
+    // Clamp and cache
+    simNodes.forEach(d => {
+        d.x = Math.max(60, Math.min(width - 60, d.x));
+        d.y = Math.max(40, Math.min(height - 40, d.y));
+        nodePositions[d.id] = { x: d.x, y: d.y };
+    });
+}
+
+function initLayout() {
+    // Collect ALL nodes and edges across ALL steps to compute a single stable layout
+    const panel = document.getElementById('graph-panel');
+    const width = panel.clientWidth;
+    const height = panel.clientHeight;
+
+    const allNodeSet = new Set();
+    const allEdgePairs = [];
+
+    // From observation
+    for (const e of (data.observation?.confident_edges || [])) {
+        allNodeSet.add(e.from); allNodeSet.add(e.to);
+        allEdgePairs.push([e.from, e.to]);
+    }
+    // From all interventions
+    for (const intv of data.interventions) {
+        const graph = intv.hypothesis_update?.current_graph || [];
+        for (const e of graph) {
+            if (typeof e === 'object' && e.from && e.to) {
+                allNodeSet.add(e.from); allNodeSet.add(e.to);
+                allEdgePairs.push([e.from, e.to]);
+            }
+        }
+    }
+    // From ground truth
+    if (groundTruth) {
+        groundTruth.forEach(([s, t]) => { allNodeSet.add(s); allNodeSet.add(t); allEdgePairs.push([s, t]); });
+    }
+
+    nodePositions = {};
+    computeStableLayout(Array.from(allNodeSet), allEdgePairs, width, height);
+}
+
+function drawGraph(nodes, edges, gtMissing, gtSet, isLastStep) {
+    const svg = d3.select('#graph-svg');
+    const panel = document.getElementById('graph-panel');
+    const width = panel.clientWidth;
+    const height = panel.clientHeight;
+
+    svg.selectAll('*').remove();
+    svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+    // Arrow markers
+    const defs = svg.append('defs');
+    ['#009E73', '#E69F00', '#D55E00', '#ccc', '#2196F3'].forEach(color => {
+        defs.append('marker')
+            .attr('id', `arrow-${color.replace('#','')}`)
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 22).attr('refY', 0)
+            .attr('markerWidth', 6).attr('markerHeight', 6)
+            .attr('orient', 'auto')
+            .append('path')
+            .attr('d', 'M0,-4L10,0L0,4')
+            .attr('fill', color);
+    });
+
+    const confColor = { high: '#009E73', medium: '#E69F00', low: '#D55E00' };
+
+    // Use cached positions
+    const pos = (id) => nodePositions[id] || { x: width/2, y: height/2 };
+
+    // GT missing edges — more prominent at final step
+    svg.append('g')
+        .selectAll('line')
+        .data(gtMissing)
+        .enter().append('line')
+        .attr('x1', d => pos(d.from).x).attr('y1', d => pos(d.from).y)
+        .attr('x2', d => pos(d.to).x).attr('y2', d => pos(d.to).y)
+        .attr('stroke', isLastStep ? '#E69F00' : '#e8e8e8')
+        .attr('stroke-width', isLastStep ? 2 : 1)
+        .attr('stroke-dasharray', isLastStep ? '6,4' : '3,3')
+        .attr('stroke-opacity', isLastStep ? 0.7 : 1)
+        .attr('marker-end', isLastStep ? 'url(#arrow-E69F00)' : 'url(#arrow-ccc)');
+
+    // New edge glow (drawn before edges so glow is behind)
+    svg.append('g')
+        .selectAll('line')
+        .data(edges.filter(e => e.isNew))
+        .enter().append('line')
+        .attr('x1', d => pos(d.from).x).attr('y1', d => pos(d.from).y)
+        .attr('x2', d => pos(d.to).x).attr('y2', d => pos(d.to).y)
+        .attr('stroke', '#2196F3')
+        .attr('stroke-width', 6)
+        .attr('stroke-opacity', 0.25);
+
+    // Discovered edges — colored by correctness vs ground truth
+    svg.append('g')
+        .selectAll('line')
+        .data(edges)
+        .enter().append('line')
+        .attr('x1', d => pos(d.from).x).attr('y1', d => pos(d.from).y)
+        .attr('x2', d => pos(d.to).x).attr('y2', d => pos(d.to).y)
+        .attr('stroke', d => gtSet.has(`${d.from}|${d.to}`) ? '#009E73' : '#D55E00')
+        .attr('stroke-width', d => d.isNew ? 3 : 2)
+        .attr('marker-end', d => `url(#arrow-${(gtSet.has(`${d.from}|${d.to}`) ? '009E73' : 'D55E00')})`);
+
+    // Determine node status: discovered, ground-truth, or hallucinated
+    const discoveredNodes = new Set();
+    edges.forEach(e => { discoveredNodes.add(e.from); discoveredNodes.add(e.to); });
+
+    const gtNodes = new Set();
+    if (groundTruth) {
+        groundTruth.forEach(([s, t]) => { gtNodes.add(s); gtNodes.add(t); });
+    }
+
+    const isHallucinated = (id) => discoveredNodes.has(id) && gtNodes.size > 0 && !gtNodes.has(id);
+
+    // Nodes (on top of edges)
+    const nodeG = svg.append('g')
+        .selectAll('g')
+        .data(nodes)
+        .enter().append('g')
+        .attr('transform', d => `translate(${pos(d.id).x},${pos(d.id).y})`)
+        .style('cursor', 'grab')
+        .call(d3.drag()
+            .on('drag', function(event, d) {
+                nodePositions[d.id] = { x: event.x, y: event.y };
+                d3.select(this).attr('transform', `translate(${event.x},${event.y})`);
+                updateGraph();
+            })
+        );
+
+    nodeG.append('circle')
+        .attr('r', 16)
+        .attr('fill', d => isHallucinated(d.id) ? '#F7D4D4' :
+                           discoveredNodes.has(d.id) ? '#fff' : '#f9f9f9')
+        .attr('stroke', d => isHallucinated(d.id) ? '#D55E00' :
+                              discoveredNodes.has(d.id) ? '#333' : '#ddd')
+        .attr('stroke-width', d => discoveredNodes.has(d.id) ? 2 : 1)
+        .attr('stroke-dasharray', d => isHallucinated(d.id) ? '4,2' : 'none');
+
+    nodeG.append('text')
+        .text(d => d.id.replace(/_/g, ' '))
+        .attr('text-anchor', 'middle')
+        .attr('dy', -22)
+        .attr('font-size', 10)
+        .attr('fill', d => isHallucinated(d.id) ? '#D55E00' :
+                           discoveredNodes.has(d.id) ? '#222' : '#bbb')
+        .attr('font-weight', d => discoveredNodes.has(d.id) ? '600' : '400');
+}
+
+function simpleMarkdown(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`(.+?)`/g, '<code style="background:#f0f0f0;padding:1px 4px;border-radius:2px;font-size:12px">$1</code>')
+        .replace(/\n/g, '<br>');
+}
+
+function updateDetails() {
+    const panel = document.getElementById('detail-panel');
+
+    if (currentStep === -2) {
+        // Ground truth view
+        const nEdges = groundTruth ? groundTruth.length : 0;
+        panel.innerHTML = `
+            <div class="detail-section">
+                <h3>Ground Truth</h3>
+                <p style="font-size:13px;color:#555;margin-bottom:12px">
+                    The true causal structure the model is trying to discover.
+                    ${nEdges} directed edges across ${groundTruth ? new Set(groundTruth.flatMap(([s,t]) => [s,t])).size : 0} variables.
+                </p>
+            </div>
+            <div class="detail-section">
+                <h3>True Edges (${nEdges})</h3>
+                <div class="edge-list">
+                    ${(groundTruth || []).map(([s, t]) => `
+                        <div class="edge-item">
+                            <span style="color:#009E73">&#10003;</span>
+                            <span>${s} &rarr; ${t}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    if (currentStep === -1) {
+        // Observation phase
+        const obs = data.observation || {};
+        const confident = obs.confident_edges || [];
+        const uncertain = obs.uncertain_edges || [];
+
+        panel.innerHTML = `
+            <div class="detail-section">
+                <h3>Phase 1: Observation</h3>
+                <p style="font-size:13px;color:#555;margin-bottom:12px">
+                    Initial hypothesis from observational data (before any interventions).
+                </p>
+            </div>
+            <div class="detail-section">
+                <h3>Confident Edges (${confident.length})</h3>
+                <div class="edge-list">
+                    ${confident.map(e => `
+                        <div class="edge-item">
+                            <span>${e.from} &rarr; ${e.to}</span>
+                            <span class="conf ${e.confidence}">${e.confidence}</span>
+                        </div>
+                        <div style="font-size:11px;color:#666;margin:0 0 6px 12px">${e.reasoning || ''}</div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="detail-section">
+                <h3>Uncertain Edges (${uncertain.length})</h3>
+                <div class="edge-list">
+                    ${uncertain.map(e => `
+                        <div class="edge-item">
+                            <span>${e.from} &rarr; ${e.to}</span>
+                            <span class="conf ${e.confidence}">${e.confidence}</span>
+                        </div>
+                        <div style="font-size:11px;color:#666;margin:0 0 6px 12px">${e.reasoning || ''}</div>
+                    `).join('')}
+                </div>
+            </div>
+            <div class="detail-section">
+                <h3>Data Provided to Model</h3>
+                ${(() => {
+                    // Extract observation prompt from conversation if available
+                    const conv = data.conversation || [];
+                    const obsMsg = conv.find(m => m.role === 'user' && (m.content || '').includes('SIMULATION HISTORY'));
+                    if (obsMsg) {
+                        // Extract just the history table and summary
+                        const content = obsMsg.content;
+                        const histStart = content.indexOf('SIMULATION HISTORY:');
+                        const histEnd = content.indexOf('VARIABLES:');
+                        const varStart = content.indexOf('VARIABLES:');
+                        const varEnd = content.indexOf('Based on');
+                        const histBlock = histStart >= 0 ? content.slice(histStart, histEnd >= 0 ? histEnd : histStart + 800).trim() : '';
+                        const varBlock = varStart >= 0 ? content.slice(varStart, varEnd >= 0 ? varEnd : varStart + 500).trim() : '';
+                        let varHtml = '';
+                        if (varBlock) {
+                            // Parse "VARIABLES: a, b, c" into a wrapped list
+                            const varMatch = varBlock.match(/VARIABLES:\s*(.*)/s);
+                            if (varMatch) {
+                                const vars = varMatch[1].split(',').map(v => v.trim()).filter(v => v);
+                                varHtml = '<div style="margin-top:8px"><strong style="font-size:11px;color:#666">Variables provided:</strong>'
+                                    + '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">'
+                                    + vars.map(v => '<span style="font-size:11px;background:#e8f4fd;padding:2px 8px;border-radius:3px;white-space:nowrap">' + v + '</span>').join('')
+                                    + '</div></div>';
+                            }
+                        }
+                        return '<pre style="font-size:11px;background:#f8f9fa;padding:10px;border-radius:4px;overflow-x:auto;white-space:pre;line-height:1.4">'
+                            + histBlock.replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                            + '</pre>'
+                            + varHtml;
+                    }
+                    // Fallback: show system prompt info
+                    const sysMsg = conv.find(m => m.role === 'system');
+                    if (sysMsg) {
+                        return '<pre style="font-size:11px;background:#f8f9fa;padding:10px;border-radius:4px;overflow-x:auto;white-space:pre;line-height:1.4;max-height:300px;overflow-y:auto">'
+                            + (sysMsg.content || '').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                            + '</pre>';
+                    }
+                    return '<p style="font-size:12px;color:#999">Conversation data not available in this file.</p>';
+                })()}
+            </div>
+        `;
+        return;
+    }
+
+    const intv = data.interventions[currentStep];
+    const inv = intv.intervention || {};
+    const hu = intv.hypothesis_update || {};
+    const analysis = hu.analysis || '';
+    const graph = hu.current_graph || [];
+
+    // Compute edge diff using carry-forward logic (same as graph view)
+    const prevEdges = getEdgesAtStep(currentStep - 1);
+    const currEdges = getEdgesAtStep(currentStep);
+    const prevSet = new Set(prevEdges.map(e => `${e.from}|${e.to}`));
+    const currSet = new Set(currEdges.map(e => `${e.from}|${e.to}`));
+
+    const added = currEdges.filter(e => !prevSet.has(`${e.from}|${e.to}`));
+    const removed = prevEdges.filter(e => !currSet.has(`${e.from}|${e.to}`));
+
+    panel.innerHTML = `
+        <div class="detail-section">
+            <h3>Intervention ${intv.step || currentStep + 1}</h3>
+            <div class="intervention-card ${inv.type || ''}">
+                <div class="intervention-type ${inv.type || ''}">${inv.type || 'unknown'}</div>
+                <div class="intervention-desc">${inv.description || ''}</div>
+                <div class="result-text">${intv.result_summary || 'No result'}</div>
+            </div>
+        </div>
+        <div class="detail-section">
+            <h3>Model Analysis</h3>
+            <div class="analysis-text">${simpleMarkdown(analysis)}</div>
+        </div>
+        ${added.length > 0 ? `
+        <div class="detail-section">
+            <h3>Edges Added (+${added.length})</h3>
+            <div class="edge-list">
+                ${added.map(e => `
+                    <div class="edge-item edge-new">
+                        <span>+ ${e.from} &rarr; ${e.to}</span>
+                        <span class="conf ${e.confidence}">${e.confidence}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>` : ''}
+        ${removed.length > 0 ? `
+        <div class="detail-section">
+            <h3>Edges Removed (-${removed.length})</h3>
+            <div class="edge-list">
+                ${removed.map(e => `
+                    <div class="edge-item edge-removed">
+                        <span>- ${e.from} &rarr; ${e.to}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>` : ''}
+        <div class="detail-section">
+            <h3>Current Graph (${currEdges.length} edges)${graph.length === 0 && currEdges.length > 0 ? ' <span style="font-size:10px;color:#999;font-weight:normal">(carried forward)</span>' : ''}</h3>
+            <div class="edge-list">
+                ${currEdges.map(e => {
+                    const isGT = groundTruth && groundTruth.some(([s,t]) => s === e.from && t === e.to);
+                    const icon = isGT ? '&#10003;' : '&#10007;';
+                    const cls = isGT ? 'gt-correct' : 'gt-fp';
+                    return `
+                        <div class="edge-item">
+                            <span class="${cls}">${icon}</span>
+                            <span>${e.from} &rarr; ${e.to}</span>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+}
+
+// ── Tab switching ──
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`.tab-btn[onclick="switchTab('${tab}')"]`).classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    if (tab === 'dynamics') updateDynamics();
+    if (tab === 'graph') updateGraph();
+    if (tab === 'simulations' && scenarios.length > 0) renderSimulations();
+}
+
+// ── Market Dynamics Panel ──
+function updateDynamics() {
+    const panel = document.getElementById('dynamics-panel');
+    if (!data) { panel.innerHTML = '<p style="color:#999">No data loaded.</p>'; return; }
+
+    // Collect intervention results with deltas
+    const interventions = data.interventions || [];
+    const steps = [];
+    for (const intv of interventions) {
+        const summary = intv.result_summary || '';
+        if (summary === 'FAILED' || summary.includes('SKIPPED') || summary.includes('INVALID')) continue;
+
+        const deltas = {};
+        // Parse "clearing_price=+5.93, volume=-33.33, ..."
+        const pairs = summary.split(',').map(s => s.trim());
+        for (const p of pairs) {
+            const m = p.match(/^([a-z_]+)=([+-]?[\d.]+)/);
+            if (m) deltas[m[1]] = parseFloat(m[2]);
+        }
+        steps.push({
+            step: intv.step,
+            type: intv.intervention?.type || '?',
+            description: intv.intervention?.description || '',
+            deltas,
+        });
+    }
+
+    if (steps.length === 0) {
+        panel.innerHTML = '<p style="color:#999">No intervention results to display.</p>';
+        return;
+    }
+
+    // Collect all variables that appeared in any result
+    const allVars = new Set();
+    steps.forEach(s => Object.keys(s.deltas).forEach(v => allVars.add(v)));
+    const varList = Array.from(allVars).sort();
+
+    // Key variables to chart
+    const chartVars = ['clearing_price', 'volume', 'fundamental_price', 'total_cash', 'total_inventory']
+        .filter(v => allVars.has(v));
+
+    let html = '';
+
+    // ── Chart: effect magnitude per intervention ──
+    const chartW = 600, chartH = 200, margin = { top: 20, right: 20, bottom: 40, left: 60 };
+    const innerW = chartW - margin.left - margin.right;
+    const innerH = chartH - margin.top - margin.bottom;
+
+    for (const varName of chartVars) {
+        const values = steps.map(s => ({ step: s.step, delta: s.deltas[varName] || 0, type: s.type }));
+
+        const maxAbs = Math.max(1, d3.max(values, d => Math.abs(d.delta)));
+
+        html += `<h3>${varName.replace(/_/g, ' ')}</h3>`;
+        html += `<svg viewBox="0 0 ${chartW} ${chartH}" style="max-height:${chartH}px">`;
+        html += `<g transform="translate(${margin.left},${margin.top})">`;
+
+        // Y axis
+        const yScale = d3.scaleLinear().domain([-maxAbs, maxAbs]).range([innerH, 0]);
+        const xScale = d3.scaleBand().domain(values.map(d => d.step)).range([0, innerW]).padding(0.3);
+
+        // Zero line
+        html += `<line x1="0" x2="${innerW}" y1="${yScale(0)}" y2="${yScale(0)}" stroke="#ddd" stroke-width="1"/>`;
+
+        // Y axis ticks
+        const ticks = yScale.ticks(5);
+        for (const t of ticks) {
+            html += `<text x="-8" y="${yScale(t) + 3}" text-anchor="end" font-size="10" fill="#999">${t >= 0 ? '+' : ''}${t.toFixed(1)}</text>`;
+            html += `<line x1="0" x2="${innerW}" y1="${yScale(t)}" y2="${yScale(t)}" stroke="#f0f0f0" stroke-width="0.5"/>`;
+        }
+
+        // Bars
+        const typeColor = { event: '#E69F00', trait: '#D55E00', action: '#009E73' };
+        for (const d of values) {
+            const x = xScale(d.step);
+            const w = xScale.bandwidth();
+            const y0 = yScale(0);
+            const y1 = yScale(d.delta);
+            const barY = Math.min(y0, y1);
+            const barH = Math.abs(y1 - y0);
+            const color = typeColor[d.type] || '#999';
+
+            // Highlight current step
+            const isCurrent = currentStep >= 0 && data.interventions[currentStep]?.step === d.step;
+            const opacity = isCurrent ? 1 : 0.6;
+            const strokeW = isCurrent ? 2 : 0;
+
+            html += `<rect x="${x}" y="${barY}" width="${w}" height="${Math.max(barH, 1)}" fill="${color}" opacity="${opacity}" stroke="#333" stroke-width="${strokeW}" rx="2"/>`;
+            html += `<text x="${x + w/2}" y="${yScale(0) + 14}" text-anchor="middle" font-size="9" fill="#666">${d.step}</text>`;
+        }
+
+        // X label
+        html += `<text x="${innerW/2}" y="${innerH + 32}" text-anchor="middle" font-size="10" fill="#999">Intervention Step</text>`;
+        // Y label
+        html += `<text x="-40" y="${innerH/2}" text-anchor="middle" font-size="10" fill="#999" transform="rotate(-90,-40,${innerH/2})">Delta</text>`;
+
+        html += '</g></svg>';
+    }
+
+    // ── Table: all deltas ──
+    html += '<h3>All Intervention Effects</h3>';
+    html += '<table class="trajectory-table"><thead><tr><th>#</th><th>Type</th><th>Description</th>';
+    for (const v of varList) html += `<th>${v.replace(/_/g, ' ')}</th>`;
+    html += '</tr></thead><tbody>';
+
+    for (const s of steps) {
+        const isCurrent = currentStep >= 0 && data.interventions[currentStep]?.step === s.step;
+        const bg = isCurrent ? ' style="background:#e8f4fd"' : '';
+        html += `<tr${bg}><td>${s.step}</td><td>${s.type}</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${s.description}">${s.description}</td>`;
+        for (const v of varList) {
+            const val = s.deltas[v];
+            if (val !== undefined) {
+                const cls = val > 0 ? 'positive' : val < 0 ? 'negative' : '';
+                html += `<td class="${cls}">${val > 0 ? '+' : ''}${val.toFixed(2)}</td>`;
+            } else {
+                html += '<td style="color:#ddd">-</td>';
+            }
+        }
+        html += '</tr>';
+    }
+    html += '</tbody></table>';
+
+    // Type legend
+    html += `<div style="margin-top:12px;font-size:11px;color:#666">
+        <span style="color:#E69F00">&#9632;</span> Event &nbsp;
+        <span style="color:#D55E00">&#9632;</span> Trait &nbsp;
+        <span style="color:#009E73">&#9632;</span> Action
+    </div>`;
+
+    panel.innerHTML = html;
+}
+
+// ── Simulations Tab ──
+// Preloaded simulation data (10 market scenarios, 30 periods each)
+const PRELOADED_SCENARIOS = [{"scenario_id":"scenario_001","price_history":[108.38,113.66,113.66,115.94,119.75,125.03,125.03,134.44,134.44,121.59,123.84,123.84,116.31,125.6,125.6,125.6,116.31,116.31,120.03,116.31,121.59,116.31,116.31,116.31,97.78,116.31,116.31,116.31,116.31,107.19],"volume_history":[35,40,40,60,40,40,0,30,30,40,30,30,40,30,30,30,40,40,30,40,40,40,40,40,28,40,40,40,40,40],"fundamental_history":[90.47,111.37,111.37,121.27,121.27,121.27,133.16,133.16,133.16,121.27,140.43,140.43,121.27,142.59,142.59,142.59,121.27,121.27,135.71,121.27,121.27,121.27,121.27,121.27,97.88,121.27,121.27,121.27,121.27,112.81],"summary":{"scenario_id":"scenario_001","mean_price":118.75,"std_price":7.28,"mean_volume":36.1,"return_std":0.0615}},{"scenario_id":"scenario_002","price_history":[87.21,87.21,73.09,88.53,95.42,100.39,102.93,75.77,92.52,92.52,94.93,84.56,82.22,80.92,76.8,103.41,88.53,99.58,99.58,99.58,84.56,88.53,88.53,92.9,95.12,88.53,75.0,64.0,78.66,91.84],"volume_history":[34,40,29,40,50,47,47,40,40,40,60,40,40,30,30,31,40,43,30,15,31,40,40,49,49,40,40,40,30,10],"fundamental_history":[92.22,92.22,73.22,92.22,98.6,80.4,80.4,80.4,92.22,92.22,92.22,73.22,73.22,80.47,80.47,102.3,92.22,98.76,98.76,90.38,73.22,92.22,92.22,92.22,92.22,92.22,79.68,64.21,78.38,102.8],"summary":{"scenario_id":"scenario_002","mean_price":88.45,"std_price":9.46,"mean_volume":38.0,"return_std":0.1347}},{"scenario_id":"scenario_003","price_history":[114.38,114.38,119.68,124.56,119.68,119.68,119.68,124.97,132.55,136.41,110.19,119.68,119.68,124.56,113.18,96.0,87.58,110.96,114.81,122.08,110.96,116.25,119.25,124.34,126.93,116.25,116.25,115.0,115.0,106.4],"volume_history":[35,40,40,54,40,40,40,40,42,41,40,40,40,42,30,30,30,37,54,42,36,40,40,60,50,40,40,30,0,40],"fundamental_history":[98.82,98.82,121.27,121.27,121.27,98.82,98.82,121.27,121.27,113.01,113.01,98.82,98.82,98.82,107.27,98.82,98.82,98.82,98.82,98.82,98.82,121.27,124.03,124.03,112.52,121.27,98.82,108.96,132.21,91.81],"summary":{"scenario_id":"scenario_003","mean_price":117.04,"std_price":9.32,"mean_volume":39.2,"return_std":0.083}},{"scenario_id":"scenario_004","price_history":[98.09,128.98,128.98,119.63,121.47,127.03,100.14,88.63,106.3,118.9,121.81,128.85,132.44,107.21,117.55,123.11,123.11,128.67,123.11,123.11,117.55,117.55,123.11,112.74,112.74,112.74,112.74,128.67,128.67,128.67],"volume_history":[40,40,40,29,40,40,40,37,40,60,60,50,50,40,33,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],"fundamental_history":[108.2,130.23,130.23,118.52,99.52,123.7,89.39,89.78,110.5,126.29,126.29,132.3,113.58,113.58,102.91,128.3,128.3,128.3,128.3,128.3,102.91,102.91,128.3,118.69,118.69,118.69,118.69,128.3,128.3,128.3],"summary":{"scenario_id":"scenario_004","mean_price":118.74,"std_price":10.31,"mean_volume":41.4,"return_std":0.1018}},{"scenario_id":"scenario_005","price_history":[79.1,87.82,97.48,100.78,97.48,102.13,112.44,117.7,91.27,91.27,91.27,86.61,102.13,107.8,110.69,99.25,106.77,106.77,110.17,99.36,99.36,99.36,84.17,84.17,84.17,102.13,119.54,119.54,102.13,94.14],"volume_history":[27,38,40,50,40,40,20,20,40,40,40,33,40,44,44,30,40,40,60,30,30,30,40,40,40,40,25,25,40,40],"fundamental_history":[79.71,79.71,86.53,86.53,86.53,86.53,116.07,116.07,78.86,78.86,78.86,78.86,86.53,86.53,94.07,94.07,106.5,106.5,106.5,94.17,94.17,94.17,73.85,73.85,73.85,86.53,113.44,113.44,86.53,94.82],"summary":{"scenario_id":"scenario_005","mean_price":99.57,"std_price":10.66,"mean_volume":36.9,"return_std":0.0981}},{"scenario_id":"scenario_006","price_history":[113.52,113.52,114.73,117.61,122.44,122.44,122.44,125.1,125.1,118.92,112.72,112.72,112.72,112.72,118.92,125.12,118.92,113.55,110.09,109.53,114.91,118.92,134.2,118.92,113.55,118.92,118.92,118.92,118.92,118.92],"volume_history":[35,40,30,60,40,40,40,30,30,40,36,0,0,0,40,50,40,38,40,40,40,40,30,40,40,40,40,40,40,40],"fundamental_history":[116.17,116.17,132.68,116.17,123.94,123.94,123.94,138.56,138.56,123.94,99.45,133.49,139.15,139.15,123.94,123.94,123.94,99.45,99.45,96.71,120.22,123.94,133.11,123.94,99.45,123.94,123.94,123.94,123.94,123.94],"summary":{"scenario_id":"scenario_006","mean_price":117.93,"std_price":5.25,"mean_volume":35.3,"return_std":0.0441}},{"scenario_id":"scenario_007","price_history":[98.03,106.98,106.98,102.51,102.51,101.95,99.53,99.53,99.53,77.27,81.75,99.53,112.93,112.93,112.93,99.53,114.65,114.65,114.65,99.53,99.53,99.53,99.53,99.53,100.66,105.03,107.25,112.85,115.71,99.53],"volume_history":[39,40,40,40,40,30,40,40,40,40,40,40,33,13,23,40,30,30,30,40,40,40,40,40,30,53,53,49,49,40],"fundamental_history":[103.67,103.67,103.67,103.67,103.67,117.6,103.67,103.67,103.67,70.49,87.2,103.67,111.93,102.52,102.52,103.67,113.52,113.52,113.52,103.67,103.67,103.67,103.67,103.67,115.94,103.67,103.67,103.67,103.67,103.67],"summary":{"scenario_id":"scenario_007","mean_price":103.24,"std_price":8.74,"mean_volume":38.1,"return_std":0.0849}},{"scenario_id":"scenario_008","price_history":[90.62,90.62,77.32,92.07,97.0,87.9,97.09,104.6,92.07,87.9,87.9,87.9,92.07,77.32,63.78,50.62,71.76,82.47,87.93,77.32,87.9,87.9,90.7,87.9,87.9,78.19,78.19,78.19,78.19,77.32],"volume_history":[38,40,30,40,43,38,30,33,40,40,40,40,40,22,31,26,39,41,41,17,40,40,41,40,40,40,40,40,40,19],"fundamental_history":[95.98,95.98,77.41,95.98,95.98,77.41,100.64,103.72,95.98,77.41,77.41,77.41,95.98,77.41,66.23,66.23,66.23,77.41,77.41,77.41,77.41,77.41,77.41,77.41,77.41,70.68,70.68,70.68,70.68,77.41],"summary":{"scenario_id":"scenario_008","mean_price":84.29,"std_price":10.35,"mean_volume":36.4,"return_std":0.1249}},{"scenario_id":"scenario_009","price_history":[89.27,75.6,93.36,75.6,75.6,90.67,95.36,97.75,90.67,90.67,90.67,90.67,90.67,90.67,93.54,96.82,102.59,105.53,85.25,81.15,90.67,95.36,97.75,90.67,103.32,103.32,94.77,90.67,90.67,90.67],"volume_history":[40,25,40,23,24,40,48,48,40,40,40,40,40,40,30,49,40,40,40,40,40,49,49,40,30,30,40,40,40,40],"fundamental_history":[94.48,75.7,94.48,75.7,75.7,94.48,94.48,94.48,94.48,94.48,94.48,94.48,94.48,94.48,106.76,106.76,106.76,94.48,85.67,85.67,94.48,94.48,94.48,94.48,102.41,102.41,94.48,94.48,94.48,94.48],"summary":{"scenario_id":"scenario_009","mean_price":91.67,"std_price":7.46,"mean_volume":38.9,"return_std":0.0945}},{"scenario_id":"scenario_010","price_history":[82.08,93.0,93.0,96.03,102.68,82.08,97.42,97.42,102.72,105.41,82.81,97.42,97.42,102.72,105.41,97.42,97.42,97.42,97.39,92.08,97.42,82.08,73.7,97.42,102.72,105.41,97.42,80.06,93.48,102.32],"volume_history":[25,36,40,48,50,29,40,40,42,43,40,40,40,43,43,40,40,40,30,30,40,27,30,40,43,43,40,40,40,40],"fundamental_history":[82.16,82.16,82.16,82.16,106.44,82.16,82.16,82.16,71.97,71.97,71.97,82.16,82.16,82.16,82.16,82.16,82.16,82.16,92.24,92.24,82.16,82.16,82.16,82.16,82.16,82.16,82.16,70.04,82.5,102.02],"summary":{"scenario_id":"scenario_010","mean_price":95.05,"std_price":8.22,"mean_volume":38.7,"return_std":0.1183}}];
+let scenarios = PRELOADED_SCENARIOS.slice();
+
+document.getElementById('scenario-files').addEventListener('change', (e) => {
+    const files = Array.from(e.target.files);
+    scenarios = [];
+    let loaded = 0;
+    for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                const json = JSON.parse(ev.target.result);
+                json._filename = file.name;
+                scenarios.push(json);
+            } catch (err) { /* skip bad files */ }
+            loaded++;
+            if (loaded === files.length) {
+                scenarios.sort((a, b) => (a.summary?.scenario_id || a._filename).localeCompare(b.summary?.scenario_id || b._filename));
+                renderSimulations();
+            }
+        };
+        reader.readAsText(file);
+    }
+});
+
+function renderSimulations() {
+    const panel = document.getElementById('simulations-panel');
+    if (scenarios.length === 0) {
+        panel.innerHTML = '<p style="color:#999">No scenarios loaded.</p>';
+        return;
+    }
+
+    const colors = ['#0072B2', '#D55E00', '#009E73', '#E69F00', '#CC79A7',
+                    '#56B4E9', '#F0E442', '#882255', '#332288', '#117733'];
+
+    const metrics = [
+        { key: 'price_history', label: 'Clearing Price', unit: '$' },
+        { key: 'volume_history', label: 'Trade Volume', unit: '' },
+        { key: 'fundamental_history', label: 'Fundamental Price', unit: '$' },
+    ];
+
+    const chartW = 640, chartH = 200, margin = { top: 20, right: 120, bottom: 35, left: 55 };
+    const innerW = chartW - margin.left - margin.right;
+    const innerH = chartH - margin.top - margin.bottom;
+
+    let html = `<h3>Simulation Scenarios (${scenarios.length} loaded)</h3>`;
+
+    for (const metric of metrics) {
+        // Collect all series
+        const allSeries = [];
+        for (const sc of scenarios) {
+            const vals = sc[metric.key] || [];
+            if (vals.length > 0) allSeries.push({ id: sc.summary?.scenario_id || sc._filename, vals });
+        }
+        if (allSeries.length === 0) continue;
+
+        const maxLen = d3.max(allSeries, s => s.vals.length);
+        const allVals = allSeries.flatMap(s => s.vals);
+        const yMin = d3.min(allVals) * 0.95;
+        const yMax = d3.max(allVals) * 1.05;
+
+        const xScale = d3.scaleLinear().domain([1, maxLen]).range([0, innerW]);
+        const yScale = d3.scaleLinear().domain([yMin, yMax]).range([innerH, 0]);
+
+        html += `<h3>${metric.label}</h3>`;
+        html += `<svg viewBox="0 0 ${chartW} ${chartH}" style="max-height:${chartH}px">`;
+        html += `<g transform="translate(${margin.left},${margin.top})">`;
+
+        // Grid lines
+        const yTicks = yScale.ticks(5);
+        for (const t of yTicks) {
+            html += `<line x1="0" x2="${innerW}" y1="${yScale(t)}" y2="${yScale(t)}" stroke="#f0f0f0"/>`;
+            html += `<text x="-8" y="${yScale(t) + 3}" text-anchor="end" font-size="9" fill="#999">${metric.unit}${t.toFixed(1)}</text>`;
+        }
+        const xTicks = xScale.ticks(Math.min(maxLen, 10));
+        for (const t of xTicks) {
+            html += `<text x="${xScale(t)}" y="${innerH + 16}" text-anchor="middle" font-size="9" fill="#999">${t}</text>`;
+        }
+
+        // Lines
+        for (let si = 0; si < allSeries.length; si++) {
+            const s = allSeries[si];
+            const color = colors[si % colors.length];
+            let pathD = '';
+            for (let i = 0; i < s.vals.length; i++) {
+                const x = xScale(i + 1);
+                const y = yScale(s.vals[i]);
+                pathD += (i === 0 ? 'M' : 'L') + `${x},${y}`;
+            }
+            html += `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>`;
+            // Label at end
+            const lastY = yScale(s.vals[s.vals.length - 1]);
+            html += `<text x="${innerW + 6}" y="${lastY + 3}" font-size="8" fill="${color}">${s.id}</text>`;
+        }
+
+        // Axes
+        html += `<line x1="0" x2="${innerW}" y1="${innerH}" y2="${innerH}" stroke="#ccc"/>`;
+        html += `<line x1="0" x2="0" y1="0" y2="${innerH}" stroke="#ccc"/>`;
+        html += `<text x="${innerW / 2}" y="${innerH + 30}" text-anchor="middle" font-size="10" fill="#666">Period</text>`;
+
+        html += '</g></svg>';
+    }
+
+    // Summary table
+    html += '<h3>Scenario Summary</h3>';
+    html += '<table class="trajectory-table"><thead><tr>';
+    html += '<th>Scenario</th><th>Mean Price</th><th>Std Price</th><th>Mean Volume</th><th>Volatility</th>';
+    html += '</tr></thead><tbody>';
+    for (const sc of scenarios) {
+        const s = sc.summary || {};
+        html += `<tr>`;
+        html += `<td>${s.scenario_id || sc._filename}</td>`;
+        html += `<td>$${(s.mean_price || 0).toFixed(2)}</td>`;
+        html += `<td>$${(s.std_price || 0).toFixed(2)}</td>`;
+        html += `<td>${(s.mean_volume || 0).toFixed(1)}</td>`;
+        html += `<td>${((s.return_std || 0) * 100).toFixed(1)}%</td>`;
+        html += `</tr>`;
+    }
+    html += '</tbody></table>';
+
+    // Scenario detail section
+    html += `<hr style="margin:20px 0;border:none;border-top:1px solid #ddd">`;
+    html += `<h3>Scenario Detail — Internal Dynamics</h3>`;
+    html += `<p style="font-size:12px;color:#666;margin-bottom:8px">Load a scenario JSON to see per-agent cash, inventory, order flow, and price dynamics.</p>`;
+    html += `<input type="file" id="detail-scenario-input" accept=".json" style="font-size:12px;margin-bottom:12px">`;
+    html += `<div id="scenario-detail-content"></div>`;
+
+    panel.innerHTML = html;
+
+    // Attach file listener
+    document.getElementById('detail-scenario-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                detailScenario = JSON.parse(ev.target.result);
+                renderScenarioDetail();
+            } catch (err) { alert('Failed to parse: ' + err.message); }
+        };
+        reader.readAsText(file);
+    });
+
+    // If already loaded, render
+    if (detailScenario) renderScenarioDetail();
+}
+
+function skipToSimulations() {
+    document.getElementById('upload-overlay').style.display = 'none';
+    switchTab('simulations');
+}
+
+function renderScenarioDetail() {
+    const panel = document.getElementById('scenario-detail-content');
+    if (!panel) return;
+    if (!detailScenario || !detailScenario.orders_log) {
+        panel.innerHTML = '<p style="color:#999">No detailed scenario data.</p>';
+        return;
+    }
+
+    const log = detailScenario.orders_log;
+    const nPeriods = log.length;
+    const scenarioId = detailScenario.summary?.scenario_id || 'Unknown';
+
+    // Extract per-period aggregates
+    const periods = [];
+    const agentNames = log[0]?.agent_states ? Object.keys(log[0].agent_states) : [];
+
+    for (const p of log) {
+        const entry = {
+            period: p.period + 1,
+            clearing_price: p.clearing_price,
+            volume: p.volume,
+            fundamental_price: p.fundamental_price,
+            avg_bid_price: p.avg_bid_price,
+            avg_ask_price: p.avg_ask_price,
+            total_bid_qty: p.total_bid_qty,
+            total_ask_qty: p.total_ask_qty,
+            bid_ask_spread: (p.avg_bid_price || 0) - (p.avg_ask_price || 0),
+            n_orders: (p.orders || []).length,
+        };
+        // Agent states
+        const states = p.agent_states || {};
+        let totalCash = 0, totalInv = 0;
+        for (const [aid, st] of Object.entries(states)) {
+            totalCash += st.cash || 0;
+            totalInv += st.inventory || 0;
+            entry[`${aid}_cash`] = st.cash;
+            entry[`${aid}_inv`] = st.inventory;
+        }
+        entry.total_cash = totalCash;
+        entry.total_inventory = totalInv;
+        periods.push(entry);
+    }
+
+    const chartW = 620, chartH = 160, margin = { top: 16, right: 16, bottom: 28, left: 55 };
+    const innerW = chartW - margin.left - margin.right;
+    const innerH = chartH - margin.top - margin.bottom;
+
+    function makeLineChart(title, series, yUnit) {
+        // series: [{label, values, color}]
+        const allVals = series.flatMap(s => s.values.filter(v => v != null));
+        if (allVals.length === 0) return '';
+        const yMin = Math.min(...allVals) * 0.95;
+        const yMax = Math.max(...allVals) * 1.05;
+        const xScale = d3.scaleLinear().domain([1, nPeriods]).range([0, innerW]);
+        const yScale = d3.scaleLinear().domain([yMin, yMax]).range([innerH, 0]);
+
+        let svg = `<h3>${title}</h3><svg viewBox="0 0 ${chartW} ${chartH}" style="max-height:${chartH}px">`;
+        svg += `<g transform="translate(${margin.left},${margin.top})">`;
+
+        // Grid
+        for (const t of yScale.ticks(4)) {
+            svg += `<line x1="0" x2="${innerW}" y1="${yScale(t)}" y2="${yScale(t)}" stroke="#f0f0f0"/>`;
+            svg += `<text x="-6" y="${yScale(t)+3}" text-anchor="end" font-size="9" fill="#999">${yUnit}${t.toFixed(1)}</text>`;
+        }
+
+        // Lines
+        for (const s of series) {
+            let pathD = '';
+            for (let i = 0; i < s.values.length; i++) {
+                if (s.values[i] == null) continue;
+                const x = xScale(i + 1), y = yScale(s.values[i]);
+                pathD += (pathD === '' ? 'M' : 'L') + `${x},${y}`;
+            }
+            svg += `<path d="${pathD}" fill="none" stroke="${s.color}" stroke-width="1.5"/>`;
+            // Label
+            const lastVal = s.values[s.values.length - 1];
+            if (lastVal != null) {
+                svg += `<text x="${innerW + 4}" y="${yScale(lastVal)+3}" font-size="8" fill="${s.color}">${s.label}</text>`;
+            }
+        }
+
+        // X axis
+        svg += `<line x1="0" x2="${innerW}" y1="${innerH}" y2="${innerH}" stroke="#ccc"/>`;
+        for (const t of xScale.ticks(Math.min(nPeriods, 10))) {
+            svg += `<text x="${xScale(t)}" y="${innerH+14}" text-anchor="middle" font-size="9" fill="#999">${t}</text>`;
+        }
+
+        svg += '</g></svg>';
+        return svg;
+    }
+
+    let html = `<h3 style="margin-top:0">${scenarioId} — ${nPeriods} periods, ${agentNames.length} agents</h3>`;
+
+    // 1. Price dynamics: clearing vs fundamental vs bid/ask
+    html += makeLineChart('Price Dynamics', [
+        { label: 'Clearing', values: periods.map(p => p.clearing_price), color: '#0072B2' },
+        { label: 'Fundamental', values: periods.map(p => p.fundamental_price), color: '#E69F00' },
+        { label: 'Avg Bid', values: periods.map(p => p.avg_bid_price), color: '#009E73' },
+        { label: 'Avg Ask', values: periods.map(p => p.avg_ask_price), color: '#D55E00' },
+    ], '$');
+
+    // 2. Volume + order quantities
+    html += makeLineChart('Volume & Order Flow', [
+        { label: 'Volume', values: periods.map(p => p.volume), color: '#0072B2' },
+        { label: 'Bid Qty', values: periods.map(p => p.total_bid_qty), color: '#009E73' },
+        { label: 'Ask Qty', values: periods.map(p => p.total_ask_qty), color: '#D55E00' },
+    ], '');
+
+    // 3. Total cash + inventory
+    html += makeLineChart('Aggregate Cash & Inventory', [
+        { label: 'Total Cash', values: periods.map(p => p.total_cash), color: '#0072B2' },
+    ], '$');
+    html += makeLineChart('', [
+        { label: 'Total Inventory', values: periods.map(p => p.total_inventory), color: '#882255' },
+    ], '');
+
+    // 4. Per-agent cash
+    const agentColors = ['#0072B2', '#D55E00', '#009E73', '#E69F00', '#CC79A7', '#56B4E9', '#882255'];
+    const producers = agentNames.filter(a => a.startsWith('producer'));
+    const consumers = agentNames.filter(a => a.startsWith('consumer'));
+    const speculators = agentNames.filter(a => a.startsWith('speculator'));
+
+    html += makeLineChart('Producer Cash', producers.map((a, i) => ({
+        label: a, values: periods.map(p => p[`${a}_cash`]), color: agentColors[i % agentColors.length],
+    })), '$');
+
+    html += makeLineChart('Consumer Cash', consumers.map((a, i) => ({
+        label: a, values: periods.map(p => p[`${a}_cash`]), color: agentColors[(i+3) % agentColors.length],
+    })), '$');
+
+    if (speculators.length > 0) {
+        html += makeLineChart('Speculator Cash', speculators.map((a, i) => ({
+            label: a, values: periods.map(p => p[`${a}_cash`]), color: agentColors[(i+5) % agentColors.length],
+        })), '$');
+    }
+
+    // 5. Per-agent inventory
+    html += makeLineChart('Producer Inventory', producers.map((a, i) => ({
+        label: a, values: periods.map(p => p[`${a}_inv`]), color: agentColors[i % agentColors.length],
+    })), '');
+
+    panel.innerHTML = html;
+}
+
+// Render preloaded simulations on page load
+if (scenarios.length > 0) renderSimulations();
+
+// Handle window resize
+window.addEventListener('resize', () => { if (data) updateGraph(); });
+</script>
+</body>
+</html>

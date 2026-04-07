@@ -57,14 +57,14 @@ from forecast_bench.run_sensitivity import (
 # Source dirs for loading DAGs (_shared_stages_causal cache)
 # These point to full pipeline dirs which have the cache
 MODEL_DIRS = {
-    "llama": "llama_one_turn",
-    "llama-70b": "70b_one_turn",
-    "deepseek": "deepseek_one_turn",
-    "qwen": "qwen_one_turn",
-    "gemini-flash-lite": "gemini_flash_lite_neutral",
-    "gemini-flash-lite-nitro": "gemini_flash_lite_neutral",
+    "llama": "llama_neutral",
+    "llama-70b": "llama_70b_neutral",
+    "deepseek": "deepseek_neutral",
+    "qwen": "qwen_neutral",
+    "gemini-flash-lite": "gemini_fl_neutral",
+    "gemini-flash-lite-nitro": "gemini_fl_neutral",
     "gpt-oss": "gpt_oss_neutral",
-    "qwen-32b": "qwen32b_one_turn",
+    "qwen-32b": "qwen_32b_neutral",
 }
 
 CAUSAL_BASE = Path(__file__).parent.parent / "outputs" / "sensitivity" / "causal"
@@ -138,102 +138,89 @@ def deduplicate_nodes(all_nodes: list[dict], threshold: float = 0.5) -> list[dic
 
 # ─── Scrambled DAG generation ─────────────────────────────────────────────
 
-def build_scrambled_dag(
-    pooled_nodes: list[dict],
-    n_factors: int = 6,
+def permute_dag_edges(
+    nodes: list[dict],
+    edges: list[dict],
     seed: int = 42,
-) -> tuple[list[dict], list[dict]]:
-    """Build a random DAG from a pool of real nodes.
+) -> list[dict]:
+    """Randomly rewire edges of an existing DAG while preserving constraints.
 
-    Samples n_factors nodes, creates a random DAG structure ensuring:
-    - All nodes can reach the outcome
-    - At least some indirect paths exist (not all direct)
-    - DAG has no cycles
+    Keeps the same nodes and same number of edges. Rewires by repeatedly
+    swapping edge endpoints until a valid DAG is produced:
+    - Acyclic
+    - All factor nodes can reach the outcome
+    - No disconnected nodes
+    - Outcome has at least 1 incoming edge
 
-    Returns (nodes, edges) in the same format as the real pipeline.
+    Returns new edges list (same format, mechanisms replaced with generic text).
     """
+    import networkx as nx
     rng = random.Random(seed)
 
-    # Sample factor nodes
-    n_sample = min(n_factors, len(pooled_nodes))
-    factors = rng.sample(pooled_nodes, n_sample)
+    node_ids = [n["id"] for n in nodes]
+    factor_ids = [n["id"] for n in nodes if n.get("role") != "outcome"]
+    outcome_id = next(n["id"] for n in nodes if n.get("role") == "outcome")
+    n_edges = len(edges)
 
-    # Ensure all have role=factor
-    factor_nodes = []
-    for f in factors:
-        factor_nodes.append({
-            "id": f["id"],
-            "description": f.get("description", ""),
-            "role": "factor",
-        })
-
-    # Add outcome node
-    outcome = {"id": "outcome", "description": "The forecasted event", "role": "outcome"}
-    all_nodes = factor_nodes + [outcome]
-
-    # Generate fully random DAG edges.
-    # Strategy: enumerate all possible directed edges among nodes (including
-    # outcome as target only), randomly select a subset, then verify DAG
-    # constraints (acyclic, outcome reachable from all factors).
-    all_ids = [n["id"] for n in factor_nodes] + ["outcome"]
-    factor_ids = [n["id"] for n in factor_nodes]
-
-    # All possible edges: any factor→factor or factor→outcome
-    # (outcome never has outgoing edges)
+    # All possible edges: factor→factor or factor→outcome (outcome never has outgoing)
     possible_edges = []
     for src in factor_ids:
-        for tgt in all_ids:
+        for tgt in node_ids:
             if src != tgt:
                 possible_edges.append((src, tgt))
 
-    # Target edge count: similar density to real DAGs (~1.0-1.2 edges per node)
-    target_n_edges = rng.randint(n_sample, int(n_sample * 1.5))
-    target_n_edges = min(target_n_edges, len(possible_edges))
-
-    # Repeatedly sample until we get a valid DAG
-    import networkx as nx
-    for _attempt in range(100):
-        sampled = rng.sample(possible_edges, target_n_edges)
+    for _attempt in range(500):
+        # Sample same number of edges from possible set
+        if n_edges > len(possible_edges):
+            sampled = list(possible_edges)
+        else:
+            sampled = rng.sample(possible_edges, n_edges)
 
         G = nx.DiGraph()
-        G.add_nodes_from(all_ids)
+        G.add_nodes_from(node_ids)
         G.add_edges_from(sampled)
 
-        # Check: is it a DAG?
+        # Check: valid DAG
         if not nx.is_directed_acyclic_graph(G):
             continue
 
-        # Check: can all factors reach outcome?
-        all_reach = all(
-            nx.has_path(G, f, "outcome") for f in factor_ids
-        )
-        if not all_reach:
+        # Check: all factors can reach outcome
+        if not all(nx.has_path(G, f, outcome_id) for f in factor_ids):
             continue
 
-        # Check: outcome has at least 1 incoming edge
-        if G.in_degree("outcome") == 0:
+        # Check: outcome has incoming edge
+        if G.in_degree(outcome_id) == 0:
             continue
 
-        # Valid DAG found
-        edges = []
+        # Check: no disconnected nodes
+        edge_node_ids = set()
+        for s, t in sampled:
+            edge_node_ids.add(s)
+            edge_node_ids.add(t)
+        if any(n not in edge_node_ids for n in node_ids):
+            continue
+
+        # Check: not identical to original
+        orig_set = {(e["from"], e["to"]) for e in edges}
+        new_set = set(sampled)
+        if orig_set == new_set:
+            continue
+
+        # Valid permuted DAG
+        new_edges = []
         for src, tgt in sampled:
-            edges.append({
+            new_edges.append({
                 "from": src,
                 "to": tgt,
                 "mechanism": f"{src.replace('_', ' ')} influences {tgt.replace('_', ' ')}",
             })
-        break
-    else:
-        # Fallback: simple star topology (all factors → outcome)
-        edges = []
-        for f in factor_ids:
-            edges.append({
-                "from": f,
-                "to": "outcome",
-                "mechanism": f"{f.replace('_', ' ')} influences the outcome",
-            })
+        return new_edges
 
-    return all_nodes, edges
+    # Fallback: should rarely happen with 500 attempts
+    # Return edges with just the mechanisms stripped (same structure)
+    return [{"from": e["from"], "to": e["to"],
+             "mechanism": f"{e['from'].replace('_', ' ')} influences {e['to'].replace('_', ' ')}"}
+            for e in edges]
 
 
 def pool_nodes_for_question(qid: str) -> list[dict]:
@@ -285,7 +272,7 @@ def run_scrambled(args):
         api_key=api_key,
         model=model,
         temperature=args.temperature,
-        max_tokens=1200,
+        max_tokens=2000,
     )
 
     # Get initial probabilities from the model's real run
@@ -323,16 +310,12 @@ def run_scrambled(args):
         real_data = json.loads(real_cache.read_text(encoding="utf-8"))
         initial_prob = real_data["initial_probability"]
 
-        # Pool and deduplicate nodes across models
-        pooled = pool_nodes_for_question(qid)
-        if len(pooled) < 4:
-            print(f"  [{q_idx+1}/{len(questions)}] {qid[:40]} -- too few pooled nodes ({len(pooled)})")
-            n_failed += 1
-            continue
-
-        # Build scrambled DAG (use question-specific seed for reproducibility)
+        # Use original DAG's nodes, permute its edges
+        orig_nodes = real_data["nodes"]
+        orig_edges = real_data["edges"]
         scrambled_seed = hash(qid) % (2**31)
-        nodes, edges = build_scrambled_dag(pooled, n_factors=6, seed=scrambled_seed)
+        edges = permute_dag_edges(orig_nodes, orig_edges, seed=scrambled_seed)
+        nodes = orig_nodes
 
         # Run network analysis on scrambled DAG
         try:
@@ -347,7 +330,7 @@ def run_scrambled(args):
 
         print(f"  [{q_idx+1}/{len(questions)}] {qid[:40]} "
               f"(p={initial_prob:.2f}, {len(nodes)}N/{len(edges)}E, "
-              f"{len(pooled)} pooled, {len(probe_targets)} targets) ...", end=" ")
+              f"{len(probe_targets)} targets) ...", end=" ")
 
         # Stage 2: Generate probes for scrambled DAG
         probes = []
@@ -408,7 +391,7 @@ def run_scrambled(args):
             "nodes": nodes,
             "edges": edges,
             "network_analysis": net_dict,
-            "pooled_node_count": len(pooled),
+            "permutation_seed": scrambled_seed,
             "scrambled_seed": scrambled_seed,
             "probe_results": probe_results,
         }

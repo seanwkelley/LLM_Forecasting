@@ -216,7 +216,8 @@ def compute_embeddings(reasoning_map: dict, api_key: str) -> dict:
         # Save incrementally every 50 embeddings
         if len(new_embeddings) > 0 and len(new_embeddings) % 50 == 0:
             _merge_and_save(key_to_idx, matrix, new_keys, new_embeddings)
-            # Reload so we don't double-count
+            # Free memory and reload from disk
+            del matrix
             key_to_idx, matrix = _load_embedding_cache()
             new_keys, new_embeddings = [], []
             print(f"  [{i+1}/{len(missing_keys)}] checkpoint saved ({len(key_to_idx)} total)")

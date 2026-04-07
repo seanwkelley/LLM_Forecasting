@@ -29,8 +29,9 @@ MODEL_DIRS = {
     "Llama-3.3-70B": BASE / "llama_70b_neutral",
     "DeepSeek-V3": BASE / "deepseek_neutral",
     "Qwen3-235B": BASE / "qwen_neutral",
-    "Gemini-Flash-Lite": BASE / "gemini_flash_lite_neutral",
+    "Gemini-Flash-Lite": BASE / "gemini_fl_neutral",
     "GPT-OSS-120B": BASE / "gpt_oss_neutral",
+    "Qwen3-32B": BASE / "qwen_32b_neutral",
 }
 
 # High-importance node probes vs low-importance node probes

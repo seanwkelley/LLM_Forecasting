@@ -47,14 +47,14 @@ CAUSAL_BASE = Path(__file__).parent.parent / "outputs" / "sensitivity" / "causal
 
 # Source dirs for loading DAGs (_shared_stages_causal cache)
 MODEL_DIRS = {
-    "llama": "llama_one_turn",
-    "llama-70b": "70b_one_turn",
-    "deepseek": "deepseek_one_turn",
-    "qwen": "qwen_one_turn",
+    "llama": "llama_neutral",
+    "llama-70b": "llama_70b_neutral",
+    "deepseek": "deepseek_neutral",
+    "qwen": "qwen_neutral",
     "gpt-oss": "gpt_oss_neutral",
-    "qwen-32b": "qwen32b_one_turn",
-    "gemini-flash-lite": "gemini_flash_lite_one_turn",
-    "gemini-flash-lite-nitro": "gemini_flash_lite_one_turn",
+    "qwen-32b": "qwen_32b_neutral",
+    "gemini-flash-lite": "gemini_fl_neutral",
+    "gemini-flash-lite-nitro": "gemini_fl_neutral",
 }
 
 

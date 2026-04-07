@@ -186,7 +186,8 @@ def main():
     rng = random.Random(42)
 
     # Load questions
-    questions = load_forecastbench_questions(max_questions=100, seed=42)
+    hc_path = Path(__file__).parent / "high_complexity_questions.json"
+    questions = load_forecastbench_questions(max_questions=200, seed=42, questions_file=str(hc_path))
     q_by_id = {q["id"]: q for q in questions}
     qids = list(q_by_id.keys())
     print(f"Loaded {len(qids)} questions")

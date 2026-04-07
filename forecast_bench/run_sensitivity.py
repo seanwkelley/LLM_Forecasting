@@ -214,7 +214,9 @@ def run_causal_forecast(
             client.stats.parse_failures += 1
             return None
 
-    if len(edges) == 0:
+    # Reject graphs with disconnected nodes (zero in-degree AND zero out-degree)
+    edge_node_ids = set(e.get("from") for e in edges) | set(e.get("to") for e in edges)
+    if any(n["id"] not in edge_node_ids for n in nodes):
         client.stats.parse_failures += 1
         return None
 
@@ -885,7 +887,7 @@ def main():
     )
     parser.add_argument(
         "--node-range", type=int, nargs=2, default=None, metavar=("MIN", "MAX"),
-        help="Min and max factor nodes for causal DAG (default: 4 8)",
+        help="Min and max factor nodes for causal DAG (default: 6 10)",
     )
 
     args = parser.parse_args()

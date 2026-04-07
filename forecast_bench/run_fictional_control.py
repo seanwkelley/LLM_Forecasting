@@ -166,7 +166,7 @@ def run_collection(args):
         api_key=api_key,
         model=model_id,
         temperature=0.7,
-        max_tokens=1200,
+        max_tokens=2000,
     )
 
     print(f"\n{'='*60}")
@@ -328,10 +328,10 @@ def run_analysis(args):
     # Load real results for comparison (same model)
     model_short = args.model.replace("-", "_")
     real_dirs = {
-        "llama_70b": BASE / "outputs" / "sensitivity" / "causal" / "70b_one_turn" / "_shared_stages_causal",
-        "llama": BASE / "outputs" / "sensitivity" / "causal" / "8b_one_turn" / "_shared_stages_causal",
-        "deepseek": BASE / "outputs" / "sensitivity" / "causal" / "deepseek_one_turn" / "_shared_stages_causal",
-        "qwen": BASE / "outputs" / "sensitivity" / "causal" / "qwen_one_turn" / "_shared_stages_causal",
+        "llama_70b": BASE / "outputs" / "sensitivity" / "causal" / "llama_70b_neutral" / "_shared_stages_causal",
+        "llama": BASE / "outputs" / "sensitivity" / "causal" / "llama_neutral" / "_shared_stages_causal",
+        "deepseek": BASE / "outputs" / "sensitivity" / "causal" / "deepseek_neutral" / "_shared_stages_causal",
+        "qwen": BASE / "outputs" / "sensitivity" / "causal" / "qwen_neutral" / "_shared_stages_causal",
     }
 
     real_dir = real_dirs.get(model_short)

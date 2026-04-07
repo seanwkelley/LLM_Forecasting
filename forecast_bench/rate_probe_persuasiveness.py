@@ -87,8 +87,7 @@ def main():
     low_types = {"node_negate_low", "node_strengthen_low"}
 
     for condition, path in [
-        ("ORIGINAL", BASE / "70b_one_turn" / "sensitivity_results.csv"),
-        ("NEUTRAL", BASE / "llama_70b_neutral" / "sensitivity_results.csv"),
+        ("GPT-OSS", BASE / "gpt_oss_neutral" / "sensitivity_results.csv"),
     ]:
         print(f"\n{'='*60}")
         print(f"  {condition}")
@@ -108,12 +107,12 @@ def main():
                     continue
                 rows.append(r)
 
-        # Sample 100 per importance level (or all if fewer)
+        # Sample 200 per importance level (or all if fewer)
         random.seed(42)
         high_rows = [r for r in rows if r["importance"] == "high"]
         low_rows = [r for r in rows if r["importance"] == "low"]
-        sample_high = random.sample(high_rows, min(100, len(high_rows)))
-        sample_low = random.sample(low_rows, min(100, len(low_rows)))
+        sample_high = random.sample(high_rows, min(200, len(high_rows)))
+        sample_low = random.sample(low_rows, min(200, len(low_rows)))
         sample = sample_high + sample_low
         random.shuffle(sample)
 

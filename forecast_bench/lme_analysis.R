@@ -3,7 +3,7 @@
 #
 # Model A: |Delta| ~ Importance_z + Model + (Importance_z | Question)
 # Model B: |Delta| ~ PathRelevance_z + Model + (PathRelevance_z | Question)
-# Scrambled Placebo: compare grounding coefficient (original vs scrambled 70B)
+# Edge Permutation Placebo: compare grounding coefficient (intact vs permuted GPT-OSS)
 #
 # Reads pre-built CSVs from Python (lme_analysis.py).
 # Outputs: lme_results.json, LaTeX tables.
@@ -23,8 +23,8 @@ figures_dir <- file.path("paper", "figures")
 node_csv       <- file.path(causal_dir, "lme_node_data.csv")
 path_rel_csv   <- file.path(causal_dir, "lme_path_relevance_data.csv")
 edge_betw_csv  <- file.path(causal_dir, "lme_edge_betweenness_data.csv")
-scrambled_csv  <- file.path(causal_dir, "lme_scrambled_data.csv")
-orig70b_csv    <- file.path(causal_dir, "lme_original_70b_data.csv")
+permuted_csv  <- file.path(causal_dir, "lme_permuted_data.csv")
+orig_gptoss_csv    <- file.path(causal_dir, "lme_orig_gptoss_data.csv")
 ablation_csv   <- file.path(causal_dir, "lme_ablation_data.csv")
 direct_csv     <- file.path(causal_dir, "lme_direct_indirect_data.csv")
 ext_node_csv   <- file.path(causal_dir, "lme_extended_node_data.csv")
@@ -276,14 +276,14 @@ cat("Loading prepared CSVs...\n")
 df_node      <- read.csv(node_csv, stringsAsFactors = FALSE)
 df_path_rel  <- read.csv(path_rel_csv, stringsAsFactors = FALSE)
 df_edge_betw <- read.csv(edge_betw_csv, stringsAsFactors = FALSE)
-df_scrambled <- read.csv(scrambled_csv, stringsAsFactors = FALSE)
-df_orig70b   <- read.csv(orig70b_csv, stringsAsFactors = FALSE)
+df_permuted <- read.csv(permuted_csv, stringsAsFactors = FALSE)
+df_orig_gptoss   <- read.csv(orig_gptoss_csv, stringsAsFactors = FALSE)
 
 cat(sprintf("  Nodes: %d rows\n", nrow(df_node)))
 cat(sprintf("  Path Relevance: %d rows\n", nrow(df_path_rel)))
 cat(sprintf("  Edge Betweenness: %d rows\n", nrow(df_edge_betw)))
-cat(sprintf("  Scrambled: %d rows\n", nrow(df_scrambled)))
-cat(sprintf("  Original 70B: %d rows\n", nrow(df_orig70b)))
+cat(sprintf("  Permuted: %d rows\n", nrow(df_permuted)))
+cat(sprintf("  Original GPT-OSS: %d rows\n", nrow(df_orig_gptoss)))
 
 # Set reference level for model factor
 df_node$model      <- relevel(factor(df_node$model), ref = ref_model)
@@ -375,42 +375,42 @@ if ("abs_logit_shift" %in% names(df_path_rel) && "direction" %in% names(df_path_
 # ORIGINAL 70B (for placebo comparison)
 # ============================================================================
 re_orig <- "~importance_z"
-result_orig70b <- fit_lme(
+result_orig_gptoss <- fit_lme(
   "absolute_shift ~ importance_z + (importance_z | question_id)",
   re_orig,
-  df_orig70b,
-  "Original 70B (for placebo comparison)"
+  df_orig_gptoss,
+  "Intact GPT-OSS (for placebo comparison)"
 )
 
 # ============================================================================
-# SCRAMBLED PLACEBO
+# EDGE PERMUTATION PLACEBO
 # ============================================================================
-re_scram <- "~importance_z"
-result_scrambled <- fit_lme(
+re_perm <- "~importance_z"
+result_permuted <- fit_lme(
   "absolute_shift ~ importance_z + (importance_z | question_id)",
-  re_scram,
-  df_scrambled,
-  "Scrambled Placebo (70B)"
+  re_perm,
+  df_permuted,
+  "Permuted GPT-OSS (placebo)"
 )
 
 # ============================================================================
 # PLACEBO COMPARISON
 # ============================================================================
-cat(sprintf("\n%s\nSCRAMBLED PLACEBO COMPARISON\n%s\n",
+cat(sprintf("\n%s\nEDGE PERMUTATION PLACEBO COMPARISON\n%s\n",
             paste(rep("=", 70), collapse = ""),
             paste(rep("=", 70), collapse = "")))
 
-if (!is.null(result_orig70b) && !is.null(result_scrambled)) {
-  orig_b1  <- result_orig70b$fixed_effects[["importance_z"]]
-  scram_b1 <- result_scrambled$fixed_effects[["importance_z"]]
+if (!is.null(result_orig_gptoss) && !is.null(result_permuted)) {
+  orig_b1  <- result_orig_gptoss$fixed_effects[["importance_z"]]
+  perm_b1 <- result_permuted$fixed_effects[["importance_z"]]
 
-  if (!is.null(orig_b1) && !is.null(scram_b1)) {
-    cat(sprintf("  Original 70B  beta1 = %.4f (p = %.4f, CI [%.3f, %.3f])\n",
+  if (!is.null(orig_b1) && !is.null(perm_b1)) {
+    cat(sprintf("  Intact GPT-OSS  beta1 = %.4f (p = %.4f, CI [%.3f, %.3f])\n",
                 orig_b1$coef, orig_b1$p, orig_b1$ci_lower, orig_b1$ci_upper))
-    cat(sprintf("  Scrambled 70B beta1 = %.4f (p = %.4f, CI [%.3f, %.3f])\n",
-                scram_b1$coef, scram_b1$p, scram_b1$ci_lower, scram_b1$ci_upper))
-    degraded <- scram_b1$coef < orig_b1$coef
-    cat(sprintf("  beta1 degraded in scrambled: %s\n", ifelse(degraded, "YES", "NO")))
+    cat(sprintf("  Permuted GPT-OSS beta1 = %.4f (p = %.4f, CI [%.3f, %.3f])\n",
+                perm_b1$coef, perm_b1$p, perm_b1$ci_lower, perm_b1$ci_upper))
+    degraded <- perm_b1$coef < orig_b1$coef
+    cat(sprintf("  beta1 degraded in permuted: %s\n", ifelse(degraded, "YES", "NO")))
   }
 }
 
@@ -448,6 +448,57 @@ if (file.exists(ablation_csv)) {
   # Edge ablation removed — edge-level predictors dropped from analysis.
 } else {
   cat("  [SKIP] No ablation data CSV\n")
+}
+
+# ============================================================================
+# FACTOR RANKING: Convergent validity + incremental validity of topology
+# ============================================================================
+factor_ranking_csv <- file.path(causal_dir, "lme_factor_ranking_data.csv")
+result_ranking_convergent <- NULL
+result_ranking_rank_only  <- NULL
+result_ranking_betw_only  <- NULL
+result_ranking_combined   <- NULL
+
+if (file.exists(factor_ranking_csv)) {
+  df_ranking <- read.csv(factor_ranking_csv, stringsAsFactors = FALSE)
+  df_ranking$model <- relevel(factor(df_ranking$model), ref = ref_model)
+  df_ranking$direction <- factor(df_ranking$direction)
+  cat(sprintf("  Factor ranking: %d rows, %d questions, %d models\n",
+              nrow(df_ranking), length(unique(df_ranking$question_id)),
+              length(unique(df_ranking$model))))
+
+  # 1. Convergent validity: does stated rank predict betweenness?
+  #    betweenness_z ~ rank_z + model + (1 | question_id)
+  result_ranking_convergent <- fit_lme(
+    "betweenness_z ~ stated_rank_z + model + (1 | question_id)",
+    "~1", df_ranking,
+    "Factor Ranking: Convergent Validity (rank -> betweenness)"
+  )
+
+  # 2. Rank only: does stated rank predict probe sensitivity?
+  #    |Δlogit| ~ rank_z + direction + model + (1 | question_id)
+  result_ranking_rank_only <- fit_lme(
+    "abs_logit_shift ~ stated_rank_z + direction + model + (1 | question_id)",
+    "~1", df_ranking,
+    "Factor Ranking: Rank Only -> |Δlogit|"
+  )
+
+  # 3. Betweenness only (on same subset): for comparison
+  result_ranking_betw_only <- fit_lme(
+    "abs_logit_shift ~ betweenness_z + direction + model + (1 | question_id)",
+    "~1", df_ranking,
+    "Factor Ranking: Betweenness Only -> |Δlogit| (same subset)"
+  )
+
+  # 4. Combined: does betweenness add value beyond rank?
+  #    |Δlogit| ~ rank_z + betweenness_z + direction + model + (1 | question_id)
+  result_ranking_combined <- fit_lme(
+    "abs_logit_shift ~ stated_rank_z + betweenness_z + direction + model + (1 | question_id)",
+    "~1", df_ranking,
+    "Factor Ranking: Rank + Betweenness -> |Δlogit|"
+  )
+} else {
+  cat("  [SKIP] No factor ranking data CSV\n")
 }
 
 # ============================================================================
@@ -761,8 +812,8 @@ all_results <- list(
   model_a                = result_a,
   model_b_shared         = result_b_shared,
   model_b                = result_b,
-  original_70b           = result_orig70b,
-  scrambled_placebo      = result_scrambled,
+  orig_gptoss            = result_orig_gptoss,
+  permutation_placebo    = result_permuted,
   direct_main            = result_direct_main,
   direct_interaction     = result_direct_interaction,
   ext_causal_depth       = result_causal_depth,
@@ -775,6 +826,10 @@ all_results <- list(
   edge_combined          = result_edge_combined,
   ablation_node_betw     = result_ablation_node_betw,
   ablation_node_path_rel = result_ablation_node_pr,
+  ranking_convergent     = result_ranking_convergent,
+  ranking_rank_only      = result_ranking_rank_only,
+  ranking_betw_only      = result_ranking_betw_only,
+  ranking_combined       = result_ranking_combined,
   net_small              = result_net_small,
   net_medium             = result_net_medium,
   net_large              = result_net_large,
@@ -816,19 +871,23 @@ generate_latex_table(result_ablation_node_betw, "lme_ablation_node_betw_table.te
                      "Ablation: Node Removal --- Betweenness Predicts Shift")
 generate_latex_table(result_ablation_node_pr, "lme_ablation_node_pr_table.tex",
                      "Ablation: Node Removal --- Path Relevance Predicts Shift")
+generate_latex_table(result_ranking_convergent, "lme_ranking_convergent_table.tex",
+                     "Factor Ranking: Convergent Validity (Rank Predicts Betweenness)")
+generate_latex_table(result_ranking_combined, "lme_ranking_combined_table.tex",
+                     "Factor Ranking: Rank + Betweenness Predicting |$\\Delta$logit|")
 
-# Scrambled comparison table
-if (!is.null(result_orig70b) && !is.null(result_scrambled)) {
-  orig_b1  <- result_orig70b$fixed_effects[["importance_z"]]
-  scram_b1 <- result_scrambled$fixed_effects[["importance_z"]]
+# Edge permutation comparison table
+if (!is.null(result_orig_gptoss) && !is.null(result_permuted)) {
+  orig_b1  <- result_orig_gptoss$fixed_effects[["importance_z"]]
+  perm_b1 <- result_permuted$fixed_effects[["importance_z"]]
 
-  if (!is.null(orig_b1) && !is.null(scram_b1)) {
+  if (!is.null(orig_b1) && !is.null(perm_b1)) {
     lines <- c(
       "\\begin{table}[htbp]",
       "\\centering",
       "\\small",
-      "\\caption{Scrambled Edge Placebo: Grounding Coefficient Comparison}",
-      "\\label{tab:lme_scrambled_comparison}",
+      "\\caption{Edge Permutation Placebo: Grounding Coefficient Comparison}",
+      "\\label{tab:lme_permutation_comparison}",
       "\\begin{tabular}{lccccc}",
       "\\toprule",
       "Condition & $\\beta_1$ & SE & $t$ & $p$ & 95\\% CI \\\\",
@@ -836,8 +895,8 @@ if (!is.null(result_orig70b) && !is.null(result_scrambled)) {
     )
 
     for (lbl_beta in list(
-      list(lbl = "Original 70B", b = orig_b1),
-      list(lbl = "Scrambled 70B", b = scram_b1)
+      list(lbl = "Intact GPT-OSS", b = orig_b1),
+      list(lbl = "Permuted GPT-OSS", b = perm_b1)
     )) {
       b <- lbl_beta$b
       p_str <- if (b$p < 0.001) "$<$0.001" else sprintf("%.3f", b$p)
@@ -849,15 +908,15 @@ if (!is.null(result_orig70b) && !is.null(result_scrambled)) {
 
     lines <- c(lines,
       "\\midrule",
-      sprintf("  Original N & \\multicolumn{5}{c}{%d} \\\\", result_orig70b$n_obs),
-      sprintf("  Scrambled N & \\multicolumn{5}{c}{%d} \\\\", result_scrambled$n_obs),
+      sprintf("  Intact $N$ & \\multicolumn{5}{c}{%d} \\\\", result_orig_gptoss$n_obs),
+      sprintf("  Permuted $N$ & \\multicolumn{5}{c}{%d} \\\\", result_permuted$n_obs),
       "\\bottomrule",
       "\\end{tabular}",
       "\\end{table}"
     )
 
-    writeLines(lines, file.path(figures_dir, "lme_scrambled_table.tex"))
-    cat("  Saved LaTeX table: lme_scrambled_table.tex\n")
+    writeLines(lines, file.path(figures_dir, "lme_permutation_table.tex"))
+    cat("  Saved LaTeX table: lme_permutation_table.tex\n")
   }
 }
 

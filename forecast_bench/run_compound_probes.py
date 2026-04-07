@@ -347,11 +347,11 @@ def main():
     rng = random.Random(args.seed)
 
     model_dir_map = {
-        "llama": "llama_one_turn",
-        "llama-70b": "70b_one_turn",
-        "deepseek": "deepseek_one_turn",
-        "qwen": "qwen_one_turn",
-        "gemini-flash-lite": "gemini_flash_lite_one_turn",
+        "llama": "llama_neutral",
+        "llama-70b": "llama_70b_neutral",
+        "deepseek": "deepseek_neutral",
+        "qwen": "qwen_neutral",
+        "gemini-flash-lite": "gemini_fl_neutral",
     }
 
     if args.source_dir:

@@ -39,7 +39,6 @@ from forecast_bench.prompts_causal import (
 )
 from forecast_bench.network_analysis import analyze_network
 from forecast_bench.questions import load_forecastbench_questions
-from forecast_bench.analyze_superforecasting_dag import normalized_ged
 from forecast_bench.semantic_graph_match import semantic_jaccard_pair
 
 plt.rcParams.update({"font.family": "Arial", "font.size": 10, "figure.dpi": 300})
@@ -142,7 +141,10 @@ def run_forecast(client, question_text: str, max_retries: int = 3):
                 valid = False
                 break
 
-        if not valid or not edges:
+        # Check for disconnected nodes (zero in-degree AND zero out-degree)
+        edge_nodes = set(e.get("from") for e in edges) | set(e.get("to") for e in edges)
+        disconnected = [n["id"] for n in nodes if n["id"] not in edge_nodes]
+        if not valid or not edges or len(disconnected) > 0:
             if attempt < max_retries:
                 client.rate_limit_wait()
                 continue
@@ -199,7 +201,7 @@ def run_collection(args):
             api_key=api_key,
             model=model_id,
             temperature=temp,
-            max_tokens=1200,
+            max_tokens=2000,
         )
 
         print(f"\n--- Temperature {temp} ---")
@@ -303,9 +305,25 @@ def run_analysis(args):
             prob_diff_matrix[i, j] = prob_diff_matrix[j, i] = mean_diff
             print(f"  T={t_i:.1f} vs T={t_j:.1f}: mean |dp|={mean_diff:.3f}")
 
-    # ── Compute pairwise normalized GED (all temp pairs) ──
-    nged_matrix = np.zeros((n_temps, n_temps))
+    # ── Compute pairwise semantic nGED (embedding-matched nodes, then edge overlap) ──
+    from forecast_bench.semantic_graph_match import (
+        _ensure_embeddings, _cosine_matrix, _hungarian_match,
+        _get_api_key, NODE_EMB_CACHE, NODE_EMB_KEYS_CACHE,
+    )
+    api_key = _get_api_key()
 
+    # Pre-embed all nodes across all temperatures
+    all_texts = {}
+    for t in available_temps:
+        for qid in shared_all:
+            for n in temp_data[t][qid]["nodes"]:
+                key = f"node|{qid}|t{t}|{n['id']}"
+                all_texts[key] = f"{n['id']}: {n.get('description', n['id'])}"
+    print(f"Embedding {len(all_texts)} node texts for semantic nGED...")
+    key_to_idx, matrix = _ensure_embeddings(all_texts, NODE_EMB_CACHE, NODE_EMB_KEYS_CACHE, api_key)
+
+    nged_matrix = np.zeros((n_temps, n_temps))
+    print("\nSemantic nGED (embedding-matched):")
     for i in range(n_temps):
         for j in range(i + 1, n_temps):
             t_i, t_j = available_temps[i], available_temps[j]
@@ -313,42 +331,54 @@ def run_analysis(args):
             for qid in shared_all:
                 d_i = temp_data[t_i][qid]
                 d_j = temp_data[t_j][qid]
-                ni = {n["id"] for n in d_i["nodes"] if n.get("role") != "outcome"}
-                nj = {n["id"] for n in d_j["nodes"] if n.get("role") != "outcome"}
-                ei = {(e["from"], e["to"]) for e in d_i["edges"]}
-                ej = {(e["from"], e["to"]) for e in d_j["edges"]}
-                ngeds.append(normalized_ged(ni, ei, nj, ej))
+                nodes_i = d_i["nodes"]
+                nodes_j = d_j["nodes"]
+                edges_i = d_i["edges"]
+                edges_j = d_j["edges"]
+
+                # Get embeddings for this pair
+                keys_i = [f"node|{qid}|t{t_i}|{n['id']}" for n in nodes_i]
+                keys_j = [f"node|{qid}|t{t_j}|{n['id']}" for n in nodes_j]
+                try:
+                    vecs_i = matrix[[key_to_idx[k] for k in keys_i]]
+                    vecs_j = matrix[[key_to_idx[k] for k in keys_j]]
+                except KeyError:
+                    continue
+
+                # Hungarian matching on cosine similarity
+                cos = _cosine_matrix(vecs_i, vecs_j)
+                matches = _hungarian_match(cos, threshold=0.7)
+
+                # Build node remap: j_id -> i_id for matched pairs
+                remap = {}
+                matched_i = set()
+                matched_j = set()
+                for mi, mj, sim in matches:
+                    remap[nodes_j[mj]["id"]] = nodes_i[mi]["id"]
+                    matched_i.add(nodes_i[mi]["id"])
+                    matched_j.add(nodes_j[mj]["id"])
+
+                # Compute semantic nGED
+                # Nodes: matched count as shared, unmatched count as insertions/deletions
+                all_node_ids_i = set(n["id"] for n in nodes_i)
+                all_node_ids_j = set(n["id"] for n in nodes_j)
+                n_matched = len(matches)
+                n_only_i = len(all_node_ids_i) - n_matched
+                n_only_j = len(all_node_ids_j) - n_matched
+                node_ops = n_only_i + n_only_j
+
+                # Edges: remap j edges to i namespace, then compare
+                ei = set((e["from"], e["to"]) for e in edges_i)
+                ej_remapped = set((remap.get(e["from"], e["from"]), remap.get(e["to"], e["to"])) for e in edges_j)
+                edge_ops = len(ei ^ ej_remapped)
+
+                total = len(all_node_ids_i | all_node_ids_j) + len(ei | ej_remapped)
+                nged = (node_ops + edge_ops) / total if total > 0 else 0
+                ngeds.append(nged)
+
             nged_mean = np.mean(ngeds)
             nged_matrix[i, j] = nged_matrix[j, i] = nged_mean
-            print(f"  T={t_i:.1f} vs T={t_j:.1f}: mean nGED={nged_mean:.3f}")
-
-    # ── Compute pairwise semantic node Jaccard ──
-    sem_node_matrix = np.zeros((n_temps, n_temps))
-    print("\nSemantic node Jaccard (embedding-based):")
-    for i in range(n_temps):
-        for j in range(i + 1, n_temps):
-            t_i, t_j = available_temps[i], available_temps[j]
-            sem_jaccards = []
-            for qid in shared_all:
-                d_i = temp_data[t_i][qid]
-                d_j = temp_data[t_j][qid]
-                nodes_i = [n for n in d_i["nodes"] if n.get("role") != "outcome"]
-                nodes_j = [n for n in d_j["nodes"] if n.get("role") != "outcome"]
-                try:
-                    sem = semantic_jaccard_pair(
-                        nodes_i, nodes_j,
-                        edges1=d_i.get("edges", []),
-                        edges2=d_j.get("edges", []),
-                        condition1=f"t{t_i}", condition2=f"t{t_j}",
-                        qid=qid,
-                    )
-                    sem_jaccards.append(sem["node_jaccard"])
-                except Exception:
-                    pass
-            if sem_jaccards:
-                sem_mean = np.mean(sem_jaccards)
-                sem_node_matrix[i, j] = sem_node_matrix[j, i] = sem_mean
-                print(f"  T={t_i:.1f} vs T={t_j:.1f}: mean semantic node J={sem_mean:.3f}")
+            print(f"  T={t_i:.1f} vs T={t_j:.1f}: mean semantic nGED={nged_mean:.3f} (n={len(ngeds)})")
 
     # ── Figure: 2 panels + exemplar ──
     fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=(10, 4.2))
@@ -394,7 +424,7 @@ def run_analysis(args):
     ax_b.set_yticks(range(n_temps))
     ax_b.set_yticklabels(temp_labels)
     cbar = fig.colorbar(im, ax=ax_b, fraction=0.046, pad=0.04)
-    cbar.set_label("Normalized Graph Edit Distance", fontsize=8)
+    cbar.set_label("Semantic nGED (0=identical, 1=disjoint)", fontsize=8)
     ax_b.text(-0.15, 1.05, "(b)", transform=ax_b.transAxes, fontsize=14, fontweight="bold")
 
     plt.tight_layout()
@@ -411,15 +441,25 @@ def run_analysis(args):
 
 
 def _plot_exemplar_pair(temp_data, available_temps, shared_all):
-    """Plot side-by-side DAGs for the same question at T=0.0 and T=1.0."""
+    """Plot side-by-side DAGs for the same question at T=0.0 and T=1.0.
+
+    Uses cached node embeddings for semantic matching, unified hierarchical
+    layout so matched nodes share positions, and alternating edge curvature
+    to keep connections visible.
+    """
     import textwrap
     import networkx as nx
+    from numpy.linalg import norm
+    from scipy.optimize import linear_sum_assignment
     from matplotlib.patches import Patch
     from matplotlib.lines import Line2D
     from forecast_bench.network_analysis import analyze_network, _build_digraph
+    from forecast_bench.semantic_graph_match import NODE_EMB_CACHE, NODE_EMB_KEYS_CACHE
 
-    EXEMPLAR_QID = "7L7arFnaO0Nom1bLY295"  # Musk/Tesla CEO question
+    EXEMPLAR_QID = "0x7ffa1fcfaeac86d4a89afcb74c90296f0e7c3744ce5206183c9cb38651526e63"
     T_LO, T_HI = 0.0, 1.0
+    THRESHOLD = 0.7
+    LAYER_WIDTH, LAYER_HEIGHT = 5.5, 4.5
 
     if T_LO not in temp_data or T_HI not in temp_data:
         print("[SKIP] Need T=0.0 and T=1.0 for exemplar pair")
@@ -430,180 +470,252 @@ def _plot_exemplar_pair(temp_data, available_temps, shared_all):
 
     d_lo = temp_data[T_LO][EXEMPLAR_QID]
     d_hi = temp_data[T_HI][EXEMPLAR_QID]
+    nodes_lo = [n for n in d_lo["nodes"] if n.get("role") != "outcome"]
+    nodes_hi = [n for n in d_hi["nodes"] if n.get("role") != "outcome"]
 
-    # Semantic matching for shared nodes
-    from forecast_bench.semantic_graph_match import semantic_jaccard_pair
-    nodes_lo_list = [n for n in d_lo["nodes"] if n.get("role") != "outcome"]
-    nodes_hi_list = [n for n in d_hi["nodes"] if n.get("role") != "outcome"]
+    # ── Semantic matching via cached embeddings ──
+    import json
+    keys_json = json.loads(NODE_EMB_KEYS_CACHE.read_text())
+    key_to_idx = {k: i for i, k in enumerate(keys_json)}
+    emb_mat = np.load(NODE_EMB_CACHE)["embeddings"]
 
-    try:
-        sem = semantic_jaccard_pair(
-            nodes_lo_list, nodes_hi_list,
-            edges1=d_lo.get("edges", []), edges2=d_hi.get("edges", []),
-            condition1="temp0.0", condition2="temp1.0",
-            qid=EXEMPLAR_QID,
-        )
-        sem_jaccard = sem["node_jaccard"]
-    except Exception:
-        sem_jaccard = 0.0
+    def _get_vecs(nodes, cond):
+        keys = [f"node|{EXEMPLAR_QID}|{cond}|{n['id']}" for n in nodes]
+        idxs = [key_to_idx[k] for k in keys if k in key_to_idx]
+        if len(idxs) != len(nodes):
+            return None
+        return emb_mat[np.array(idxs)]
 
-    # Build shared set via semantic matching
-    from forecast_bench.semantic_graph_match import (
-        _ensure_embeddings, _cosine_matrix, _hungarian_match,
-        _get_api_key, NODE_EMB_CACHE, NODE_EMB_KEYS_CACHE,
-    )
-    api_key = _get_api_key()
-    texts = {}
-    for n in nodes_lo_list:
-        texts[f"node|{EXEMPLAR_QID}|temp0.0|{n['id']}"] = f"{n['id']}: {n.get('description', n['id'])}"
-    for n in nodes_hi_list:
-        texts[f"node|{EXEMPLAR_QID}|temp1.0|{n['id']}"] = f"{n['id']}: {n.get('description', n['id'])}"
-    idx, mat = _ensure_embeddings(texts, NODE_EMB_CACHE, NODE_EMB_KEYS_CACHE, api_key)
-    v_lo = mat[np.array([idx[f"node|{EXEMPLAR_QID}|temp0.0|{n['id']}"] for n in nodes_lo_list])]
-    v_hi = mat[np.array([idx[f"node|{EXEMPLAR_QID}|temp1.0|{n['id']}"] for n in nodes_hi_list])]
-    sim = _cosine_matrix(v_lo, v_hi)
-    matches = _hungarian_match(sim, threshold=0.7)
+    v_lo = _get_vecs(nodes_lo, "temp0.0")
+    v_hi = _get_vecs(nodes_hi, "temp1.0")
+    if v_lo is None or v_hi is None:
+        print("[SKIP] Missing cached embeddings for exemplar pair")
+        return
 
-    # Map: lo_id -> hi_id for matched pairs
-    shared_nodes_lo = set()
-    shared_nodes_hi = set()
-    for m in matches:
-        shared_nodes_lo.add(nodes_lo_list[m[0]]["id"])
-        shared_nodes_hi.add(nodes_hi_list[m[1]]["id"])
-    # Union for coloring
-    shared_nodes = shared_nodes_lo | shared_nodes_hi
+    cos = (v_lo / norm(v_lo, axis=1, keepdims=True)) @ \
+          (v_hi / norm(v_hi, axis=1, keepdims=True)).T
+    row_ind, col_ind = linear_sum_assignment(1 - cos)
 
-    # Edge comparison (string-based, since edges reference node IDs)
-    edges_lo_set = {(e["from"], e["to"]) for e in d_lo["edges"]}
-    edges_hi_set = {(e["from"], e["to"]) for e in d_hi["edges"]}
-    shared_edge_set = edges_lo_set & edges_hi_set
+    remap = {}  # hi_id -> lo_id (canonical)
+    for r, c in zip(row_ind, col_ind):
+        if cos[r, c] >= THRESHOLD:
+            remap[nodes_hi[c]["id"]] = nodes_lo[r]["id"]
 
-    # ── Build unified layout from union graph ──
-    # Combine both graphs into one for layout computation
+    # ── Compute semantic nGED ──
+    n_matched = len(remap)
+    all_ids_lo = set(n["id"] for n in d_lo["nodes"])
+    all_ids_hi = set(n["id"] for n in d_hi["nodes"])
+    node_ops = (len(all_ids_lo) - n_matched) + (len(all_ids_hi) - n_matched)
+    ei = set((e["from"], e["to"]) for e in d_lo["edges"])
+    ej_remapped = set((remap.get(e["from"], e["from"]), remap.get(e["to"], e["to"]))
+                      for e in d_hi["edges"])
+    edge_ops = len(ei ^ ej_remapped)
+    total = len(all_ids_lo | all_ids_hi) + len(ei | ej_remapped)
+    nged = (node_ops + edge_ops) / total if total > 0 else 0
+
+    # ── Layout: include below-threshold matches for positional alignment ──
+    match_lo_to_hi = {v: k for k, v in remap.items()}
+    # Add near-miss pairs for layout alignment
+    for r, c in zip(row_ind, col_ind):
+        lo_id, hi_id = nodes_lo[r]["id"], nodes_hi[c]["id"]
+        if lo_id not in match_lo_to_hi and cos[r, c] >= 0.5:
+            match_lo_to_hi[lo_id] = hi_id
+    match_hi_to_lo = {v: k for k, v in match_lo_to_hi.items()}
+    shared_lo = set(match_lo_to_hi.keys())
+    shared_hi = set(match_lo_to_hi.values())
+
+    def canonical(nid, is_hi=False):
+        if is_hi and nid in match_hi_to_lo:
+            return match_hi_to_lo[nid]
+        return nid
+
+    # Unified graph for hierarchical layout
     G_union = nx.DiGraph()
-    for n in d_lo["nodes"] + d_hi["nodes"]:
+    for n in d_lo["nodes"]:
         G_union.add_node(n["id"], role=n.get("role", "factor"))
-    for e in d_lo["edges"] + d_hi["edges"]:
+    for n in d_hi["nodes"]:
+        G_union.add_node(canonical(n["id"], True), role=n.get("role", "factor"))
+    for e in d_lo["edges"]:
         G_union.add_edge(e["from"], e["to"])
+    for e in d_hi["edges"]:
+        G_union.add_edge(canonical(e["from"], True), canonical(e["to"], True))
 
-    # Hand-tuned positions for shared nodes so both panels align cleanly.
-    # Shared: tesla_stock, board_confidence, succession_plans, regulatory_pressure, outcome
-    # Unique T=0.0: elon_ambitions, elon_health
-    # Unique T=1.0: company-performance, elon_personal_life
-    shared_pos = {
-        "outcome":             (0.0, -0.9),
-        "tesla_stock":         (-0.6,  0.9),
-        "board_confidence":    ( 0.6,  0.9),
-        "regulatory_pressure": (-0.6, -0.1),
-        "succession_plans":    ( 0.6, -0.1),
-    }
-    pos_lo = dict(shared_pos)
-    pos_lo["elon_ambitions"] = (-1.4,  0.4)
-    pos_lo["elon_health"]    = (-1.4, -0.6)
+    outcome = [n for n in G_union.nodes if G_union.nodes[n].get("role") == "outcome"]
+    R = G_union.reverse()
+    dists = nx.shortest_path_length(R, source=outcome[0]) if outcome else {}
+    max_d = max(dists.values()) if dists else 1
+    layers = {}
+    for n in G_union.nodes:
+        d = dists.get(n, max_d + 1)
+        layers.setdefault(d, []).append(n)
 
-    pos_hi = dict(shared_pos)
-    pos_hi["company-performance"] = (-1.4,  0.4)
-    pos_hi["elon_personal_life"]  = (-1.4, -0.6)
+    # Barycenter ordering: sort nodes within each layer by the average
+    # x-position of their successors to minimize edge crossings.
+    # First pass: place outcome layer, then work upward.
+    pos_unified = {}
+    sorted_layers = sorted(layers.items())
+    # Initial pass with alphabetical order
+    for layer_y, layer_nodes in sorted_layers:
+        n_in = len(layer_nodes)
+        for i, n in enumerate(sorted(layer_nodes)):
+            x = (i - (n_in - 1) / 2) * LAYER_WIDTH
+            pos_unified[n] = (x, layer_y * LAYER_HEIGHT)
+    # Barycenter refinement: reorder each layer by avg x of successors
+    for layer_y, layer_nodes in sorted_layers:
+        if len(layer_nodes) <= 1:
+            continue
+        barycenters = {}
+        for n in layer_nodes:
+            succs = list(G_union.successors(n))
+            if succs:
+                avg_x = np.mean([pos_unified[s][0] for s in succs
+                                 if s in pos_unified])
+                barycenters[n] = avg_x
+            else:
+                barycenters[n] = pos_unified.get(n, (0, 0))[0]
+        reordered = sorted(layer_nodes, key=lambda n: barycenters[n])
+        n_in = len(reordered)
+        for i, n in enumerate(reordered):
+            x = (i - (n_in - 1) / 2) * LAYER_WIDTH
+            pos_unified[n] = (x, layer_y * LAYER_HEIGHT)
+
+    pos_lo = {n["id"]: pos_unified[n["id"]]
+              for n in d_lo["nodes"] if n["id"] in pos_unified}
+    pos_hi = {n["id"]: pos_unified[canonical(n["id"], True)]
+              for n in d_hi["nodes"] if canonical(n["id"], True) in pos_unified}
+
+    # Shared edges in canonical space
+    edges_lo_can = {(e["from"], e["to"]) for e in d_lo["edges"]}
+    edges_hi_can = {(canonical(e["from"], True), canonical(e["to"], True))
+                    for e in d_hi["edges"]}
+    shared_edges_can = edges_lo_can & edges_hi_can
 
     def _label(node_id):
         label = node_id.replace("_", " ").replace("-", " ").title()
         return "\n".join(textwrap.wrap(label, width=14))
 
-    def _draw_dag(ax, data, temp, panel_label, pos):
-        nodes = data["nodes"]
-        edges = data["edges"]
-        prob = data["initial_probability"]
-        G = _build_digraph(nodes, edges)
+    def _draw_dag(ax, data, pos, panel_label, temp, shared_set, is_hi=False):
+        G = _build_digraph(data["nodes"], data["edges"])
+        factor_ids = [n for n in G.nodes if G.nodes[n].get("role") != "outcome"]
+        outcome_ids = [n for n in G.nodes if G.nodes[n].get("role") == "outcome"]
+        shared_f = [n for n in factor_ids if n in shared_set]
+        unique_f = [n for n in factor_ids if n not in shared_set]
 
-        factor_ids = [n["id"] for n in nodes if n.get("role") != "outcome"]
-        outcome_ids = [n["id"] for n in nodes if n.get("role") == "outcome"]
+        # Classify edges as shared/unique in canonical space
+        all_edges = [(e["from"], e["to"]) for e in data["edges"]]
+        can_edges = ([(canonical(a, True), canonical(b, True)) for a, b in all_edges]
+                     if is_hi else all_edges)
+        shared_e = [e for e, ce in zip(all_edges, can_edges)
+                    if ce in shared_edges_can]
+        unique_e = [e for e, ce in zip(all_edges, can_edges)
+                    if ce not in shared_edges_can]
 
-        # Color shared vs unique nodes
-        shared_factors = [n for n in factor_ids if n in shared_nodes]
-        unique_factors = [n for n in factor_ids if n not in shared_nodes]
+        # Pre-sort edges per target by source x-position for clean fan layout
+        all_edge_list = shared_e + unique_e
+        from collections import defaultdict
+        edges_by_target = defaultdict(list)
+        for src, tgt in all_edge_list:
+            edges_by_target[tgt].append(src)
+        # Sort each target's sources by x-position
+        target_edge_order = {}
+        for tgt, sources in edges_by_target.items():
+            sorted_srcs = sorted(sources, key=lambda s: pos.get(s, (0,0))[0])
+            target_edge_order[tgt] = {s: i for i, s in enumerate(sorted_srcs)}
 
-        NODE_SIZE = 4500
-        if shared_factors:
-            nx.draw_networkx_nodes(G, pos, nodelist=shared_factors, ax=ax,
+        def _draw_edge(src, tgt, color, style, alpha):
+            sx, sy = pos.get(src, (0, 0))
+            tx, ty = pos.get(tgt, (0, 0))
+            layer_diff = abs(sy - ty) / LAYER_HEIGHT
+            n_to = len(edges_by_target.get(tgt, []))
+            # Index by source x-position rank (0 = leftmost source)
+            idx = target_edge_order.get(tgt, {}).get(src, 0)
+            # Center the fan: leftmost source gets negative rad,
+            # rightmost gets positive, middle gets ~0
+            centered = idx - (n_to - 1) / 2.0  # e.g. for 4 edges: -1.5, -0.5, 0.5, 1.5
+            if layer_diff < 0.1:
+                # Same layer — strong arc
+                rad = 0.45 if sx < tx else -0.45
+            elif n_to <= 1:
+                rad = 0.12
+            else:
+                # Fan: spread edges evenly, scaled by number of edges.
+                # Negate so leftmost source curves right (toward target)
+                # and rightmost curves left, creating a natural fan-in.
+                spread = 0.18 if layer_diff <= 1.1 else 0.22
+                rad = -centered * spread
+            nx.draw_networkx_edges(
+                G, pos, edgelist=[(src, tgt)], ax=ax,
+                edge_color=color, width=1.8, alpha=alpha, style=style,
+                arrows=True, arrowsize=20, arrowstyle="-|>",
+                connectionstyle=f"arc3,rad={rad}",
+                min_source_margin=50, min_target_margin=50)
+
+        # Draw edges FIRST (underneath)
+        for src, tgt in shared_e:
+            _draw_edge(src, tgt, "#333333", "solid", 0.8)
+        for src, tgt in unique_e:
+            _draw_edge(src, tgt, "#D55E00", "dashed", 0.7)
+
+        # Draw nodes ON TOP of edges so they occlude crossing edge paths
+        NODE_SIZE = 5500
+        if shared_f:
+            nx.draw_networkx_nodes(G, pos, nodelist=shared_f, ax=ax,
                                    node_color="#A8D0E6", node_size=NODE_SIZE,
                                    edgecolors="#333333", linewidths=1.5)
-        if unique_factors:
-            nx.draw_networkx_nodes(G, pos, nodelist=unique_factors, ax=ax,
+        if unique_f:
+            nx.draw_networkx_nodes(G, pos, nodelist=unique_f, ax=ax,
                                    node_color="#F4A582", node_size=NODE_SIZE,
                                    edgecolors="#333333", linewidths=1.5)
         if outcome_ids:
             nx.draw_networkx_nodes(G, pos, nodelist=outcome_ids, ax=ax,
-                                   node_color="#E69F00", node_size=5000,
+                                   node_color="#E69F00", node_size=6000,
                                    edgecolors="#333333", linewidths=2.0,
                                    node_shape="s")
 
-        # Shared vs unique edges
-        all_edges = [(e["from"], e["to"]) for e in edges]
-        shared_e = [e for e in all_edges if e in shared_edge_set]
-        unique_e = [e for e in all_edges if e not in shared_edge_set]
-
-        if shared_e:
-            nx.draw_networkx_edges(G, pos, edgelist=shared_e, ax=ax,
-                                   edge_color="#333333", width=2.0, alpha=0.8,
-                                   arrows=True, arrowsize=18, arrowstyle="-|>",
-                                   connectionstyle="arc3,rad=0.12",
-                                   min_source_margin=45, min_target_margin=45)
-        if unique_e:
-            nx.draw_networkx_edges(G, pos, edgelist=unique_e, ax=ax,
-                                   edge_color="#D55E00", width=2.0, alpha=0.7,
-                                   arrows=True, arrowsize=18, arrowstyle="-|>",
-                                   connectionstyle="arc3,rad=0.12",
-                                   min_source_margin=40, min_target_margin=40,
-                                   style="dashed")
-
-        labels = {n: _label(n) if n != outcome_ids[0] else "Outcome"
+        labels = {n: "Outcome" if n in outcome_ids else _label(n)
                   for n in G.nodes}
         nx.draw_networkx_labels(G, pos, labels=labels, ax=ax,
-                                font_size=9, font_weight="bold", font_color="black")
+                                font_size=9, font_weight="bold",
+                                font_color="black")
 
-        analysis = analyze_network(nodes, edges)
-        title_str = (f"Temperature = {temp}\n"
+        analysis = analyze_network(data["nodes"], data["edges"])
+        prob = data["initial_probability"]
+        ax.set_title(f"Temperature = {temp}\n"
                      f"{analysis.n_nodes} nodes, {analysis.n_edges} edges  |  "
-                     f"P(Yes) = {prob:.0%}")
-        ax.set_title(title_str, fontsize=13, fontweight="bold", pad=16,
-                     linespacing=1.8)
+                     f"P(Yes) = {prob:.0%}",
+                     fontsize=13, fontweight="bold", pad=20, linespacing=1.8)
         ax.text(-0.05, 1.08, panel_label, transform=ax.transAxes,
                 fontsize=16, fontweight="bold")
         ax.set_axis_off()
-        ax.margins(0.25)
+        ax.margins(0.30)
 
-    fig, (ax_l, ax_r) = plt.subplots(1, 2, figsize=(18, 9))
+    fig, (ax_l, ax_r) = plt.subplots(1, 2, figsize=(26, 11))
     fig.patch.set_facecolor("white")
+    _draw_dag(ax_l, d_lo, pos_lo, "(a)", T_LO, shared_lo)
+    _draw_dag(ax_r, d_hi, pos_hi, "(b)", T_HI, shared_hi, is_hi=True)
 
-    _draw_dag(ax_l, d_lo, T_LO, "(a)", pos_lo)
-    _draw_dag(ax_r, d_hi, T_HI, "(b)", pos_hi)
+    q_text = d_lo.get("question_text", "")[:80]
+    if q_text == "New pandemic in 2025?":
+        q_text = "Will there be a new pandemic in 2025?"
+    fig.suptitle(q_text, fontsize=15, fontweight="bold", y=1.02)
 
-    # Question as suptitle
-    q_text = d_lo.get("question_text", "")
-    if len(q_text) > 80:
-        q_text = q_text[:77] + "..."
-    fig.suptitle(q_text, fontsize=13, fontweight="bold", y=1.02)
-
-    # Legend
     legend_elements = [
         Patch(facecolor="#A8D0E6", edgecolor="#333", label="Shared factor"),
-        Patch(facecolor="#F4A582", edgecolor="#333", label="Unique factor"),
         Patch(facecolor="#E69F00", edgecolor="#333", label="Outcome"),
-        Line2D([0], [0], color="#333", linewidth=2, label="Shared edge"),
-        Line2D([0], [0], color="#D55E00", linewidth=2, linestyle="dashed",
+        Line2D([0], [0], color="#333", linewidth=1.8, label="Shared edge"),
+        Line2D([0], [0], color="#D55E00", linewidth=1.8, linestyle="dashed",
                label="Unique edge"),
     ]
-    fig.legend(handles=legend_elements, loc="lower center", ncol=5,
-               fontsize=10, frameon=False, bbox_to_anchor=(0.5, -0.02))
-
-    # nGED annotation
-    fig.text(0.5, -0.06, f"Semantic Node Jaccard = {sem_jaccard:.2f}",
+    fig.legend(handles=legend_elements, loc="lower center", ncol=4,
+               fontsize=11, frameon=False, bbox_to_anchor=(0.5, -0.02))
+    fig.text(0.5, -0.05, f"Semantic nGED = {nged:.2f}",
              ha="center", fontsize=12, fontstyle="italic", color="#555")
 
     plt.tight_layout()
     fig_path = OUT / "supplementary" / "temperature_exemplar_pair"
     for ext in ["png", "pdf"]:
-        fig.savefig(f"{fig_path}.{ext}", dpi=300, bbox_inches="tight", facecolor="white")
+        fig.savefig(f"{fig_path}.{ext}", dpi=300, bbox_inches="tight",
+                    facecolor="white")
     plt.close()
     print(f"Figure saved to {fig_path}.png")
 

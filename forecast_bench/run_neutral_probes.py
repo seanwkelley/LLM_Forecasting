@@ -283,13 +283,13 @@ def main():
 
     # Default source/output dirs
     source_map = {
-        "llama": "outputs/sensitivity/causal/llama_one_turn",
-        "llama-70b": "outputs/sensitivity/causal/70b_one_turn",
-        "deepseek": "outputs/sensitivity/causal/deepseek_one_turn",
-        "qwen": "outputs/sensitivity/causal/qwen_one_turn",
-        "gemini-flash-lite": "outputs/sensitivity/causal/gemini_flash_lite_one_turn",
-        "gpt-oss": "outputs/sensitivity/causal/gpt_oss_one_turn",
-        "qwen-32b": "outputs/sensitivity/causal/qwen32b_one_turn",
+        "llama": "outputs/sensitivity/causal/llama_neutral",
+        "llama-70b": "outputs/sensitivity/causal/llama_70b_neutral",
+        "deepseek": "outputs/sensitivity/causal/deepseek_neutral",
+        "qwen": "outputs/sensitivity/causal/qwen_neutral",
+        "gemini-flash-lite": "outputs/sensitivity/causal/gemini_fl_neutral",
+        "gpt-oss": "outputs/sensitivity/causal/gpt_oss_neutral",
+        "qwen-32b": "outputs/sensitivity/causal/qwen_32b_neutral",
     }
     source_dir = Path(args.source_dir or source_map.get(args.model, f"outputs/sensitivity/causal/{args.model}_one_turn"))
     output_dir = Path(args.output_dir or f"outputs/sensitivity/causal/{args.model.replace('-', '_')}_neutral")

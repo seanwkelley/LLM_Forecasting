@@ -2,7 +2,7 @@
 """
 Prepare data for LME regression and invoke R analysis.
 
-Step 1 (Python): Build node/edge/scrambled DataFrames from CSV results,
+Step 1 (Python): Build node/edge/permuted DataFrames from CSV results,
                  z-score predictors within each question, export CSVs.
 Step 2 (R):      Fit LME models via lme4::lmer(), output JSON + LaTeX tables.
 
@@ -37,16 +37,18 @@ MODEL_DIRS = {
     "Qwen3-32B": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
-# Original prompt runs (for comparison / legacy)
-MODEL_DIRS_ORIGINAL = {
-    "Llama-3.1-8B": CAUSAL_DIR / "llama_one_turn",
-    "Llama-3.3-70B": CAUSAL_DIR / "70b_one_turn",
-    "DeepSeek-V3": CAUSAL_DIR / "deepseek_one_turn",
-    "Qwen3-235B": CAUSAL_DIR / "qwen_one_turn",
-    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_flash_lite_one_turn",
+# Neutral prompt runs (used by coherence builders that join against ratings JSONs)
+MODEL_DIRS_NEUTRAL = {
+    "Llama-3.1-8B": CAUSAL_DIR / "llama_neutral",
+    "Llama-3.3-70B": CAUSAL_DIR / "llama_70b_neutral",
+    "DeepSeek-V3": CAUSAL_DIR / "deepseek_neutral",
+    "Qwen3-235B": CAUSAL_DIR / "qwen_neutral",
+    "Gemini-Flash-Lite": CAUSAL_DIR / "gemini_fl_neutral",
+    "GPT-OSS-120B": CAUSAL_DIR / "gpt_oss_neutral",
+    "Qwen3-32B": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
-SCRAMBLED_DIR = CAUSAL_DIR / "gpt_oss_permuted"
+PERMUTED_DIR = CAUSAL_DIR / "gpt_oss_permuted"
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -196,9 +198,9 @@ def build_path_relevance_dataframe(model_dirs: dict[str, Path] | None = None) ->
     return df
 
 
-def build_scrambled_dataframe() -> pd.DataFrame:
-    """Build node-probe DataFrame from scrambled-edge data (70B only)."""
-    return build_node_dataframe({"Llama-3.3-70B-Scrambled": SCRAMBLED_DIR})
+def build_permuted_dataframe() -> pd.DataFrame:
+    """Build node-probe DataFrame from edge-permuted data (GPT-OSS only)."""
+    return build_node_dataframe({"GPT-OSS-Permuted": PERMUTED_DIR})
 
 
 def build_direct_indirect_dataframe(model_dirs: dict[str, Path] | None = None) -> pd.DataFrame:
@@ -551,6 +553,111 @@ def build_ablation_dataframe() -> pd.DataFrame:
     return df
 
 
+def build_factor_ranking_dataframe(model_dirs: dict[str, Path] | None = None) -> pd.DataFrame:
+    """Build DataFrame joining factor rankings with probe sensitivity data.
+
+    For each node probe, looks up the stated rank of the target node from
+    the factor ranking experiment. Enables LME: |Δlogit| ~ rank_z + betweenness_z.
+    """
+    import json
+    import numpy as np
+    from forecast_bench.analysis_full import load_question_jsons
+
+    if model_dirs is None:
+        model_dirs = MODEL_DIRS
+
+    # Map model display names to ranking directories
+    RANKING_DIR_MAP = {
+        "Llama-3.1-8B": "llama_neutral_factor_ranking",
+        "Llama-3.3-70B": "llama_70b_neutral_factor_ranking",
+        "DeepSeek-V3": "deepseek_neutral_factor_ranking",
+        "Qwen3-235B": "qwen_neutral_factor_ranking",
+        "Gemini-Flash-Lite": "gemini_fl_neutral_factor_ranking",
+        "GPT-OSS-120B": "gpt_oss_neutral_factor_ranking",
+        "Qwen3-32B": "qwen_32b_neutral_factor_ranking",
+    }
+
+    all_rows = []
+    for name, d in model_dirs.items():
+        ranking_dir = CAUSAL_DIR / RANKING_DIR_MAP.get(name, "") / "question_results"
+        if not ranking_dir.exists():
+            print(f"  [SKIP] {name}: no ranking data at {ranking_dir}")
+            continue
+
+        # Load ranking data: {qid: {node_id: rank}}
+        rank_lookup = {}
+        for rf in ranking_dir.glob("q_*.json"):
+            rdata = json.loads(rf.read_text(encoding="utf-8"))
+            qid = rdata["question_id"]
+            rank_lookup[qid] = {r["id"]: r["rank"] for r in rdata["ranking"]}
+
+        # Load probe data
+        q_data = load_question_jsons(d)
+        for qid, qinfo in q_data.items():
+            if qid not in rank_lookup:
+                continue
+            qranks = rank_lookup[qid]
+            na = qinfo.get("network_analysis", {})
+            node_metrics = {m["node_id"]: m for m in na.get("node_metrics", [])}
+
+            for pr in qinfo.get("probe_results", []):
+                if not pr.get("success") or pr.get("absolute_shift") is None:
+                    continue
+                if pr.get("target_type") != "node":
+                    continue
+                tid = pr.get("target_id", "")
+                if tid not in qranks or tid not in node_metrics:
+                    continue
+
+                nm = node_metrics[tid]
+                pt = pr.get("probe_type", "")
+                if "negate" in pt:
+                    direction = "negate"
+                elif "strengthen" in pt:
+                    direction = "strengthen"
+                else:
+                    direction = "other"
+
+                all_rows.append({
+                    "question_id": qid,
+                    "model": name,
+                    "absolute_shift": pr["absolute_shift"],
+                    "initial_probability": pr.get("initial_probability",
+                                                   qinfo.get("initial_probability", 0.5)),
+                    "updated_probability": pr.get("updated_probability", 0.5),
+                    "stated_rank": qranks[tid],
+                    "betweenness": nm.get("betweenness", 0.0),
+                    "path_relevance": nm.get("path_relevance", 0.0),
+                    "probe_type": pt,
+                    "direction": direction,
+                })
+
+    df = pd.DataFrame(all_rows)
+    if df.empty:
+        return df
+
+    # Z-score within each question
+    for col in ["stated_rank", "betweenness", "path_relevance"]:
+        df[f"{col}_z"] = df.groupby("question_id")[col].transform(
+            lambda x: (x - x.mean()) / x.std() if x.std() > 0 else 0.0
+        )
+
+    # Drop questions with no variance in rank
+    qvar = df.groupby("question_id")["stated_rank_z"].transform("std")
+    df = df[qvar > 0].copy()
+
+    # Compute log-odds shift
+    eps = 1e-4
+    p0 = df["initial_probability"].clip(eps, 1 - eps)
+    p1 = df["updated_probability"].clip(eps, 1 - eps)
+    df["logit_shift"] = np.log(p1 / (1 - p1)) - np.log(p0 / (1 - p0))
+    df["abs_logit_shift"] = df["logit_shift"].abs()
+
+    print(f"  Factor Ranking DataFrame: {len(df)} rows, {df['question_id'].nunique()} questions, "
+          f"{df['model'].nunique()} models")
+    return df
+
+
 def build_network_size_dataframes() -> dict[str, pd.DataFrame]:
     """Build node DataFrames for each network size condition (GPT-OSS)."""
     size_dirs = {
@@ -581,7 +688,7 @@ def build_original_testbed_dataframe(df_node: pd.DataFrame) -> pd.DataFrame:
 def build_coherence_reasoning_dataframe() -> pd.DataFrame:
     """Build DataFrame for coherence: stated-impact rating (1-5) vs |logit shift|.
 
-    Uses reasoning judge ratings (keyed to original prompt runs).
+    Uses reasoning judge ratings (keyed to neutral prompt runs).
     """
     import json
     import numpy as np
@@ -595,12 +702,13 @@ def build_coherence_reasoning_dataframe() -> pd.DataFrame:
     ratings = json.loads(ratings_path.read_text(encoding="utf-8"))
     model_key_map = {
         "Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
-        "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
-        "Gemini-Flash-Lite": "gemini",
+        "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen-235b",
+        "Gemini-Flash-Lite": "gemini", "GPT-OSS-120B": "gpt-oss",
+        "Qwen3-32B": "qwen-32b",
     }
 
     all_rows = []
-    for display_name, d in MODEL_DIRS_ORIGINAL.items():
+    for display_name, d in MODEL_DIRS_NEUTRAL.items():
         jk = model_key_map.get(display_name)
         if not jk:
             continue
@@ -644,7 +752,7 @@ def build_coherence_reasoning_dataframe() -> pd.DataFrame:
 def build_coherence_uncertainty_dataframe() -> pd.DataFrame:
     """Build DataFrame for coherence: uncertainty rating (2-4) vs |logit shift|.
 
-    Uses uncertainty judge ratings (keyed to original prompt runs).
+    Uses uncertainty judge ratings (keyed to neutral prompt runs).
     """
     import json
     import numpy as np
@@ -658,12 +766,13 @@ def build_coherence_uncertainty_dataframe() -> pd.DataFrame:
     ratings = json.loads(ratings_path.read_text(encoding="utf-8"))
     model_key_map = {
         "Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",
-        "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen",
-        "Gemini-Flash-Lite": "gemini",
+        "DeepSeek-V3": "deepseek", "Qwen3-235B": "qwen-235b",
+        "Gemini-Flash-Lite": "gemini", "GPT-OSS-120B": "gpt-oss",
+        "Qwen3-32B": "qwen-32b",
     }
 
     all_rows = []
-    for display_name, d in MODEL_DIRS_ORIGINAL.items():
+    for display_name, d in MODEL_DIRS_NEUTRAL.items():
         jk = model_key_map.get(display_name)
         if not jk:
             continue
@@ -849,9 +958,10 @@ def main():
     df_direct = build_direct_indirect_dataframe()
     df_ext_node = build_extended_node_dataframe()
     df_ext_edge = build_extended_edge_dataframe()
-    df_scrambled = build_scrambled_dataframe()
-    df_orig_70b = build_original_testbed_dataframe(df_node)
+    df_permuted = build_permuted_dataframe()
+    df_orig_gptoss = build_original_testbed_dataframe(df_node)
     df_ablation = build_ablation_dataframe()
+    df_factor_ranking = build_factor_ranking_dataframe()
     net_size_dfs = build_network_size_dataframes()
 
     # ── Coherence DataFrames ──────────────────────────────────────────
@@ -872,12 +982,13 @@ def main():
         "lme_node_data.csv": df_node,
         "lme_path_relevance_data.csv": df_path_rel,
         "lme_edge_betweenness_data.csv": df_edge_betw,
-        "lme_scrambled_data.csv": df_scrambled,
-        "lme_original_70b_data.csv": df_orig_70b,
+        "lme_permuted_data.csv": df_permuted,
+        "lme_orig_gptoss_data.csv": df_orig_gptoss,
         "lme_ablation_data.csv": df_ablation,
         "lme_direct_indirect_data.csv": df_direct,
         "lme_extended_node_data.csv": df_ext_node,
         "lme_extended_edge_data.csv": df_ext_edge,
+        "lme_factor_ranking_data.csv": df_factor_ranking,
         "lme_network_size_data.csv": df_net_size,
         "lme_coherence_reasoning.csv": df_coh_reasoning,
         "lme_coherence_uncertainty.csv": df_coh_uncertainty,

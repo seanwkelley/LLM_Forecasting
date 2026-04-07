@@ -36,8 +36,9 @@ MODEL_DIRS = {
     "Llama-3.3-70B": "llama_70b_neutral_factor_ranking",
     "DeepSeek-V3": "deepseek_neutral_factor_ranking",
     "Qwen3-235B": "qwen_neutral_factor_ranking",
-    "Gemini-Flash-Lite": "gemini_flash_lite_neutral_factor_ranking",
+    "Gemini-Flash-Lite": "gemini_fl_neutral_factor_ranking",
     "GPT-OSS-120B": "gpt_oss_neutral_factor_ranking",
+    "Qwen3-32B": "qwen_32b_neutral_factor_ranking",
 }
 
 COLORS = {
@@ -47,6 +48,7 @@ COLORS = {
     "Qwen3-235B": "#009E73",
     "Gemini-Flash-Lite": "#CC79A7",
     "GPT-OSS-120B": "#882255",
+    "Qwen3-32B": "#56B4E9",
 }
 
 plt.rcParams.update({

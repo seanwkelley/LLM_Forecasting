@@ -265,31 +265,31 @@ def run_propagation_analysis(
         prompt = build_propagation_prompt(
             question_text, initial_prob, nodes, edges, probe, probe_target)
 
-        text, ok = client.call_single(PROPAGATION_SYSTEM, prompt)
-        client.rate_limit_wait()
+        # Retry up to 10 times
+        data = None
+        for _attempt in range(10):
+            text, ok = client.call_single(PROPAGATION_SYSTEM, prompt)
+            client.rate_limit_wait()
 
-        if not ok:
-            propagation_results.append({
-                "probe_type": probe_type,
-                "target_id": target_id,
-                "success": False,
-                "error": "API call failed",
-            })
-            continue
+            if not ok:
+                continue
 
-        data = parse_json_response(text)
+            data = parse_json_response(text)
+            if data is not None and isinstance(data, dict):
+                break
+            data = None
+
         if data is None:
             propagation_results.append({
                 "probe_type": probe_type,
                 "target_id": target_id,
                 "success": False,
-                "error": "JSON parse failed",
-                "raw_response": text[:500],
+                "error": "API/parse failed after retries",
             })
             continue
 
         # Extract downstream effects
-        effects = data.get("downstream_effects", {})
+        effects = data.get("downstream_effects") or {}
         updated_prob = data.get("updated_probability")
         if updated_prob is not None:
             updated_prob = max(0.01, min(0.99, float(updated_prob)))
@@ -361,11 +361,14 @@ def main():
 
     # Resolve directories
     model_dir_map = {
-        "llama": "llama_one_turn",
-        "llama-70b": "70b_one_turn",
-        "deepseek": "deepseek_one_turn",
-        "qwen": "qwen_one_turn",
-        "gemini-flash-lite": "gemini_flash_lite_one_turn",
+        "llama": "llama_neutral",
+        "llama-70b": "llama_70b_neutral",
+        "deepseek": "deepseek_neutral",
+        "qwen": "qwen_neutral",
+        "gemini-flash-lite": "gemini_fl_neutral",
+        "gemini-flash-lite-nitro": "gemini_fl_neutral",
+        "gpt-oss": "gpt_oss_neutral",
+        "qwen-32b": "qwen_32b_neutral",
     }
 
     if args.source_dir:

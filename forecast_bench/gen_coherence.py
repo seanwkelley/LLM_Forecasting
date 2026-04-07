@@ -43,6 +43,7 @@ COLORS = {
     "Qwen3-235B": "#009E73",
     "Gemini-Flash-Lite": "#CC79A7",
     "GPT-OSS-120B": "#882255",
+    "Qwen3-32B": "#56B4E9",
 }
 
 JUDGE_KEY_MAP = {"Llama-3.1-8B": "llama-8b", "Llama-3.3-70B": "llama-70b",

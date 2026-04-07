@@ -48,10 +48,11 @@ def main():
     base = Path("outputs/sensitivity/causal")
 
     configs = [
-        ("Llama-70B", "meta-llama/llama-3.3-70b-instruct", base / "llama_70b_neutral", base / "70b_one_turn"),
-        ("Qwen3-235B", "qwen/qwen3-235b-a22b-2507", base / "qwen_neutral", base / "qwen_one_turn"),
-        ("Gemini-FL", "google/gemini-2.5-flash-lite", base / "gemini_flash_lite_neutral", base / "gemini_flash_lite_one_turn"),
-        ("GPT-OSS", "openai/gpt-oss-120b:nitro", base / "gpt_oss_neutral", base / "gpt_oss_one_turn"),
+        ("Llama-70B", "meta-llama/llama-3.3-70b-instruct", base / "llama_70b_neutral", base / "llama_70b_neutral"),
+        ("Qwen3-235B", "qwen/qwen3-235b-a22b-2507", base / "qwen_neutral", base / "qwen_neutral"),
+        ("Gemini-FL", "google/gemini-2.5-flash-lite", base / "gemini_fl_neutral", base / "gemini_fl_neutral"),
+        ("GPT-OSS", "openai/gpt-oss-120b:nitro", base / "gpt_oss_neutral", base / "gpt_oss_neutral"),
+        ("Qwen3-32B", "qwen/qwen3-32b:nitro", base / "qwen_32b_neutral", base / "qwen_32b_neutral"),
     ]
 
     for model_name, model_id, neutral_dir, source_dir in configs:

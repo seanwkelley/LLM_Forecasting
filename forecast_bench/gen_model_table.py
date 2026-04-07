@@ -144,8 +144,9 @@ def _generate_permutation_table():
         "Llama-3.3-70B": CAUSAL / "llama_70b_neutral",
         "DeepSeek-V3":   CAUSAL / "deepseek_neutral",
         "Qwen3-235B":    CAUSAL / "qwen_neutral",
-        "Gemini-Flash-Lite": CAUSAL / "gemini_flash_lite_neutral",
+        "Gemini-Flash-Lite": CAUSAL / "gemini_fl_neutral",
         "GPT-OSS-120B":  CAUSAL / "gpt_oss_neutral",
+        "Qwen3-32B":     CAUSAL / "qwen_32b_neutral",
     }
 
     def jaccard(a, b):
@@ -276,7 +277,7 @@ def _generate_probe_examples_table():
     """Render a methods table showing one example per probe type with updating."""
     import pandas as pd
 
-    causal_dir = BASE / "outputs" / "sensitivity" / "causal" / "70b_one_turn"
+    causal_dir = BASE / "outputs" / "sensitivity" / "causal" / "gpt_oss_neutral"
     df = pd.read_csv(causal_dir / "sensitivity_results.csv")
 
     # Use Cynthia Erivo question — has all 14 probe types with consistent p0

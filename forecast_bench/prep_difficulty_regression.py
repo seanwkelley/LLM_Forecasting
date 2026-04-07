@@ -36,8 +36,9 @@ MODEL_DIRS = {
     "llama-70b": CAUSAL_DIR / "llama_70b_neutral",
     "deepseek": CAUSAL_DIR / "deepseek_neutral",
     "qwen": CAUSAL_DIR / "qwen_neutral",
-    "gemini": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "gemini": CAUSAL_DIR / "gemini_fl_neutral",
     "gpt-oss": CAUSAL_DIR / "gpt_oss_neutral",
+    "qwen-32b": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
 HIGH_IMPORTANCE_TYPES = {

@@ -25,8 +25,9 @@ MODEL_DIRS = {
     "llama-70b": CAUSAL_DIR / "llama_70b_neutral",
     "deepseek": CAUSAL_DIR / "deepseek_neutral",
     "qwen": CAUSAL_DIR / "qwen_neutral",
-    "gemini": CAUSAL_DIR / "gemini_flash_lite_neutral",
+    "gemini": CAUSAL_DIR / "gemini_fl_neutral",
     "gpt-oss": CAUSAL_DIR / "gpt_oss_neutral",
+    "qwen-32b": CAUSAL_DIR / "qwen_32b_neutral",
 }
 
 
@@ -74,7 +75,8 @@ def main():
     lines.append(r"\midrule")
     lines.append(r"\multicolumn{4}{l}{\textit{Easiest questions}} \\")
 
-    for i, (qid, elo) in enumerate(sorted_q[-5:][::-1], 96):
+    n_q = len(sorted_q)
+    for i, (qid, elo) in enumerate(sorted_q[-5:][::-1], n_q - 4):
         mp = np.mean(q_probs[qid])
         txt = shorten(detail[qid]["question"])
         lines.append(f"{i} & {txt} & {elo:.0f} & {mp:.2f} \\\\")
@@ -83,7 +85,7 @@ def main():
         r"\bottomrule",
         r"\end{tabular}",
         r"\caption{Exemplar questions at the extremes of the Elo difficulty ranking. "
-        r"Mean $p_0$ is averaged across all five models. Hard questions involve "
+        r"Mean $p_0$ is averaged across all seven models. Hard questions involve "
         r"geopolitical contingencies and long-horizon technology forecasts with "
         r"opaque causal mechanisms; easy questions involve routine economic "
         r"indicators and well-precedented events.}",
@@ -98,14 +100,13 @@ def main():
     # ── Table 2: Regression results ──────────────────────────────────────
     rows = [
         # (name, beta, se, p, lrt_chi2, r2m, r2c, sig)
-        ("Mean absolute shift", "+0.007", "0.001", "<.001", "28.13", ".061", ".290", True),
-        ("SSR", r"$-$0.237", "0.082", ".004", "8.44", ".027", ".092", True),
-        (r"Within-question $\tau$", "+0.017", "0.016", ".285", "1.14", ".003", ".022", False),
-        ("Shortest-path premium", "+0.001", "0.001", ".449", "0.58", ".001", ".001", False),
-        ("Asymmetry index", r"$-$0.039", "0.018", ".025", "5.00", ".010", ".094", True),
-        ("Reasoning judge rating", "+0.083", "0.010", "<.001", "65.60", ".096", ".461", True),
-        ("Uncertainty judge rating", r"$-$0.015", "0.007", ".023", "5.22", ".010", ".210", True),
-        ("Brier score", r"$-$0.060", "0.010", "<.001", "36.13", ".203", ".207", True),
+        ("Mean absolute shift", r"$-$0.002", "0.001", ".002", "9.39", ".348", ".582", True),
+        ("SSR", "+0.006", "0.019", ".749", "0.10", ".007", ".159", False),
+        (r"Within-question $\tau$", r"$-$0.004", "0.012", ".772", "0.09", ".000", ".005", False),
+        ("Shortest-path premium", "+0.001", "0.001", ".441", "0.60", ".016", ".124", False),
+        ("Asymmetry index", r"$-$0.019", "0.010", ".046", "4.00", ".020", ".130", True),
+        ("Reasoning judge rating", "+0.017", "0.006", ".007", "7.30", ".016", ".051", True),
+        ("Uncertainty judge rating", r"$-$0.012", "0.005", ".029", "4.77", ".006", ".280", True),
     ]
 
     lines2 = [
@@ -139,8 +140,7 @@ def main():
         r"coefficient; LRT $\chi^2$ tests whether adding Elo improves fit over "
         r"$|p_0 - 0.5|$ alone. $R^2_m$ = marginal (fixed effects); "
         r"$R^2_c$ = conditional (fixed + random). "
-        r"$N = 600$ (100 questions $\times$ 6 models) except Brier "
-        r"($N = 240$, 48 questions with ground truth). Bold = $p < .05$.}",
+        r"$N = 812$ (116 questions $\times$ 7 models). Bold = $p < .05$.}",
         r"\label{tab:elo_regression}",
         r"\end{table*}",
     ]

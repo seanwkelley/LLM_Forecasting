@@ -193,6 +193,51 @@ class LLMClient:
             time.sleep(self.rate_limit_delay)
 
 
+def _llm_json_repair(text: str) -> dict | None:
+    """Last-resort: ask GPT-4o-mini to extract/repair JSON from malformed text."""
+    import os
+    api_key = os.environ.get("OPENROUTER_API_KEY", "")
+    if not api_key:
+        try:
+            from forecasting.config import OPENROUTER_API_KEY
+            api_key = OPENROUTER_API_KEY
+        except ImportError:
+            pass
+    if not api_key:
+        try:
+            from archive.wargame_forecasting.config import OPENROUTER_API_KEY
+            api_key = OPENROUTER_API_KEY
+        except ImportError:
+            pass
+    if not api_key:
+        return None
+
+    try:
+        resp = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "openai/gpt-4o-mini",
+                "messages": [
+                    {"role": "system", "content": "Extract the JSON object from the following text. Return ONLY valid JSON, no other text."},
+                    {"role": "user", "content": text[:4000]},
+                ],
+                "max_tokens": 2000,
+                "temperature": 0,
+            },
+            timeout=30,
+        )
+        if resp.status_code == 200:
+            repaired = resp.json()["choices"][0]["message"]["content"].strip()
+            return json.loads(repaired)
+    except Exception:
+        pass
+    return None
+
+
 def parse_json_response(text: str) -> dict | None:
     """Parse JSON from an LLM response, with fallback strategies.
 
@@ -200,6 +245,7 @@ def parse_json_response(text: str) -> dict | None:
     1. Direct JSON parse
     2. Extract from markdown code block
     3. Regex extraction (nested-JSON-aware: matches outermost braces)
+    4. LLM repair via GPT-4o-mini (last resort)
 
     Returns
     -------
@@ -229,5 +275,10 @@ def parse_json_response(text: str) -> dict | None:
             return json.loads(match.group(0))
         except json.JSONDecodeError:
             pass
+
+    # Strategy 4: LLM repair (cheap, last resort)
+    repaired = _llm_json_repair(text)
+    if repaired is not None:
+        return repaired
 
     return None

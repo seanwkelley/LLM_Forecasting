@@ -1,0 +1,31 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Factor Ranking: Rank + Betweenness Predicting |$\Delta$logit|}
+\label{tab:lme_ranking_combined_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.4013*** & 0.0118 & 33.98 & $<$0.001 & [0.378, 0.424] \\
+  stated\_rank\_z & -0.0572*** & 0.0034 & -17.00 & $<$0.001 & [-0.064, -0.051] \\
+  betweenness\_z & 0.0249*** & 0.0034 & 7.30 & $<$0.001 & [0.018, 0.032] \\
+  directionstrengthen & 0.2068*** & 0.0062 & 33.23 & $<$0.001 & [0.195, 0.219] \\
+  DeepSeek-V3 & -0.0048 & 0.0117 & -0.42 & 0.678 & [-0.028, 0.018] \\
+  Gemini-Flash-Lite & 0.1898*** & 0.0117 & 16.25 & $<$0.001 & [0.167, 0.213] \\
+  GPT-OSS-120B & 0.1847*** & 0.0116 & 15.87 & $<$0.001 & [0.162, 0.208] \\
+  Llama-3.1-8B & 0.0204 & 0.0117 & 1.74 & 0.082 & [-0.003, 0.043] \\
+  Qwen3-235B & 0.0769*** & 0.0117 & 6.60 & $<$0.001 & [0.054, 0.100] \\
+  Qwen3-32B & -0.0476*** & 0.0117 & -4.07 & $<$0.001 & [-0.071, -0.025] \\
+\midrule
+  N observations & \multicolumn{5}{c}{6495} \\
+  N groups (questions) & \multicolumn{5}{c}{116} \\
+  Log-likelihood & \multicolumn{5}{c}{-381.78} \\
+  AIC / BIC & \multicolumn{5}{c}{787.6 / 868.9} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.2487} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.3259} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0072} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.0629} \\
+\bottomrule
+\end{tabular}
+\end{table}

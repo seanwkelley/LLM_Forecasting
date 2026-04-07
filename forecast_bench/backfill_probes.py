@@ -7,7 +7,7 @@ re-runs only those probes, updates the JSON, then regenerates the CSV.
 Usage:
     python -m forecast_bench.backfill_probes \
         --model gemini-flash-lite \
-        --output-dir outputs/sensitivity/causal/gemini_flash_lite_one_turn_retest
+        --output-dir outputs/sensitivity/causal/gemini_fl_neutral_retest
 """
 from __future__ import annotations
 

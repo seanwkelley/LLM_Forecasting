@@ -191,8 +191,10 @@ def generate_backgrounds(args):
         print("[ERROR] OPENROUTER_API_KEY not set.")
         sys.exit(1)
 
-    questions = load_forecastbench_questions(max_questions=100)
-    print(f"Loaded {len(questions)} questions")
+    # Load 116 high-complexity questions
+    hc_path = Path(__file__).parent / "high_complexity_questions.json"
+    questions = json.loads(hc_path.read_text(encoding="utf-8"))
+    print(f"Loaded {len(questions)} high-complexity questions")
 
     # Load existing if resuming
     existing = {}

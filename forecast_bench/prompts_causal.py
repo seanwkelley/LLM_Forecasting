@@ -72,7 +72,7 @@ Respond with ONLY valid JSON. No other text."""
 
 def build_causal_forecast_prompt(
     question: str,
-    node_range: tuple[int, int] = (4, 8),
+    node_range: tuple[int, int] = (6, 10),
 ) -> str:
     """Build the user prompt for Stage 1: causal forecast.
 

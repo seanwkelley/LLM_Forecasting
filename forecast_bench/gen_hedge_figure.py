@@ -26,10 +26,11 @@ MODEL_DIRS = {
     "Llama-3.3-70B":     ("llama-70b", CAUSAL / "llama_70b_neutral"),
     "DeepSeek-V3":       ("deepseek",  CAUSAL / "deepseek_neutral"),
     "Qwen3-235B":        ("qwen",      CAUSAL / "qwen_neutral"),
-    "Gemini-Flash-Lite": ("gemini",    CAUSAL / "gemini_flash_lite_neutral"),
+    "Gemini-Flash-Lite": ("gemini",    CAUSAL / "gemini_fl_neutral"),
     "GPT-OSS-120B":      ("gpt-oss",   CAUSAL / "gpt_oss_neutral"),
+    "Qwen3-32B":         ("qwen-32b",  CAUSAL / "qwen_32b_neutral"),
 }
-MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN, "Gemini-Flash-Lite": REDDISH_PURPLE, "GPT-OSS-120B": WINE}
+MODEL_COLORS = {"Llama-3.1-8B": BLUE, "Llama-3.3-70B": ORANGE, "DeepSeek-V3": VERMILLION, "Qwen3-235B": GREEN, "Gemini-Flash-Lite": REDDISH_PURPLE, "GPT-OSS-120B": WINE, "Qwen3-32B": "#56B4E9"}
 
 
 def main():

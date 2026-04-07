@@ -1177,13 +1177,17 @@ def fig_null_test(runs: dict):
                 m = sum(vals) / len(vals) if vals else 0
                 boot_rng = np.random.RandomState(42)
                 boot = []
-                for _ in range(2000):
-                    sample = boot_rng.choice(vals, len(vals), replace=True)
-                    boot.append(sum(sample) / len(sample))
-                boot.sort()
-                lo = boot[int(0.025 * len(boot))]
-                hi = boot[int(0.975 * len(boot))]
-                ci_list.append((m - lo, hi - m))
+                if len(vals) > 0:
+                    for _ in range(2000):
+                        sample = boot_rng.choice(vals, len(vals), replace=True)
+                        boot.append(sum(sample) / len(sample))
+                if boot:
+                    boot.sort()
+                    lo = boot[int(0.025 * len(boot))]
+                    hi = boot[int(0.975 * len(boot))]
+                    ci_list.append((m - lo, hi - m))
+                else:
+                    ci_list.append((0, 0))
 
         _MODEL_DISPLAY_SHORT = {
             "llama-8b": "Llama\n8B", "llama-70b": "Llama\n70B",
@@ -1991,11 +1995,13 @@ def fig_test_retest(runs: dict):
     from scipy import stats as sp_stats
 
     RETEST_DIRS = {
-        "Llama-3.1-8B": (CAUSAL_DIR / "llama_one_turn", CAUSAL_DIR / "llama_one_turn_retest"),
-        "Llama-3.3-70B": (CAUSAL_DIR / "70b_one_turn", CAUSAL_DIR / "70b_one_turn_retest"),
-        "DeepSeek-V3": (CAUSAL_DIR / "deepseek_one_turn", CAUSAL_DIR / "deepseek_one_turn_retest"),
-        "Qwen3-235B": (CAUSAL_DIR / "qwen_one_turn", CAUSAL_DIR / "qwen_one_turn_retest"),
-        "Gemini-Flash-Lite": (CAUSAL_DIR / "gemini_flash_lite_one_turn", CAUSAL_DIR / "gemini_flash_lite_one_turn_retest"),
+        "Llama-3.1-8B": (CAUSAL_DIR / "llama_neutral", CAUSAL_DIR / "llama_retest"),
+        "Llama-3.3-70B": (CAUSAL_DIR / "llama_70b_neutral", CAUSAL_DIR / "llama_70b_retest"),
+        "DeepSeek-V3": (CAUSAL_DIR / "deepseek_neutral", CAUSAL_DIR / "deepseek_retest"),
+        "Qwen3-235B": (CAUSAL_DIR / "qwen_neutral", CAUSAL_DIR / "qwen_retest"),
+        "Gemini-Flash-Lite": (CAUSAL_DIR / "gemini_fl_neutral", CAUSAL_DIR / "gemini_flash_lite_nitro_retest"),
+        "GPT-OSS-120B": (CAUSAL_DIR / "gpt_oss_neutral", CAUSAL_DIR / "gpt_oss_retest"),
+        "Qwen3-32B": (CAUSAL_DIR / "qwen_32b_neutral", CAUSAL_DIR / "qwen_32b_retest"),
     }
 
     def _mean_shift(qdata):
@@ -2004,72 +2010,77 @@ def fig_test_retest(runs: dict):
              if r.get("success") and r.get("absolute_shift") is not None]
         return sum(s) / len(s) if s else None
 
+    def _load_shared_stages(d):
+        """Load initial probabilities from _shared_stages_causal."""
+        shared_dir = d / "_shared_stages_causal"
+        if not shared_dir.exists():
+            return {}
+        results = {}
+        for p in sorted(shared_dir.glob("q_*.json")):
+            try:
+                data = json.loads(p.read_text(encoding="utf-8"))
+                qid = data.get("question_id", p.stem.replace("q_", ""))
+                results[qid] = data
+            except (json.JSONDecodeError, KeyError):
+                continue
+        return results
+
     model_results = {}
     for model_name, (dir1, dir2) in RETEST_DIRS.items():
         if not dir1.exists() or not dir2.exists():
             print(f"  [SKIP] test-retest {model_name}: missing data")
             continue
+        # Try question_results first, fall back to _shared_stages_causal
         run1 = load_question_jsons(dir1)
+        if not run1:
+            run1 = _load_shared_stages(dir1)
         run2 = load_question_jsons(dir2)
+        if not run2:
+            run2 = _load_shared_stages(dir2)
         shared = sorted(set(run1) & set(run2))
         if len(shared) < 10:
             print(f"  [SKIP] test-retest {model_name}: only {len(shared)} shared")
             continue
 
-        probs_1, probs_2, shifts_1, shifts_2 = [], [], [], []
+        probs_1, probs_2 = [], []
         for qid in shared:
             p1 = run1[qid].get("initial_probability")
             p2 = run2[qid].get("initial_probability")
             if p1 is not None and p2 is not None:
                 probs_1.append(p1)
                 probs_2.append(p2)
-            s1, s2 = _mean_shift(run1[qid]), _mean_shift(run2[qid])
-            if s1 is not None and s2 is not None:
-                shifts_1.append(s1)
-                shifts_2.append(s2)
 
         rho_p, _ = sp_stats.spearmanr(probs_1, probs_2) if len(probs_1) >= 3 else (None, None)
-        rho_s, _ = sp_stats.spearmanr(shifts_1, shifts_2) if len(shifts_1) >= 3 else (None, None)
         mad = float(np.mean([abs(a - b) for a, b in zip(probs_1, probs_2)])) if probs_1 else None
         model_results[model_name] = {
-            "rho_prob": rho_p, "rho_shift": rho_s, "mad_prob": mad,
+            "rho_prob": rho_p, "mad_prob": mad,
             "n_shared": len(shared),
         }
-        print(f"  {model_name}: rho_prob={rho_p:.3f}, rho_shift={rho_s:.3f}, MAD={mad:.3f}, n={len(shared)}")
+        print(f"  {model_name}: rho_prob={rho_p:.3f}, MAD={mad:.3f}, n={len(shared)}")
 
     if not model_results:
         print("  [SKIP] test-retest: no valid pairs")
         return
 
-    # Bar chart: ρ for probabilities and shifts side by side
+    # Bar chart: ρ for initial probabilities
     names = list(model_results.keys())
     x = np.arange(len(names))
-    width = 0.35
 
-    fig, ax = plt.subplots(figsize=(10, 4.5))
+    fig, ax = plt.subplots(figsize=(8, 4))
     rho_probs = [model_results[n]["rho_prob"] or 0 for n in names]
-    rho_shifts = [model_results[n]["rho_shift"] or 0 for n in names]
     colors_list = [COLORS.get(n, "#999") for n in names]
 
-    bars1 = ax.bar(x - width / 2, rho_probs, width, label="Initial Probability ρ",
-                   color=colors_list, alpha=0.9, edgecolor="none")
-    bars2 = ax.bar(x + width / 2, rho_shifts, width, label="Mean |Shift| ρ",
-                   color=colors_list, alpha=0.5, edgecolor="none", hatch="//")
+    bars = ax.bar(x, rho_probs, 0.6, color=colors_list, alpha=0.9, edgecolor="#333", linewidth=0.8)
 
     ax.set_ylabel("Spearman ρ (Run 1 vs Run 2)")
     ax.set_xticks(x)
     ax.set_xticklabels([n.replace("-", "\n", 1) for n in names], fontsize=9)
     ax.set_ylim(0, 1.05)
     ax.axhline(1.0, color="#999", linestyle="--", linewidth=0.8)
-    ax.legend(frameon=False, fontsize=9)
 
-    # Add value labels
-    for bar in bars1:
+    for bar in bars:
         ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02,
-                f"{bar.get_height():.2f}", ha="center", fontsize=8)
-    for bar in bars2:
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.02,
-                f"{bar.get_height():.2f}", ha="center", fontsize=8)
+                f"{bar.get_height():.3f}", ha="center", fontsize=8)
 
     plt.tight_layout()
     plt.savefig(SUPPLEMENT_DIR / "test_retest.png", dpi=300, bbox_inches="tight")

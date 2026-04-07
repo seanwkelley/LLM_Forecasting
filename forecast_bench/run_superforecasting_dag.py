@@ -144,6 +144,11 @@ def run_stage1(client, question_text, system_prompt, max_retries=5):
     if not edges:
         return None
 
+    # Reject graphs with disconnected nodes
+    edge_node_ids = set(e.get("from") for e in edges) | set(e.get("to") for e in edges)
+    if any(n["id"] not in edge_node_ids for n in nodes):
+        return None
+
     outcome_id = next(n["id"] for n in nodes if n["role"] == "outcome")
     if not any(e["to"] == outcome_id for e in edges):
         return None
@@ -178,7 +183,7 @@ def main():
         api_key=api_key,
         model=model_id,
         temperature=0.7,
-        max_tokens=1200,
+        max_tokens=2000,
         max_retries=3,
     )
 

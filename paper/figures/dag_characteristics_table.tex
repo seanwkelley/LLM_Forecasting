@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model} & \textbf{Nodes} & \textbf{Edges} & \textbf{Density} & \textbf{Depth} & \textbf{$p_0$ Mean} & \textbf{$p_0$ SD} \\
+\midrule
+Llama 3.1 8B & 8.5 & 9.3 & 0.147 & 3.4 & 0.36 & 0.18 \\
+Llama 3.3 70B & 8.0 & 8.2 & 0.148 & 3.1 & 0.43 & 0.23 \\
+DeepSeek V3 & 7.6 & 7.5 & 0.150 & 2.8 & 0.43 & 0.21 \\
+Qwen3 235B & 8.6 & 8.2 & 0.125 & 3.4 & 0.39 & 0.24 \\
+Qwen3 32B & 9.3 & 10.1 & 0.131 & 2.8 & 0.39 & 0.22 \\
+Gemini FL & 8.3 & 11.7 & 0.194 & 2.1 & 0.35 & 0.23 \\
+GPT-OSS 120B & 8.5 & 8.6 & 0.137 & 3.2 & 0.31 & 0.16 \\
+\bottomrule
+\end{tabular}
+\caption{DAG characteristics by model (means across 116 questions). Density is the ratio of edges to possible directed edges. Depth is the longest shortest path from any factor to the outcome node. $p_0$ is the initial probability estimate.}
+\label{tab:dag_characteristics}
+\end{table}

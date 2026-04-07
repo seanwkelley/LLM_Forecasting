@@ -150,6 +150,14 @@ def run_forecast(client, question_text: str, max_retries: int = 3):
                 continue
             return None
 
+        # Reject graphs with disconnected nodes
+        edge_node_ids = set(e.get("from") for e in edges) | set(e.get("to") for e in edges)
+        if any(n["id"] not in edge_node_ids for n in nodes):
+            if attempt < max_retries:
+                client.rate_limit_wait()
+                continue
+            return None
+
         outcome_id = next(n["id"] for n in nodes if n["role"] == "outcome")
         if not any(e["to"] == outcome_id for e in edges):
             if attempt < max_retries:
@@ -214,7 +222,7 @@ def run_collection(args):
         api_key=api_key,
         model=model_id,
         temperature=0.7,
-        max_tokens=1200,
+        max_tokens=2000,
     )
 
     # Judge model (GPT-4o-mini, separate from pipeline models)
@@ -325,12 +333,13 @@ def run_analysis(args):
     # Load original DAGs for comparison
     model_short = args.model.replace("-", "_")
     real_dirs = {
-        "llama_70b": BASE / "outputs" / "sensitivity" / "causal" / "70b_one_turn" / "_shared_stages_causal",
-        "llama": BASE / "outputs" / "sensitivity" / "causal" / "8b_one_turn" / "_shared_stages_causal",
-        "deepseek": BASE / "outputs" / "sensitivity" / "causal" / "deepseek_one_turn" / "_shared_stages_causal",
-        "qwen": BASE / "outputs" / "sensitivity" / "causal" / "qwen_one_turn" / "_shared_stages_causal",
-        "gemini": BASE / "outputs" / "sensitivity" / "causal" / "gemini_one_turn" / "_shared_stages_causal",
-        "gemini_flash_lite_nitro": BASE / "outputs" / "sensitivity" / "causal" / "gemini_flash_lite_one_turn" / "_shared_stages_causal",
+        "llama_70b": BASE / "outputs" / "sensitivity" / "causal" / "llama_70b_neutral" / "_shared_stages_causal",
+        "llama": BASE / "outputs" / "sensitivity" / "causal" / "llama_neutral" / "_shared_stages_causal",
+        "deepseek": BASE / "outputs" / "sensitivity" / "causal" / "deepseek_neutral" / "_shared_stages_causal",
+        "qwen": BASE / "outputs" / "sensitivity" / "causal" / "qwen_neutral" / "_shared_stages_causal",
+        "gemini_flash_lite": BASE / "outputs" / "sensitivity" / "causal" / "gemini_fl_neutral" / "_shared_stages_causal",
+        "gpt_oss": BASE / "outputs" / "sensitivity" / "causal" / "gpt_oss_neutral" / "_shared_stages_causal",
+        "qwen_32b": BASE / "outputs" / "sensitivity" / "causal" / "qwen_32b_neutral" / "_shared_stages_causal",
     }
 
     real_dir = real_dirs.get(model_short)

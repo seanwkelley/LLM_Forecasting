@@ -4,7 +4,7 @@
 
 This repository contains code, data, and paper drafts for two related research threads on LLM forecasting:
 
-1. **Belief Sensitivity** (primary, active) — Tests whether LLM probability updates are *internally consistent* with their own elicited causal models. Submitted to ARR May 2026 / EMNLP 2026.
+1. **Belief Sensitivity** (primary, active) — Tests whether LLM probability updates are *internally consistent* with their own elicited causal models. Submitted to ARR May 2026.
 2. **Known Causal Models** — Tests whether LLMs can discover known causal structures through interventional queries on simulation engines (commodity market and geopolitical conflict).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -15,7 +15,7 @@ This repository contains code, data, and paper drafts for two related research t
 
 **Question:** When an LLM produces a probability estimate alongside a causal DAG explaining its reasoning, does it update beliefs *in proportion to the structural importance* of challenged factors?
 
-**Paper:** `paper/methods_only.tex` (target: ARR May 2026 → EMNLP 2026)
+**Paper:** `paper/methods_and_results.tex` (target: ARR May 2026)
 
 ### Pipeline
 
@@ -138,10 +138,11 @@ LLM_Forecasting/
 │   ├── high_complexity_questions.json  # 116 filtered ForecastBench questions w/ topics
 │   └── ...
 │
-├── paper/                            # EMNLP 2026 submission
-│   ├── methods_only.tex                # Active paper draft
+├── paper/                            # Belief sensitivity paper
+│   ├── methods_and_results.tex         # Active paper draft
 │   ├── references.bib
-│   ├── figures/                        # Tables (.tex) and figures (.pdf/.png)
+│   ├── figures/                        # main/, supplement/, internal/, archive/
+│   ├── tables/                         # main/, supplement/, archive/ (.tex)
 │   └── methods_style_guide.md
 │
 ├── known_causal_models/              # Second paper: causal discovery on simulations
@@ -166,7 +167,7 @@ LLM_Forecasting/
 
 | Document | Covers |
 |---|---|
-| **[paper/methods_only.tex](paper/methods_only.tex)** | Belief sensitivity paper draft (methods + appendix) |
+| **[paper/methods_and_results.tex](paper/methods_and_results.tex)** | Belief sensitivity paper draft (methods + results + appendix) |
 | **[paper/methods_style_guide.md](paper/methods_style_guide.md)** | Writing conventions for the paper |
 | **[paper/figure_style_guide.md](paper/figure_style_guide.md)** | Figure conventions |
 | **[known_causal_models/README.md](known_causal_models/README.md)** | Causal discovery + simulation engines |
@@ -179,12 +180,11 @@ LLM_Forecasting/
 If you use this work, please cite:
 
 ```bibtex
-@inproceedings{kelley2026belief,
-  author    = {Kelley, Sean W. and Riedl, Christoph},
-  title     = {Probing Belief Sensitivity in {LLM} Forecasters: Do Causal Structure and Importance Predict Belief Updates?},
-  booktitle = {Proceedings of EMNLP 2026},
-  year      = {2026},
-  note      = {Under review}
+@misc{kelley2026belief,
+  author = {Kelley, Sean W. and Riedl, Christoph},
+  title  = {Probing Belief Sensitivity in {LLM} Forecasters: Do Causal Structure and Importance Predict Belief Updates?},
+  year   = {2026},
+  note   = {Manuscript under review}
 }
 ```
 
@@ -203,4 +203,4 @@ MIT License — see LICENSE file for details
 
 ---
 
-**Status:** Active Research | **Last Updated:** April 7, 2026
+**Status:** Active Research | **Last Updated:** April 29, 2026

@@ -109,7 +109,7 @@ def run_market_intervention(
     if return_vars is None:
         return_vars = [
             "clearing_price", "volume", "fundamental_price",
-            "avg_bid_price", "avg_ask_price",
+            "best_bid", "best_ask",
             "total_bid_qty", "total_ask_qty",
             "total_cash", "total_inventory",
         ]
@@ -295,19 +295,26 @@ def _run_market_rollout(
         # --- Run period ---
         result = run_period(state, orders)
 
-        # Add aggregate order stats for causal discovery observability
+        # Add aggregate order stats for causal discovery observability.
+        # best_bid / best_ask (the marginal prices the engine actually uses)
+        # are already in result from run_period. We also expose quantity-weighted
+        # means for diagnostics, but prefer best_bid/best_ask in return_vars.
         buy_orders = [o for o in orders if o.side == "buy"]
         sell_orders = [o for o in orders if o.side == "sell"]
+        buy_qty = sum(o.quantity for o in buy_orders)
+        sell_qty = sum(o.quantity for o in sell_orders)
         result["avg_bid_price"] = (
-            round(sum(o.limit_price for o in buy_orders) / len(buy_orders), 4)
-            if buy_orders else 0
+            round(
+                sum(o.limit_price * o.quantity for o in buy_orders) / buy_qty, 4
+            ) if buy_qty > 0 else 0
         )
         result["avg_ask_price"] = (
-            round(sum(o.limit_price for o in sell_orders) / len(sell_orders), 4)
-            if sell_orders else 0
+            round(
+                sum(o.limit_price * o.quantity for o in sell_orders) / sell_qty, 4
+            ) if sell_qty > 0 else 0
         )
-        result["total_bid_qty"] = sum(o.quantity for o in buy_orders)
-        result["total_ask_qty"] = sum(o.quantity for o in sell_orders)
+        result["total_bid_qty"] = buy_qty
+        result["total_ask_qty"] = sell_qty
 
         # Add aggregate agent state
         result["total_cash"] = round(
@@ -337,87 +344,14 @@ def _run_market_rollout(
 
 
 def _market_rule_based_orders(agents: dict, state) -> list:
-    """Generate rule-based orders for all agents."""
-    from market.engine import Order
+    """Generate rule-based orders for all agents.
 
-    orders = []
-    price_history = state.price_history
-
-    for agent in agents.values():
-        last_price = price_history[-1] if price_history else 100.0
-
-        if agent.role == "producer":
-            # Sell at production cost + margin, proportional to inventory
-            margin = 1.10 + (agent.inventory / 100) * 0.05  # higher inventory → lower margin
-            ask_price = agent.production_cost * margin
-            qty = min(agent.inventory, agent.production_capacity)
-            if qty > 0:
-                orders.append(Order(
-                    agent_id=agent.agent_id,
-                    side="sell",
-                    quantity=qty,
-                    limit_price=round(ask_price, 2),
-                ))
-
-        elif agent.role == "consumer":
-            # Buy at demand value - margin
-            bid_price = agent.demand_value * 0.95
-            max_qty = int(agent.cash / bid_price) if bid_price > 0 else 0
-            qty = min(agent.demand_per_period, max_qty)
-            if qty > 0:
-                orders.append(Order(
-                    agent_id=agent.agent_id,
-                    side="buy",
-                    quantity=qty,
-                    limit_price=round(bid_price, 2),
-                ))
-
-        elif agent.role == "speculator":
-            if len(price_history) < 2:
-                continue
-            trend = price_history[-1] - price_history[-2]
-            if trend > 0 and agent.agent_id == "speculator_A":
-                # Momentum: buy in uptrend
-                qty = min(5, int(agent.cash / last_price) if last_price > 0 else 0)
-                if qty > 0:
-                    orders.append(Order(
-                        agent_id=agent.agent_id,
-                        side="buy",
-                        quantity=qty,
-                        limit_price=round(last_price * 1.02, 2),
-                    ))
-            elif trend < 0 and agent.agent_id == "speculator_A":
-                # Momentum: sell in downtrend
-                qty = min(5, agent.inventory)
-                if qty > 0:
-                    orders.append(Order(
-                        agent_id=agent.agent_id,
-                        side="sell",
-                        quantity=qty,
-                        limit_price=round(last_price * 0.98, 2),
-                    ))
-            elif trend > 0 and agent.agent_id == "speculator_B":
-                # Contrarian: sell in uptrend
-                qty = min(5, agent.inventory)
-                if qty > 0:
-                    orders.append(Order(
-                        agent_id=agent.agent_id,
-                        side="sell",
-                        quantity=qty,
-                        limit_price=round(last_price * 1.05, 2),
-                    ))
-            elif trend < 0 and agent.agent_id == "speculator_B":
-                # Contrarian: buy in downtrend
-                qty = min(5, int(agent.cash / last_price) if last_price > 0 else 0)
-                if qty > 0:
-                    orders.append(Order(
-                        agent_id=agent.agent_id,
-                        side="buy",
-                        quantity=qty,
-                        limit_price=round(last_price * 0.95, 2),
-                    ))
-
-    return orders
+    Thin wrapper preserved for backwards compatibility with importers
+    (run_pilot.py, run_pilot_open.py, run_pilot_windowed.py, multi_agent/agent.py,
+    test_intervention.py). All rule logic lives in market/rule_agents.py.
+    """
+    from market.rule_agents import collect_rule_based_orders
+    return collect_rule_based_orders(agents, state)
 
 
 def _apply_market_action_override(orders: list, overrides: dict, agents: dict) -> list:

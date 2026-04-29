@@ -131,6 +131,30 @@ def run_llm_simulation(
         period_log["clearing_price"] = result["clearing_price"]
         period_log["volume"] = result["volume"]
         period_log["fundamental_price"] = result["fundamental_price"]
+        period_log["best_bid"] = result.get("best_bid")
+        period_log["best_ask"] = result.get("best_ask")
+
+        # Per-period agent state and order aggregates (same schema as baseline,
+        # so the explorer's Scenario Detail view works for LLM scenarios too).
+        period_log["agent_states"] = {
+            a.agent_id: {"cash": round(a.cash, 2), "inventory": int(a.inventory)}
+            for a in agents.values()
+        }
+        buy_orders = [o for o in orders if o.side == "buy"]
+        sell_orders = [o for o in orders if o.side == "sell"]
+        buy_qty = sum(o.quantity for o in buy_orders)
+        sell_qty = sum(o.quantity for o in sell_orders)
+        period_log["avg_bid_price"] = (
+            round(sum(o.limit_price * o.quantity for o in buy_orders) / buy_qty, 2)
+            if buy_qty > 0 else None
+        )
+        period_log["avg_ask_price"] = (
+            round(sum(o.limit_price * o.quantity for o in sell_orders) / sell_qty, 2)
+            if sell_qty > 0 else None
+        )
+        period_log["total_bid_qty"] = buy_qty
+        period_log["total_ask_qty"] = sell_qty
+
         all_orders_log.append(period_log)
 
         if verbose:
@@ -145,6 +169,7 @@ def run_llm_simulation(
 
     summary = {
         "scenario_id": scenario_config["scenario_id"],
+        "agent_mode": "llm",
         "model": config.model,
         "n_periods": n_periods,
         "mean_price": round(float(np.mean(prices)), 2),
@@ -250,18 +275,30 @@ def run_baseline_simulation(scenario_config: dict, verbose: bool = True) -> dict
         period_log["clearing_price"] = result["clearing_price"]
         period_log["volume"] = result["volume"]
         period_log["fundamental_price"] = result["fundamental_price"]
+        period_log["best_bid"] = result.get("best_bid")
+        period_log["best_ask"] = result.get("best_ask")
 
-        # Per-period agent state and order aggregates for forecasting framework
+        # Per-period agent state and order aggregates for forecasting framework.
+        # Use quantity-weighted means — unweighted means can be misleading when
+        # one tiny speculator order sits alongside large producer/consumer orders.
         period_log["agent_states"] = {
             a.agent_id: {"cash": round(a.cash, 2), "inventory": int(a.inventory)}
             for a in agents.values()
         }
         buy_orders = [o for o in orders if o.side == "buy"]
         sell_orders = [o for o in orders if o.side == "sell"]
-        period_log["avg_bid_price"] = round(np.mean([o.limit_price for o in buy_orders]), 2) if buy_orders else None
-        period_log["avg_ask_price"] = round(np.mean([o.limit_price for o in sell_orders]), 2) if sell_orders else None
-        period_log["total_bid_qty"] = sum(o.quantity for o in buy_orders)
-        period_log["total_ask_qty"] = sum(o.quantity for o in sell_orders)
+        buy_qty = sum(o.quantity for o in buy_orders)
+        sell_qty = sum(o.quantity for o in sell_orders)
+        period_log["avg_bid_price"] = (
+            round(sum(o.limit_price * o.quantity for o in buy_orders) / buy_qty, 2)
+            if buy_qty > 0 else None
+        )
+        period_log["avg_ask_price"] = (
+            round(sum(o.limit_price * o.quantity for o in sell_orders) / sell_qty, 2)
+            if sell_qty > 0 else None
+        )
+        period_log["total_bid_qty"] = buy_qty
+        period_log["total_ask_qty"] = sell_qty
 
         all_orders_log.append(period_log)
 
@@ -277,6 +314,7 @@ def run_baseline_simulation(scenario_config: dict, verbose: bool = True) -> dict
 
     summary = {
         "scenario_id": scenario_config["scenario_id"],
+        "agent_mode": "rule_based",
         "model": "rule_based",
         "n_periods": n_periods,
         "mean_price": round(float(np.mean(prices)), 2),

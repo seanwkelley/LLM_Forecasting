@@ -18,79 +18,15 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from market.engine import Order, MarketState, run_period
 from market.agents_config import create_agents
+from market.rule_agents import rule_based_order
 from market.shocks import (
     generate_shock_sequence, apply_shocks, get_active_shocks,
     generate_scenario_configs, describe_shocks,
 )
 
-
-def rule_based_order(agent, price_history):
-    """Simple rule-based agent for testing.
-
-    Producers: sell at production_cost + margin, more aggressive when inventory high.
-    Consumers: buy at demand_value - small discount, more aggressive when inventory low.
-    Speculators: mean-reversion toward last known price with noise.
-    """
-    import numpy as np
-
-    last_price = price_history[-1] if price_history else 100.0
-
-    if agent.role == "producer":
-        # Sell at cost + 10-30% margin, more aggressive with high inventory
-        margin = 0.15 if agent.inventory < 40 else 0.08
-        price = agent.production_cost * (1 + margin)
-        qty = min(agent.production_capacity, agent.inventory)
-        if qty <= 0:
-            return None
-        return Order(
-            agent_id=agent.agent_id,
-            side="sell",
-            quantity=qty,
-            limit_price=round(price, 2),
-            reasoning=f"Sell at cost+{margin:.0%}, inv={agent.inventory}",
-        )
-
-    elif agent.role == "consumer":
-        # Buy at value - 5-15% discount
-        discount = 0.05 if agent.inventory < agent.demand_per_period * 2 else 0.12
-        price = agent.demand_value * (1 - discount)
-        qty = max(1, agent.demand_per_period - agent.inventory // 3)
-        if agent.cash < price:
-            return None
-        return Order(
-            agent_id=agent.agent_id,
-            side="buy",
-            quantity=qty,
-            limit_price=round(price, 2),
-            reasoning=f"Buy at value-{discount:.0%}, inv={agent.inventory}",
-        )
-
-    elif agent.role == "speculator":
-        # Mean reversion: buy below trend, sell above
-        if len(price_history) < 3:
-            return None  # wait for data
-        trend = (price_history[-1] - price_history[-3]) / 2
-        if trend > 0 and agent.inventory > 10:
-            # Price rising, sell some
-            return Order(
-                agent_id=agent.agent_id,
-                side="sell",
-                quantity=min(10, agent.inventory),
-                limit_price=round(last_price * 1.02, 2),
-                reasoning=f"Sell on uptrend, trend={trend:.2f}",
-            )
-        elif trend < 0 and agent.cash > last_price * 5:
-            # Price falling, buy some
-            return Order(
-                agent_id=agent.agent_id,
-                side="buy",
-                quantity=5,
-                limit_price=round(last_price * 0.98, 2),
-                reasoning=f"Buy on downtrend, trend={trend:.2f}",
-            )
-        return None
-
-    return None
+# NOTE: rule_based_order is now imported from market.rule_agents (canonical
+# source). It is re-exported here so run_market_sim.run_baseline_simulation
+# continues to work with its existing import.
 
 
 def run_test_scenario(scenario_config, verbose=True):

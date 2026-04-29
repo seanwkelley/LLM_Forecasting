@@ -404,6 +404,141 @@ The agent loop includes several guardrails in `agent.py`:
 - **Variable specialization** (line 493): In the specialization condition, agents are restricted to a subset of variables. Out-of-scope proposals are rejected.
 - **Target normalization** (lines 472–489): The loop normalizes variant key names (e.g., `"shock"` → `"shock_type"`, `"action"` → `"value"`) so minor format deviations from the LLM don't cause execution failures.
 
+#### Context carried forward between intervention steps
+
+This subsection documents exactly what the model sees at each intervention
+step of `run_pilot.run_pilot()` (market path, lines 580–800; the conflict
+path at lines 1096–1316 is structurally identical).
+
+**Conversation lifecycle.** A single Python list `conversation: list[dict]`
+is maintained for the entire Phase 1 (observation) + Phase 2 (interventions)
+loop. Messages are appended in order and the full list is passed to the
+OpenRouter `chat/completions` endpoint on every LLM call. **No pruning,
+summarization, or trimming happens during normal operation** — the
+conversation grows monotonically across all 30 intervention steps.
+
+The Phase 3 (declaration) call is the one exception: it uses a **fresh
+two-message conversation** (`[system, declaration_prompt]`) constructed
+independently from the Phase 2 history (lines 876–891). This is a
+deliberate context reset — see the "Declaration context reset" paragraph
+below.
+
+**Per-step message structure.** Each Phase 2 intervention step appends
+exactly four messages to the conversation:
+
+| # | Role | Content | Builder |
+|---|---|---|---|
+| 1 | `user`      | **Proposal prompt** — current hypothesis (full accumulated graph), compact past-intervention summary, budget remaining, allowed intervention types, and the six intervention rules | `build_intervention_prompt()` in `prompts.py` |
+| 2 | `assistant` | Model's intervention proposal as JSON (`type`, `target`, `description`, `hypothesis_being_tested`, `expected_if_edge_exists`, `expected_if_no_edge`) | model output |
+| 3 | `user`      | **Update prompt** — full intervention result text (baseline trajectory + intervention trajectory + per-variable effect deltas), the full accumulated graph (again), the full variable list (again), and a nudge about removing edges only with disconfirming evidence | inline in `run_pilot.py:767–782` |
+| 4 | `assistant` | Model's updated causal graph as JSON (`analysis`, `current_graph` as a list of `{from, to, confidence}`, `key_uncertainties`) | model output |
+
+The proposal and update prompts are generated fresh each step — none of
+their content is retrieved from the model's previous output. In particular:
+
+- **The accumulated graph is re-sent in full on every proposal *and* every
+  update prompt** (steps 1 and 3 above). The code comment at
+  `run_pilot.py:618-619` makes this explicit: *"Programmatically maintained
+  from edge_updates so the model sees its own growing graph each turn,
+  rather than relying on it to maintain state."* The design choice is that
+  the model never has to parse its own prior JSON output — the script
+  extracts edges, folds them into a Python dict, and re-formats as text on
+  each turn. The cost is that a 20-edge graph is restated twice per step
+  × 30 steps = 60 full-graph restatements across a run.
+- **The past-interventions summary in the proposal prompt** is compact:
+  one line per prior intervention with format
+  `{step}. [{type}] {description} => {result_summary}` (each line capped at
+  roughly 140 characters). This is a separate artifact from the full
+  assistant messages that also remain in the conversation — the summary is
+  a redundant compact view.
+- **The full intervention result text in the update prompt** comes from
+  `intervention.format_result_for_agent(result)` and contains every value
+  in `return_vars` (clearing_price, volume, fundamental_price, best_bid,
+  best_ask, total_bid_qty, total_ask_qty, total_cash, total_inventory) for
+  every period of both the baseline and intervention trajectories, plus
+  per-variable effect deltas. A single update prompt is typically 1.5–3k
+  tokens on its own.
+
+**Token-growth characteristics.** Conversation size grows roughly linearly
+with the step count. A representative 30-step market run reaches approximately
+90k–150k tokens by the final intervention (the exact number depends on how
+aggressive the graph update responses are). The 131k-token context window
+of `openai/gpt-oss-120b:nitro` is **exceeded on or near the final step** in
+practice — this has been observed in two separate runs. See the "400-error
+context-overflow fallback" paragraph below for what happens when this
+limit is reached.
+
+**Declaration context reset (Phase 3).** At the end of Phase 2, the
+declaration call uses a **fresh two-message conversation** constructed at
+`run_pilot.py:876–891`:
+
+```
+[
+  {"role": "system", "content": SYSTEM_PROMPT_MARKET},
+  {"role": "user",   "content": declaration_prompt},
+]
+```
+
+where `declaration_prompt` is built from
+`build_declaration_prompt(build_evidence_summary(all_results, MARKET_VARIABLES))`.
+The evidence summary is a programmatically generated per-variable table
+of which interventions moved which variables — it does not involve an
+LLM call and does not read from the Phase 2 conversation. This means the
+declared graph is **not** produced by the model reading back its own Phase 2
+reasoning; it is produced by the model seeing a fresh, engineered summary
+of the numerical evidence.
+
+The motivation for this reset is documented in the "Declaration context
+reset" fix below (pilot findings). Prior to the reset, Phase 2 conversations
+were saturating context at Phase 3 time (~69k tokens was typical then,
+before the expansion of the returned variable set), degrading declaration
+quality and occasionally causing 400 errors at the declaration call itself.
+
+Note that the reset discards the model's hypothesis-update responses from
+Phase 2. The agent's running rationale for *why* an edge was added or
+removed is not carried into Phase 3 — only the aggregated numerical evidence
+is. This is a design choice worth flagging: if an agent developed a
+sophisticated mental model of the DAG during Phase 2, only the edges it
+explicitly wrote into its updates are preserved (via `accumulated_graph`),
+and the edges' provenance is lost at declaration time.
+
+**400-error context-overflow fallback.** `call_llm()` has an undocumented
+safety net at `run_pilot.py:131–141`: if the OpenRouter API returns HTTP
+400 with a context-length error, the function retroactively trims the
+outgoing message list to `[system, last 4 messages]` and retries. This
+fires silently (only a console log line) and allows the pilot to continue
+rather than crashing. It has been observed firing on the final intervention
+step of the GPT-OSS 120B postfix run (intervention 30/30, ~124k–135k token
+request). **Declarations produced after the fallback has fired are made
+with significantly less context than nominally intended** — the fallback
+keeps the run going, but the model's view of the later interventions is
+restricted to the last four turns of Phase 2. This should be counted as a
+known source of noise in late-step outputs.
+
+**Windowed alternative.** `run_pilot_windowed.py` implements a sliding-window
+variant of the same pipeline. Instead of carrying the full conversation
+forward, it keeps only the last `window` intervention steps (default 3) as
+full messages in the conversation. Older steps are represented only by
+their line in the `past_interventions` summary inside the proposal prompt.
+The observation exchange is always retained. This variant exists to test
+whether models reason effectively with truncated context — some models
+degrade on long conversations (see MOTIVATION.md on conversational drift
+in belief sensitivity) — and to sidestep the context-limit issue on 30-step
+runs. It is not used by default; `run_pilot.py` is the canonical script
+and produces the numbers that show up in pilot results tables. The
+windowed variant has not been scored against the full-history variant
+head-to-head.
+
+**Summary of design choices.**
+
+| Choice | Rationale | Cost |
+|---|---|---|
+| Full conversation carried forward in Phase 2 | Model sees its own past reasoning, enabling coherent cross-step inference | Token bloat; context-limit risk on long runs |
+| Accumulated graph re-sent in full on every turn | Model never has to parse its own prior JSON; avoids drift in graph state | Redundant tokens (2× per step × graph size) |
+| Past-interventions summary in proposal prompt | Compact recap even when the full history is still in the conversation | Double-representation (compact summary + full assistant messages) |
+| Fresh 2-message declaration call | Avoids context saturation at the final structured output | Phase 2 reasoning rationale is lost at declaration time |
+| 400-error trim-and-retry fallback | Keeps the pilot running through context-limit hits | Silent; late-run declarations may be made under truncated context |
+
 ### Interleaving
 
 Agents may interleave structure discovery (which edges exist?) and effect estimation (how strong are they?) within a single intervention. Whether LLM agents do this spontaneously vs. rigidly separating phases is a behavioral outcome of interest.

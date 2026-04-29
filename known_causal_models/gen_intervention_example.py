@@ -6,9 +6,9 @@ from matplotlib.patches import FancyBboxPatch
 from matplotlib.lines import Line2D
 import numpy as np
 
-fig = plt.figure(figsize=(16, 11))
-gs = fig.add_gridspec(3, 2, height_ratios=[1.2, 1.8, 1.0], hspace=0.35, wspace=0.45,
-                       left=0.05, right=0.95, top=0.93, bottom=0.04)
+fig = plt.figure(figsize=(16, 12))
+gs = fig.add_gridspec(3, 2, height_ratios=[1.2, 1.8, 1.5], hspace=0.35, wspace=0.45,
+                       left=0.05, right=0.95, top=0.94, bottom=0.04)
 
 BLUE, ORANGE, GREEN, VERMILLION, GRAY = '#0072B2', '#E69F00', '#009E73', '#D55E00', '#666666'
 
@@ -27,7 +27,7 @@ ax_intv.text(0.6, 1.1, 'Mechanism: Clamp shock variable, run 3 periods,\ncompare
 # ── Top right: Delta bar chart ──
 ax_delta = fig.add_subplot(gs[0, 1])
 ax_delta.margins(y=0.1)
-var_names = ['Clearing Price', 'Volume', 'Fundamental Price', 'Avg Ask Price', 'Total Cash (\u00f7100)', 'Total Inventory']
+var_names = ['Clearing Price', 'Volume', 'Fundamental Price', 'Best Ask', 'Total Cash', 'Total Inventory']
 deltas = [5.93, -33.33, 77.40, 184.34, -165.58, 38.33]
 colors = [GREEN if d > 0 else VERMILLION for d in deltas]
 ax_delta.barh(range(len(var_names)), deltas, color=colors, alpha=0.7, height=0.6)
@@ -74,7 +74,7 @@ for ax_idx, (ax_pos, edges, title, is_after) in enumerate([
     ax = fig.add_subplot(ax_pos)
     ax.set_title(title, fontsize=12, fontweight='bold', color=BLUE if not is_after else GREEN)
     ax.axis('off')
-    ax.set_xlim(-1.6, 1.6); ax.set_ylim(-1.6, 1.6)
+    ax.set_xlim(-1.8, 1.8); ax.set_ylim(-1.65, 1.65)
 
     active = set()
     for s, t in edges:
@@ -118,8 +118,27 @@ for ax_idx, (ax_pos, edges, title, is_after) in enumerate([
         fontcolor = BLUE if is_newly_active else ('#222' if is_active else '#bbb')
         fw = 'bold' if is_active else 'normal'
         label = name.replace('_', '\n')
-        ax.text(x, y - 0.24, label, ha='center', va='top', fontsize=7,
-                color=fontcolor, fontweight=fw)
+
+        # Radial label placement so edges don't overlap labels
+        angle = np.arctan2(y, x)
+        cos_a, sin_a = np.cos(angle), np.sin(angle)
+        lx = x + 0.28 * cos_a
+        ly = y + 0.28 * sin_a
+        if cos_a > 0.3:
+            ha = 'left'
+        elif cos_a < -0.3:
+            ha = 'right'
+        else:
+            ha = 'center'
+        if sin_a > 0.3:
+            va = 'bottom'
+        elif sin_a < -0.3:
+            va = 'top'
+        else:
+            va = 'center'
+        ax.text(lx, ly, label, ha=ha, va=va, fontsize=7,
+                color=fontcolor, fontweight=fw, zorder=6,
+                bbox=dict(facecolor='white', edgecolor='none', pad=0.8))
 
     if is_after:
         legend_elements = [
@@ -132,27 +151,28 @@ for ax_idx, (ax_pos, edges, title, is_after) in enumerate([
 # ── Bottom: Model reasoning ──
 ax_reason = fig.add_subplot(gs[2, :])
 ax_reason.axis('off')
-ax_reason.set_xlim(0, 20); ax_reason.set_ylim(0, 4)
+ax_reason.set_xlim(0, 20); ax_reason.set_ylim(-0.3, 4.3)
 box = FancyBboxPatch((0.2, 0.1), 19.6, 3.7, boxstyle='round,pad=0.15',
                        facecolor='#F5F5F5', edgecolor=GRAY, linewidth=1.5)
+box.set_clip_on(False)
 ax_reason.add_patch(box)
-ax_reason.text(10, 3.5, 'MODEL REASONING (Gemini 3.1 Pro)', fontsize=13, fontweight='bold',
+ax_reason.text(10, 3.45, 'MODEL REASONING (Gemini 3.1 Pro)', fontsize=13, fontweight='bold',
                color=GRAY, ha='center')
 
 import textwrap
 
 reasoning = (
-    "Supply shock caused massive increases in fundamental_price (+77) and avg_ask_price (+184), "
+    "Supply shock caused massive increases in fundamental_price (+77) and best_ask (+184), "
     "while bid prices remained unchanged. This confirms the shock affects supply-side parameters "
     "(production_cost), driving up fundamental_price and ask prices. Volume drop (\u221233) and "
     "cash/inventory changes are downstream effects."
 )
 wrapped = textwrap.fill(reasoning, width=90)
-ax_reason.text(10, 3.0, wrapped, fontsize=11, color='#333',
+ax_reason.text(10, 2.9, wrapped, fontsize=11, color='#333',
                verticalalignment='top', ha='center', fontfamily='sans-serif', linespacing=1.5)
 
-ax_reason.text(10, 1.0, 'Key uncertainties:', fontsize=11, fontweight='bold', color='#555', ha='center')
-ax_reason.text(10, 0.65,
+ax_reason.text(10, 1.35, 'Key uncertainties:', fontsize=11, fontweight='bold', color='#555', ha='center')
+ax_reason.text(10, 0.95,
     '\u2022 Does fundamental_price directly influence agent_orders?\n'
     '\u2022 Does price_history influence agent_orders (technical trading)?',
     fontsize=10, color='#666', ha='center', va='top', linespacing=1.5)

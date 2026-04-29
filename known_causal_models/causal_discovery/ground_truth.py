@@ -75,8 +75,12 @@ def get_market_ground_truth() -> np.ndarray:
     M[idx["demand_value"], idx["agent_orders"]] = 1
     # demand_per_period → agent_orders (quantity target for consumers)
     M[idx["demand_per_period"], idx["agent_orders"]] = 1
-    # storage_cost → agent_orders (indirectly affects urgency to sell)
-    M[idx["storage_cost"], idx["agent_orders"]] = 1
+    # NOTE: storage_cost → agent_orders was previously asserted as "indirectly
+    # affects urgency to sell" but was removed after audit (2026-04-08): no
+    # agent rule references storage_cost, and the only path is the indirect
+    # chain storage_cost → cash → agent_orders (already represented via those
+    # two edges). Leaving this as a direct edge produced a systematic false
+    # negative across all LLM models in prior causal discovery runs.
 
     # --- State → order edges ---
     # cash → agent_orders (constrains buy quantity via validate_order)

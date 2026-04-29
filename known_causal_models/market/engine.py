@@ -339,7 +339,9 @@ def run_period(state: MarketState, orders: list[Order]) -> dict:
 
     state.period += 1
 
-    # Compute spread for diagnostics
+    # Compute best bid/ask for diagnostics (what the engine actually matches on).
+    # These are the marginal prices — use these instead of unweighted means over
+    # the full order envelope, which can be misleading when order sizes vary.
     buy_prices = [o.limit_price for o in validated if o.side == "buy"]
     sell_prices = [o.limit_price for o in validated if o.side == "sell"]
     best_bid = max(buy_prices) if buy_prices else None
@@ -354,5 +356,7 @@ def run_period(state: MarketState, orders: list[Order]) -> dict:
         "fundamental_price": fundamental,
         "n_buy_orders": len([o for o in validated if o.side == "buy"]),
         "n_sell_orders": len([o for o in validated if o.side == "sell"]),
+        "best_bid": best_bid,
+        "best_ask": best_ask,
         "bid_ask_spread": spread,
     }

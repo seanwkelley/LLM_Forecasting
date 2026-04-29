@@ -117,7 +117,6 @@ def _market_edge_desc(src: str, dst: str) -> str:
         ("production_cost", "agent_orders"): "sets price floor for producers",
         ("demand_value", "agent_orders"): "sets price ceiling for consumers",
         ("demand_per_period", "agent_orders"): "determines consumer quantity targets",
-        ("storage_cost", "agent_orders"): "high storage costs increase urgency to sell",
         ("cash", "agent_orders"): "constrains maximum buy quantity",
         ("inventory", "agent_orders"): "constrains maximum sell quantity",
         ("price_history", "agent_orders"): "trend signal influences speculator behavior",

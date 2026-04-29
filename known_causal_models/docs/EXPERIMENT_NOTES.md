@@ -1,6 +1,264 @@
 # Experiment Notes
 
-**Last Updated:** February 28, 2026
+**Last Updated:** April 8, 2026
+
+## Market Engine Audit (2026-04-08) — COMPLETED
+
+A display bug in the belief sensitivity explorer (charts showing a persistently
+"crossed market" with avg bid > avg ask) triggered a full audit of the market
+simulation and causal discovery pipeline. Six issues were found and fixed.
+Pre-audit pilot results live in `outputs/causal_discovery/single_agent/full/*`;
+post-audit results use the `_postfix` suffix (e.g. `gptoss_postfix/`).
+
+### What was wrong
+
+1. **Misleading aggregate display.** `avg_bid_price` / `avg_ask_price` in the
+   scenario logs were unweighted means over the *full order envelope* rather
+   than the marginal prices the engine actually matches on. A single rigid
+   high-bid rule from one agent could drag the mean up while the actual
+   clearing price sat in the middle of the spread. The engine was fine; the
+   display made it look broken.
+
+2. **Anti-elastic producer rule.** `causal_discovery/intervention.py:_market_rule_based_orders`
+   used `margin = 1.10 + inventory/100 * 0.05` — producers *raised* prices as
+   inventory grew and *lowered* them when scarce, the opposite of real seller
+   behavior. This is the rule the LLM causal discovery agent has been
+   observing. A sibling file (`market/test_engine.py`) had a correct elastic
+   rule; someone forked the rules and only fixed one copy.
+
+3. **Two divergent rule implementations.** As above, the elastic version in
+   `test_engine.py` and the anti-elastic version in `intervention.py` had
+   diverged. Causal discovery used the buggy one
+   (`run_pilot.py:740`, `run_pilot_open.py:483`,
+   `run_pilot_windowed.py:122`, `multi_agent/agent.py:222`,
+   `test_intervention.py:47`).
+
+4. **`storage_cost → agent_orders` in ground truth.** Listed as a direct edge
+   in `ground_truth.py:79` but no agent rule referenced `storage_cost` when
+   computing orders. The only path is the indirect chain
+   `storage_cost → cash → agent_orders`, already represented by the two
+   constituent direct edges. Under the structural DAG definition (an edge
+   `A → B` requires "holding all other nodes constant, varying A still changes
+   B"), there is no direct mechanism beyond the cash pathway. The mediator
+   test fails: clamp cash, vary storage_cost → no effect on agent_orders.
+
+5. **Misleading variables in the LLM's observable view.** The causal agent's
+   `return_vars` included the same unweighted `avg_bid_price` /
+   `avg_ask_price` means that caused the display confusion. The LLM was
+   reasoning about the order envelope instead of the marginal price.
+
+6. **LLM simulation period logs were incomplete.** `run_llm_simulation` in
+   `market/run_market_sim.py` didn't write the `agent_states` / aggregated
+   order fields that the baseline path did, so the explorer's Scenario Detail
+   view was effectively broken for any LLM-generated scenario.
+
+### The fixes
+
+1. `market/engine.py` — `run_period` now returns `best_bid` and `best_ask` as
+   first-class fields (the marginal prices the call auction actually uses).
+
+2. `market/rule_agents.py` — new canonical module with `rule_based_order`
+   (per-agent) and `collect_rule_based_orders` (all-agents). Single source of
+   truth. Elastic producer margin (three-band: scarce → 1.20, normal → 1.12,
+   abundant → 1.06), elastic consumer discount, cash-constrained consumer
+   bids, both speculator types. No `storage_cost` reference (consistent with
+   the ground truth fix — only indirect path).
+
+3. `causal_discovery/intervention.py` — `_market_rule_based_orders` is now a
+   two-line delegate to `market.rule_agents.collect_rule_based_orders`. All
+   importers (`run_pilot.py`, `run_pilot_open.py`, `run_pilot_windowed.py`,
+   `multi_agent/agent.py`, `test_intervention.py`) keep working with zero
+   churn. `return_vars` now uses `best_bid` / `best_ask` instead of the
+   unweighted means. The per-period result dict also writes quantity-weighted
+   `avg_bid_price` / `avg_ask_price` for legacy compatibility.
+
+4. `market/test_engine.py` — re-exports `rule_based_order` from
+   `market.rule_agents` so `run_market_sim.run_baseline_simulation` keeps
+   working.
+
+5. `causal_discovery/ground_truth.py` — removed
+   `M[storage_cost, agent_orders] = 1` with a comment explaining the audit.
+   Ground truth now has 22 direct edges (was 23). Mirror removals in
+   `forecast_multi/causal_text.py` (edge description),
+   `causal_discovery/explorer.html` (`MARKET_GT_EDGES`), and
+   `causal_discovery/run_pilot.py` (mock LLM response for dry-run mode).
+
+6. `market/run_market_sim.py` — both `run_baseline_simulation` and
+   `run_llm_simulation` now write a rich period log with `agent_states`,
+   `best_bid` / `best_ask`, quantity-weighted `avg_bid_price` /
+   `avg_ask_price`, and `total_bid_qty` / `total_ask_qty`. Both summaries
+   tagged with `agent_mode` ("rule_based" or "llm").
+
+7. `causal_discovery/explorer.html` — Scenario Detail view now
+   - shows `best_bid` / `best_ask` in the price chart (with fallback to
+     avg for older files),
+   - labels the header with the agent mode,
+   - includes a step-by-step period inspector with a period slider, play
+     controls, a per-period agent interaction table (role / agent / side /
+     qty / limit / filled / cash Δ / inventory Δ), and a playhead overlay
+     that scrubs in sync with the charts.
+
+Smoke tests: `python causal_discovery/test_intervention.py` passes on both
+market and conflict engines. `best_bid` / `best_ask` show up in trajectories,
+and the causal direction on `production_cost → best_ask` is strong
+(delta ≈ −62 when producer_A cost is clamped to 30).
+
+### The over-assertion finding (from pre-audit per-edge data)
+
+Post-hoc audit of the saved per-edge results under the *old* 23-edge ground
+truth revealed something more interesting than the bugs themselves.
+
+For the indirect pathway `storage_cost → cash → agent_orders`:
+
+| Model | `storage_cost → cash` | `cash → agent_orders` | `storage_cost → agent_orders` |
+|---|---|---|---|
+| Gemini 3.1 Pro | ✓ correct | ✓ correct | ✓ (spurious) |
+| Qwen 397B     | ✓ correct | ✓ correct | ✓ (spurious) |
+| GPT-OSS 120B  | ✓ correct | ✓ correct | ✓ (spurious) |
+| **DeepSeek V3** | ✓ correct | ✓ correct | ✗ (correct omission) |
+| GLM-4.7       | ✗ missed  | ✗ missed  | ✗ missed |
+| Gemma 26B     | ✗ missed  | ✗ missed  | ✗ missed |
+
+All three strong models correctly identified both constituent direct edges
+of the indirect pathway — and then additionally asserted the spurious direct
+shortcut on top. DeepSeek correctly refrained from adding the shortcut. Under
+the old ground truth, DeepSeek was *penalized* for being structurally correct
+and the top models were *rewarded* for over-specifying.
+
+This is a specific LLM causal-discovery failure mode worth highlighting:
+
+> **Top LLMs have a bias toward asserting direct edges even when they have
+> already correctly represented the underlying mechanism via the path's
+> constituent edges.** They conflate "A influences B via a path" with "A
+> directly causes B," likely pattern-matching on textbook economic priors
+> instead of reasoning about the structural DAG definition.
+
+The mediator-test reframing makes this concrete: an edge `A → B` in an SCM
+requires that clamping the mediator and varying A still changes B. For
+`storage_cost → agent_orders`, that test fails in the engine code — all
+storage-cost influence routes through cash — so no direct edge exists.
+GPT-OSS, Qwen, and Gemini asserted an edge that would not survive the
+mediator test.
+
+### Score impact from the ground truth fix alone
+
+Removing `storage_cost → agent_orders` from the 23-edge ground truth,
+holding all other model behavior constant, yields these predicted deltas:
+
+| Model | Old F1 | Predicted F1 | Δ |
+|---|---|---|---|
+| Gemini 3.1 Pro | 0.706 | ~0.680 | −0.026 |
+| Qwen 397B     | 0.554 | ~0.531 | −0.023 |
+| GPT-OSS 120B  | 0.508 | ~0.484 | −0.024 |
+| DeepSeek V3   | 0.500 | ~0.510 | +0.010 |
+| Gemma 26B     | 0.182 | ~0.188 | +0.006 |
+
+Top models take a small hit because their spurious direct edge is now
+correctly counted as a false positive. DeepSeek is properly credited.
+Actual post-audit runs (`*_postfix`) will differ from these predictions
+because the rule code and the LLM's observables also changed — fresh data
+over a more realistic market with `best_bid` / `best_ask` in place of
+unweighted envelope means.
+
+### Post-audit reruns (seed 42, N=1)
+
+GPT-OSS 120B and Qwen 397B rerun on the fully fixed pipeline.
+
+| Metric | GPT-OSS pre | GPT-OSS post | Δ | Qwen pre | Qwen post | Δ |
+|---|---|---|---|---|---|---|
+| F1 | 0.508 | 0.473 | −0.035 | 0.554 | 0.571 | +0.017 |
+| Precision | 0.400 | 0.394 | −0.006 | 0.429 | 0.439 | +0.010 |
+| Recall | 0.696 | 0.591 | −0.105 | 0.783 | 0.818 | +0.035 |
+| TP | 16 | 13 | −3 | 18 | 18 | 0 |
+| FN | 7 | 7 | 0 | 5 | 2 | −3 |
+| FP | 22 | 18 | −4 | 24 | 21 | −3 |
+| Declared | 40 | 33 | −7 | 42 | 41 | −1 |
+
+**F1 deltas are uninterpretable from single runs.** Both movements
+(GPT-OSS −0.035, Qwen +0.017) are within the plausible single-run noise
+envelope. Before claiming the audit changed model performance, we need
+3 replicates per model at different seeds to establish a variance
+estimate. This has been on the TODO list and is now blocking any
+headline-level claim about post-audit F1.
+
+### Edge-level findings from the reruns
+
+1. **`storage_cost → agent_orders` fix landed, partially.** GPT-OSS
+   postfix correctly omitted the spurious edge (true negative under the
+   new 22-edge ground truth). Qwen postfix **still asserted it** — now
+   correctly scored as a false positive. Under the new GT, no model is
+   rewarded for this wrong claim.
+
+2. **`shock → downstream` over-assertion is model-agnostic and persists
+   post-fix.** Both models in both runs assert direct
+   `shock → {inventory, agent_orders, clearing_price, volume,
+   fundamental_price}` edges. None are in GT — shock only directly causes
+   `production_cost`, `demand_per_period`, `storage_cost`, `cash`. Models
+   correctly identify the direct-hub edges AND then also add spurious
+   shortcut arrows bypassing the hubs. Same over-assertion pattern as
+   `storage_cost → agent_orders`, applied to a different hub,
+   consistent across GPT-OSS and Qwen. Natural candidate for a figure in
+   the paper: **count of spurious direct shortcuts per model where the
+   constituent path is correctly identified**. This operationalizes the
+   over-assertion failure mode as a distinct, countable error type.
+
+3. **Qwen asserted `fundamental_price → clearing_price`** as a false
+   positive. `fundamental_price` is explicitly diagnostic-only in
+   `ground_truth.py` ("NOT causal") — it's computed from supply/demand
+   curves and does not influence any downstream variable. Asserting it
+   as a cause of clearing price is another false claim that would persist
+   regardless of rule-code changes.
+
+4. **Both models have 2 reversal errors** on the feedback edges
+   `clearing_price → {cash, inventory}` — the direction is consistently
+   confused.
+
+### Framing (clarified in session)
+
+**The ground truth is the engine's implemented mechanisms — nothing more.**
+
+It is not a representation of economic theory, textbook intuition, or
+"what's true in a real market." It is a factual claim about what the
+specific engine code does.
+
+Test for any claimed edge `A → B` in ground truth: can you point to the
+line of engine code that implements a direct mechanism from A to B that
+survives the mediator test (clamping all other nodes, varying A still
+changes B)? If no, no edge. If there's an indirect path, represent it as
+the path's constituent direct edges, not as a shortcut.
+
+Same test for models: they should be inferring this specific engine's
+mechanics from intervention data, not importing priors about what
+mechanisms "should" exist. When a model asserts an edge without a
+corresponding mechanism in the engine, it is wrong — independent of
+whether the claim "feels true" from textbook economics.
+
+Under this framing, the audit is not about fairness to models or
+representing economic reality. It's about correctness of the benchmark
+as a measurement of structural causal recovery from simulation data.
+
+### Network-retry fix
+
+During the Qwen 397B restart, a transient `ConnectionResetError` from
+OpenRouter crashed `run_pilot.py:call_llm` on intervention 2/30. The
+existing retry loop only handled HTTP status codes (429, 5xx, 400), not
+network-level exceptions. Added a try/except wrapping `requests.post` to
+catch `ConnectionError`, `Timeout`, and `ChunkedEncodingError` with
+exponential backoff, matching the existing retry cadence. The retried
+Qwen run completed all 30 interventions cleanly.
+
+### Open items
+
+- [ ] Replicates (N=3 seeds per model) for GPT-OSS and Qwen 397B on the
+      fixed pipeline, to establish F1 variance and enable interpretable
+      pre/post comparisons.
+- [ ] Spurious-shortcut count metric: for each model, count asserted
+      direct edges `A → C` where the model also correctly asserted a
+      path `A → B → C`. Apply across all models (pre and post audit) to
+      quantify the over-assertion failure mode.
+- [ ] User's OpenRouter API key was pasted in plaintext during
+      troubleshooting — rotate at openrouter.ai/keys and update
+      `.Renviron`.
 
 ## Multi-Agent Forecasting Framework (Feb 23) — ACTIVE
 
@@ -780,7 +1038,7 @@ python -m causal_discovery.multi_agent.run_all --budget 30
 - [ ] Run 3 replicates on market with DeepSeek V3 + all fixes (current results are single runs — need variance estimates)
 - [ ] Run 3 replicates on conflict with DeepSeek V3 + all fixes
 - [ ] Investigate conflict recall gap (29% vs market 65%) — try: (a) multi-variable interventions to detect interaction modifier, (b) explicitly prompt model about aggregation step, (c) longer rollout periods (run_periods=5 instead of 3) to let longer chains propagate
-- [ ] Ground truth edge audit: `storage_cost -> agent_orders` doesn't hold in rule-based sim — consider removing (1/23 edges)
+- [x] Ground truth edge audit: `storage_cost -> agent_orders` removed 2026-04-08 — the path is purely indirect (storage_cost → cash → agent_orders) and no agent rule references storage_cost directly. Prior LLM runs systematically false-negatived this edge. Ground truth now has 22 edges.
 
 **Multi-agent live runs (Phase 7):**
 

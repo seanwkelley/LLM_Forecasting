@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Causal Discovery Lab</title>
+<title>Can LLMs Independently Discover a System's Causal Structure?</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -97,12 +97,45 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .upload-box p { color: #666; margin-bottom: 24px; font-size: 14px; }
 .upload-box input[type=file] { margin: 16px 0; }
 .upload-box .demo-btn { margin-top: 12px; padding: 8px 20px; background: #0072B2; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+
+/* Period inspector (Scenario Detail step-by-step view) */
+.period-inspector { background: #fafafa; border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin: 8px 0 16px; }
+.period-controls { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.period-controls button { padding: 4px 10px; border: 1px solid #ccc; border-radius: 4px; background: white; cursor: pointer; font-size: 12px; }
+.period-controls button:hover:not(:disabled) { background: #e8e8e8; }
+.period-controls button:disabled { opacity: 0.4; cursor: default; }
+.period-controls input[type=range] { flex: 1; min-width: 140px; }
+.period-counter { font-size: 12px; font-weight: 600; color: #333; min-width: 100px; text-align: right; }
+.period-header { display: flex; gap: 14px; flex-wrap: wrap; padding: 8px 10px; background: white; border: 1px solid #eee; border-radius: 4px; margin-bottom: 8px; font-size: 12px; }
+.period-header .stat-label { color: #666; margin-right: 4px; }
+.period-header .stat-value { font-weight: 600; color: #222; }
+.agent-table tr.side-buy td { background: #eaf6ea; }
+.agent-table tr.side-sell td { background: #fceee5; }
+.agent-table tr.side-none td { color: #999; }
+.agent-table .filled-full { color: #009E73; font-weight: 600; }
+.agent-table .filled-partial { color: #E69F00; font-weight: 600; }
+.agent-table .filled-no { color: #aaa; }
+.detail-playhead { stroke: #D55E00; stroke-width: 1.5; stroke-dasharray: 3,3; pointer-events: none; }
+
+/* Simulation info cards (top of Simulations tab) */
+.sim-info-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 4px 0 14px; }
+@media (max-width: 1100px) { .sim-info-cards { grid-template-columns: repeat(2, 1fr); } }
+.sim-info-card { background: white; border: 1px solid #ddd; border-top-width: 3px; border-radius: 6px; padding: 11px 13px; font-size: 12px; line-height: 1.45; }
+.sim-info-card h4 { font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.sim-info-card p { color: #333; margin: 0; }
+.sim-info-card code { background: #f3f3f3; padding: 1px 4px; border-radius: 3px; font-size: 11px; font-family: 'SF Mono', 'Fira Code', monospace; }
+.sim-info-card.c-blue       { border-top-color: #0072B2; } .sim-info-card.c-blue h4       { color: #0072B2; }
+.sim-info-card.c-green      { border-top-color: #009E73; } .sim-info-card.c-green h4      { color: #007a5a; }
+.sim-info-card.c-orange     { border-top-color: #E69F00; } .sim-info-card.c-orange h4     { color: #b57a00; }
+.sim-info-card.c-vermillion { border-top-color: #D55E00; } .sim-info-card.c-vermillion h4 { color: #D55E00; }
+.sim-info-hint { font-size: 11px; color: #555; line-height: 1.55; padding: 9px 13px; background: #fafafa; border-left: 3px solid #bbb; border-radius: 3px; margin: 0 0 16px; }
+.sim-info-hint code { background: #eee; padding: 1px 4px; border-radius: 3px; font-size: 10px; font-family: 'SF Mono', 'Fira Code', monospace; }
 </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>Causal Discovery Lab</h1>
+    <h1>Can LLMs Independently Discover a System's Causal Structure?</h1>
     <span class="subtitle" id="model-info"></span>
 </div>
 
@@ -174,13 +207,19 @@ let playInterval = null;
 let groundTruth = null;
 let simulation = null;
 
+// Scenario detail step-by-step state
+let detailPeriods = [];
+let detailAgentNames = [];
+let detailCurrentPeriod = 1;
+let detailPlayInterval = null;
+
 // Ground truth edges for market domain (from ground_truth.py)
 const MARKET_GT_EDGES = [
     ["shock","production_cost"],["shock","demand_per_period"],["shock","storage_cost"],["shock","cash"],
     ["production_cost","cash"],["production_cost","inventory"],["production_cost","agent_orders"],["production_cost","fundamental_price"],
     ["demand_per_period","inventory"],["demand_per_period","agent_orders"],
     ["demand_value","cash"],["demand_value","agent_orders"],["demand_value","fundamental_price"],
-    ["storage_cost","cash"],["storage_cost","agent_orders"],
+    ["storage_cost","cash"],
     ["cash","agent_orders"],["inventory","agent_orders"],["price_history","agent_orders"],
     ["agent_orders","clearing_price"],["agent_orders","volume"],
     ["clearing_price","cash"],["clearing_price","inventory"],["clearing_price","price_history"],
@@ -455,7 +494,7 @@ function updateGraph() {
         <div class="stat"><span class="stat-label">Correct:</span> <span class="stat-value gt-correct">${correct}</span></div>
         <div class="stat"><span class="stat-label">False +:</span> <span class="stat-value gt-fp">${fp}</span></div>
         <div class="stat"><span class="stat-label">Missing:</span> <span class="stat-value gt-fn">${fn}</span></div>
-        <div class="stat"><span class="stat-label">F1:</span> <span class="stat-value">${f1.toFixed(3)}</span></div>
+        <div class="stat"><span class="stat-label">F1:</span> <span class="stat-value">${f1.toFixed(2)}</span></div>
     `;
 
     // Update legend missing color based on step
@@ -915,7 +954,7 @@ function updateDynamics() {
         // Y axis ticks
         const ticks = yScale.ticks(5);
         for (const t of ticks) {
-            html += `<text x="-8" y="${yScale(t) + 3}" text-anchor="end" font-size="10" fill="#999">${t >= 0 ? '+' : ''}${t.toFixed(1)}</text>`;
+            html += `<text x="-8" y="${yScale(t) + 3}" text-anchor="end" font-size="10" fill="#999">${t >= 0 ? '+' : ''}${t.toFixed(2)}</text>`;
             html += `<line x1="0" x2="${innerW}" y1="${yScale(t)}" y2="${yScale(t)}" stroke="#f0f0f0" stroke-width="0.5"/>`;
         }
 
@@ -982,30 +1021,9 @@ function updateDynamics() {
 
 // ── Simulations Tab ──
 // Preloaded simulation data (10 market scenarios, 30 periods each)
-const PRELOADED_SCENARIOS = [{"scenario_id":"scenario_001","price_history":[108.38,113.66,113.66,115.94,119.75,125.03,125.03,134.44,134.44,121.59,123.84,123.84,116.31,125.6,125.6,125.6,116.31,116.31,120.03,116.31,121.59,116.31,116.31,116.31,97.78,116.31,116.31,116.31,116.31,107.19],"volume_history":[35,40,40,60,40,40,0,30,30,40,30,30,40,30,30,30,40,40,30,40,40,40,40,40,28,40,40,40,40,40],"fundamental_history":[90.47,111.37,111.37,121.27,121.27,121.27,133.16,133.16,133.16,121.27,140.43,140.43,121.27,142.59,142.59,142.59,121.27,121.27,135.71,121.27,121.27,121.27,121.27,121.27,97.88,121.27,121.27,121.27,121.27,112.81],"summary":{"scenario_id":"scenario_001","mean_price":118.75,"std_price":7.28,"mean_volume":36.1,"return_std":0.0615}},{"scenario_id":"scenario_002","price_history":[87.21,87.21,73.09,88.53,95.42,100.39,102.93,75.77,92.52,92.52,94.93,84.56,82.22,80.92,76.8,103.41,88.53,99.58,99.58,99.58,84.56,88.53,88.53,92.9,95.12,88.53,75.0,64.0,78.66,91.84],"volume_history":[34,40,29,40,50,47,47,40,40,40,60,40,40,30,30,31,40,43,30,15,31,40,40,49,49,40,40,40,30,10],"fundamental_history":[92.22,92.22,73.22,92.22,98.6,80.4,80.4,80.4,92.22,92.22,92.22,73.22,73.22,80.47,80.47,102.3,92.22,98.76,98.76,90.38,73.22,92.22,92.22,92.22,92.22,92.22,79.68,64.21,78.38,102.8],"summary":{"scenario_id":"scenario_002","mean_price":88.45,"std_price":9.46,"mean_volume":38.0,"return_std":0.1347}},{"scenario_id":"scenario_003","price_history":[114.38,114.38,119.68,124.56,119.68,119.68,119.68,124.97,132.55,136.41,110.19,119.68,119.68,124.56,113.18,96.0,87.58,110.96,114.81,122.08,110.96,116.25,119.25,124.34,126.93,116.25,116.25,115.0,115.0,106.4],"volume_history":[35,40,40,54,40,40,40,40,42,41,40,40,40,42,30,30,30,37,54,42,36,40,40,60,50,40,40,30,0,40],"fundamental_history":[98.82,98.82,121.27,121.27,121.27,98.82,98.82,121.27,121.27,113.01,113.01,98.82,98.82,98.82,107.27,98.82,98.82,98.82,98.82,98.82,98.82,121.27,124.03,124.03,112.52,121.27,98.82,108.96,132.21,91.81],"summary":{"scenario_id":"scenario_003","mean_price":117.04,"std_price":9.32,"mean_volume":39.2,"return_std":0.083}},{"scenario_id":"scenario_004","price_history":[98.09,128.98,128.98,119.63,121.47,127.03,100.14,88.63,106.3,118.9,121.81,128.85,132.44,107.21,117.55,123.11,123.11,128.67,123.11,123.11,117.55,117.55,123.11,112.74,112.74,112.74,112.74,128.67,128.67,128.67],"volume_history":[40,40,40,29,40,40,40,37,40,60,60,50,50,40,33,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40],"fundamental_history":[108.2,130.23,130.23,118.52,99.52,123.7,89.39,89.78,110.5,126.29,126.29,132.3,113.58,113.58,102.91,128.3,128.3,128.3,128.3,128.3,102.91,102.91,128.3,118.69,118.69,118.69,118.69,128.3,128.3,128.3],"summary":{"scenario_id":"scenario_004","mean_price":118.74,"std_price":10.31,"mean_volume":41.4,"return_std":0.1018}},{"scenario_id":"scenario_005","price_history":[79.1,87.82,97.48,100.78,97.48,102.13,112.44,117.7,91.27,91.27,91.27,86.61,102.13,107.8,110.69,99.25,106.77,106.77,110.17,99.36,99.36,99.36,84.17,84.17,84.17,102.13,119.54,119.54,102.13,94.14],"volume_history":[27,38,40,50,40,40,20,20,40,40,40,33,40,44,44,30,40,40,60,30,30,30,40,40,40,40,25,25,40,40],"fundamental_history":[79.71,79.71,86.53,86.53,86.53,86.53,116.07,116.07,78.86,78.86,78.86,78.86,86.53,86.53,94.07,94.07,106.5,106.5,106.5,94.17,94.17,94.17,73.85,73.85,73.85,86.53,113.44,113.44,86.53,94.82],"summary":{"scenario_id":"scenario_005","mean_price":99.57,"std_price":10.66,"mean_volume":36.9,"return_std":0.0981}},{"scenario_id":"scenario_006","price_history":[113.52,113.52,114.73,117.61,122.44,122.44,122.44,125.1,125.1,118.92,112.72,112.72,112.72,112.72,118.92,125.12,118.92,113.55,110.09,109.53,114.91,118.92,134.2,118.92,113.55,118.92,118.92,118.92,118.92,118.92],"volume_history":[35,40,30,60,40,40,40,30,30,40,36,0,0,0,40,50,40,38,40,40,40,40,30,40,40,40,40,40,40,40],"fundamental_history":[116.17,116.17,132.68,116.17,123.94,123.94,123.94,138.56,138.56,123.94,99.45,133.49,139.15,139.15,123.94,123.94,123.94,99.45,99.45,96.71,120.22,123.94,133.11,123.94,99.45,123.94,123.94,123.94,123.94,123.94],"summary":{"scenario_id":"scenario_006","mean_price":117.93,"std_price":5.25,"mean_volume":35.3,"return_std":0.0441}},{"scenario_id":"scenario_007","price_history":[98.03,106.98,106.98,102.51,102.51,101.95,99.53,99.53,99.53,77.27,81.75,99.53,112.93,112.93,112.93,99.53,114.65,114.65,114.65,99.53,99.53,99.53,99.53,99.53,100.66,105.03,107.25,112.85,115.71,99.53],"volume_history":[39,40,40,40,40,30,40,40,40,40,40,40,33,13,23,40,30,30,30,40,40,40,40,40,30,53,53,49,49,40],"fundamental_history":[103.67,103.67,103.67,103.67,103.67,117.6,103.67,103.67,103.67,70.49,87.2,103.67,111.93,102.52,102.52,103.67,113.52,113.52,113.52,103.67,103.67,103.67,103.67,103.67,115.94,103.67,103.67,103.67,103.67,103.67],"summary":{"scenario_id":"scenario_007","mean_price":103.24,"std_price":8.74,"mean_volume":38.1,"return_std":0.0849}},{"scenario_id":"scenario_008","price_history":[90.62,90.62,77.32,92.07,97.0,87.9,97.09,104.6,92.07,87.9,87.9,87.9,92.07,77.32,63.78,50.62,71.76,82.47,87.93,77.32,87.9,87.9,90.7,87.9,87.9,78.19,78.19,78.19,78.19,77.32],"volume_history":[38,40,30,40,43,38,30,33,40,40,40,40,40,22,31,26,39,41,41,17,40,40,41,40,40,40,40,40,40,19],"fundamental_history":[95.98,95.98,77.41,95.98,95.98,77.41,100.64,103.72,95.98,77.41,77.41,77.41,95.98,77.41,66.23,66.23,66.23,77.41,77.41,77.41,77.41,77.41,77.41,77.41,77.41,70.68,70.68,70.68,70.68,77.41],"summary":{"scenario_id":"scenario_008","mean_price":84.29,"std_price":10.35,"mean_volume":36.4,"return_std":0.1249}},{"scenario_id":"scenario_009","price_history":[89.27,75.6,93.36,75.6,75.6,90.67,95.36,97.75,90.67,90.67,90.67,90.67,90.67,90.67,93.54,96.82,102.59,105.53,85.25,81.15,90.67,95.36,97.75,90.67,103.32,103.32,94.77,90.67,90.67,90.67],"volume_history":[40,25,40,23,24,40,48,48,40,40,40,40,40,40,30,49,40,40,40,40,40,49,49,40,30,30,40,40,40,40],"fundamental_history":[94.48,75.7,94.48,75.7,75.7,94.48,94.48,94.48,94.48,94.48,94.48,94.48,94.48,94.48,106.76,106.76,106.76,94.48,85.67,85.67,94.48,94.48,94.48,94.48,102.41,102.41,94.48,94.48,94.48,94.48],"summary":{"scenario_id":"scenario_009","mean_price":91.67,"std_price":7.46,"mean_volume":38.9,"return_std":0.0945}},{"scenario_id":"scenario_010","price_history":[82.08,93.0,93.0,96.03,102.68,82.08,97.42,97.42,102.72,105.41,82.81,97.42,97.42,102.72,105.41,97.42,97.42,97.42,97.39,92.08,97.42,82.08,73.7,97.42,102.72,105.41,97.42,80.06,93.48,102.32],"volume_history":[25,36,40,48,50,29,40,40,42,43,40,40,40,43,43,40,40,40,30,30,40,27,30,40,43,43,40,40,40,40],"fundamental_history":[82.16,82.16,82.16,82.16,106.44,82.16,82.16,82.16,71.97,71.97,71.97,82.16,82.16,82.16,82.16,82.16,82.16,82.16,92.24,92.24,82.16,82.16,82.16,82.16,82.16,82.16,82.16,70.04,82.5,102.02],"summary":{"scenario_id":"scenario_010","mean_price":95.05,"std_price":8.22,"mean_volume":38.7,"return_std":0.1183}}];
+const PRELOADED_SCENARIOS = [{"summary":{"scenario_id":"scenario_005","agent_mode":"rule_based","model":"rule_based","n_periods":30,"mean_price":104.8,"std_price":10.13,"min_price":84.81,"max_price":122.49,"mean_volume":39.7,"return_std":0.1006,"price_range_pct":36.0},"agent_finals":{"producer_A":{"role":"producer","cash":31560.65,"inventory":119,"pnl":31570.24},"producer_B":{"role":"producer","cash":2867.77,"inventory":73,"pnl":3742.9},"consumer_A":{"role":"consumer","cash":32358.01,"inventory":18,"pnl":21429.11},"consumer_B":{"role":"consumer","cash":9489.86,"inventory":0,"pnl":3881.67},"consumer_C":{"role":"consumer","cash":16338.83,"inventory":0,"pnl":8071.45},"speculator_A":{"role":"speculator","cash":4565.9,"inventory":54,"pnl":-2060.69},"speculator_B":{"role":"speculator","cash":9219.84,"inventory":0,"pnl":-812.06}},"price_history":[90.03,90.03,99.51,106.2,99.51,100.9,111.43,122.49,91.78,97.11,103.12,87.03,97.69,103.43,112.91,112.91,107.18,109.41,119.06,113.05,113.05,113.05,84.81,93.69,101.33,110.09,119.72,119.15,102.44,111.82],"volume_history":[40,40,40,44,40,45,5,28,40,45,45,38,45,45,44,40,40,45,43,40,44,40,40,45,45,44,25,30,40,45],"fundamental_history":[79.71,79.71,86.53,86.53,86.53,86.53,116.07,116.07,78.86,78.86,78.86,78.86,86.53,86.53,94.07,94.07,106.5,106.5,106.5,94.17,94.17,94.17,73.85,73.85,73.85,86.53,113.44,113.44,86.53,94.82],"orders_log":[{"period":0,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":55.03,"reasoning":"sell at cost*1.06, inv=75"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":72.16,"reasoning":"sell at cost*1.06, inv=30"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=45"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":98.91,"reasoning":"buy at value*0.92, inv=15"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":107.91,"reasoning":"buy at value*0.92, inv=30"}],"clearing_price":90.035,"volume":40,"fundamental_price":79.7128,"best_bid":116.9,"best_ask":55.03,"agent_states":{"producer_A":{"cash":6064.67,"inventory":75},"producer_B":{"cash":4184.55,"inventory":30},"consumer_A":{"cash":8832.91,"inventory":45},"consumer_B":{"cash":5355.76,"inventory":2},"consumer_C":{"cash":5678.97,"inventory":26},"speculator_A":{"cash":5789.55,"inventory":60},"speculator_B":{"cash":4842.17,"inventory":45}},"avg_bid_price":110.27,"avg_ask_price":59.31,"total_bid_qty":57,"total_ask_qty":40},{"period":1,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":55.03,"reasoning":"sell at cost*1.06, inv=75"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":72.16,"reasoning":"sell at cost*1.06, inv=30"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=45"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=2"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":107.91,"reasoning":"buy at value*0.92, inv=26"}],"clearing_price":90.035,"volume":40,"fundamental_price":79.7128,"best_bid":116.9,"best_ask":55.03,"agent_states":{"producer_A":{"cash":7186.2,"inventory":75},"producer_B":{"cash":4394.38,"inventory":30},"consumer_A":{"cash":11702.36,"inventory":45},"consumer_B":{"cash":7458.91,"inventory":0},"consumer_C":{"cash":8335.24,"inventory":22},"speculator_A":{"cash":5730.75,"inventory":60},"speculator_B":{"cash":4798.07,"inventory":45}},"avg_bid_price":111.5,"avg_ask_price":59.31,"total_bid_qty":57,"total_ask_qty":40},{"period":2,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=75"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=30"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=45"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":107.91,"reasoning":"buy at value*0.92, inv=22"}],"clearing_price":99.50999999999999,"volume":40,"fundamental_price":86.53,"best_bid":116.9,"best_ask":69.48,"agent_states":{"producer_A":{"cash":8182.95,"inventory":75},"producer_B":{"cash":4520.18,"inventory":30},"consumer_A":{"cash":12416.82,"inventory":45},"consumer_B":{"cash":7458.91,"inventory":0},"consumer_C":{"cash":8991.24,"inventory":18},"speculator_A":{"cash":5671.95,"inventory":60},"speculator_B":{"cash":4753.97,"inventory":45}},"avg_bid_price":111.5,"avg_ask_price":74.89,"total_bid_qty":57,"total_ask_qty":40},{"period":3,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=75"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=30"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=45"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":107.91,"reasoning":"buy at value*0.92, inv=18"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":101.5,"reasoning":"momentum buy, trend=9.47"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":104.49,"reasoning":"contrarian sell, trend=9.47"}],"clearing_price":106.19999999999999,"volume":44,"fundamental_price":86.53,"best_bid":116.9,"best_ask":69.48,"agent_states":{"producer_A":{"cash":9380.4,"inventory":75},"producer_B":{"cash":4712.88,"inventory":30},"consumer_A":{"cash":12943.96,"inventory":45},"consumer_B":{"cash":7458.91,"inventory":0},"consumer_C":{"cash":9142.16,"inventory":18},"speculator_A":{"cash":5613.15,"inventory":60},"speculator_B":{"cash":5138.59,"inventory":41}},"avg_bid_price":110.69,"avg_ask_price":78.18,"total_bid_qty":62,"total_ask_qty":45},{"period":4,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=75"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=30"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=45"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":107.91,"reasoning":"buy at value*0.92, inv=18"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":108.32,"reasoning":"momentum buy, trend=6.69"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":111.51,"reasoning":"contrarian sell, trend=6.69"}],"clearing_price":99.50999999999999,"volume":40,"fundamental_price":86.53,"best_bid":116.9,"best_ask":69.48,"agent_states":{"producer_A":{"cash":10377.15,"inventory":75},"producer_B":{"cash":4838.68,"inventory":30},"consumer_A":{"cash":13658.42,"inventory":45},"consumer_B":{"cash":7458.91,"inventory":0},"consumer_C":{"cash":10302.73,"inventory":9},"speculator_A":{"cash":5051.9,"inventory":65},"speculator_B":{"cash":5098.41,"inventory":41}},"avg_bid_price":111.24,"avg_ask_price":78.96,"total_bid_qty":62,"total_ask_qty":45},{"period":5,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=75"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=30"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=45"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=9"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":97.52,"reasoning":"momentum sell, trend=-6.69"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":94.53,"reasoning":"contrarian buy, trend=-6.69"}],"clearing_price":100.9,"volume":45,"fundamental_price":86.53,"best_bid":116.9,"best_ask":69.48,"agent_states":{"producer_A":{"cash":11415.6,"inventory":75},"producer_B":{"cash":4978.38,"inventory":30},"consumer_A":{"cash":14333.96,"inventory":45},"consumer_B":{"cash":7464.74,"inventory":0},"consumer_C":{"cash":10545.47,"inventory":9},"speculator_A":{"cash":5497.6,"inventory":60},"speculator_B":{"cash":5058.23,"inventory":41}},"avg_bid_price":111.64,"avg_ask_price":77.4,"total_bid_qty":62,"total_ask_qty":45},{"period":6,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":121.73,"reasoning":"sell at cost*1.06, inv=75"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":159.62,"reasoning":"sell at cost*1.06, inv=30"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=45"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=9"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":102.92,"reasoning":"momentum buy, trend=1.39"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":105.95,"reasoning":"contrarian sell, trend=1.39"}],"clearing_price":111.42500000000001,"volume":5,"fundamental_price":116.0668,"best_bid":116.9,"best_ask":105.95,"agent_states":{"producer_A":{"cash":7933.54,"inventory":105},"producer_B":{"cash":3457.83,"inventory":40},"consumer_A":{"cash":17295.52,"inventory":22},"consumer_B":{"cash":7464.74,"inventory":0},"consumer_C":{"cash":11594.06,"inventory":0},"speculator_A":{"cash":5438.8,"inventory":60},"speculator_B":{"cash":5580.07,"inventory":36}},"avg_bid_price":112.32,"avg_ask_price":128.4,"total_bid_qty":62,"total_ask_qty":45},{"period":7,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":121.73,"reasoning":"sell at cost*1.06, inv=105"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":159.62,"reasoning":"sell at cost*1.06, inv=40"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":113.65,"reasoning":"momentum buy, trend=10.53"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":117.0,"reasoning":"contrarian sell, trend=10.53"}],"clearing_price":122.49000000000001,"volume":28,"fundamental_price":116.0668,"best_bid":123.25,"best_ask":117.0,"agent_states":{"producer_A":{"cash":7265.32,"inventory":112},"producer_B":{"cash":1932.39,"inventory":50},"consumer_A":{"cash":17384.48,"inventory":22},"consumer_B":{"cash":7464.74,"inventory":0},"consumer_C":{"cash":11594.06,"inventory":0},"speculator_A":{"cash":5380.0,"inventory":60},"speculator_B":{"cash":6162.14,"inventory":31}},"avg_bid_price":116.05,"avg_ask_price":129.62,"total_bid_qty":62,"total_ask_qty":45},{"period":8,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":53.22,"reasoning":"sell at cost*1.06, inv=112"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":69.79,"reasoning":"sell at cost*1.06, inv=50"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":124.94,"reasoning":"momentum buy, trend=11.06"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":128.61,"reasoning":"contrarian sell, trend=11.06"}],"clearing_price":91.78,"volume":40,"fundamental_price":78.86065,"best_bid":124.94,"best_ask":53.22,"agent_states":{"producer_A":{"cash":8472.2,"inventory":112},"producer_B":{"cash":2172.21,"inventory":50},"consumer_A":{"cash":18333.32,"inventory":22},"consumer_B":{"cash":7464.74,"inventory":0},"consumer_C":{"cash":11767.17,"inventory":0},"speculator_A":{"cash":4857.4,"inventory":65},"speculator_B":{"cash":6131.76,"inventory":31}},"avg_bid_price":116.96,"avg_ask_price":65.28,"total_bid_qty":62,"total_ask_qty":45},{"period":9,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":53.22,"reasoning":"sell at cost*1.06, inv=112"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":69.79,"reasoning":"sell at cost*1.06, inv=50"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":89.94,"reasoning":"momentum sell, trend=-30.71"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":87.19,"reasoning":"contrarian buy, trend=-30.71"}],"clearing_price":97.11,"volume":45,"fundamental_price":78.86065,"best_bid":123.25,"best_ask":53.22,"agent_states":{"producer_A":{"cash":9838.98,"inventory":112},"producer_B":{"cash":2465.34,"inventory":50},"consumer_A":{"cash":19132.92,"inventory":22},"consumer_B":{"cash":7474.36,"inventory":0},"consumer_C":{"cash":12077.57,"inventory":0},"speculator_A":{"cash":5284.15,"inventory":60},"speculator_B":{"cash":6101.38,"inventory":31}},"avg_bid_price":113.92,"avg_ask_price":60.98,"total_bid_qty":62,"total_ask_qty":45},{"period":10,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":53.22,"reasoning":"sell at cost*1.06, inv=112"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":69.79,"reasoning":"sell at cost*1.06, inv=50"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":99.05,"reasoning":"momentum buy, trend=5.33"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":101.97,"reasoning":"contrarian sell, trend=5.33"}],"clearing_price":103.125,"volume":45,"fundamental_price":78.86065,"best_bid":123.25,"best_ask":53.22,"agent_states":{"producer_A":{"cash":11386.21,"inventory":112},"producer_B":{"cash":2818.61,"inventory":50},"consumer_A":{"cash":19764.1,"inventory":22},"consumer_B":{"cash":7477.96,"inventory":0},"consumer_C":{"cash":12291.73,"inventory":0},"speculator_A":{"cash":5225.35,"inventory":60},"speculator_B":{"cash":6591.53,"inventory":26}},"avg_bid_price":114.87,"avg_ask_price":62.32,"total_bid_qty":62,"total_ask_qty":45},{"period":11,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":53.22,"reasoning":"sell at cost*1.06, inv=112"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":69.79,"reasoning":"sell at cost*1.06, inv=50"},{"agent_id":"consumer_A","side":"buy","quantity":16.407999999999998,"limit_price":116.9,"reasoning":"buy at value*0.92, inv=22"},{"agent_id":"consumer_B","side":"buy","quantity":7.617999999999999,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"consumer_C","side":"buy","quantity":9.376,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":105.19,"reasoning":"momentum buy, trend=6.02"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":108.28,"reasoning":"contrarian sell, trend=6.02"}],"clearing_price":87.035,"volume":38.402,"fundamental_price":78.86065,"best_bid":116.9,"best_ask":53.22,"agent_states":{"producer_A":{"cash":12450.75,"inventory":111},"producer_B":{"cash":2871.12,"inventory":51},"consumer_A":{"cash":20339.03,"inventory":22},"consumer_B":{"cash":7561.56,"inventory":0},"consumer_C":{"cash":12523.99,"inventory":0},"speculator_A":{"cash":4726.48,"inventory":65},"speculator_B":{"cash":6566.05,"inventory":26}},"avg_bid_price":112.11,"avg_ask_price":63.02,"total_bid_qty":38.401999999999994,"total_ask_qty":45},{"period":12,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=51.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22.408"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.37599999999999945"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":85.29,"reasoning":"momentum sell, trend=-16.09"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":82.68,"reasoning":"contrarian buy, trend=-16.09"}],"clearing_price":97.695,"volume":45,"fundamental_price":86.53,"best_bid":123.25,"best_ask":69.48,"agent_states":{"producer_A":{"cash":13374.92,"inventory":111},"producer_B":{"cash":2968.18,"inventory":51},"consumer_A":{"cash":23028.87,"inventory":22},"consumer_B":{"cash":9477.04,"inventory":0},"consumer_C":{"cash":14731.67,"inventory":0},"speculator_A":{"cash":5156.15,"inventory":60},"speculator_B":{"cash":6540.57,"inventory":26}},"avg_bid_price":113.55,"avg_ask_price":76.04,"total_bid_qty":62,"total_ask_qty":45},{"period":13,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=51.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22.408"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.37599999999999767"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":99.65,"reasoning":"momentum buy, trend=10.66"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":102.58,"reasoning":"contrarian sell, trend=10.66"}],"clearing_price":103.43,"volume":45,"fundamental_price":86.53,"best_bid":123.25,"best_ask":69.48,"agent_states":{"producer_A":{"cash":14471.14,"inventory":111},"producer_B":{"cash":3122.6,"inventory":51},"consumer_A":{"cash":23651.19,"inventory":22},"consumer_B":{"cash":9479.86,"inventory":0},"consumer_C":{"cash":14940.66,"inventory":0},"speculator_A":{"cash":5097.35,"inventory":60},"speculator_B":{"cash":7037.14,"inventory":21}},"avg_bid_price":114.92,"avg_ask_price":77.96,"total_bid_qty":62,"total_ask_qty":45},{"period":14,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":85.46,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":112.06,"reasoning":"sell at cost*1.06, inv=51.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22.408"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.37599999999999767"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":105.5,"reasoning":"momentum buy, trend=5.74"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":108.6,"reasoning":"contrarian sell, trend=5.74"}],"clearing_price":112.91499999999999,"volume":44,"fundamental_price":94.06825,"best_bid":123.25,"best_ask":85.46,"agent_states":{"producer_A":{"cash":15399.61,"inventory":111},"producer_B":{"cash":3060.78,"inventory":52},"consumer_A":{"cash":24007.93,"inventory":22},"consumer_B":{"cash":9479.38,"inventory":0},"consumer_C":{"cash":14997.88,"inventory":0},"speculator_A":{"cash":5038.55,"inventory":60},"speculator_B":{"cash":7586.03,"inventory":16}},"avg_bid_price":115.39,"avg_ask_price":93.94,"total_bid_qty":62,"total_ask_qty":45},{"period":15,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":85.46,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":112.06,"reasoning":"sell at cost*1.06, inv=52.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22.408"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.37599999999999767"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":115.17,"reasoning":"momentum buy, trend=9.48"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":118.56,"reasoning":"contrarian sell, trend=9.48"}],"clearing_price":112.91499999999999,"volume":40,"fundamental_price":94.06825,"best_bid":123.25,"best_ask":85.46,"agent_states":{"producer_A":{"cash":16328.09,"inventory":111},"producer_B":{"cash":3111.87,"inventory":52},"consumer_A":{"cash":24364.67,"inventory":22},"consumer_B":{"cash":9478.9,"inventory":0},"consumer_C":{"cash":15022.76,"inventory":0},"speculator_A":{"cash":4410.28,"inventory":65},"speculator_B":{"cash":7570.35,"inventory":16}},"avg_bid_price":116.17,"avg_ask_price":95.05,"total_bid_qty":62,"total_ask_qty":45},{"period":16,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=52.598"},{"agent_id":"consumer_A","side":"buy","quantity":43.596,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=22.408"},{"agent_id":"consumer_B","side":"buy","quantity":20.241,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":24.912,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.37599999999999767"}],"clearing_price":107.18,"volume":40,"fundamental_price":106.505,"best_bid":123.25,"best_ask":69.48,"agent_states":{"producer_A":{"cash":17536.81,"inventory":111},"producer_B":{"cash":3303.3,"inventory":52},"consumer_A":{"cash":25492.37,"inventory":19},"consumer_B":{"cash":9478.42,"inventory":0},"consumer_C":{"cash":15022.46,"inventory":0},"speculator_A":{"cash":4346.58,"inventory":65},"speculator_B":{"cash":7554.67,"inventory":16}},"avg_bid_price":116.26,"avg_ask_price":74.89,"total_bid_qty":88.749,"total_ask_qty":40},{"period":17,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=52.598"},{"agent_id":"consumer_A","side":"buy","quantity":43.596,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=19.408"},{"agent_id":"consumer_B","side":"buy","quantity":20.241,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":24.912,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.37599999999999767"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":105.04,"reasoning":"momentum sell, trend=-5.73"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":101.82,"reasoning":"contrarian buy, trend=-5.73"}],"clearing_price":109.405,"volume":45.0,"fundamental_price":106.505,"best_bid":123.25,"best_ask":69.48,"agent_states":{"producer_A":{"cash":18812.28,"inventory":111},"producer_B":{"cash":3516.97,"inventory":52},"consumer_A":{"cash":26137.19,"inventory":20},"consumer_B":{"cash":9477.93,"inventory":0},"consumer_C":{"cash":14984.76,"inventory":0},"speculator_A":{"cash":4834.8,"inventory":60},"speculator_B":{"cash":7538.99,"inventory":16}},"avg_bid_price":115.49,"avg_ask_price":78.24,"total_bid_qty":93.749,"total_ask_qty":45},{"period":18,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=52.598"},{"agent_id":"consumer_A","side":"buy","quantity":43.596,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.003999999999998"},{"agent_id":"consumer_B","side":"buy","quantity":20.241,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":24.912,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":111.59,"reasoning":"momentum buy, trend=2.22"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":114.88,"reasoning":"contrarian sell, trend=2.22"}],"clearing_price":119.065,"volume":43.596,"fundamental_price":106.505,"best_bid":123.25,"best_ask":69.48,"agent_states":{"producer_A":{"cash":20377.55,"inventory":111},"producer_B":{"cash":3827.25,"inventory":52},"consumer_A":{"cash":26360.4,"inventory":20},"consumer_B":{"cash":9477.45,"inventory":0},"consumer_C":{"cash":14984.15,"inventory":0},"speculator_A":{"cash":4776.0,"inventory":60},"speculator_B":{"cash":7954.99,"inventory":12}},"avg_bid_price":116.01,"avg_ask_price":79.33,"total_bid_qty":93.749,"total_ask_qty":45},{"period":19,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":85.67,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":112.33,"reasoning":"sell at cost*1.06, inv=52.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":121.45,"reasoning":"momentum buy, trend=9.66"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":125.02,"reasoning":"contrarian sell, trend=9.66"}],"clearing_price":113.05,"volume":40,"fundamental_price":94.166575,"best_bid":123.25,"best_ask":85.67,"agent_states":{"producer_A":{"cash":21304.17,"inventory":111},"producer_B":{"cash":3877.11,"inventory":52},"consumer_A":{"cash":26714.78,"inventory":20},"consumer_B":{"cash":9476.97,"inventory":0},"consumer_C":{"cash":15007.76,"inventory":0},"speculator_A":{"cash":4147.05,"inventory":65},"speculator_B":{"cash":7942.84,"inventory":12}},"avg_bid_price":116.68,"avg_ask_price":95.97,"total_bid_qty":62,"total_ask_qty":45},{"period":20,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":85.67,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":112.33,"reasoning":"sell at cost*1.06, inv=52.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":110.79,"reasoning":"momentum sell, trend=-6.02"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":107.4,"reasoning":"contrarian buy, trend=-6.02"}],"clearing_price":113.05,"volume":44,"fundamental_price":94.166575,"best_bid":123.25,"best_ask":85.67,"agent_states":{"producer_A":{"cash":22170.37,"inventory":111},"producer_B":{"cash":3781.31,"inventory":53},"consumer_A":{"cash":27012.13,"inventory":20},"consumer_B":{"cash":9475.76,"inventory":0},"consumer_C":{"cash":15042.83,"inventory":0},"speculator_A":{"cash":4565.07,"inventory":60},"speculator_B":{"cash":7912.4,"inventory":12}},"avg_bid_price":115.55,"avg_ask_price":94.39,"total_bid_qty":62,"total_ask_qty":45},{"period":21,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":85.67,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":112.33,"reasoning":"sell at cost*1.06, inv=53.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"}],"clearing_price":113.05,"volume":40,"fundamental_price":94.166575,"best_bid":123.25,"best_ask":85.67,"agent_states":{"producer_A":{"cash":23096.99,"inventory":111},"producer_B":{"cash":3830.68,"inventory":53},"consumer_A":{"cash":27366.51,"inventory":20},"consumer_B":{"cash":9475.28,"inventory":0},"consumer_C":{"cash":15083.74,"inventory":0},"speculator_A":{"cash":4506.27,"inventory":60},"speculator_B":{"cash":7900.24,"inventory":12}},"avg_bid_price":116.26,"avg_ask_price":92.33,"total_bid_qty":57,"total_ask_qty":40},{"period":22,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":42.59,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":55.85,"reasoning":"sell at cost*1.06, inv=53.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"}],"clearing_price":84.81,"volume":40,"fundamental_price":73.846075,"best_bid":123.25,"best_ask":42.59,"agent_states":{"producer_A":{"cash":24395.65,"inventory":111},"producer_B":{"cash":4130.54,"inventory":53},"consumer_A":{"cash":28511.6,"inventory":20},"consumer_B":{"cash":9474.8,"inventory":0},"consumer_C":{"cash":15463.53,"inventory":0},"speculator_A":{"cash":4447.47,"inventory":60},"speculator_B":{"cash":7888.09,"inventory":12}},"avg_bid_price":116.26,"avg_ask_price":45.91,"total_bid_qty":57,"total_ask_qty":40},{"period":23,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":42.59,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":55.85,"reasoning":"sell at cost*1.06, inv=53.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":83.11,"reasoning":"momentum sell, trend=-28.24"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":80.57,"reasoning":"contrarian buy, trend=-28.24"}],"clearing_price":93.695,"volume":45,"fundamental_price":73.846075,"best_bid":123.25,"best_ask":42.59,"agent_states":{"producer_A":{"cash":25960.85,"inventory":111},"producer_B":{"cash":4519.26,"inventory":53},"consumer_A":{"cash":29407.91,"inventory":20},"consumer_B":{"cash":9487.35,"inventory":0},"consumer_C":{"cash":15827.96,"inventory":0},"speculator_A":{"cash":4862.04,"inventory":55},"speculator_B":{"cash":7875.93,"inventory":12}},"avg_bid_price":113.38,"avg_ask_price":50.04,"total_bid_qty":62,"total_ask_qty":45},{"period":24,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":42.59,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":55.85,"reasoning":"sell at cost*1.06, inv=53.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":95.57,"reasoning":"momentum buy, trend=8.88"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":98.38,"reasoning":"contrarian sell, trend=8.88"}],"clearing_price":101.33,"volume":45,"fundamental_price":73.846075,"best_bid":123.25,"best_ask":42.59,"agent_states":{"producer_A":{"cash":27755.11,"inventory":111},"producer_B":{"cash":4984.32,"inventory":53},"consumer_A":{"cash":30090.44,"inventory":20},"consumer_B":{"cash":9492.27,"inventory":0},"consumer_C":{"cash":16070.24,"inventory":0},"speculator_A":{"cash":4808.14,"inventory":55},"speculator_B":{"cash":8375.32,"inventory":7}},"avg_bid_price":114.59,"avg_ask_price":51.74,"total_bid_qty":62,"total_ask_qty":45},{"period":25,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=53.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":103.36,"reasoning":"momentum buy, trend=7.64"},{"agent_id":"speculator_B","side":"sell","quantity":5,"limit_price":106.4,"reasoning":"contrarian sell, trend=7.64"}],"clearing_price":110.08500000000001,"volume":44,"fundamental_price":86.53,"best_bid":123.25,"best_ask":69.48,"agent_states":{"producer_A":{"cash":29050.98,"inventory":111},"producer_B":{"cash":5204.31,"inventory":53},"consumer_A":{"cash":30527.83,"inventory":20},"consumer_B":{"cash":9491.79,"inventory":0},"consumer_C":{"cash":16172.43,"inventory":0},"speculator_A":{"cash":4754.24,"inventory":55},"speculator_B":{"cash":8812.33,"inventory":3}},"avg_bid_price":115.22,"avg_ask_price":78.39,"total_bid_qty":62,"total_ask_qty":45},{"period":26,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":116.18,"reasoning":"sell at cost*1.06, inv=111.99999999999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":152.33,"reasoning":"sell at cost*1.06, inv=53.598"},{"agent_id":"consumer_A","side":"buy","quantity":25.603536000000002,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=20.599999999999994"},{"agent_id":"consumer_B","side":"buy","quantity":11.887356,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":14.630592,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":112.29,"reasoning":"momentum buy, trend=8.76"},{"agent_id":"speculator_B","side":"sell","quantity":3.4040000000000035,"limit_price":115.59,"reasoning":"contrarian sell, trend=8.76"}],"clearing_price":119.715,"volume":25.603536000000002,"fundamental_price":113.4448,"best_bid":123.25,"best_ask":115.59,"agent_states":{"producer_A":{"cash":28376.6,"inventory":119},"producer_B":{"cash":3740.96,"inventory":63},"consumer_A":{"cash":30603.17,"inventory":21},"consumer_B":{"cash":9491.31,"inventory":0},"consumer_C":{"cash":16171.82,"inventory":0},"speculator_A":{"cash":4700.34,"inventory":55},"speculator_B":{"cash":9219.84,"inventory":0}},"avg_bid_price":115.91,"avg_ask_price":124.46,"total_bid_qty":57.121484,"total_ask_qty":43.404},{"period":27,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":116.18,"reasoning":"sell at cost*1.06, inv=119.80046399999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":152.33,"reasoning":"sell at cost*1.06, inv=63.598"},{"agent_id":"consumer_A","side":"buy","quantity":25.603536000000002,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=21.203536"},{"agent_id":"consumer_B","side":"buy","quantity":11.887356,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":14.630592,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"buy","quantity":5,"limit_price":122.11,"reasoning":"momentum buy, trend=9.63"}],"clearing_price":119.14500000000001,"volume":30.0,"fundamental_price":113.4448,"best_bid":123.25,"best_ask":116.18,"agent_states":{"producer_A":{"cash":28618.96,"inventory":119},"producer_B":{"cash":2272.71,"inventory":73},"consumer_A":{"cash":30692.63,"inventory":21},"consumer_B":{"cash":9490.82,"inventory":0},"consumer_C":{"cash":16171.21,"inventory":0},"speculator_A":{"cash":4118.32,"inventory":59},"speculator_B":{"cash":9219.84,"inventory":0}},"avg_bid_price":116.77,"avg_ask_price":125.22,"total_bid_qty":57.121484,"total_ask_qty":40},{"period":28,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":69.48,"reasoning":"sell at cost*1.06, inv=119.80046399999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":91.11,"reasoning":"sell at cost*1.06, inv=73.598"},{"agent_id":"consumer_A","side":"buy","quantity":28,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=21.807072000000005"},{"agent_id":"consumer_B","side":"buy","quantity":13,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":16,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":116.76,"reasoning":"momentum sell, trend=-0.57"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":113.19,"reasoning":"contrarian buy, trend=-0.57"}],"clearing_price":102.44,"volume":40,"fundamental_price":86.53,"best_bid":123.25,"best_ask":69.48,"agent_states":{"producer_A":{"cash":29681.66,"inventory":119},"producer_B":{"cash":2406.45,"inventory":73},"consumer_A":{"cash":31343.14,"inventory":21},"consumer_B":{"cash":9490.34,"inventory":0},"consumer_C":{"cash":16339.44,"inventory":0},"speculator_A":{"cash":4060.11,"inventory":59},"speculator_B":{"cash":9219.84,"inventory":0}},"avg_bid_price":116.01,"avg_ask_price":79.54,"total_bid_qty":62,"total_ask_qty":45},{"period":29,"orders":[{"agent_id":"producer_A","side":"sell","quantity":30,"limit_price":50.58,"reasoning":"sell at cost*1.06, inv=119.80046399999999"},{"agent_id":"producer_B","side":"sell","quantity":10,"limit_price":66.33,"reasoning":"sell at cost*1.06, inv=73.598"},{"agent_id":"consumer_A","side":"buy","quantity":48.552,"limit_price":123.25,"reasoning":"buy at value*0.97, inv=21.807072000000005"},{"agent_id":"consumer_B","side":"buy","quantity":22.542,"limit_price":104.28,"reasoning":"buy at value*0.97, inv=0.6179999999999994"},{"agent_id":"consumer_C","side":"buy","quantity":27.744,"limit_price":113.77,"reasoning":"buy at value*0.97, inv=0.7800000000000011"},{"agent_id":"speculator_A","side":"sell","quantity":5,"limit_price":100.39,"reasoning":"momentum sell, trend=-16.71"},{"agent_id":"speculator_B","side":"buy","quantity":5,"limit_price":97.32,"reasoning":"contrarian buy, trend=-16.71"}],"clearing_price":111.82,"volume":45,"fundamental_price":94.8158,"best_bid":123.25,"best_ask":50.58,"agent_states":{"producer_A":{"cash":31560.65,"inventory":119},"producer_B":{"cash":2867.77,"inventory":73},"consumer_A":{"cash":32358.01,"inventory":18},"consumer_B":{"cash":9489.86,"inventory":0},"consumer_C":{"cash":16338.83,"inventory":0},"speculator_A":{"cash":4565.9,"inventory":54},"speculator_B":{"cash":9219.84,"inventory":0}},"avg_bid_price":115.35,"avg_ask_price":59.61,"total_bid_qty":103.838,"total_ask_qty":45}]}];
 let scenarios = PRELOADED_SCENARIOS.slice();
 
-document.getElementById('scenario-files').addEventListener('change', (e) => {
-    const files = Array.from(e.target.files);
-    scenarios = [];
-    let loaded = 0;
-    for (const file of files) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            try {
-                const json = JSON.parse(ev.target.result);
-                json._filename = file.name;
-                scenarios.push(json);
-            } catch (err) { /* skip bad files */ }
-            loaded++;
-            if (loaded === files.length) {
-                scenarios.sort((a, b) => (a.summary?.scenario_id || a._filename).localeCompare(b.summary?.scenario_id || b._filename));
-                renderSimulations();
-            }
-        };
-        reader.readAsText(file);
-    }
-});
 
 function renderSimulations() {
     const panel = document.getElementById('simulations-panel');
@@ -1014,118 +1032,42 @@ function renderSimulations() {
         return;
     }
 
-    const colors = ['#0072B2', '#D55E00', '#009E73', '#E69F00', '#CC79A7',
-                    '#56B4E9', '#F0E442', '#882255', '#332288', '#117733'];
+    // Explainer cards at the top — what the simulation is, how it clears,
+    // how agents behave, and how shocks work.
+    let html = '';
+    html += `<div class="sim-info-cards">`;
+    html += `  <div class="sim-info-card c-blue">`;
+    html += `    <h4>The market</h4>`;
+    html += `    <p>7 agents trade a single good over 30 periods: two producers, three consumers, two speculators. Each period every agent submits one order and the engine clears them in a single uniform-price call auction, producing one clearing price shared by all matched units.</p>`;
+    html += `  </div>`;
+    html += `  <div class="sim-info-card c-green">`;
+    html += `    <h4>How clearing works</h4>`;
+    html += `    <p>Bids sorted highest-first, asks lowest-first. Walk both sides: while top bid &ge; top ask, match <code>min(bid_qty, ask_qty)</code> units and advance the exhausted side. Stop when the next pair crosses. Clearing price = midpoint of the marginal matched pair. Unmatched orders are cancelled.</p>`;
+    html += `  </div>`;
+    html += `  <div class="sim-info-card c-orange">`;
+    html += `    <h4>Agent behavior</h4>`;
+    html += `    <p><b>Producers</b> ask at <code>cost&nbsp;&times;&nbsp;margin</code>, with margin elastic to inventory (scarce&nbsp;1.20, normal&nbsp;1.12, abundant&nbsp;1.06). <b>Consumers</b> bid at <code>value&nbsp;&times;&nbsp;(1&nbsp;&minus;&nbsp;discount)</code>, where <code>value</code> is each consumer's private reservation price (max willingness-to-pay); they bid below it to capture surplus, with discount elastic to their own stock (low&nbsp;stock&nbsp;&rarr;&nbsp;3%, urgent; high&nbsp;stock&nbsp;&rarr;&nbsp;15%, patient). <b>Speculator&nbsp;A</b> trades momentum; <b>B</b> trades contrarian. Both speculators trade &le;&nbsp;5 units per period.</p>`;
+    html += `  </div>`;
+    html += `  <div class="sim-info-card c-vermillion">`;
+    html += `    <h4>Exogenous shocks</h4>`;
+    html += `    <p>Each scenario has a deterministic shock sequence seeded from its ID. Types: <code>supply_disruption</code>, <code>demand_surge</code>&nbsp;/&nbsp;<code>demand_drop</code>, <code>storage_crisis</code>, <code>cost_reduction</code>, <code>subsidy</code>. Each lasts 1&ndash;4 periods. Sharp moves in the Fundamental line are typically where shocks fire.</p>`;
+    html += `  </div>`;
+    html += `</div>`;
 
-    const metrics = [
-        { key: 'price_history', label: 'Clearing Price', unit: '$' },
-        { key: 'volume_history', label: 'Trade Volume', unit: '' },
-        { key: 'fundamental_history', label: 'Fundamental Price', unit: '$' },
-    ];
+    html += `<div class="sim-info-hint">`;
+    html += `Below is one representative 30-period scenario, shown period-by-period: order book, partial fills, cash and inventory updates. Volume is often capped well below total bid quantity &mdash; that's a real supply shortage, not a bug. Best Bid / Best Ask in the price chart are the <i>marginal</i> prices the engine matches on, not unweighted averages across all submitted orders. Causal discovery experiments place an LLM observer in front of this rule-based market and test whether it can recover the market's causal structure from interventions &mdash; the simulation itself never calls an LLM.`;
+    html += `</div>`;
 
-    const chartW = 640, chartH = 200, margin = { top: 20, right: 120, bottom: 35, left: 55 };
-    const innerW = chartW - margin.left - margin.right;
-    const innerH = chartH - margin.top - margin.bottom;
-
-    let html = `<h3>Simulation Scenarios (${scenarios.length} loaded)</h3>`;
-
-    for (const metric of metrics) {
-        // Collect all series
-        const allSeries = [];
-        for (const sc of scenarios) {
-            const vals = sc[metric.key] || [];
-            if (vals.length > 0) allSeries.push({ id: sc.summary?.scenario_id || sc._filename, vals });
-        }
-        if (allSeries.length === 0) continue;
-
-        const maxLen = d3.max(allSeries, s => s.vals.length);
-        const allVals = allSeries.flatMap(s => s.vals);
-        const yMin = d3.min(allVals) * 0.95;
-        const yMax = d3.max(allVals) * 1.05;
-
-        const xScale = d3.scaleLinear().domain([1, maxLen]).range([0, innerW]);
-        const yScale = d3.scaleLinear().domain([yMin, yMax]).range([innerH, 0]);
-
-        html += `<h3>${metric.label}</h3>`;
-        html += `<svg viewBox="0 0 ${chartW} ${chartH}" style="max-height:${chartH}px">`;
-        html += `<g transform="translate(${margin.left},${margin.top})">`;
-
-        // Grid lines
-        const yTicks = yScale.ticks(5);
-        for (const t of yTicks) {
-            html += `<line x1="0" x2="${innerW}" y1="${yScale(t)}" y2="${yScale(t)}" stroke="#f0f0f0"/>`;
-            html += `<text x="-8" y="${yScale(t) + 3}" text-anchor="end" font-size="9" fill="#999">${metric.unit}${t.toFixed(1)}</text>`;
-        }
-        const xTicks = xScale.ticks(Math.min(maxLen, 10));
-        for (const t of xTicks) {
-            html += `<text x="${xScale(t)}" y="${innerH + 16}" text-anchor="middle" font-size="9" fill="#999">${t}</text>`;
-        }
-
-        // Lines
-        for (let si = 0; si < allSeries.length; si++) {
-            const s = allSeries[si];
-            const color = colors[si % colors.length];
-            let pathD = '';
-            for (let i = 0; i < s.vals.length; i++) {
-                const x = xScale(i + 1);
-                const y = yScale(s.vals[i]);
-                pathD += (i === 0 ? 'M' : 'L') + `${x},${y}`;
-            }
-            html += `<path d="${pathD}" fill="none" stroke="${color}" stroke-width="1.5" opacity="0.7"/>`;
-            // Label at end
-            const lastY = yScale(s.vals[s.vals.length - 1]);
-            html += `<text x="${innerW + 6}" y="${lastY + 3}" font-size="8" fill="${color}">${s.id}</text>`;
-        }
-
-        // Axes
-        html += `<line x1="0" x2="${innerW}" y1="${innerH}" y2="${innerH}" stroke="#ccc"/>`;
-        html += `<line x1="0" x2="0" y1="0" y2="${innerH}" stroke="#ccc"/>`;
-        html += `<text x="${innerW / 2}" y="${innerH + 30}" text-anchor="middle" font-size="10" fill="#666">Period</text>`;
-
-        html += '</g></svg>';
-    }
-
-    // Summary table
-    html += '<h3>Scenario Summary</h3>';
-    html += '<table class="trajectory-table"><thead><tr>';
-    html += '<th>Scenario</th><th>Mean Price</th><th>Std Price</th><th>Mean Volume</th><th>Volatility</th>';
-    html += '</tr></thead><tbody>';
-    for (const sc of scenarios) {
-        const s = sc.summary || {};
-        html += `<tr>`;
-        html += `<td>${s.scenario_id || sc._filename}</td>`;
-        html += `<td>$${(s.mean_price || 0).toFixed(2)}</td>`;
-        html += `<td>$${(s.std_price || 0).toFixed(2)}</td>`;
-        html += `<td>${(s.mean_volume || 0).toFixed(1)}</td>`;
-        html += `<td>${((s.return_std || 0) * 100).toFixed(1)}%</td>`;
-        html += `</tr>`;
-    }
-    html += '</tbody></table>';
-
-    // Scenario detail section
-    html += `<hr style="margin:20px 0;border:none;border-top:1px solid #ddd">`;
-    html += `<h3>Scenario Detail — Internal Dynamics</h3>`;
-    html += `<p style="font-size:12px;color:#666;margin-bottom:8px">Load a scenario JSON to see per-agent cash, inventory, order flow, and price dynamics.</p>`;
-    html += `<input type="file" id="detail-scenario-input" accept=".json" style="font-size:12px;margin-bottom:12px">`;
+    // Render the preloaded scenario detail directly — no overlay charts,
+    // no summary table, no upload. One representative scenario is enough
+    // to show how a shock propagates through the order book.
     html += `<div id="scenario-detail-content"></div>`;
 
     panel.innerHTML = html;
 
-    // Attach file listener
-    document.getElementById('detail-scenario-input').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            try {
-                detailScenario = JSON.parse(ev.target.result);
-                renderScenarioDetail();
-            } catch (err) { alert('Failed to parse: ' + err.message); }
-        };
-        reader.readAsText(file);
-    });
-
-    // If already loaded, render
+    if (!detailScenario && scenarios.length > 0) {
+        detailScenario = scenarios[0];
+    }
     if (detailScenario) renderScenarioDetail();
 }
 
@@ -1135,6 +1077,9 @@ function skipToSimulations() {
 }
 
 function renderScenarioDetail() {
+    // Stop any running auto-play from a previous scenario
+    if (detailPlayInterval) { clearInterval(detailPlayInterval); detailPlayInterval = null; }
+
     const panel = document.getElementById('scenario-detail-content');
     if (!panel) return;
     if (!detailScenario || !detailScenario.orders_log) {
@@ -1146,22 +1091,32 @@ function renderScenarioDetail() {
     const nPeriods = log.length;
     const scenarioId = detailScenario.summary?.scenario_id || 'Unknown';
 
-    // Extract per-period aggregates
-    const periods = [];
-    const agentNames = log[0]?.agent_states ? Object.keys(log[0].agent_states) : [];
+    // Extract per-period aggregates (also stored globally for the inspector)
+    detailPeriods = [];
+    detailAgentNames = log[0]?.agent_states ? Object.keys(log[0].agent_states) : [];
 
     for (const p of log) {
+        // Prefer best_bid/best_ask (the marginal prices the engine matches on)
+        // over avg_bid/avg_ask (means over the full order envelope, which can
+        // be misleading). Fall back to avg_* for older scenario files that
+        // were written before best_bid/best_ask were exposed.
+        const bestBid = p.best_bid != null ? p.best_bid : p.avg_bid_price;
+        const bestAsk = p.best_ask != null ? p.best_ask : p.avg_ask_price;
         const entry = {
             period: p.period + 1,
             clearing_price: p.clearing_price,
             volume: p.volume,
             fundamental_price: p.fundamental_price,
+            best_bid: bestBid,
+            best_ask: bestAsk,
             avg_bid_price: p.avg_bid_price,
             avg_ask_price: p.avg_ask_price,
             total_bid_qty: p.total_bid_qty,
             total_ask_qty: p.total_ask_qty,
-            bid_ask_spread: (p.avg_bid_price || 0) - (p.avg_ask_price || 0),
+            bid_ask_spread: (bestAsk != null && bestBid != null) ? (bestAsk - bestBid) : 0,
             n_orders: (p.orders || []).length,
+            orders: p.orders || [],
+            agent_states: p.agent_states || {},
         };
         // Agent states
         const states = p.agent_states || {};
@@ -1174,8 +1129,12 @@ function renderScenarioDetail() {
         }
         entry.total_cash = totalCash;
         entry.total_inventory = totalInv;
-        periods.push(entry);
+        detailPeriods.push(entry);
     }
+
+    detailCurrentPeriod = 1;
+    const periods = detailPeriods;
+    const agentNames = detailAgentNames;
 
     const chartW = 620, chartH = 160, margin = { top: 16, right: 16, bottom: 28, left: 55 };
     const innerW = chartW - margin.left - margin.right;
@@ -1190,13 +1149,13 @@ function renderScenarioDetail() {
         const xScale = d3.scaleLinear().domain([1, nPeriods]).range([0, innerW]);
         const yScale = d3.scaleLinear().domain([yMin, yMax]).range([innerH, 0]);
 
-        let svg = `<h3>${title}</h3><svg viewBox="0 0 ${chartW} ${chartH}" style="max-height:${chartH}px">`;
+        let svg = `<h3>${title}</h3><svg viewBox="0 0 ${chartW} ${chartH}" style="max-height:${chartH}px" data-inner-w="${innerW}" data-inner-h="${innerH}" data-margin-left="${margin.left}" data-margin-top="${margin.top}" data-n-periods="${nPeriods}">`;
         svg += `<g transform="translate(${margin.left},${margin.top})">`;
 
         // Grid
         for (const t of yScale.ticks(4)) {
             svg += `<line x1="0" x2="${innerW}" y1="${yScale(t)}" y2="${yScale(t)}" stroke="#f0f0f0"/>`;
-            svg += `<text x="-6" y="${yScale(t)+3}" text-anchor="end" font-size="9" fill="#999">${yUnit}${t.toFixed(1)}</text>`;
+            svg += `<text x="-6" y="${yScale(t)+3}" text-anchor="end" font-size="9" fill="#999">${yUnit}${t.toFixed(2)}</text>`;
         }
 
         // Lines
@@ -1221,18 +1180,51 @@ function renderScenarioDetail() {
             svg += `<text x="${xScale(t)}" y="${innerH+14}" text-anchor="middle" font-size="9" fill="#999">${t}</text>`;
         }
 
+        // Playhead (updated by updatePlayhead on scrub/play)
+        svg += `<line class="detail-playhead" x1="0" x2="0" y1="0" y2="${innerH}"/>`;
+
         svg += '</g></svg>';
         return svg;
     }
 
-    let html = `<h3 style="margin-top:0">${scenarioId} — ${nPeriods} periods, ${agentNames.length} agents</h3>`;
+    // Agent mode tag: rule_based vs LLM model name. Falls back to legacy
+    // summary.model if agent_mode is absent on older scenario files.
+    const summary = detailScenario.summary || {};
+    const agentMode = summary.agent_mode
+        || (summary.model === 'rule_based' ? 'rule_based' : (summary.model ? 'llm' : null));
+    const modeLabel = agentMode === 'rule_based'
+        ? 'rule-based agents'
+        : (agentMode === 'llm' ? `LLM: ${summary.model || '?'}` : 'unknown mode');
 
-    // 1. Price dynamics: clearing vs fundamental vs bid/ask
+    let html = `<h3 style="margin-top:0">${scenarioId} — ${nPeriods} periods, ${agentNames.length} agents <span style="font-size:11px;font-weight:normal;color:#666;margin-left:8px">[${modeLabel}]</span></h3>`;
+
+    // Step-by-step inspector
+    html += `<div class="period-inspector">`;
+    html += `  <div class="period-controls">`;
+    html += `    <button id="detail-first" title="First period">&#9198;</button>`;
+    html += `    <button id="detail-prev" title="Previous period">&larr; Prev</button>`;
+    html += `    <button id="detail-play" title="Play / Pause">&#9654; Play</button>`;
+    html += `    <button id="detail-next" title="Next period">Next &rarr;</button>`;
+    html += `    <button id="detail-last" title="Last period">&#9197;</button>`;
+    html += `    <input type="range" id="period-slider" min="1" max="${nPeriods}" value="1" step="1">`;
+    html += `    <span class="period-counter" id="period-counter">Period 1 / ${nPeriods}</span>`;
+    html += `  </div>`;
+    html += `  <div class="period-header" id="period-header"></div>`;
+    html += `  <table class="trajectory-table agent-table">`;
+    html += `    <thead><tr><th>Role</th><th>Agent</th><th>Side</th><th>Qty</th><th>Limit</th><th>Filled</th><th>Cash (Δ)</th><th>Inventory (Δ)</th></tr></thead>`;
+    html += `    <tbody id="agent-table-body"></tbody>`;
+    html += `  </table>`;
+    html += `</div>`;
+
+    // 1. Price dynamics: clearing vs fundamental vs marginal best bid/ask.
+    // best_bid = highest submitted buy price, best_ask = lowest submitted sell
+    // price — these are what the engine's call auction matches on. Prefer
+    // these over unweighted means over the full order envelope.
     html += makeLineChart('Price Dynamics', [
         { label: 'Clearing', values: periods.map(p => p.clearing_price), color: '#0072B2' },
         { label: 'Fundamental', values: periods.map(p => p.fundamental_price), color: '#E69F00' },
-        { label: 'Avg Bid', values: periods.map(p => p.avg_bid_price), color: '#009E73' },
-        { label: 'Avg Ask', values: periods.map(p => p.avg_ask_price), color: '#D55E00' },
+        { label: 'Best Bid', values: periods.map(p => p.best_bid), color: '#009E73' },
+        { label: 'Best Ask', values: periods.map(p => p.best_ask), color: '#D55E00' },
     ], '$');
 
     // 2. Volume + order quantities
@@ -1276,6 +1268,230 @@ function renderScenarioDetail() {
     })), '');
 
     panel.innerHTML = html;
+
+    // Wire up step-by-step controls
+    document.getElementById('detail-first').addEventListener('click', () => setDetailPeriod(1));
+    document.getElementById('detail-prev').addEventListener('click', () => setDetailPeriod(detailCurrentPeriod - 1));
+    document.getElementById('detail-next').addEventListener('click', () => setDetailPeriod(detailCurrentPeriod + 1));
+    document.getElementById('detail-last').addEventListener('click', () => setDetailPeriod(detailPeriods.length));
+    document.getElementById('detail-play').addEventListener('click', toggleDetailPlay);
+    document.getElementById('period-slider').addEventListener('input', (e) => setDetailPeriod(parseInt(e.target.value)));
+
+    setDetailPeriod(1);
+}
+
+function setDetailPeriod(p) {
+    if (!detailPeriods.length) return;
+    p = Math.max(1, Math.min(detailPeriods.length, p));
+    detailCurrentPeriod = p;
+    const slider = document.getElementById('period-slider');
+    if (slider && parseInt(slider.value) !== p) slider.value = p;
+    const counter = document.getElementById('period-counter');
+    if (counter) counter.textContent = `Period ${p} / ${detailPeriods.length}`;
+    const prevBtn = document.getElementById('detail-prev');
+    const nextBtn = document.getElementById('detail-next');
+    if (prevBtn) prevBtn.disabled = (p === 1);
+    if (nextBtn) nextBtn.disabled = (p === detailPeriods.length);
+    renderPeriodInspector(p - 1);
+    updatePlayhead(p);
+}
+
+// Replicates market/engine.py:clear_market walking-match logic so the
+// per-period inspector can show each order's *actual* executed quantity
+// instead of a proxy limit-vs-clearing check. Returns a Map from each
+// order's index in `orders` to its executed quantity.
+function computeFillMap(orders, clearingPrice) {
+    const fillMap = new Map();
+    if (clearingPrice == null || !orders || orders.length === 0) return fillMap;
+
+    const buys = [];
+    const sells = [];
+    orders.forEach((o, i) => {
+        if (!o || o.quantity == null || o.quantity <= 0) return;
+        if (o.side === 'buy') buys.push({ idx: i, o });
+        else if (o.side === 'sell') sells.push({ idx: i, o });
+    });
+    // Buys sorted highest-limit-first, sells sorted lowest-limit-first.
+    buys.sort((a, b) => b.o.limit_price - a.o.limit_price);
+    sells.sort((a, b) => a.o.limit_price - b.o.limit_price);
+
+    const buyRem = buys.map(b => b.o.quantity);
+    const sellRem = sells.map(s => s.o.quantity);
+    let bIdx = 0, sIdx = 0;
+    const EPS = 1e-9;
+
+    while (bIdx < buys.length && sIdx < sells.length) {
+        if (buys[bIdx].o.limit_price >= sells[sIdx].o.limit_price) {
+            const qty = Math.min(buyRem[bIdx], sellRem[sIdx]);
+            if (qty > EPS) {
+                fillMap.set(buys[bIdx].idx, (fillMap.get(buys[bIdx].idx) || 0) + qty);
+                fillMap.set(sells[sIdx].idx, (fillMap.get(sells[sIdx].idx) || 0) + qty);
+                buyRem[bIdx] -= qty;
+                sellRem[sIdx] -= qty;
+            }
+            if (buyRem[bIdx] < EPS) bIdx++;
+            if (sIdx < sells.length && sellRem[sIdx] < EPS) sIdx++;
+        } else {
+            break;
+        }
+    }
+    return fillMap;
+}
+
+function renderPeriodInspector(idx) {
+    const period = detailPeriods[idx];
+    if (!period) return;
+    const prev = idx > 0 ? detailPeriods[idx - 1] : null;
+
+    const fmt = (v) => v == null ? '—' : Number(v).toFixed(2);
+    // Quantity formatter: integer if whole, two decimals if fractional.
+    const fmtQty = (q) => {
+        if (q == null) return '—';
+        const rounded = Math.round(q);
+        return Math.abs(q - rounded) < 1e-6 ? String(rounded) : q.toFixed(2);
+    };
+
+    const header = document.getElementById('period-header');
+    if (header) {
+        header.innerHTML = `
+            <span><span class="stat-label">Clearing:</span><span class="stat-value">$${fmt(period.clearing_price)}</span></span>
+            <span><span class="stat-label">Fundamental:</span><span class="stat-value">$${fmt(period.fundamental_price)}</span></span>
+            <span><span class="stat-label">Volume:</span><span class="stat-value">${period.volume ?? 0}</span></span>
+            <span><span class="stat-label">Best Bid:</span><span class="stat-value">$${fmt(period.best_bid)}</span></span>
+            <span><span class="stat-label">Best Ask:</span><span class="stat-value">$${fmt(period.best_ask)}</span></span>
+            <span><span class="stat-label">Spread:</span><span class="stat-value">$${fmt(period.bid_ask_spread)}</span></span>
+            <span><span class="stat-label">Bid Qty:</span><span class="stat-value">${period.total_bid_qty ?? 0}</span></span>
+            <span><span class="stat-label">Ask Qty:</span><span class="stat-value">${period.total_ask_qty ?? 0}</span></span>
+            <span><span class="stat-label">Orders:</span><span class="stat-value">${period.n_orders}</span></span>
+        `;
+    }
+
+    // Compute actual executed quantities once per period using the engine's
+    // walking-match logic. Keyed by each order's original index in period.orders.
+    const fillMap = computeFillMap(period.orders || [], period.clearing_price);
+
+    // Group orders by agent, preserving each order's original index so we can
+    // look up its fill from fillMap.
+    const ordersByAgent = {};
+    (period.orders || []).forEach((o, i) => {
+        if (!ordersByAgent[o.agent_id]) ordersByAgent[o.agent_id] = [];
+        ordersByAgent[o.agent_id].push({ o, origIdx: i });
+    });
+
+    // Sort: producers, consumers, speculators, then alphabetical
+    const roleRank = { producer: 0, consumer: 1, speculator: 2, other: 99 };
+    const getRole = (a) => {
+        if (a.startsWith('producer')) return 'producer';
+        if (a.startsWith('consumer')) return 'consumer';
+        if (a.startsWith('speculator')) return 'speculator';
+        return 'other';
+    };
+    const sortedAgents = [...detailAgentNames].sort((a, b) => {
+        const ra = roleRank[getRole(a)];
+        const rb = roleRank[getRole(b)];
+        if (ra !== rb) return ra - rb;
+        return a.localeCompare(b);
+    });
+
+    const body = document.getElementById('agent-table-body');
+    if (!body) return;
+    let rows = '';
+    for (const agentId of sortedAgents) {
+        const role = getRole(agentId);
+        const state = period.agent_states[agentId] || {};
+        const prevState = prev ? (prev.agent_states[agentId] || {}) : {};
+        const cash = state.cash;
+        const inv = state.inventory;
+        const dCash = (cash != null && prevState.cash != null) ? cash - prevState.cash : null;
+        const dInv = (inv != null && prevState.inventory != null) ? inv - prevState.inventory : null;
+        const orders = ordersByAgent[agentId] || [];
+
+        const dCashStr = (dCash != null && idx > 0)
+            ? ` <span class="${dCash > 0 ? 'positive' : (dCash < 0 ? 'negative' : '')}">(${dCash >= 0 ? '+' : '-'}$${Math.abs(dCash).toFixed(2)})</span>`
+            : '';
+        const dInvStr = (dInv != null && idx > 0)
+            ? ` <span class="${dInv > 0 ? 'positive' : (dInv < 0 ? 'negative' : '')}">(${dInv >= 0 ? '+' : ''}${dInv.toFixed(0)})</span>`
+            : '';
+
+        if (orders.length === 0) {
+            rows += `<tr class="side-none">`;
+            rows += `<td>${role}</td><td>${agentId}</td><td>—</td><td>—</td><td>—</td><td>—</td>`;
+            rows += `<td>$${(cash ?? 0).toFixed(2)}${dCashStr}</td>`;
+            rows += `<td>${inv ?? 0}${dInvStr}</td>`;
+            rows += `</tr>`;
+        } else {
+            for (let oi = 0; oi < orders.length; oi++) {
+                const { o, origIdx } = orders[oi];
+                // Look up actual executed quantity from the engine-equivalent match.
+                const executed = fillMap.get(origIdx) || 0;
+                const EPS = 1e-9;
+                const fullyFilled = executed >= o.quantity - EPS;
+                const partial = executed > EPS && !fullyFilled;
+                let fillClass, fillCell;
+                if (fullyFilled) {
+                    fillClass = 'filled-full';
+                    fillCell = `✓ ${fmtQty(executed)}/${fmtQty(o.quantity)}`;
+                } else if (partial) {
+                    fillClass = 'filled-partial';
+                    fillCell = `◐ ${fmtQty(executed)}/${fmtQty(o.quantity)}`;
+                } else {
+                    fillClass = 'filled-no';
+                    fillCell = `— 0/${fmtQty(o.quantity)}`;
+                }
+                const rowClass = o.side === 'buy' ? 'side-buy' : 'side-sell';
+                rows += `<tr class="${rowClass}">`;
+                rows += `<td>${oi === 0 ? role : ''}</td>`;
+                rows += `<td>${oi === 0 ? agentId : ''}</td>`;
+                rows += `<td>${o.side}</td>`;
+                rows += `<td>${fmtQty(o.quantity)}</td>`;
+                rows += `<td>$${Number(o.limit_price).toFixed(2)}</td>`;
+                rows += `<td class="${fillClass}">${fillCell}</td>`;
+                if (oi === 0) {
+                    rows += `<td>$${(cash ?? 0).toFixed(2)}${dCashStr}</td>`;
+                    rows += `<td>${inv ?? 0}${dInvStr}</td>`;
+                } else {
+                    rows += `<td></td><td></td>`;
+                }
+                rows += `</tr>`;
+            }
+        }
+    }
+    body.innerHTML = rows;
+}
+
+function updatePlayhead(period) {
+    document.querySelectorAll('.detail-playhead').forEach(line => {
+        const svg = line.closest('svg');
+        if (!svg) return;
+        const innerW = parseFloat(svg.dataset.innerW || '0');
+        const nPeriods = parseInt(svg.dataset.nPeriods || '1');
+        const x = nPeriods > 1 ? ((period - 1) / (nPeriods - 1)) * innerW : 0;
+        line.setAttribute('x1', x);
+        line.setAttribute('x2', x);
+    });
+}
+
+function toggleDetailPlay() {
+    const btn = document.getElementById('detail-play');
+    if (detailPlayInterval) {
+        clearInterval(detailPlayInterval);
+        detailPlayInterval = null;
+        if (btn) btn.innerHTML = '&#9654; Play';
+        return;
+    }
+    if (detailCurrentPeriod >= detailPeriods.length) {
+        setDetailPeriod(1);
+    }
+    if (btn) btn.innerHTML = '&#9208; Pause';
+    detailPlayInterval = setInterval(() => {
+        if (detailCurrentPeriod >= detailPeriods.length) {
+            clearInterval(detailPlayInterval);
+            detailPlayInterval = null;
+            if (btn) btn.innerHTML = '&#9654; Play';
+            return;
+        }
+        setDetailPeriod(detailCurrentPeriod + 1);
+    }, 800);
 }
 
 // Render preloaded simulations on page load

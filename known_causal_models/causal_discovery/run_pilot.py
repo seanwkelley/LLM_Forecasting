@@ -105,15 +105,27 @@ def call_llm(
         payload["response_format"] = {"type": "json_object"}
 
     for attempt in range(max_retries):
-        response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
-            json=payload,
-            timeout=300,
-        )
+        try:
+            response = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                },
+                json=payload,
+                timeout=300,
+            )
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout,
+                requests.exceptions.ChunkedEncodingError) as e:
+            # Transient network failures (connection reset, timeout, chunked
+            # encoding broken mid-stream). Retry with backoff instead of
+            # crashing the whole pilot.
+            wait = 10 * (2 ** attempt)
+            print(f"  [NETWORK ERROR] {type(e).__name__}: waiting {wait}s "
+                  f"(attempt {attempt + 1}/{max_retries})")
+            time.sleep(wait)
+            continue
 
         if response.status_code == 429:
             wait = 10 * (2 ** attempt)
@@ -305,8 +317,8 @@ def _mock_market_response(prompt_type: str, step: int) -> dict:
                 "production_cost": {"parents": ["shock"], "children": ["agent_orders", "fundamental_price"]},
                 "demand_per_period": {"parents": ["shock"], "children": ["agent_orders"]},
                 "demand_value": {"parents": ["shock"], "children": ["agent_orders", "fundamental_price"]},
-                "storage_cost": {"parents": ["shock"], "children": ["agent_orders"]},
-                "agent_orders": {"parents": ["production_cost", "demand_per_period", "demand_value", "storage_cost", "cash", "inventory", "price_history"], "children": ["clearing_price", "volume"]},
+                "storage_cost": {"parents": ["shock"], "children": ["cash"]},
+                "agent_orders": {"parents": ["production_cost", "demand_per_period", "demand_value", "cash", "inventory", "price_history"], "children": ["clearing_price", "volume"]},
                 "clearing_price": {"parents": ["agent_orders"], "children": ["cash", "inventory", "price_history", "fundamental_price"]},
                 "volume": {"parents": ["agent_orders"], "children": ["cash", "inventory"]},
                 "cash": {"parents": ["clearing_price", "volume"], "children": ["agent_orders"]},
@@ -322,7 +334,6 @@ def _mock_market_response(prompt_type: str, step: int) -> dict:
                 {"from": "production_cost", "to": "agent_orders", "confidence": "high"},
                 {"from": "demand_per_period", "to": "agent_orders", "confidence": "high"},
                 {"from": "demand_value", "to": "agent_orders", "confidence": "high"},
-                {"from": "storage_cost", "to": "agent_orders", "confidence": "low"},
                 {"from": "agent_orders", "to": "clearing_price", "confidence": "high"},
                 {"from": "agent_orders", "to": "volume", "confidence": "high"},
                 {"from": "clearing_price", "to": "cash", "confidence": "medium"},

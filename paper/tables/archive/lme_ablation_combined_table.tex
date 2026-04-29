@@ -1,0 +1,24 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Structural ablation: when the model is instructed to ignore a factor node, its absolute probability shift is larger for structurally more important nodes. Shared-slope LME with random intercepts by question (GPT-OSS 120B, 116 questions). Panel~A: node betweenness centrality; Panel~B: outcome mediation (path relevance). *** $p<.001$.}
+\label{tab:lme_ablation}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & Coef. & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel A: Node betweenness predicts ablation shift}} \\
+(Intercept) & 0.0829*** & 0.0028 & 29.99 & $<$.001 & [0.077, 0.088] \\
+betweenness$_z$ & 0.0161*** & 0.0018 & 8.92 & $<$.001 & [0.013, 0.020] \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel B: Outcome mediation predicts ablation shift}} \\
+(Intercept) & 0.0812*** & 0.0027 & 29.59 & $<$.001 & [0.076, 0.087] \\
+path\_relevance$_z$ & 0.0167*** & 0.0018 & 9.16 & $<$.001 & [0.013, 0.020] \\
+\midrule
+$N$ observations     & \multicolumn{5}{c}{756} \\
+$N$ questions        & \multicolumn{5}{c}{102} \\
+Marginal $R^2$       & \multicolumn{5}{c}{0.118 (Panel A) \hspace{1em} 0.135 (Panel B)} \\
+Conditional $R^2$    & \multicolumn{5}{c}{0.694 (Panel A) \hspace{1em} 0.715 (Panel B)} \\
+\bottomrule
+\end{tabular}
+\end{table}

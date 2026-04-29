@@ -1,0 +1,14 @@
+\begin{table}[ht]
+\centering
+\small
+\caption{Cross-model DAG agreement. Same-question DAGs are aligned across models using embedding-based Hungarian matching (\texttt{text-embedding-3-large}, cosine $\geq 0.7$) and compared via semantic normalized graph edit distance (nGED; 0 = identical, 1 = disjoint). The observed mean nGED is significantly below the permutation null, confirming that models converge on similar causal representations for the same forecasting problem. $n = 7$ models, 116 questions, 21 model pairs. Permutation test: $n = 2{,}000$ shuffles.}
+\label{tab:cross_model_agreement}
+\begin{tabular}{lcc}
+\toprule
+ & \textbf{Observed} & \textbf{Null (permuted)} \\
+\midrule
+Mean nGED            & 0.833            & 1.014 $\pm$ 0.001 \\
+$p$-value            & \multicolumn{2}{c}{$<.001$} \\
+\bottomrule
+\end{tabular}
+\end{table}

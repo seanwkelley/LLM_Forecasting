@@ -1,0 +1,19 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Structural-intervention robustness checks (GPT-OSS 120B). Two complementary tests that the topology$\rightarrow$shift relationship is carried by network structure, not incidental content. \textbf{Panel~A (ablation):} when the model is shown its full DAG and instructed to \emph{ignore} a specific factor, its absolute probability shift still tracks that factor's structural importance. \textbf{Panel~B (edge permutation):} when edges are randomly rewired while preserving node identities and graph density, the grounding coefficient degrades (isolating the structural component from raw node content). All fits use random intercepts by question. *** $p<.001$.}
+\label{tab:lme_structural_robustness}
+\begin{tabular}{llccccc}
+\toprule
+& Predictor / Condition & Coef. & SE & $t$ & $p$ & $N$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: Forced-ignore ablation (DV: $|\Delta|$)}} \\
+& Betweenness$_z$       & 0.0161*** & 0.0018 & 8.92 & $<$.001 & 756 \\
+& Path relevance$_z$    & 0.0167*** & 0.0018 & 9.16 & $<$.001 & 756 \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: Edge-permutation placebo (DV: $|\Delta|$, predictor: betweenness$_z$)}} \\
+& Intact topology       & 0.0111*** & 0.0022 & 5.09 & $<$.001 & 976 \\
+& Permuted edges        & 0.0090*** & 0.0020 & 4.60 & $<$.001 & 928 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,29 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Factor Ranking: Convergent Validity (Rank Predicts Betweenness)}
+\label{tab:lme_ranking_convergent_table}
+\begin{tabular}{lccccc}
+\toprule
+Parameter & $\beta$ & SE & $t$ & $p$ & 95\% CI \\
+\midrule
+  (Intercept) & 0.0108 & 0.0299 & 0.36 & .718 & [-0.048, 0.070] \\
+  Stated rank$_z$ & -0.3364*** & 0.0115 & -29.26 & $<$.001 & [-0.359, -0.314] \\
+  DeepSeek-V3 & -0.1072* & 0.0424 & -2.53 & .011 & [-0.190, -0.024] \\
+  Gemini-Flash-Lite & -0.2810*** & 0.0423 & -6.64 & $<$.001 & [-0.364, -0.198] \\
+  GPT-OSS-120B & 0.0526 & 0.0423 & 1.24 & .214 & [-0.030, 0.136] \\
+  Llama-3.1-8B & 0.3997*** & 0.0423 & 9.44 & $<$.001 & [0.317, 0.483] \\
+  Qwen3-235B & 0.0317 & 0.0424 & 0.75 & .454 & [-0.051, 0.115] \\
+  Qwen3-32B & -0.1715*** & 0.0425 & -4.04 & $<$.001 & [-0.255, -0.088] \\
+\midrule
+  N observations & \multicolumn{5}{c}{6{,}495} \\
+  N groups (questions) & \multicolumn{5}{c}{116} \\
+  Log-likelihood & \multicolumn{5}{c}{-8634.18} \\
+  AIC / BIC & \multicolumn{5}{c}{17288.4 / 17356.1} \\
+  Marginal $R^2$ & \multicolumn{5}{c}{0.154} \\
+  Conditional $R^2$ & \multicolumn{5}{c}{0.154} \\
+  RE var ((Intercept)) & \multicolumn{5}{c}{0.0000} \\
+  RE var (Residual) & \multicolumn{5}{c}{0.8314} \\
+\bottomrule
+\end{tabular}
+\end{table}

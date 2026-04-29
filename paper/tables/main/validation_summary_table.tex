@@ -1,0 +1,28 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Validation checks. All analyses use GPT-OSS 120B as the testbed model on the 116 high-complexity question set. \textbf{Panel~A (persuasiveness control):} an independent GPT-4o-mini judge rated 400 probes (200 high-importance, 200 low-importance) blind to node importance; high- and low-importance probes did not differ significantly in persuasiveness. Controlling for persuasiveness via residualization only modestly attenuates the importance$\rightarrow |\Delta|$ correlation. \textbf{Panel~B (forced-ignore ablation):} model is shown its full DAG and instructed to disregard a specific factor when re-estimating the probability; the shift magnitude still tracks that factor's topological importance. \textbf{Panel~C (edge-permutation placebo):} grounding coefficient $\beta_1$ (betweenness $\rightarrow |\Delta|$) under the intact topology vs.\ randomly rewired edges. \textbf{Panel~D (network size):} shared-slope $\beta_1$ for the default 6--10-node DAGs vs.\ 12--16-node DAGs.}
+\label{tab:validation_summary}
+\begin{tabular}{llcccc}
+\toprule
+\textbf{Check} & \textbf{Condition} & \textbf{Estimate} & \textbf{SE} & \textbf{$p$} & \textbf{$n$} \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel A: Persuasiveness control (judge-rated probes)}} \\
+Spearman $\rho$ (imp. $\rightarrow |\Delta|$) & Raw & $0.18$*** & --- & $<.001$ & 400 \\
+Spearman $\rho$ (imp. $\rightarrow |\Delta|$) & Controlling persuasiveness & $0.14$** & --- & $.004$ & 400 \\
+Persuasiveness by tier (Mann--Whitney) & High ($M=3.62$) vs.\ Low ($M=3.53$) & $U=21{,}365$ & --- & $.17$ & 400 \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel B: Forced-ignore ablation (DV: $|\Delta|$)}} \\
+$\beta_1$ (betweenness $\rightarrow |\Delta|$) & Ignore target factor & $0.0161$*** & $0.0018$ & $<.001$ & 756 \\
+$\beta_1$ (path relevance $\rightarrow |\Delta|$) & Ignore target factor & $0.0167$*** & $0.0018$ & $<.001$ & 756 \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel C: Edge-permutation placebo (DV: $|\Delta|$, predictor: betweenness$_z$)}} \\
+$\beta_1$ (betweenness $\rightarrow |\Delta|$) & Intact topology & $0.0111$*** & $0.0022$ & $<.001$ & 976 \\
+$\beta_1$ (betweenness $\rightarrow |\Delta|$) & Permuted edges & $0.0090$*** & $0.0020$ & $<.001$ & 928 \\
+\midrule
+\multicolumn{6}{l}{\textit{Panel D: Network size (DV: $|\Delta|$)}} \\
+$\beta_1$ (betweenness $\rightarrow |\Delta|$) & 6--10 nodes (default) & $0.0117$*** & $0.0022$ & $<.001$ & 976 \\
+$\beta_1$ (betweenness $\rightarrow |\Delta|$) & 12--16 nodes & $0.0125$*** & $0.0021$ & $<.001$ & 944 \\
+\bottomrule
+\end{tabular}
+\end{table}

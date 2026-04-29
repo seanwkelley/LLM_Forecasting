@@ -1,0 +1,29 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Topological predictors of probe sensitivity. \textbf{Panel~A:} shared-slope LME models --- the pooled effect of each topological predictor on $|\Delta\text{logit}|$ across all seven models (Model A: node betweenness centrality; Model B: outcome mediation, i.e., the fraction of factor$\rightarrow$outcome shortest paths through the node). \textbf{Panel~B:} per-model total slopes (main + interaction from the full models), testing whether each model individually exhibits the effect. All fits include probe direction as a covariate, model fixed effects, and random intercepts by question. *** $p<.001$, ** $p<.01$, * $p<.05$.}
+\label{tab:lme_topology}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{\textbf{Node Betweenness (Model A)}} & \multicolumn{3}{c}{\textbf{Outcome Mediation (Model B)}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+ & $\beta$ & SE & $p$ & $\beta$ & SE & $p$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: Shared slope (pooled effect across all models)}} \\
+Predictor$_z \rightarrow |\Delta\text{logit}|$ & 0.0093*** & 0.0007 & $<$.001 & 0.0105*** & 0.0008 & $<$.001 \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: Per-model total slopes}} \\
+Gemini 2.5 Flash Lite & 0.0217*** & 0.0023 & $<$.001 & 0.0203*** & 0.0026 & $<$.001 \\
+Qwen3 235B           & 0.0149*** & 0.0020 & $<$.001 & 0.0115*** & 0.0018 & $<$.001 \\
+GPT-OSS 120B         & 0.0105*** & 0.0019 & $<$.001 & 0.0129*** & 0.0018 & $<$.001 \\
+Llama 3.3 70B        & 0.0094*** & 0.0020 & $<$.001 & 0.0127*** & 0.0023 & $<$.001 \\
+DeepSeek V3          & 0.0086*** & 0.0018 & $<$.001 & 0.0078*** & 0.0018 & $<$.001 \\
+Qwen3 32B            & 0.0086*** & 0.0019 & $<$.001 & 0.0079*** & 0.0020 & $<$.001 \\
+Llama 3.1 8B         & 0.0020    & 0.0015 & .175    & 0.0043*   & 0.0021 & .041    \\
+\midrule
+$N$ observations     & \multicolumn{3}{c}{7{,}404} & \multicolumn{3}{c}{6{,}495} \\
+$N$ questions        & \multicolumn{3}{c}{116}    & \multicolumn{3}{c}{116}    \\
+Marginal $R^2$       & \multicolumn{3}{c}{0.079}  & \multicolumn{3}{c}{0.080}  \\
+\bottomrule
+\end{tabular}
+\end{table}

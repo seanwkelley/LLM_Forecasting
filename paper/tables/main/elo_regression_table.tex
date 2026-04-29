@@ -1,4 +1,4 @@
-\begin{table*}[t]
+\begin{table}[t]
 \centering
 \small
 \begin{tabular}{lcccccc}
@@ -6,14 +6,10 @@
 \textbf{Outcome} & \textbf{$\beta$(Elo$_z$)} & \textbf{SE} & \textbf{$p$} & \textbf{LRT $\chi^2$(1)} & \textbf{$R^2_m$} & \textbf{$R^2_c$} \\
 \midrule
 \textbf{Mean absolute shift} & $-$0.002 & 0.001 & .002 & 9.39 & .348 & .582 \\
-SSR & +0.006 & 0.019 & .749 & 0.10 & .007 & .159 \\
-Within-question $\tau$ & $-$0.004 & 0.012 & .772 & 0.09 & .000 & .005 \\
-Shortest-path premium & +0.001 & 0.001 & .441 & 0.60 & .016 & .124 \\
-\textbf{Asymmetry index} & $-$0.019 & 0.010 & .046 & 4.00 & .020 & .130 \\
 \textbf{Reasoning judge rating} & +0.017 & 0.006 & .007 & 7.30 & .016 & .051 \\
 \textbf{Uncertainty judge rating} & $-$0.012 & 0.005 & .029 & 4.77 & .006 & .280 \\
 \bottomrule
 \end{tabular}
 \caption{Mixed-effects regression: Elo difficulty predicting belief sensitivity metrics, controlling for $|p_0 - 0.5|$. All models include a random intercept for model identity. $\beta$(Elo$_z$) is the standardized coefficient; LRT $\chi^2$ tests whether adding Elo improves fit over $|p_0 - 0.5|$ alone. $R^2_m$ = marginal (fixed effects); $R^2_c$ = conditional (fixed + random). $N = 812$ (116 questions $\times$ 7 models). Bold = $p < .05$.}
 \label{tab:elo_regression}
-\end{table*}
+\end{table}

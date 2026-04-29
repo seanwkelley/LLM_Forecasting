@@ -182,7 +182,7 @@ If you use this work, please cite:
 ```bibtex
 @misc{kelley2026belief,
   author = {Kelley, Sean W. and Riedl, Christoph},
-  title  = {Probing Belief Sensitivity in {LLM} Forecasters: Do Causal Structure and Importance Predict Belief Updates?},
+  title  = {Causal Network Topology Predicts How {LLM} Forecasters Revise Probabilities When Presented with New Information},
   year   = {2026},
   note   = {Manuscript under review}
 }

@@ -874,7 +874,7 @@ def build_coherence_embedding_dataframe() -> pd.DataFrame:
         print("  [SKIP] No reasoning embeddings")
         return pd.DataFrame()
 
-    from forecast_bench.generate_figures import _EMBED_PROBE_NORMALIZE, _IMPORTANCE_TIER
+    from forecast_bench.shared_utils import _EMBED_PROBE_NORMALIZE, _IMPORTANCE_TIER
 
     keys = json.loads(keys_path.read_text(encoding="utf-8"))
     embeddings = np.load(str(emb_path))["embeddings"]

@@ -18,7 +18,7 @@ BLUE, ORANGE, VERMILLION, GREEN, REDDISH_PURPLE = "#0072B2", "#E69F00", "#D55E00
 
 BASE = Path(__file__).parent.parent
 CAUSAL = BASE / "outputs" / "sensitivity" / "causal"
-OUT = BASE / "paper" / "figures" / "supplementary"
+OUT = BASE / "paper" / "figures" / "internal"
 
 WINE = "#882255"
 MODEL_DIRS = {

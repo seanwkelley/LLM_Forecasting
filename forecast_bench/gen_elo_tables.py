@@ -1,8 +1,8 @@
 """Generate LaTeX tables for Elo difficulty analysis.
 
 Outputs:
-    paper/figures/elo_exemplars_table.tex
-    paper/figures/elo_regression_table.tex
+    paper/tables/archive/elo_exemplars_table.tex  (curated copy in tables/supplement/)
+    paper/tables/archive/elo_regression_table.tex  (curated copy in tables/main/)
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from forecast_bench.analysis_full import load_question_jsons
 
 BASE = Path(__file__).parent.parent
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
-FIGURES_DIR = BASE / "paper" / "figures"
+FIGURES_DIR = BASE / "paper" / "tables" / "archive"  # regen staging; manually copy curated tables to tables/main or tables/supplement
 
 MODEL_DIRS = {
     "llama-8b": CAUSAL_DIR / "llama_neutral",

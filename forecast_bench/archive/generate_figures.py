@@ -1,7 +1,7 @@
 """
 Generate all paper figures for the Belief Sensitivity analysis.
 
-Outputs saved to paper/figures/.
+Outputs saved to paper/figures/main, /supplement, or /internal depending on the figure.
 
 Usage:
     python -m forecast_bench.generate_figures
@@ -44,8 +44,9 @@ from forecast_bench.analysis_full import (
 
 # ── Paths ───────────────────────────────────────────────────────────────────
 BASE = Path(__file__).parent.parent
-FIGURES_DIR = BASE / "paper" / "figures"
-SUPPLEMENT_DIR = BASE / "paper" / "figures" / "supplementary"
+FIGURES_DIR = BASE / "paper" / "figures" / "main"
+SUPPLEMENT_DIR = BASE / "paper" / "figures" / "supplement"
+INTERNAL_DIR = BASE / "paper" / "figures" / "internal"
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 
 MODEL_DIRS = {

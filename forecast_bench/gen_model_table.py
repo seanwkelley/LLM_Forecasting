@@ -21,7 +21,7 @@ plt.rcParams.update({
 })
 
 BASE = Path(__file__).parent.parent
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "tables" / "archive"  # regen staging; curated copies live in tables/main or tables/supplement
 
 
 def _booktabs_table(ax, col_headers, row_labels, cell_text, title=None,

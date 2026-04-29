@@ -34,7 +34,7 @@ plt.rcParams.update({
 
 BASE = Path(__file__).parent.parent
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "main"
 
 COLORS = {
     "Llama-3.1-8B": "#E69F00",
@@ -118,17 +118,15 @@ def panel_a_reasoning(ax, runs, lme_results):
     ax.set_ylabel("|Log-Odds Shift|")
     ax.set_xlabel("Stated-Impact Rating", fontsize=16)
 
-    # LME annotation
+    # LME annotation — stars only, no CI, no box
     coh = lme_results.get("coherence_reasoning")
     if coh:
         fe = coh.get("fixed_effects", {})
         rating_fe = fe.get("rating")
         if rating_fe:
-            txt = _fmt_lme(rating_fe["coef"], rating_fe["p"],
-                           rating_fe.get("ci_lower"), rating_fe.get("ci_upper"))
-            ax.text(0.95, 0.95, txt, transform=ax.transAxes,
-                    ha="right", va="top", fontsize=12,
-                    bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8))
+            txt = f"β = {rating_fe['coef']:.3f}{_stars(rating_fe['p'])}"
+            ax.text(0.05, 0.95, txt, transform=ax.transAxes,
+                    ha="left", va="top", fontsize=15)
 
 
 def panel_b_uncertainty(ax, runs, lme_results):
@@ -194,8 +192,7 @@ def panel_b_uncertainty(ax, runs, lme_results):
             parts.append(f"Hedging: \u03b2={hedging_fe['coef']:.3f}{_stars(hedging_fe['p'])}")
         if parts:
             ax.text(0.95, 0.95, "\n".join(parts), transform=ax.transAxes,
-                    ha="right", va="top", fontsize=11,
-                    bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8))
+                    ha="right", va="top", fontsize=15)
 
 
 def panel_c_bayesian(ax, runs, lme_results):
@@ -226,35 +223,25 @@ def panel_c_bayesian(ax, runs, lme_results):
     ax.scatter(all_p0, all_lo_shift, alpha=0.08, s=8, color="#332288", edgecolors="none")
     ax.axhline(0, color="#999", linestyle="--", linewidth=1, zorder=0)
 
-    # LME regression line (using initial_logit as predictor)
+    # Straight linear regression line (in probability space) for the visual
+    slope, intercept = np.polyfit(p0_arr, lo_arr, 1)
+    x_line = np.linspace(0.02, 0.98, 100)
+    ax.plot(x_line, slope * x_line + intercept, color="#332288", linewidth=2.5, zorder=5)
+
+    # Annotation: LME beta with stars only (no CI, no box)
     coh = lme_results.get("coherence_bayesian")
     if coh:
         fe = coh.get("fixed_effects", {})
         logit_fe = fe.get("initial_logit")
-        intercept_fe = fe.get("(Intercept)")
-        if logit_fe and intercept_fe:
-            b0 = intercept_fe["coef"]
-            b1 = logit_fe["coef"]
-            # Plot LME regression line (transform x-axis from prob to logit)
-            x_prob = np.linspace(0.02, 0.98, 200)
-            x_logit = np.log(x_prob / (1 - x_prob))
-            y_pred = b0 + b1 * x_logit
-            ax.plot(x_prob, y_pred, color="#332288", linewidth=2.5, zorder=5)
-
-            txt = _fmt_lme(b1, logit_fe["p"],
-                           logit_fe.get("ci_lower"), logit_fe.get("ci_upper"))
+        if logit_fe:
+            txt = f"β = {logit_fe['coef']:.3f}{_stars(logit_fe['p'])}"
             ax.text(0.95, 0.95, txt, transform=ax.transAxes,
-                    ha="right", va="top", fontsize=12,
-                    bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8))
+                    ha="right", va="top", fontsize=15)
     else:
-        # Fallback: simple linear regression
         from scipy.stats import pearsonr
-        slope, intercept = np.polyfit(p0_arr, lo_arr, 1)
-        r, p = pearsonr(p0_arr, lo_arr)
-        x_line = np.linspace(0, 1, 100)
-        ax.plot(x_line, slope * x_line + intercept, color="#332288", linewidth=2.5, zorder=5)
-        ax.text(0.95, 0.95, f"r = {r:.2f}{_stars(p)}", transform=ax.transAxes,
-                ha="right", va="top", fontsize=14)
+        _, p = pearsonr(p0_arr, lo_arr)
+        ax.text(0.95, 0.95, f"β = {slope:.3f}{_stars(p)}", transform=ax.transAxes,
+                ha="right", va="top", fontsize=15)
 
     ax.set_xlabel("Initial Probability")
     ax.set_ylabel("Log-Odds Shift")
@@ -265,7 +252,7 @@ def panel_c_bayesian(ax, runs, lme_results):
 
 def panel_d_embeddings(ax, runs, lme_results):
     """Reasoning embedding separation: structural vs control, with LME β."""
-    from forecast_bench.generate_figures import (
+    from forecast_bench.shared_utils import (
         _EMBED_PROBE_NORMALIZE, _IMPORTANCE_TIER,
     )
 
@@ -344,22 +331,20 @@ def panel_d_embeddings(ax, runs, lme_results):
     ax.set_xticklabels(["Targeted\nProbes", "Irrelevant\nProbes"], fontsize=12)
     ax.set_ylabel("Within-Question\nCosine Similarity")
 
-    # LME annotation
+    # LME annotation — stars only, no CI, no box
     coh = lme_results.get("coherence_embedding")
     if coh:
         fe = coh.get("fixed_effects", {})
         struct_fe = fe.get("is_structuralStructural")
         if struct_fe:
-            txt = _fmt_lme(struct_fe["coef"], struct_fe["p"],
-                           struct_fe.get("ci_lower"), struct_fe.get("ci_upper"))
+            txt = f"β = {struct_fe['coef']:.3f}{_stars(struct_fe['p'])}"
             y_top = max(s_mean + 1.96 * s_se, c_mean + 1.96 * c_se) + 0.003
             ax.plot([0, 0, 1, 1], [y_top, y_top + 0.002, y_top + 0.002, y_top],
                     color="black", linewidth=0.8)
             ax.text(0.5, y_top + 0.003, _stars(struct_fe["p"]),
-                    ha="center", va="bottom", fontsize=14, fontweight="bold")
+                    ha="center", va="bottom", fontsize=18, fontweight="bold")
             ax.text(0.95, 0.95, txt, transform=ax.transAxes,
-                    ha="right", va="top", fontsize=12,
-                    bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.8))
+                    ha="right", va="top", fontsize=15)
     else:
         # Fallback: Mann-Whitney
         from scipy.stats import mannwhitneyu
@@ -371,11 +356,11 @@ def panel_d_embeddings(ax, runs, lme_results):
         ax.text(0.5, y_top + 0.003, stars, ha="center", va="bottom",
                 fontsize=14, fontweight="bold")
 
-    ax.set_ylim(bottom=0.55, top=0.85)
+    ax.set_ylim(bottom=0.62, top=0.78)
 
 
 def main():
-    from forecast_bench.generate_figures import _load_all_runs
+    from forecast_bench.shared_utils import _load_all_runs
     runs = _load_all_runs()
 
     # Load LME results

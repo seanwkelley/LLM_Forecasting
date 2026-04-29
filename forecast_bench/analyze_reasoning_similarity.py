@@ -30,7 +30,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # ── Config ──────────────────────────────────────────────────────────────────
 BASE = Path(__file__).parent.parent
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "internal"
 
 MODEL_DIRS = {
     "llama-8b": CAUSAL_DIR / "llama_neutral",

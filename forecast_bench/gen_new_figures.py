@@ -27,7 +27,7 @@ BLUE, ORANGE, VERMILLION, GREEN = "#0072B2", "#E69F00", "#D55E00", "#009E73"
 
 BASE = Path(__file__).parent.parent
 CAUSAL = BASE / "outputs" / "sensitivity" / "causal"
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "internal"
 
 MODEL_DIRS = {
     "Llama-3.1-8B":  CAUSAL / "llama_neutral",

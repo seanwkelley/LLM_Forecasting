@@ -20,7 +20,7 @@ from forecast_bench.network_analysis import analyze_network, _build_digraph
 plt.rcParams.update({"font.family": "Arial", "font.size": 12, "figure.dpi": 300})
 
 BASE = Path(__file__).parent.parent
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "main"
 
 # Question IDs (GPT-OSS neutral, 116 high-complexity questions)
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal" / "gpt_oss_neutral" / "_shared_stages_causal"

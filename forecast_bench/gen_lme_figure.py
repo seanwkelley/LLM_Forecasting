@@ -42,7 +42,7 @@ plt.rcParams.update({
 })
 
 BASE = Path(__file__).parent.parent
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "internal"
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 
 # ── Colors ─────────────────────────────────────────────────────────────────

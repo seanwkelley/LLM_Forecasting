@@ -1,7 +1,7 @@
 """Generate Elo vs probability extremity scatter plot.
 
 Outputs:
-    paper/figures/supplementary/elo_vs_extremity.pdf / .png
+    paper/figures/internal/elo_vs_extremity.pdf / .png
 """
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ from forecast_bench.analysis_full import load_question_jsons
 
 BASE = Path(__file__).parent.parent
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
-FIGURES_DIR = BASE / "paper" / "figures" / "supplementary"
+FIGURES_DIR = BASE / "paper" / "figures" / "internal"
 
 MODEL_DIRS = {
     "llama-8b": CAUSAL_DIR / "llama_neutral",

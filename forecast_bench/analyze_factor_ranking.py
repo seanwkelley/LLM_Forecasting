@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 BASE = Path(__file__).parent.parent
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
-FIGURES_DIR = BASE / "paper" / "figures" / "supplementary"
+FIGURES_DIR = BASE / "paper" / "figures" / "internal"  # factor_ranking plot is internal; main result lives in tab:factor_ranking
 
 MODEL_DIRS = {
     "Llama-3.1-8B": "llama_neutral_factor_ranking",

@@ -112,7 +112,7 @@ def main():
     ax.text(0.5, 1.65, "Propagation decay", fontsize=11, ha="center", fontweight="bold")
 
     for fmt in ("pdf", "png"):
-        fig.savefig(f"paper/figures/compound_probe_diagram.{fmt}",
+        fig.savefig(f"paper/figures/archive/compound_probe_diagram.{fmt}",
                     bbox_inches="tight", dpi=300)
     print("Done")
     plt.close()

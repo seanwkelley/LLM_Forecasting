@@ -675,7 +675,7 @@ def _plot_exemplar_pair(temp_data, available_temps, shared_all):
         labels = {n: "Outcome" if n in outcome_ids else _label(n)
                   for n in G.nodes}
         nx.draw_networkx_labels(G, pos, labels=labels, ax=ax,
-                                font_size=9, font_weight="bold",
+                                font_size=14, font_weight="bold",
                                 font_color="black")
 
         analysis = analyze_network(data["nodes"], data["edges"])
@@ -683,9 +683,9 @@ def _plot_exemplar_pair(temp_data, available_temps, shared_all):
         ax.set_title(f"Temperature = {temp}\n"
                      f"{analysis.n_nodes} nodes, {analysis.n_edges} edges  |  "
                      f"P(Yes) = {prob:.0%}",
-                     fontsize=13, fontweight="bold", pad=20, linespacing=1.8)
+                     fontsize=18, fontweight="bold", pad=20, linespacing=1.8)
         ax.text(-0.05, 1.08, panel_label, transform=ax.transAxes,
-                fontsize=16, fontweight="bold")
+                fontsize=22, fontweight="bold")
         ax.set_axis_off()
         ax.margins(0.30)
 
@@ -697,7 +697,7 @@ def _plot_exemplar_pair(temp_data, available_temps, shared_all):
     q_text = d_lo.get("question_text", "")[:80]
     if q_text == "New pandemic in 2025?":
         q_text = "Will there be a new pandemic in 2025?"
-    fig.suptitle(q_text, fontsize=15, fontweight="bold", y=1.02)
+    fig.suptitle(q_text, fontsize=20, fontweight="bold", y=1.02)
 
     legend_elements = [
         Patch(facecolor="#A8D0E6", edgecolor="#333", label="Shared factor"),
@@ -707,12 +707,12 @@ def _plot_exemplar_pair(temp_data, available_temps, shared_all):
                label="Unique edge"),
     ]
     fig.legend(handles=legend_elements, loc="lower center", ncol=4,
-               fontsize=11, frameon=False, bbox_to_anchor=(0.5, -0.02))
+               fontsize=15, frameon=False, bbox_to_anchor=(0.5, -0.02))
     fig.text(0.5, -0.05, f"Semantic nGED = {nged:.2f}",
-             ha="center", fontsize=12, fontstyle="italic", color="#555")
+             ha="center", fontsize=16, fontstyle="italic", color="#555")
 
     plt.tight_layout()
-    fig_path = OUT / "supplementary" / "temperature_exemplar_pair"
+    fig_path = OUT / "supplement" / "temperature_exemplar_pair"
     for ext in ["png", "pdf"]:
         fig.savefig(f"{fig_path}.{ext}", dpi=300, bbox_inches="tight",
                     facecolor="white")

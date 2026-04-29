@@ -16,7 +16,7 @@ from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 plt.rcParams.update({"font.family": "Arial", "font.size": 14, "figure.dpi": 300})
 
 BASE = Path(__file__).parent.parent
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "archive"
 
 # ── Colors ──
 C_INPUT = "#DCEEFB"

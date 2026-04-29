@@ -575,13 +575,25 @@ def semantic_nged_for_pair(
     n_matched = len(matches)
     node_ops = (len(ids1) - n_matched) + (len(ids2) - n_matched)
 
-    # Edge operations: remap graph2 edges into graph1 namespace, then symmetric diff
+    # Namespaced canonical IDs prevent string collisions from inflating the
+    # ratio above 1.  Matched G2 nodes adopt their G1 partner's ID (via remap);
+    # unmatched G2 nodes get a "__g2__" prefix so they cannot collide with G1
+    # node IDs that happen to share a name (e.g., both graphs calling a node
+    # "economic_conditions").  G1 IDs stay as-is since G2 is fully separated.
+    G2_PREFIX = "__g2__"
+    canon_g2 = {nid: (remap[nid] if nid in remap else f"{G2_PREFIX}{nid}")
+                for nid in ids2}
+    canon_union = ids1 | set(canon_g2.values())
+
+    # Edge operations: remap graph2 edges into the canonical namespace, then
+    # symmetric difference against graph1 edges
     ei = {(e["from"], e["to"]) for e in edges1}
-    ej_remapped = {(remap.get(e["from"], e["from"]), remap.get(e["to"], e["to"]))
+    ej_remapped = {(canon_g2.get(e["from"], e["from"]),
+                    canon_g2.get(e["to"], e["to"]))
                    for e in edges2}
     edge_ops = len(ei ^ ej_remapped)
 
-    total = len(ids1 | ids2) + len(ei | ej_remapped)
+    total = len(canon_union) + len(ei | ej_remapped)
     return (node_ops + edge_ops) / total if total > 0 else 0.0
 
 

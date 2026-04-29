@@ -18,7 +18,7 @@ library(jsonlite)
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 causal_dir <- file.path("outputs", "sensitivity", "causal")
-figures_dir <- file.path("paper", "figures")
+figures_dir <- file.path("paper", "tables", "archive")  # regen lands in staging; curated copies live in tables/main or tables/supplement
 
 node_csv       <- file.path(causal_dir, "lme_node_data.csv")
 path_rel_csv   <- file.path(causal_dir, "lme_path_relevance_data.csv")
@@ -224,7 +224,7 @@ generate_latex_table <- function(results, filename, caption) {
     sprintf("\\label{tab:%s}", tools::file_path_sans_ext(filename)),
     "\\begin{tabular}{lccccc}",
     "\\toprule",
-    "Parameter & Coef. & SE & $t$ & $p$ & 95\\% CI \\\\",
+    "Parameter & $\\beta$ & SE & $t$ & $p$ & 95\\% CI \\\\",
     "\\midrule"
   )
 
@@ -233,10 +233,19 @@ generate_latex_table <- function(results, filename, caption) {
     # Clean parameter name for LaTeX
     display <- param
     display <- gsub("^model", "", display)
+    # Collapse R's factor-level concatenations (e.g., is_directDirect -> "Direct cause")
+    display <- gsub("is_directDirect:betweenness_z", "Direct $\\\\times$ betweenness$_z$", display)
+    display <- gsub("is_directDirect", "Direct cause", display)
+    # z-scored predictors: pretty-print underscore-z as subscript-z
+    display <- gsub("betweenness_z", "Betweenness$_z$", display)
+    display <- gsub("path_relevance_z", "Path relevance$_z$", display)
+    display <- gsub("importance_z", "Importance$_z$", display)
+    display <- gsub("stated_rank_z", "Stated rank$_z$", display)
+    # Escape any remaining underscores (e.g., in model names that slipped through)
     display <- gsub("_", "\\\\_", display)
 
     p <- vals$p
-    p_str <- if (p < 0.001) "$<$0.001" else sprintf("%.3f", p)
+    p_str <- if (p < 0.001) "$<$.001" else sub("^0\\.", ".", sprintf("%.3f", p))
     stars <- if (p < 0.001) "***" else if (p < 0.01) "**" else if (p < 0.05) "*" else ""
 
     ci_str <- sprintf("[%.3f, %.3f]", vals$ci_lower, vals$ci_upper)
@@ -250,8 +259,8 @@ generate_latex_table <- function(results, filename, caption) {
     sprintf("  N groups (questions) & \\multicolumn{5}{c}{%d} \\\\", results$n_groups),
     sprintf("  Log-likelihood & \\multicolumn{5}{c}{%.2f} \\\\", results$log_likelihood),
     sprintf("  AIC / BIC & \\multicolumn{5}{c}{%.1f / %.1f} \\\\", results$aic, results$bic),
-    sprintf("  Marginal $R^2$ & \\multicolumn{5}{c}{%.4f} \\\\", results$r2_marginal),
-    sprintf("  Conditional $R^2$ & \\multicolumn{5}{c}{%.4f} \\\\", results$r2_conditional)
+    sprintf("  Marginal $R^2$ & \\multicolumn{5}{c}{%.3f} \\\\", results$r2_marginal),
+    sprintf("  Conditional $R^2$ & \\multicolumn{5}{c}{%.3f} \\\\", results$r2_conditional)
   )
 
   # Random effects

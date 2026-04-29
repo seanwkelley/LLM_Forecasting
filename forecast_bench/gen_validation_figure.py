@@ -38,7 +38,7 @@ plt.rcParams.update({
 })
 
 BASE = Path(__file__).parent.parent
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "internal"  # validation figure replaced by tab:validation_summary in main paper
 CAUSAL_DIR = BASE / "outputs" / "sensitivity" / "causal"
 
 MODEL_COLORS = {

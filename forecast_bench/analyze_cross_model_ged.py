@@ -53,7 +53,7 @@ plt.rcParams.update({
 
 BASE = Path(__file__).parent.parent
 CAUSAL = BASE / "outputs" / "sensitivity" / "causal"
-OUT = BASE / "paper" / "figures" / "supplementary"
+OUT = BASE / "paper" / "figures" / "internal"  # cross_model_ged visualization is internal; headline result in tab:cross_model_agreement
 
 MODEL_DIRS = {
     "Llama-3.1-8B": CAUSAL / "llama_neutral",

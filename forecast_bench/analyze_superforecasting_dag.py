@@ -37,7 +37,7 @@ BLUE, ORANGE, VERMILLION, GREEN = "#0072B2", "#E69F00", "#D55E00", "#009E73"
 
 BASE = Path(__file__).parent.parent
 CAUSAL = BASE / "outputs" / "sensitivity" / "causal"
-OUT = BASE / "paper" / "figures"
+OUT = BASE / "paper" / "figures" / "internal"
 
 BASELINE_DIR = CAUSAL / "gpt_oss_neutral" / "_shared_stages_causal"
 SF_DIR = CAUSAL / "gpt_oss_superforecasting" / "_superforecasting_results"

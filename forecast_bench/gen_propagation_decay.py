@@ -31,7 +31,7 @@ PROP_DIRS = {
     "GPT-OSS": BASE / "outputs" / "sensitivity" / "causal" / "gpt_oss_propagation" / "propagation_results",
 }
 PROP_DIR = PROP_DIRS["GPT-OSS"]  # default for single-model functions
-OUT_DIR = BASE / "paper" / "figures" / "supplementary"
+OUT_DIR = BASE / "paper" / "figures" / "supplement"
 
 
 def _probe_direction(probe_type: str) -> str:

@@ -1,6 +1,8 @@
 # Analysis Notes — Belief Sensitivity
 
-## Cross-Model Spread in Initial Probabilities
+> **Note (2026-04-07):** Sections below dated March 2026 use the earlier 50-question / 3-4-model dataset. The current paper uses **116 questions × 7 models** with neutral prompts and log-odds DV. See `results_summary.md` for current numbers. The qualitative patterns (data-anchored questions converge, speculative questions diverge; node/edge content agreement vs topology divergence) are still expected to hold but have not been recomputed on the current dataset.
+
+## Cross-Model Spread in Initial Probabilities (HISTORICAL — 50q × 3 models)
 
 Mean spread (max - min across 3 models) = 0.214 ± 0.017 SE over 50 shared questions.
 
@@ -31,7 +33,7 @@ Mean spread (max - min across 3 models) = 0.214 ± 0.017 SE over 50 shared quest
 
 This suggests that model disagreement is driven primarily by **question ambiguity**, not model architecture. When questions have clear data anchors, even models of different sizes and families converge. The divergence on speculative questions likely reflects differences in training data priors rather than reasoning capability.
 
-### Pairwise initial probability correlations (4 models, n=51)
+### Pairwise initial probability correlations (HISTORICAL — 4 models, n=51)
 
 All pairwise Spearman correlations of initial probabilities fall in ρ = 0.58–0.68:
 
@@ -47,6 +49,20 @@ All pairwise Spearman correlations of initial probabilities fall in ρ = 0.58–
 Llama-8B is least correlated with other models; the three larger models (70B, DeepSeek, Qwen) cluster more tightly (ρ = 0.63–0.67).
 
 ## Cross-model DAG agreement: content vs topology
+
+> **Updated 2026-04-07**: Replaced raw Jaccard analysis with **semantic nGED**
+> using embedding-based Hungarian alignment (cosine ≥ 0.7). On the current
+> 116q × 7 models dataset:
+>
+> - Cross-model semantic nGED = **0.833** vs null = 1.014 ± 0.001, **p < .001**
+>   (2,000 permutations)
+> - Same-question DAGs are significantly more similar than chance, but the
+>   agreement is moderate — models converge on similar causal factors but
+>   still differ in wiring.
+>
+> The Jaccard-based analysis below is from the earlier dataset.
+
+### Historical Jaccard analysis (50q × 4 models)
 
 Permutation tests (5,000 permutations, two-sided) on pairwise DAG similarity reveal a dissociation between content overlap and structural topology:
 
@@ -97,15 +113,20 @@ Resolution rates by source:
 
 ---
 
-## Superforecasting Prompt Ablation
+## Superforecasting Prompt Ablation (refreshed 2026-04-07)
 
-Run on **Llama-3.3-70B only**, 50 shared questions. Baseline vs superforecasting-augmented system prompt (adds outside view, granular decomposition, signal vs noise, counterfactual edge validation, base-rate calibration).
+Run on **GPT-OSS 120B**, 116 high-complexity questions. Baseline vs superforecasting-augmented system prompt (adds outside view, granular decomposition, signal vs noise, counterfactual edge validation, base-rate calibration).
 
 Key findings:
-- **Probability correlation**: r = 0.90, p < 0.001 — prompts produce very similar forecasts
-- **Node Jaccard**: z = 25 SDs above null — strong content agreement (same causal factors identified)
-- **Edge Jaccard**: z = 22 SDs above null — significant but small absolute overlap
-- **Spectral Distance**: z ≈ 2 SDs — marginal; graph topology is not meaningfully more similar than chance
-- **DAG structural statistics**: no significant differences in node count (6.8 vs 6.7), edge count (6.8 vs 6.8), or density (0.172 vs 0.178)
+- **Probability correlation**: Spearman ρ = 0.713, p < .001
+- **MAE in probability**: 0.096
+- **Semantic nGED**: 0.714 (permutation p < .001, null = 0.998)
+- **Node count**: baseline 8.4, SF 8.3 (Wilcoxon p = 0.026)
+- **Edge count**: baseline 8.6, SF 8.1 (p = 0.008) — modest reduction under SF prompt
+- **Density**: baseline 0.139, SF 0.136 (p = 0.446)
 
-**Interpretation**: The superforecasting prompt changes *which specific edges* the model draws but not the overall forecast or the set of causal factors. The model converges on the same concepts regardless of prompt framing, but wiring decisions are sensitive to instructional framing.
+**Interpretation**: The superforecasting prompt induces more structural change than test-retest variation (nGED 0.71 vs 0.69 for GPT-OSS retest). Probability estimates remain correlated, suggesting that explicit superforecasting instructions alter the *causal decomposition* more than the final probability estimate. Edge count drops under SF, consistent with the "signal vs noise" instruction encouraging fewer but more justified edges.
+
+### Historical: Llama-3.3-70B, 50 questions (March 2026)
+- Probability r = 0.90, p < 0.001
+- Node count: 6.8 vs 6.7 (n.s.), edge count 6.8 vs 6.8, density 0.172 vs 0.178

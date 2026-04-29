@@ -2,25 +2,28 @@
 
 ## Paper Notes
 
-### Data Quality: DAG Cycle Rates
+### Data Quality: DAG Cycle Rates (refreshed 2026-04-07, 116 questions)
 Models occasionally produce causal networks containing cycles (feedback loops),
 violating the DAG constraint. Cycle rates by model:
 
 | Model | Cycle rate |
 |-------|-----------|
-| Llama 8B | 12/100 (12%) |
-| Llama 70B | 1/100 (1%) |
-| DeepSeek V3 | 1/100 (1%) |
-| Qwen3-235B | 0/100 (0%) |
-| Gemini Flash Lite | TBD |
+| GPT-OSS 120B | 1/116 (0.9%) |
+| DeepSeek V3 | 2/116 (1.7%) |
+| Qwen3 235B | 5/116 (4.3%) |
+| Llama 70B | 6/116 (5.2%) |
+| Qwen3 32B | 8/116 (6.9%) |
+| Gemini Flash Lite | 19/116 (16.4%) |
+| Llama 8B | 20/116 (17.2%) |
 
 Cycles typically represent genuine feedback loops (e.g., management decisions →
 legal rulings → public controversy → management decisions). Larger models are
-better at conforming to the DAG constraint. Should report this as a data quality
-metric and note that cyclic graphs may affect betweenness centrality computation.
+generally better at conforming to the DAG constraint, though Gemini Flash Lite
+is an exception (high cycle rate despite being a frontier-tier model).
 
-**Action**: Add cycle rate to a data quality table in the paper. Include Gemini.
-Consider excluding cyclic questions from betweenness-based analyses or noting as limitation.
+**Action**: Add cycle rate to a data quality table in the paper if reviewers ask.
+Cyclic graphs are tolerated by `networkx.betweenness_centrality` so they don't
+break the analysis pipeline; the centrality interpretation is still meaningful.
 
 ### SSR Definition (DONE)
 H = {negate_high, strengthen, negate_critical, strengthen_critical}
@@ -64,10 +67,13 @@ questions may have been generated with a different model.
 
 **Action**: Default the probe model to match the model that generated the DAG.
 
-### Pre-Selected Data Regeneration
-After all runs complete, regenerate the pre-selected question data for all 5 models:
+### Pre-Selected Data Regeneration (DONE — supports all 7 models)
 ```bash
 cd belief-sensitivity-explorer
-npx tsx scripts/prepare-data.ts ../outputs/sensitivity/causal/70b_one_turn/question_results
+npm run prepare-data
 ```
-Support browsing across models (currently single-model only).
+Reads from `../outputs/sensitivity/causal/{model}/question_results/` for all 7
+models (llama_neutral, llama_70b_neutral, deepseek_neutral, qwen_neutral,
+qwen_32b_neutral, gemini_fl_neutral, gpt_oss_neutral). Joins question topics
+from `../forecast_bench/high_complexity_questions.json` (assigned by
+`classify_question_topic.py`).

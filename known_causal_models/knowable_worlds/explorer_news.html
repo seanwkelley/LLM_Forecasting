@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Knowable Worlds — the real-world study (parked design)</title>
+<style>
+  :root{--ink:#1b1b1f;--muted:#5c5c66;--panel:#f4f4f2;--edge:#c9c9c9;
+        --blue:#3a6ea5;--green:#2f7d4f;--purp:#7d4f8d;--oran:#b5652f;--rq:#fff3c4;--red:#b03a3a;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);margin:0;
+       background:#fbfbfa;line-height:1.5;}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 28px 90px;}
+  h1{font-size:25px;margin:16px 0 4px;}
+  h2{font-size:19px;margin:40px 0 10px;border-bottom:2px solid var(--edge);padding-bottom:6px;}
+  .sub{color:var(--muted);font-style:italic;margin-bottom:6px;}
+  .card{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:14px 16px;margin:12px 0;}
+  .cols{display:flex;gap:22px;flex-wrap:wrap;}
+  .col{flex:1;min-width:320px;}
+  code,pre{background:#eceded;border-radius:6px;font-size:12.5px;}
+  pre{padding:10px 12px;overflow-x:auto;}
+  .gauge{font-size:26px;font-weight:800;}
+  .gaugebox{background:#fff;border:2px solid var(--ink);border-radius:10px;
+            padding:8px 14px;display:inline-block;min-width:165px;text-align:center;margin:4px 4px 4px 0;}
+  .tabs{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap;}
+  .tab{padding:7px 14px;border:1.5px solid var(--edge);border-radius:8px;cursor:pointer;
+       font-size:13px;font-weight:600;background:#fff;}
+  .tab.active{background:var(--green);color:#fff;border-color:var(--green);}
+  .ctxview{background:#fff;border:1.5px solid var(--edge);border-radius:8px;padding:10px 12px;
+           max-height:300px;overflow:auto;font-family:Consolas,monospace;font-size:11px;white-space:pre;}
+  button{background:var(--ink);color:#fff;border:none;border-radius:7px;padding:8px 15px;
+         font-size:13px;cursor:pointer;margin-right:8px;}
+  button.blue{background:var(--blue);}
+  table{border-collapse:collapse;font-size:13px;margin:8px 0;}
+  td,th{border:1px solid var(--edge);padding:5px 10px;text-align:left;vertical-align:top;}
+  .hl{background:var(--rq);padding:0 3px;border-radius:3px;}
+  .parked{display:inline-block;background:var(--rq);border:2px solid var(--ink);border-radius:8px;
+          padding:2px 12px;font-weight:800;font-size:13px;}
+  .grid2{display:grid;grid-template-columns:130px 1fr 1fr;gap:6px;margin:10px 0;}
+  .grid3{display:grid;grid-template-columns:130px 1fr 1fr 1fr;gap:6px;margin:10px 0;}
+  .gcell{border:2px solid var(--edge);border-radius:10px;padding:10px 12px;background:#fff;
+         cursor:pointer;font-size:12.5px;min-height:74px;}
+  .gcell:hover{border-color:var(--ink);}
+  .gcell.sel{border-color:var(--oran);border-width:2.5px;background:#fff8ef;}
+  .ghead{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;
+         color:var(--muted);text-align:center;}
+  .news{background:#fff;border:1.5px solid var(--edge);border-radius:8px;padding:8px 12px;font-size:12.5px;}
+  .news .item{border-bottom:1px dashed var(--edge);padding:5px 0;}
+  .news .item:last-child{border-bottom:none;}
+  .date{color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums;}
+  svg text{font-family:inherit;}
+  a{color:var(--blue);}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>The real-world study — real data series, real news, and what each layer of context buys</h1>
+<div class="sub">Companion to the <a href="explorer.html">Knowable Worlds explorer</a> (the dynamic study design) ·
+design registered as §15.2 of KNOWABLE_WORLDS_DESIGN.md · <span class="parked">PARKED — registered, not yet run</span></div>
+
+<div class="card">
+<b>How this connects to the sandbox study (<a href="explorer.html">main page, §1</a>).</b> Both studies ask
+the same question — does the model notice when the world changes, and forecast from the current world rather
+than a remembered one? — in two settings that trade realism against certainty:
+<table style="margin-top:6px;">
+<tr><th></th><th>setting</th><th>how answers are checked</th><th>what the model is asked for</th></tr>
+<tr><td>1</td><td><b>sandbox</b> — a small simulated system whose rules we wrote, with one causal link changing mid-recording (<a href="explorer.html">§1</a>)</td><td>every probability has an exactly computable right answer</td><td>forecasts + structure probes on the changed edges</td></tr>
+<tr><td>2</td><td><b>this design</b> — real data series and real news, all from after the model's training</td><td>what actually happened, plus comparison forecasts computed from the data</td><td>forecasts only</td></tr>
+</table>
+<div class="sub" style="font-size:12px;"><b>Why the sandbox asks for causal graphs and this design does not
+(decided 2026-07-05):</b> a causal claim is only checkable where the network is KNOWN. In the sandbox we wrote
+the rules, so a stated graph is exactly gradable. No ground truth exists for the causal structure behind a
+real series — a model could reason its way to a plausible network for anything, and we would have no authority
+to grade it. So every causal claim in the paper lives in the sandbox, and this arm asks one thing only:
+does the sandbox's forecasting behavior transfer to real data?</div>
+<div class="sub" style="font-size:12px;"><b>Why "after the model's training" matters:</b> the change in each
+series — and all news about it — happened after the model stopped learning. If the model knows the world
+changed, it can only have learned that from what we put in the prompt. This removes the worry that the model
+simply remembers these events from its training data.</div>
+<div class="sub" style="font-size:12px;"><b>The hypothesis that ties the two studies together:</b> models that
+cling to an outdated causal picture in the sandbox should also give outdated answers on real series that
+recently changed. If that holds across models, the sandbox becomes a cheap, controlled diagnostic for a failure
+that matters in practice. (Two further sandbox variations are registered to check that its findings are not
+artifacts of abstraction: give the variables realistic economic names instead of X1..X8 — does familiar
+vocabulary pull the model toward its prior beliefs? — make the simulated data messier, with seasonal
+patterns and occasional large shocks — and narrate the same table as text, one sentence per period, with
+nothing summarized, to test whether the model's structure failures are a reading problem or an inference
+problem.) A further synthetic precursor matters here: real announced interventions — Fed cuts included — are
+mostly <i>rule-based responses to the state</i>, not clean experiments, so the sandbox's exogeneity ladder
+(main page, v2 card) tests in advance whether a model can tell policy shocks from policy rules before anyone
+trusts its reading of actual policy events.</div>
+</div>
+
+<h2>1 · Six situations (2 rows × 3 context levels) — click a cell</h2>
+<div class="sub">Every question is placed by two facts. <b>Fact 1: did the series actually change?</b> Decided
+by standard statistical tests on the numbers themselves, never by the news. Both rows are common in reality:
+most of the time nothing fundamentally changes, and much news — including important-sounding news — changes
+nothing. <b>Fact 2: how much context does the prompt include?</b> Three levels, each adding exactly one thing:
+the numbers alone → plus what the series IS ("the effective federal funds rate, monthly") → plus recent dated
+news. Each neighbouring comparison therefore prices one kind of knowledge, in forecast accuracy: level 1
+against simple statistical baselines = pure pattern extrapolation; level 2 minus level 1 = what the model's
+stored knowledge of the world adds; level 3 minus level 2 = what recent information adds on top. News is
+gathered by the same process whether or not the series changed — otherwise its mere presence would give the
+answer away.</div>
+
+<div class="grid3">
+  <div class="ghead"></div>
+  <div class="ghead">1 · numbers only</div>
+  <div class="ghead">2 · + what the series is</div>
+  <div class="ghead">3 · + recent news</div>
+  <div class="ghead">the series<br>changed</div>
+  <div class="gcell" data-cell="b0"><b>detection from data</b><br>Can it tell, from the numbers alone, that the world changed?</div>
+  <div class="gcell" data-cell="b1"><b>does knowing what it is help?</b><br>Same numbers, now named. Does stored knowledge sharpen the answer?</div>
+  <div class="gcell" data-cell="b2"><b>does the news help?</b><br>How much better is its own answer once it is told the story?</div>
+  <div class="ghead">the series did<br>not change</div>
+  <div class="gcell" data-cell="n0"><b>false alarms</b><br>Does it see changes that are not there?</div>
+  <div class="gcell" data-cell="n1"><b>pulled by its priors</b><br>Does knowing the domain move it off numbers that say "nothing happened"?</div>
+  <div class="gcell sel" data-cell="n2"><b>swayed by the story</b> ★<br>Important-sounding news, unchanged numbers. Does it believe the story over the data?</div>
+</div>
+<div class="card" id="celldetail" style="font-size:13px;"></div>
+
+<h2>2 · Live demo — one series, every situation</h2>
+<div class="sub">A generated monthly indicator (48 months) stands in for a real series so this page can compute
+everything live in your browser. Toggle whether the series changes at month 36, and step through the three
+context levels. The news never changes — only the data does. (The "actual probability" gauge exists only because
+this demo series is generated; with real data, its role is played by what actually happened.)</div>
+
+<div class="tabs">
+  <div class="tab active" id="tbreak">series changes at month 36: ON</div>
+  <div class="tab" id="tctx">context: 1 · numbers only</div>
+  <div class="tab" id="tprompt">show the draft prompt</div>
+</div>
+
+<div class="cols">
+<div class="col">
+  <svg id="nsvg" viewBox="0 0 460 220" style="width:100%;background:#fff;border:1px solid var(--edge);border-radius:10px;"></svg>
+  <div class="sub" style="font-size:12px;" id="ncert"></div>
+</div>
+<div class="col">
+  <div class="gaugebox">old trend, never updated <span class="gauge" id="gstale">–</span></div>
+  <div class="gaugebox" style="border-color:#2f7d4f;">recent 12 months only <span class="gauge" id="groll">–</span></div>
+  <div class="gaugebox" style="border-color:#7d4f8d;">actual probability* <span class="gauge" id="gtrue">–</span></div>
+  <div class="sub" style="font-size:12px;">The question: the probability that the index in month 49 is above
+  <span id="ntau">–</span>. <b>Old trend, never updated</b> = a forecast from a simple model of the series fitted
+  to months 1–30 and then left alone — how the world looked before anything changed, continued forward.
+  <b>Recent 12 months only</b> = the same kind of model fitted only to the latest year. <b>Actual probability*</b>
+  = the exactly right answer, computable only because we generated this demo series. A model's answer is read by
+  where it lands among these — and because each model answers every question at all three context levels, the
+  value of each layer (the name, then the news) is the difference between its own answers.</div>
+  <div class="news" id="nnews" style="display:none;">
+    <b style="font-size:12px;">Recent news items about this indicator (dated; gathered the same way whether or not the series changed):</b>
+    <div class="item"><span class="date">month 35</span> — Parliament passes the Permit Streamlining Act; ministry says processing times "will fall sharply" from month 37.</div>
+    <div class="item"><span class="date">month 34</span> — Industry association publishes annual outlook; sees "continued moderate growth".</div>
+    <div class="item"><span class="date">month 33</span> — Major bank trims regional GDP forecast by 0.2pp on external demand.</div>
+    <div class="item"><span class="date">month 36</span> — Op-ed: "The permit reform will transform construction as we know it."</div>
+  </div>
+  <div class="sub" style="font-size:12px;" id="nnewsnote"></div>
+</div>
+</div>
+<pre class="ctxview" id="nprompt" style="display:none;"></pre>
+
+<div class="card" style="font-size:13px;">
+<b>What the model is asked for (draft wording — the design is not yet run).</b> A probability. That is the
+whole elicitation: every question is asked three times, once per context level, and the differences between
+the model's own three answers are the measurement.
+<table style="margin-top:6px;">
+<tr><th style="width:150px;">level</th><th>the prompt contains</th><th>the comparison prices</th></tr>
+<tr><td>1 · numbers only</td><td>the raw values and the question — not even what the series measures</td>
+<td>pure pattern extrapolation, read against simple statistical baselines computed from the same numbers
+(a model fitted to all history, one fitted to the recent window) — the floor everything else is measured
+from, and the direct bridge to the sandbox, where series arrive exactly like this</td></tr>
+<tr><td>2 · + what the series is</td><td>the same, plus one sentence of identity: "this is the effective
+federal funds rate, monthly, from FRED"</td><td>the value of the model's stored knowledge of the world —
+does knowing WHAT it is forecasting beat extrapolating anonymous numbers?</td></tr>
+<tr><td>3 · + recent news</td><td>the same, plus dated news items gathered the same way for every
+series</td><td>the value of recent information on top of stored knowledge</td></tr>
+</table>
+<b>Two safeguards, both load-bearing.</b> <span class="hl">Memorization:</span> every forecast target lies
+after the model's training cutoff — otherwise level 2 measures recall, not knowledge (the model may simply
+remember what the rate did). <span class="hl">Self-recognition:</span> a famous series may be recognizable
+from its raw values alone, so after every numbers-only answer the model is asked what it thinks the series
+was; questions where it names it correctly are analyzed separately, because their level 1 was never really
+anonymous.
+</div>
+
+<h2>2b · A real series, walked through the procedure</h2>
+<div class="sub">The unit of the whole arm is the SERIES, not any prediction question — individual predictions
+stop mattering the moment their date arrives and the answer is known. <span class="hl">What we keep and measure
+across time is the series itself and the model's answers to the same question at the three context levels</span>. Each ForecastBench question is kept only as a
+<b>pointer to its dataset</b>: the benchmark contributes a ready-made list of ~1,060 real data series (market
+prices 447 · Wikipedia page views 338 · FRED economic series 165 · conflict event counts 60 · international
+economics 53), assembled by others before this design existed — so the series cannot have been picked to
+flatter our hypothesis — and covering very different kinds of change (policy shifts, crashes, viral spikes,
+escalations; the differences between domains are themselves informative). The data, the questions (we write
+those ourselves — the example below shows why), and the check against reality (the value the series actually
+took) all come from the original public sources. Values below are monthly averages, approximate for
+illustration.</div>
+
+<div class="card">
+<b>The series: <code>DFF</code> — effective federal funds rate</b> (fred.stlouisfed.org/series/DFF; one of
+the 165 FRED series on ForecastBench's list. The benchmark's own question about it — <i>"will it have increased
+vs the due date?"</i> — is not used, because the two comparison forecasts (see the example below) often come out nearly the same on it;
+the example question below shows what we ask instead.)
+<svg id="fbsvg" viewBox="0 0 900 240" style="width:100%;background:#fff;border:1px solid var(--edge);border-radius:10px;margin-top:8px;"></svg>
+
+<table style="margin-top:8px;font-size:12px;">
+<tr><th>design element</th><th>this series</th></tr>
+<tr><td>the series</td><td>effective federal funds rate, monthly — plateau at 5.33% (Aug 2023 – Aug 2024), then cuts: Sep 2024 → ~5.13, Oct → 4.83, Nov → 4.64, Dec → 4.48, Jan 2025 → 4.33</td></tr>
+<tr><td>model cutoff (example)</td><td>2024-06: the model was trained knowing "rates on hold at 5.33" — the <b>break (Sep 2024) is entirely post-cutoff</b>, reachable only through the prompt</td></tr>
+<tr><td>did the series change?</td><td>a 12-month flat plateau followed by four consecutive declines — the statistical test picks this up within 2–3 months of the first cut, so this series lands in the "changed" row</td></tr>
+<tr><td>the news (real, dated; shown only in the numbers+news setting)</td><td>[2024-08-23] Powell at Jackson Hole: "The time has come for policy to adjust." · [2024-09-18] FOMC cuts 50bp to 4.75–5.00% · [2024-11-07] FOMC cuts 25bp · [2024-12-18] FOMC cuts 25bp, signals slower pace · distractor: [2024-10-10] CPI print roughly in line with expectations</td></tr>
+<tr><td>an example forecast question<br>(we write these ourselves; each one is used once — after the date arrives the answer is known — but the series produces a new one every month)</td><td>In January 2025 we ask: <i>"What is the probability that the rate in March is above 4.8?"</i> The threshold 4.8 is chosen so our two comparison forecasts disagree as much as possible. Both are simple statistical fits to the same numbers the model sees: one fitted to the early data and never updated (it expects the rate to still be ≈ 5.3, so it answers <b>0.95</b>), one fitted to the recent months only (it expects ≈ 4.2, so it answers <b>0.05</b>). Whatever the model says tells us which world it is forecasting from. <b>Note the purpose: this is not a
+forecasting contest.</b> The question is an instrument for reading the model's beliefs — built so that the two
+possible beliefs give opposite answers, which means the model cannot answer it without revealing which belief
+it holds.
+(ForecastBench's own question — "will it have increased?" — gets 0.45 vs 0.12 from the same two agents; they
+nearly agree, so it can't tell the worlds apart. That is why we write the questions ourselves.) The rate in
+March turned out to be 4.33 — the answer was no — which matters only to confirm which of the two worlds was
+actually real, so that answering from the stale one counts as a genuine error.</td></tr>
+<tr><td>what the model is asked</td><td>the same question three times: with the numbers presented as an unnamed monthly series; then + "this is the effective federal funds rate"; then + the dated news above. A probability each time (after the unnamed version, it is also asked what it thinks the series was — the self-recognition check; this series is famous enough that recognition is likely, which is exactly why the check exists)</td></tr>
+<tr><td>how it is scored</td><td>compare each probability with what actually happened and with the two comparison forecasts; read the three context levels against each other — what did the name buy? what did the news buy? — and check whether the models that clung to outdated beliefs in the sandbox are the same ones answering from the stale world here</td></tr>
+</table>
+<div class="sub" style="font-size:12px;"><b>An honest wrinkle this example surfaces:</b> for some questions
+the two comparison forecasts nearly AGREE even though the series changed ("will it have increased?" — a flat world
+and a falling world both answer "probably not"). Such questions cannot tell the two worlds apart, so we compute
+both comparison forecasts for every candidate question and keep the ones where they disagree — the same filter the
+sandbox applies when a change happens to have little visible effect at a given moment.</div>
+</div>
+
+<h2>3 · The procedure, start to finish (registered §15.2)</h2>
+<div class="card" style="font-size:13px;">
+<b>1. Choose the series</b> — the ~1,060 real data series on ForecastBench's list; any change in a series, and
+everything after it, must fall after the models' training (older history is fine — knowing the old world is
+exactly the situation being tested). →
+<b>2. Decide whether each series changed</b> — standard statistical tests on the numbers; this decision, never
+the news, fixes each series' row in the table above. →
+<b>3. Gather the news</b> — an automated step collects dated news items about each series' domain; every series
+gets a news set, whether or not it changed and whether or not the news mattered — judging that is the model's
+job, and part of what is measured. →
+<b>4. Ask the models</b> — the same probability question three times: numbers only (the series unnamed),
++ what the series is, + the news; after the numbers-only answer, ask what it thinks the series was (the
+self-recognition check). →
+<b>5. Score</b> — against what actually happened, against the comparison forecasts computed from the data, and
+against the model's own answers at the other context levels; finally, check whether behavior in the sandbox
+predicts behavior here.
+</div>
+
+<h2>4 · What already exists, and what is missing (literature check 2026-07-04; revised 2026-07-05 for the three-level design)</h2>
+<div class="card" style="font-size:13px;">
+Forecasting with news is a well-studied topic: AutoCast (NeurIPS'22) already compares forecasts with and
+without news access; Halawi et al. (NeurIPS'24) reached near-human forecasting with retrieved news; From News
+to Forecast (NeurIPS'24) merges news with numeric series; EvolveCast ('25) asks models to revise forecasts as
+new evidence arrives; FutureSim ('26) replays news chronologically and finds models anchor on old beliefs;
+LEAF ('26) is a continuously updated benchmark. Numbers-only forecasting of raw series by LLMs is also its own
+line of work (Gruver et al., NeurIPS'23). <b>So neither "can models extrapolate numbers?" nor "does news
+improve accuracy?" is new.</b> What this design adds:
+<table style="margin-top:6px;">
+<tr><th>absent in the existing work</th><th>what this design does instead</th></tr>
+<tr><td><b>no "nothing changed" condition</b> — benchmarks built from news are biased toward events that happen (documented in the "Pitfalls" paper)</td>
+<td>the ★ situation: important-sounding news over unchanged numbers — believing the story over the data, measured on its own</td></tr>
+<tr><td>context is all-or-nothing: numbers-only studies and context-augmented studies exist separately; <b>the value of the series' IDENTITY alone is not isolated</b> (a dedicated literature check on this level is running — result will be recorded in design doc §15.2)</td>
+<td>the same model answers the same question at three levels, so what the NAME buys (stored knowledge) is priced separately from what the NEWS buys (recent information) — with post-cutoff targets and the self-recognition check keeping level 1 honestly anonymous and level 2 honestly non-memorized</td></tr>
+<tr><td>ground truth is always real-world resolution</td>
+<td>we also decide, from the numbers, whether each series changed — an independent second fact, which is what makes the six-way comparison possible</td></tr>
+<tr><td>no paper pairs real-data behavior with a <b>controlled diagnostic of the same failure</b></td>
+<td>the sandbox measures slow release of an outdated world under known ground truth; this arm tests whether the same models behave the same way on real series — the transfer claim is this arm's headline</td></tr>
+</table>
+<div class="sub" style="font-size:12px;">Must-cites: AutoCast (2206.15474) · Halawi et al. (2402.18563) ·
+From News to Forecast (2409.17515) · EvolveCast (2509.23936) · Agentic Forecasting (2604.18576) ·
+FutureSim (2605.15188) · Gruver et al. (2310.07820). Full verdicts: design doc §15.2 addendum 3.</div>
+</div>
+
+<div class="sub">← back to the <a href="explorer.html">main explorer</a> (the dynamic sandbox study)</div>
+
+<script>
+function erf(x){const s=x<0?-1:1;x=Math.abs(x);
+  const t=1/(1+0.3275911*x);
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+  return s*y;}
+const Phi=z=>0.5*(1+erf(z/Math.SQRT2));
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;
+  let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;
+  return((t^t>>>14)>>>0)/4294967296;}}
+function gauss(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+
+// ---- 2x3 cell details ----
+const CELLS={
+ b0:'<b>The series changed × numbers only.</b> The change happened after the model finished training, so the '+
+    'only way it can know is by reading the numbers in the prompt — it is not even told what the series is. '+
+    'The model is compared against simple statistical baselines fitted to the same numbers, and against the '+
+    'earliest moment the change was statistically visible at all (it cannot be blamed for silence before '+
+    'that). This is also the bridge cell to the sandbox, where series arrive exactly like this: anonymous '+
+    'numbers. Whether real-data extrapolation looks like sandbox extrapolation is measured here.',
+ b1:'<b>The series changed × told what it is.</b> Same numbers, plus one sentence: what the series is. '+
+    'Everything the model knows about federal funds rates, page views, or conflict counts is now usable. The '+
+    'comparison is within the same model — level 2 answer minus level 1 answer — so it prices exactly one '+
+    'thing: does stored knowledge of the world add predictive value on top of the numbers? (Guard rails: the '+
+    'target is after the training cutoff, so it cannot simply remember the answer; and the numbers-only '+
+    'answer is followed by a "what do you think this series was?" check, because a famous series may be '+
+    'recognizable from its values alone.)',
+ b2:'<b>The series changed × told what it is + news.</b> Same series, same numbers, same name, plus dated '+
+    'news. Level 3 minus level 2 prices recent information on top of stored knowledge: how much better is '+
+    'its own answer once it is told the story?',
+ n0:'<b>The series did not change × numbers only.</b> The most common situation in reality: most series, '+
+    'most of the time, do not change, and a good forecaster\'s usual answer is "nothing changed". Without '+
+    'this row, a model that claimed to detect every real change would get full credit even if it claimed '+
+    'changes constantly. With no change, the comparison forecasts AGREE — so the measurement flips from '+
+    '"which world is the model in?" to "does the model stay put when it should?" Any drift away from that '+
+    'shared answer is movement nothing in the data justified.',
+ n1:'<b>The series did not change × told what it is.</b> The numbers say "nothing happened"; the name '+
+    'activates everything the model believes about the domain. If its answer moves away from the '+
+    'numbers-only answer — and away from the baselines — its stored knowledge is overriding data that shows '+
+    'nothing. Prior pull, measured with nothing else in the prompt to blame.',
+ n2:'<b>★ The series did not change × told what it is + news.</b> The news sounds important (a reform was '+
+    'announced!) but the numbers show nothing happened. Does its probability move on the story alone? '+
+    'Believing the story over the data is the same failure the sandbox exposed in miniature — and no '+
+    'existing benchmark measures it, for a structural reason: benchmarks built from news consist of events '+
+    'that DID happen, so the non-events are missing by construction.'};
+document.querySelectorAll('.gcell').forEach(c=>{
+  c.onclick=()=>{document.querySelectorAll('.gcell').forEach(x=>x.classList.remove('sel'));
+    c.classList.add('sel');
+    document.getElementById('celldetail').innerHTML=CELLS[c.dataset.cell];};});
+document.getElementById('celldetail').innerHTML=CELLS.n2;
+
+// ---- demo series ----
+const T=48,TB=36,SIG=0.9,PHI=0.3,SEED=26;
+let breakOn=true,ctx=0,showPrompt=false;
+function mean_t(t,brk){return 100+0.3*t+2*Math.sin(2*Math.PI*t/12)+(brk&&t>TB?(t-TB)*0.25:0);}
+function series(brk){const rng=mulberry32(SEED);let e=0;const y=[];
+  for(let t=1;t<=T;t++){e=PHI*e+SIG*gauss(rng);y.push(mean_t(t,brk)+e);}
+  return y;}
+function fitTrend(y,a,b){ // OLS on [t, sin, cos, 1], months a..b (1-indexed)
+  const rows=[];for(let t=a;t<=b;t++)rows.push([t,Math.sin(2*Math.PI*t/12),Math.cos(2*Math.PI*t/12),1,y[t-1]]);
+  const m=4,A=Array.from({length:m},()=>new Array(m).fill(0)),bb=new Array(m).fill(0);
+  for(const r of rows)for(let i=0;i<m;i++){bb[i]+=r[i]*r[4];for(let j=0;j<m;j++)A[i][j]+=r[i]*r[j];}
+  for(let i=0;i<m;i++)A[i][i]+=1e-9;
+  const M=A.map((r,i)=>[...r,bb[i]]);
+  for(let i=0;i<m;i++){let mx=i;for(let k=i+1;k<m;k++)if(Math.abs(M[k][i])>Math.abs(M[mx][i]))mx=k;
+    [M[i],M[mx]]=[M[mx],M[i]];
+    for(let k=i+1;k<m;k++){const f=M[k][i]/M[i][i];for(let j=i;j<=m;j++)M[k][j]-=f*M[i][j];}}
+  const c=new Array(m).fill(0);
+  for(let i=m-1;i>=0;i--){c[i]=M[i][m];for(let j=i+1;j<m;j++)c[i]-=M[i][j]*c[j];c[i]/=M[i][i];}
+  let s2=0;for(const r of rows){const mu=c[0]*r[0]+c[1]*r[1]+c[2]*r[2]+c[3];s2+=(r[4]-mu)**2;}
+  return {c,sd:Math.max(Math.sqrt(s2/Math.max(rows.length-m,1)),0.2)};
+}
+const predAt=(f,t)=>f.c[0]*t+f.c[1]*Math.sin(2*Math.PI*t/12)+f.c[2]*Math.cos(2*Math.PI*t/12)+f.c[3];
+function refresh(){
+  const y=series(breakOn);
+  const stale=fitTrend(y,1,30),roll=fitTrend(y,37,48);
+  const pS=predAt(stale,49),pR=predAt(roll,49);
+  const e48=y[47]-mean_t(48,breakOn);
+  const muT=mean_t(49,breakOn)+PHI*e48;
+  const tau=(pS+pR)/2;
+  const g=(mu,sd)=>(1-Phi((tau-mu)/sd)).toFixed(2);
+  document.getElementById('gstale').textContent=g(pS,stale.sd);
+  document.getElementById('groll').textContent=g(pR,Math.max(roll.sd,0.8));
+  document.getElementById('gtrue').textContent=g(muT,SIG);
+  document.getElementById('ntau').textContent=tau.toFixed(1);
+  // certification: rolling-6 mean |z| of the stale fit over months 25..48
+  const zs=[];for(let t=31;t<=T;t++)zs.push(Math.abs((y[t-1]-predAt(stale,t))/stale.sd));
+  const last6=zs.slice(-6).reduce((a,b)=>a+b,0)/6,ratio=last6/0.8;
+  const cert=ratio>1.6;
+  document.getElementById('ncert').innerHTML=
+    'Did the series change? Decided from the numbers alone: fit a simple model of the series to months 1–30, '+
+    'then check how far each later month lands from its predictions. Recent months are off by <b>'+ratio.toFixed(1)+
+    '×</b> what ordinary noise would produce → '+
+    (cert?'<b style="color:#b03a3a;">THE SERIES CHANGED</b>':'<b style="color:#2f7d4f;">no change detected</b>')+
+    '. This decision — never the news — fixes which row of the table this series belongs to.';
+  // plot
+  const lo=Math.min(...y)-2,hi=Math.max(...y)+2;
+  const px=t=>26+(t-1)*(424/(T-1)),py=v=>14+(hi-v)*(180/(hi-lo));
+  let out='<rect x="'+px(37)+'" y="10" width="'+(px(48)-px(37))+'" height="196" fill="#2f7d4f" opacity="0.08"/>'+
+    '<line x1="'+px(TB)+'" y1="10" x2="'+px(TB)+'" y2="206" stroke="#1b1b1f" stroke-dasharray="4 3"/>'+
+    '<text x="'+(px(TB)+3)+'" y="20" font-size="9">month 36'+(breakOn?': trend break':' (no break)')+'</text>'+
+    '<text x="'+(px(40))+'" y="203" font-size="8" fill="#2f7d4f">rolling window</text>';
+  // stale fit line over full range
+  out+='<path d="'+Array.from({length:T},(_,i)=>(i?'L':'M')+px(i+1).toFixed(1)+','+py(predAt(stale,i+1)).toFixed(1)).join('')+
+       '" fill="none" stroke="#b03a3a" stroke-width="1.1" stroke-dasharray="5 3"/>'+
+    '<text x="30" y="20" font-size="9.5" fill="#b03a3a">stale model (fit to months 1–30)</text>';
+  out+='<path d="'+y.map((v,i)=>(i?'L':'M')+px(i+1).toFixed(1)+','+py(v).toFixed(1)).join('')+
+       '" fill="none" stroke="#3a6ea5" stroke-width="1.7"/>'+
+    '<text x="30" y="32" font-size="9.5" fill="#3a6ea5" font-weight="700">Regional Building Permits Index</text>';
+  document.getElementById('nsvg').innerHTML=out;
+  // news + notes
+  document.getElementById('nnews').style.display=ctx===2?'block':'none';
+  document.getElementById('nnewsnote').innerHTML=
+    ctx===2?('<b>The news is identical whether or not the series changed — only the data differs.</b> '+(breakOn?
+     'Here the reform story lines up with a real change in the numbers: using it is correct.':
+     '<span class="hl">Here the reform story SOUNDS decisive, but the numbers show nothing happened</span> — '+
+     'moving the probability on this story alone means believing the story over the data (the ★ situation).')):
+    ctx===1?'Level 2: the model is told WHAT the series is (a regional building-permits index) but gets no '+
+     'news. Any change from its level-1 answer is the value — or the pull — of its stored knowledge about how '+
+     'such indicators behave.':
+    'Level 1: the model gets the table and the question, nothing else — not even what the series measures. '+
+     'Afterwards it is asked what it thinks the series was (the self-recognition check).';
+  document.getElementById('tbreak').textContent='series changes at month 36: '+(breakOn?'ON':'OFF');
+  document.getElementById('tbreak').classList.toggle('active',breakOn);
+  document.getElementById('tctx').textContent=['context: 1 · numbers only','context: 2 · + what the series is',
+    'context: 3 · + news'][ctx];
+  document.getElementById('tctx').classList.toggle('active',ctx>0);
+  // prompt
+  const tbl=y.map((v,i)=>String(i+1).padStart(5)+'  '+v.toFixed(1)).join('\n');
+  const news=ctx===2?('\n\nRecent developments (retrieved, dated):\n'+
+    '- [month 35] Parliament passes the Permit Streamlining Act; ministry says processing times "will fall sharply" from month 37.\n'+
+    '- [month 34] Industry association annual outlook: "continued moderate growth".\n'+
+    '- [month 33] Major bank trims regional GDP forecast by 0.2pp.\n'+
+    '- [month 36] Op-ed: "The permit reform will transform construction as we know it."'):'';
+  const what=ctx>0?'the Regional Building Permits Index':'a numeric series (what it measures is not disclosed)';
+  document.getElementById('nprompt').textContent=
+    'DRAFT (design parked). SYSTEM: You are an expert probability estimator...\n\n'+
+    'USER:\nBelow are 48 monthly observations of '+what+'.\n\n'+
+    'month  value\n'+tbl+news+'\n\n'+
+    'What is the probability that the value in month 49 exceeds '+tau.toFixed(1)+'?\n\n'+
+    'Respond as JSON: {"probability": <float>}'+
+    (ctx===0?'\n\n[follow-up, asked after the answer is recorded]\n'+
+    'What do you think this series was? Respond as JSON: {"guess": "<what the series measures>"}':'');
+  document.getElementById('nprompt').style.display=showPrompt?'block':'none';
+}
+// ---- worked example: FRED DFF timeline (monthly averages, approximate) ----
+(function(){
+  const vals=[4.33,4.57,4.65,4.83,5.06,5.08,5.12,5.33,5.33,5.33,5.33,5.33,   // 2023
+              5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.33,5.13,4.83,4.64,4.48,   // 2024
+              4.33,4.33];                                                    // 2025 Jan-Feb
+  const N=vals.length,CUT=18,BRK=21;          // 0-idx: cutoff Jun'24, first cut Sep'24
+  const lo=4.05,hi=5.55;
+  const px=i=>40+i*(824/(N-1)),py=v=>40+(hi-v)*(150/(hi-lo));
+  let out=
+    // region tints + one label row at the very top, nothing else at that height
+    '<rect x="40" y="34" width="'+(px(CUT)-40).toFixed(1)+'" height="162" fill="#9a9aa2" opacity="0.08"/>'+
+    '<rect x="'+px(CUT).toFixed(1)+'" y="34" width="'+(px(N-1)-px(CUT)).toFixed(1)+'" height="162" fill="#3a6ea5" opacity="0.07"/>'+
+    '<text x="'+((40+px(CUT))/2).toFixed(1)+'" y="20" font-size="9.5" fill="#5c5c66" text-anchor="middle">in training data — the model may know this cold</text>'+
+    '<text x="'+((px(CUT)+px(N-1))/2).toFixed(1)+'" y="20" font-size="9.5" fill="#3a6ea5" font-weight="700" text-anchor="middle">post-cutoff — prompt only</text>'+
+    // vertical markers, labels staggered on separate rows
+    '<line x1="'+px(CUT).toFixed(1)+'" y1="26" x2="'+px(CUT).toFixed(1)+'" y2="196" stroke="#5c5c66" stroke-dasharray="5 3"/>'+
+    '<text x="'+(px(CUT)-5).toFixed(1)+'" y="34" font-size="8.5" fill="#5c5c66" text-anchor="end">training cutoff · 2024-06</text>'+
+    '<line x1="'+px(BRK).toFixed(1)+'" y1="26" x2="'+px(BRK).toFixed(1)+'" y2="196" stroke="#1b1b1f" stroke-dasharray="4 3"/>'+
+    '<text x="'+(px(BRK)+5).toFixed(1)+'" y="34" font-size="8.5" font-weight="700">break · first cut 2024-09</text>'+
+    // stale-world reference line, label sitting under the flat stretch
+    '<line x1="'+px(7).toFixed(1)+'" y1="'+py(5.33).toFixed(1)+'" x2="'+px(N-1).toFixed(1)+'" y2="'+py(5.33).toFixed(1)+'" stroke="#b03a3a" stroke-width="1" stroke-dasharray="5 3" opacity="0.65"/>'+
+    '<text x="'+px(12).toFixed(1)+'" y="'+(py(5.33)+15).toFixed(1)+'" font-size="9" fill="#b03a3a">stale world: "on hold at 5.33"</text>'+
+    // series
+    '<path d="'+vals.map((v,i)=>(i?'L':'M')+px(i).toFixed(1)+','+py(v).toFixed(1)).join('')+
+    '" fill="none" stroke="#3a6ea5" stroke-width="1.8"/>'+
+    vals.map((v,i)=>'<circle cx="'+px(i).toFixed(1)+'" cy="'+py(v).toFixed(1)+'" r="2.2" fill="#3a6ea5"/>').join('');
+  ['Jan 23','Jul 23','Jan 24','Jul 24','Jan 25'].forEach((lab,k)=>{
+    out+='<text x="'+px(k*6).toFixed(1)+'" y="212" font-size="8.5" fill="#5c5c66" text-anchor="middle">'+lab+'</text>';});
+  [4.5,5.0].forEach(v=>{
+    out+='<text x="36" y="'+(py(v)+3).toFixed(1)+'" font-size="8" text-anchor="end" fill="#5c5c66">'+v.toFixed(1)+'</text>'+
+         '<line x1="40" y1="'+py(v).toFixed(1)+'" x2="864" y2="'+py(v).toFixed(1)+'" stroke="#eceded"/>';});
+  document.getElementById('fbsvg').innerHTML=out;
+})();
+document.getElementById('tbreak').onclick=()=>{breakOn=!breakOn;refresh();};
+document.getElementById('tctx').onclick=()=>{ctx=(ctx+1)%3;refresh();};
+document.getElementById('tprompt').onclick=()=>{showPrompt=!showPrompt;
+  document.getElementById('tprompt').textContent=showPrompt?'hide the draft prompt':'show the draft prompt';
+  document.getElementById('tprompt').classList.toggle('active',showPrompt);refresh();};
+refresh();
+</script>
+</div></body>
+</html>

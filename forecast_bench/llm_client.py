@@ -36,6 +36,7 @@ class CallStats:
             "parse_failures": self.parse_failures,
             "success_rate": f"{self.success_rate:.1%}",
             "total_tokens": self.total_tokens,
+            "json_repairs": JSON_REPAIRS,
         }
 
 
@@ -126,7 +127,7 @@ class LLMClient:
 
                 if response.status_code == 200:
                     result = response.json()
-                    content = result["choices"][0]["message"]["content"]
+                    content = result["choices"][0]["message"]["content"] or ""
                     usage = result.get("usage", {})
                     self.stats.total_tokens += usage.get("total_tokens", 0)
                     self.stats.successful_calls += 1
@@ -193,8 +194,16 @@ class LLMClient:
             time.sleep(self.rate_limit_delay)
 
 
+JSON_REPAIRS = 0    # process-wide count of GPT-4o-mini repair invocations
+
+
 def _llm_json_repair(text: str) -> dict | None:
     """Last-resort: ask GPT-4o-mini to extract/repair JSON from malformed text."""
+    global JSON_REPAIRS
+    JSON_REPAIRS += 1
+    import sys as _sys
+    print(f"[json-repair] gpt-4o-mini invoked (#{JSON_REPAIRS}); "
+          f"input head: {text[:80]!r}", file=_sys.stderr, flush=True)
     import os
     api_key = os.environ.get("OPENROUTER_API_KEY", "")
     if not api_key:
@@ -253,6 +262,10 @@ def parse_json_response(text: str) -> dict | None:
     """
     if text is None:
         return None
+    text = text.strip()
+    if not text:
+        return None    # empty reply: nothing to extract, and repair would
+                       # just ask GPT-4o-mini to hallucinate — skip entirely
 
     # Strategy 1: direct parse
     try:
@@ -268,7 +281,16 @@ def parse_json_response(text: str) -> dict | None:
         except json.JSONDecodeError:
             pass
 
-    # Strategy 3: outermost braces (handles nested JSON)
+    # Strategy 3a: every balanced-brace candidate, last first (reasoning
+    # text often contains JSON-like fragments; the final answer comes last)
+    for m in reversed(list(re.finditer(r"\{(?:[^{}]|\{[^{}]*\})*\}",
+                                       text, re.DOTALL))):
+        try:
+            return json.loads(m.group(0))
+        except json.JSONDecodeError:
+            continue
+
+    # Strategy 3b: outermost braces (handles deeper nesting)
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if match:
         try:

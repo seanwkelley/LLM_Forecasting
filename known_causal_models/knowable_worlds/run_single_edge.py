@@ -72,7 +72,9 @@ SYSTEM_TRACK = """\
 You are an expert data analyst. You will be shown a time series of a system of \
 numeric variables, then asked about one specific potential influence between \
 two variables. Respond with ONLY valid JSON: \
-{"present": <float between 0 and 1>, "positive_if_present": <float between 0 and 1>}"""
+{"present": <float between 0 and 1>, "positive_if_present": <float between 0 and 1>}. \
+Keep any deliberation brief, and always end your reply with the JSON object — \
+never send an empty reply."""
 
 
 def lag1_tstats(X: np.ndarray) -> np.ndarray:

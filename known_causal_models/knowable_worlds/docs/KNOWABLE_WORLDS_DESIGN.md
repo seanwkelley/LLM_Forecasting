@@ -1308,6 +1308,33 @@ Churn and false-alarm rates, previously read off whole-graph answers, are
 now read as instability of stated probabilities on control edges, pooled
 across scenarios.
 
+## 16.2 addendum 4 — first live tracking runs; parser + prompt hardening
+## (2026-07-07)
+
+First four certified tracking scenarios ran live (GPT-OSS, edge_add/
+edge_remove x seeds 301/302; 100% call success). FIRST DATA, pre-fix prompt
+(archived at outputs/single_edge/pre_promptfix_20260707/): the changed edge
+moved the RIGHT way in 3/4 scenarios — pooled DiD edge_add +0.15,
+edge_remove -0.18, controls ~flat. Per the registered decision rule this
+reads as: single-edge belief revision EXISTS at maximal focus; the
+whole-graph failure is a capacity/attention limit, not detection inability.
+Provisional (n=2 per type; magnitudes small vs the statistician's ~0->1).
+
+Serving quirk found and fixed: GPT-OSS sometimes returns an EMPTY content
+field (answer never leaves the reasoning channel; ~20-60% of calls depending
+on provider). The old parser then sent the empty string to the GPT-4o-mini
+JSON-repair fallback — which deterministically returns {} for empty input,
+so the recorded data is CLEAN (verified: repairs logged, all on empty input;
+{} lacks "present" so every such call was retried and only genuine answers
+were recorded). Fixes: (1) parse_json_response no longer invokes repair on
+empty text and now tries every balanced-brace candidate (last first) before
+falling back; repair invocations are counted in every run's printed API
+stats ("json_repairs"). (2) SYSTEM_TRACK v2 appends: "Keep any deliberation
+brief, and always end your reply with the JSON object — never send an empty
+reply." All four scenarios re-run under the v2 prompt so the tracking
+dataset is prompt-uniform; other runners' prompts left unchanged
+(comparability with completed data; retries absorb empties there).
+
 ## 16.3 HIDDEN-CONFOUNDER DYNAMIC WORLD (the causal core; built 2026-07-05)
 
 Motivation (user challenge "is this strong enough on causality?"): the

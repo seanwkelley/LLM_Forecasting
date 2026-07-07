@@ -85,8 +85,8 @@ def fig_formation():
     from knowable_worlds.dyn_engine import DynSCM
     dyn = DynSCM(n_nodes=8, edge_prob=0.2, seed=300, change_type="edge_add")
 
-    fig = plt.figure(figsize=(11.4, 3.9), dpi=200)
-    gs = fig.add_gridspec(1, 2, width_ratios=[1, 2.9], wspace=0.05)
+    fig = plt.figure(figsize=(8.2, 3.7), dpi=200)
+    gs = fig.add_gridspec(1, 2, width_ratios=[1, 1.7], wspace=0.12)
     axg = fig.add_subplot(gs[0])
     hl = {}
     for name, d in pairs:
@@ -103,9 +103,6 @@ def fig_formation():
         for gx, truth in ((0, 1), (1, 0)):
             vals = [d[model] for _, d in pairs
                     if d["truth"] == truth and d.get(model) is not None]
-            x = gx + off + 0.055 + rng.uniform(-0.015, 0.015, len(vals))
-            ax.scatter(x, vals, s=34, color=col, alpha=0.4, zorder=3,
-                       marker="o" if model == "qwen" else "s")
             m = float(np.mean(vals))
             se = float(np.std(vals, ddof=1) / np.sqrt(len(vals)))
             means.append((gx + off, m))
@@ -121,10 +118,9 @@ def fig_formation():
                 f"gap {m0 - m1:+.2f}", fontsize=9.5, color=col,
                 ha="center")
     ax.set_xticks([0, 1])
-    ax.set_xticklabels(["influence is real", "influence is absent"],
-                       fontsize=11)
+    ax.set_xticklabels(["Real", "Absent"], fontsize=11)
     ax.set_ylabel("stated P(influence is present)")
-    ax.set_xlim(-0.45, 1.45)
+    ax.set_xlim(-0.35, 1.35)
     ax.set_ylim(0, 1.05)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.legend(loc="upper right", fontsize=9.5, frameon=False)

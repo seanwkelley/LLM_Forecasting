@@ -97,41 +97,42 @@ def fig_formation():
                note="the 10 pairs asked: green = real influence,\n"
                     "red dotted = absent (faint gray = other real edges)")
     ax = fig.add_subplot(gs[1])
-    xs = np.arange(len(pairs))
-    for x, (name, d) in zip(xs, pairs):
-        ax.plot([x, x], [d.get("goss", np.nan), d.get("qwen", np.nan)],
-                color="#dddde2", lw=1, zorder=1)
-    ax.scatter(xs, [d.get("qwen") for _, d in pairs], s=52, color=BLUE,
-               zorder=3, label="Qwen3-235B thinking")
-    ax.scatter(xs, [d.get("goss") for _, d in pairs], s=46, color=ORANGE,
-               marker="s", zorder=3, label="GPT-OSS 120B")
-    n_true = sum(1 for _, d in pairs if d["truth"])
-    ax.axvspan(-0.5, n_true - 0.5, color=GREEN, alpha=0.06)
-    ax.axvline(n_true - 0.5, color=MUTED, lw=0.8, ls=":")
-    ax.text(n_true / 2 - 0.5, 1.06, "influence is real", ha="center",
-            fontsize=10, color=GREEN)
-    ax.text(n_true + (len(pairs) - n_true) / 2 - 0.5, 1.06,
-            "influence is absent", ha="center", fontsize=10, color=MUTED)
-    # per-model group means
-    for model, col in (("qwen", BLUE), ("goss", ORANGE)):
-        for lo, hi, t in ((0, n_true, 1), (n_true, len(pairs), 0)):
-            vals = [d.get(model) for _, d in pairs[lo:hi] if d.get(model) is not None]
-            ax.hlines(np.mean(vals), lo - 0.4, hi - 0.6, color=col, lw=1.4,
-                      ls="--", alpha=0.7)
-    ax.set_xticks(xs)
-    ax.set_xticklabels([n.replace("->", "→") for n, _ in pairs],
-                       fontsize=8.5)
+    rng = np.random.default_rng(3)          # tiny fixed jitter, n=5 per group
+    centers = {("qwen", 1): 0.0, ("qwen", 0): 0.55,
+               ("goss", 1): 1.55, ("goss", 0): 2.10}
+    for (model, truth), cx in centers.items():
+        vals = [d[model] for _, d in pairs
+                if d["truth"] == truth and d.get(model) is not None]
+        x = cx + rng.uniform(-0.06, 0.06, len(vals))
+        col = GREEN if truth else "#b03030"
+        ax.scatter(x, vals, s=55, color=col, alpha=0.85, zorder=3)
+        ax.hlines(np.mean(vals), cx - 0.16, cx + 0.16, color=INK, lw=2,
+                  zorder=4)
+    # the gap is the result: draw it explicitly per model
+    for model, x0 in (("qwen", 0.0), ("goss", 1.55)):
+        m_real = np.mean([d[model] for _, d in pairs if d["truth"]])
+        m_abs = np.mean([d[model] for _, d in pairs if not d["truth"]])
+        xb = x0 + 0.275
+        ax.annotate("", xy=(xb, m_real), xytext=(xb, m_abs),
+                    arrowprops=dict(arrowstyle="<->", color=INK, lw=1.1))
+        ax.text(xb + 0.05, (m_real + m_abs) / 2,
+                f"gap\n{m_real - m_abs:+.2f}", fontsize=9.5, va="center")
+    ax.set_xticks([0.275, 1.825])
+    ax.set_xticklabels(["Qwen3-235B thinking", "GPT-OSS 120B"], fontsize=11)
+    for cx, lab, col in ((0.0, "real", GREEN), (0.55, "absent", "#b03030"),
+                         (1.55, "real", GREEN), (2.10, "absent", "#b03030")):
+        ax.text(cx, 1.03, lab, ha="center", fontsize=9, color=col)
     ax.set_ylabel("stated P(influence is present)")
-    ax.set_ylim(0, 1.12)
+    ax.set_xlim(-0.35, 2.75)
+    ax.set_ylim(0, 1.1)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
-    ax.legend(loc="lower left", fontsize=9, frameon=False)
     ax.spines[["top", "right"]].set_visible(False)
     ax.text(0.99, 0.02,
-            "each pair asked one at a time, single pre-change snapshot "
-            "(seed 300, checkpoint 55);\ndashed lines = per-group means. "
-            "Discrimination: Qwen +0.45, GPT-OSS +0.09.",
+            "10 questions per model (5 real, 5 absent influences), each asked "
+            "one at a time on a single\npre-change snapshot (seed 300, "
+            "checkpoint 55); black bars = group means.",
             transform=ax.transAxes, ha="right", fontsize=8, color=MUTED)
-    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.14, top=0.92)
+    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.1, top=0.92)
     p = OUT / "formation_discrimination.png"
     fig.savefig(p, dpi=200)
     plt.close(fig)

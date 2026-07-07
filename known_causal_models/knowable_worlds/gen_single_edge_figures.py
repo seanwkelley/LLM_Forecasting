@@ -117,74 +117,48 @@ def fig_formation():
 
 
 def fig_tracking():
-    from knowable_worlds.dyn_engine import DynSCM
-    from knowable_worlds.run_single_edge import (select_tracking_pairs,
-                                                 pair_idx)
+    from knowable_worlds.dyn_battery import CHECKPOINTS
 
-    scens = [("edge_add", 301), ("edge_add", 302),
-             ("edge_remove", 301), ("edge_remove", 302)]
-    fig = plt.figure(figsize=(12.8, 6.4), dpi=200)
-    gs = fig.add_gridspec(2, 4, width_ratios=[1, 2.15, 1, 2.15],
-                          hspace=0.5, wspace=0.3)
-    axes_t = []
-    for k, (ct, seed) in enumerate(scens):
-        r, c = divmod(k, 2)
-        axg = fig.add_subplot(gs[r, 2 * c])
-        ax = fig.add_subplot(gs[r, 2 * c + 1])
-        axes_t.append(ax)
-        dyn = DynSCM(n_nodes=8, edge_prob=0.2, seed=seed, change_type=ct)
-        hl = {}
-        for q in select_tracking_pairs(dyn):
-            ij = pair_idx(q["pair"])
-            if q["role"] == "changed":
-                hl[ij] = (BLUE, "--" if ct == "edge_add" else "-", 2.4)
-            elif q["role"] == "ctrl_true":
-                hl[ij] = ("#8d8d96", "-", 1.6)
-            else:
-                hl[ij] = ("#8d8d96", ":", 1.4)
-        draw_world(axg, dyn, hl)
-        rs = rows(OUT / f"gpt-oss_track_{ct}_{seed}.jsonl")
-        by_pair = {}
-        for r in rs:
-            by_pair.setdefault((r["pair"], r["role"]), []).append(
-                (r["checkpoint"], r["p"]))
-        for (pair, role), pts in sorted(by_pair.items()):
-            pts.sort()
-            ck, p = zip(*pts)
-            if role == "changed":
-                ax.plot(ck, p, color=BLUE, lw=2.2, marker="o", ms=4.5,
-                        zorder=3, label="changed edge")
-            else:
-                ax.plot(ck, p, color=GRAY, lw=1.2,
-                        ls="--" if role == "ctrl_false" else "-",
-                        marker="o", ms=3, zorder=2)
+    fig, axes = plt.subplots(1, 2, figsize=(8.8, 3.5), dpi=200,
+                             sharey=True)
+    axes_t = list(axes)
+    for ax, ct in zip(axes_t, ("edge_add", "edge_remove")):
+        # pool the two worlds of this operation, aligned on checkpoints
+        series = {"changed": {}, "ctrl_true": {}, "ctrl_false": {}}
+        for seed in (301, 302):
+            for r in rows(OUT / f"gpt-oss_track_{ct}_{seed}.jsonl"):
+                series[r["role"]].setdefault(r["checkpoint"], []).append(
+                    r["p"])
+        for role, style in (
+                ("ctrl_true", dict(color=GRAY, lw=1.3, ls="-", marker="o",
+                                   ms=3, zorder=2)),
+                ("ctrl_false", dict(color=GRAY, lw=1.3, ls="--", marker="o",
+                                    ms=3, zorder=2)),
+                ("changed", dict(color=BLUE, lw=2.2, ls="-", marker="o",
+                                 ms=4.5, zorder=3))):
+            cks = [c for c in CHECKPOINTS if c in series[role]]
+            m = [float(np.mean(series[role][c])) for c in cks]
+            se = [float(np.std(series[role][c], ddof=1)
+                        / np.sqrt(len(series[role][c]))) for c in cks]
+            ax.errorbar(cks, m, yerr=se, capsize=0, elinewidth=1, **style)
         ax.axvline(60, color=INK, ls="--", lw=1)
-        pre = [p for (pr, ro), pts in by_pair.items() if ro == "changed"
-               for c, p in pts if c <= 60]
-        post = [p for (pr, ro), pts in by_pair.items() if ro == "changed"
-                for c, p in pts if c > 60]
-        word = "added" if ct == "edge_add" else "removed"
-        ax.set_title(f"edge {word} · world {seed}   "
-                     f"(changed edge: {np.mean(pre):.2f} → "
-                     f"{np.mean(post):.2f})", fontsize=9.5)
+        ax.set_title("edge added" if ct == "edge_add" else "edge removed",
+                     fontsize=11)
         ax.set_ylim(0, 1)
+        ax.set_xlabel("checkpoint (period)")
         ax.spines[["top", "right"]].set_visible(False)
     axes_t[0].text(60.8, 0.05, "t* = 60", fontsize=8.5, color=INK)
-    for ax in axes_t[2:]:
-        ax.set_xlabel("checkpoint (period)")
-    for ax in (axes_t[0], axes_t[2]):
-        ax.set_ylabel("stated P(present)")
+    axes_t[0].set_ylabel("stated P(present)")
     handles = [plt.Line2D([], [], color=BLUE, lw=2.2, marker="o", ms=4.5,
                           label="changed edge"),
-               plt.Line2D([], [], color=GRAY, lw=1.2, marker="o", ms=3,
-                          label="control edge (exists in both regimes)"),
-               plt.Line2D([], [], color=GRAY, lw=1.2, ls="--", marker="o",
+               plt.Line2D([], [], color=GRAY, lw=1.3, marker="o", ms=3,
+                          label="control edges (exist in both regimes)"),
+               plt.Line2D([], [], color=GRAY, lw=1.3, ls="--", marker="o",
                           ms=3, label="control edge (exists in neither)")]
-    fig.legend(handles=handles, loc="lower center", ncol=3, fontsize=9,
+    fig.legend(handles=handles, loc="lower center", ncol=3, fontsize=8.5,
                frameon=False)
-    fig.suptitle("GPT-OSS, one pair per question: does the belief about the "
-                 "changed edge move across the change?", fontsize=11.5)
-    fig.subplots_adjust(top=0.9, bottom=0.14, left=0.055, right=0.985)
+    fig.subplots_adjust(top=0.92, bottom=0.26, left=0.08, right=0.98,
+                        wspace=0.08)
     p = OUT / "tracking_trajectories.png"
     fig.savefig(p, dpi=200)
     plt.close(fig)

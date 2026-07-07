@@ -82,20 +82,7 @@ def fig_formation():
         by_pair.setdefault(r["pair"], {"truth": r["truth"]})["goss"] = r["p"]
     pairs = sorted(by_pair.items(), key=lambda kv: (-kv[1]["truth"], kv[0]))
 
-    from knowable_worlds.dyn_engine import DynSCM
-    dyn = DynSCM(n_nodes=8, edge_prob=0.2, seed=300, change_type="edge_add")
-
-    fig = plt.figure(figsize=(8.2, 3.7), dpi=200)
-    gs = fig.add_gridspec(1, 2, width_ratios=[1, 1.7], wspace=0.12)
-    axg = fig.add_subplot(gs[0])
-    hl = {}
-    for name, d in pairs:
-        i, j = (int(x[1:]) - 1 for x in name.split("->"))
-        hl[(i, j)] = ((GREEN, "-", 1.8) if d["truth"]
-                      else ("#b03030", ":", 1.4))
-    draw_world(axg, dyn, hl)
-    ax = fig.add_subplot(gs[1])
-    rng = np.random.default_rng(3)          # tiny fixed jitter, n=5 per group
+    fig, ax = plt.subplots(figsize=(5.2, 3.7), dpi=200)
     models = (("qwen", BLUE, "Qwen3-235B thinking", -0.13),
               ("goss", ORANGE, "GPT-OSS 120B", +0.13))
     for model, col, label, off in models:
@@ -122,7 +109,7 @@ def fig_formation():
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.legend(loc="upper right", fontsize=9.5, frameon=False)
     ax.spines[["top", "right"]].set_visible(False)
-    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.1, top=0.95)
+    fig.tight_layout()
     p = OUT / "formation_discrimination.png"
     fig.savefig(p, dpi=200)
     plt.close(fig)

@@ -103,16 +103,17 @@ def fig_formation():
         for gx, truth in ((0, 1), (1, 0)):
             vals = [d[model] for _, d in pairs
                     if d["truth"] == truth and d.get(model) is not None]
-            x = gx + off + rng.uniform(-0.04, 0.04, len(vals))
-            ax.scatter(x, vals, s=52, color=col, alpha=0.6, zorder=3,
+            x = gx + off + 0.055 + rng.uniform(-0.015, 0.015, len(vals))
+            ax.scatter(x, vals, s=34, color=col, alpha=0.4, zorder=3,
                        marker="o" if model == "qwen" else "s")
             m = float(np.mean(vals))
             se = float(np.std(vals, ddof=1) / np.sqrt(len(vals)))
             means.append((gx + off, m))
-            ax.hlines(m, gx + off - 0.1, gx + off + 0.1, color=col, lw=2.6,
-                      zorder=4)
-            ax.errorbar(gx + off, m, yerr=se, color=col, lw=1.4, capsize=4,
-                        zorder=4)
+            ax.errorbar(gx + off, m, yerr=se,
+                        fmt="o" if model == "qwen" else "s", color=col,
+                        markersize=9, markeredgecolor="white",
+                        markeredgewidth=1.2, elinewidth=1.6, capsize=0,
+                        zorder=5)
         (x0, m0), (x1, m1) = means
         ax.plot([x0, x1], [m0, m1], color=col, lw=1.6, alpha=0.8, zorder=2,
                 label=label)

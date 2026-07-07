@@ -114,9 +114,6 @@ def fig_formation():
         (x0, m0), (x1, m1) = means
         ax.plot([x0, x1], [m0, m1], color=col, lw=1.6, alpha=0.8, zorder=2,
                 label=label)
-        ax.text(0.5 + off * 2.6, (m0 + m1) / 2 + 0.03,
-                f"gap {m0 - m1:+.2f}", fontsize=9.5, color=col,
-                ha="center")
     ax.set_xticks([0, 1])
     ax.set_xticklabels(["Real", "Absent"], fontsize=11)
     ax.set_ylabel("stated P(influence is present)")

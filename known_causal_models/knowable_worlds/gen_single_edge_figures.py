@@ -93,46 +93,42 @@ def fig_formation():
         i, j = (int(x[1:]) - 1 for x in name.split("->"))
         hl[(i, j)] = ((GREEN, "-", 1.8) if d["truth"]
                       else ("#b03030", ":", 1.4))
-    draw_world(axg, dyn, hl,
-               note="the 10 pairs asked: green = real influence,\n"
-                    "red dotted = absent (faint gray = other real edges)")
+    draw_world(axg, dyn, hl)
     ax = fig.add_subplot(gs[1])
     rng = np.random.default_rng(3)          # tiny fixed jitter, n=5 per group
-    centers = {("qwen", 1): 0.0, ("qwen", 0): 0.55,
-               ("goss", 1): 1.55, ("goss", 0): 2.10}
-    for (model, truth), cx in centers.items():
-        vals = [d[model] for _, d in pairs
-                if d["truth"] == truth and d.get(model) is not None]
-        x = cx + rng.uniform(-0.06, 0.06, len(vals))
-        col = GREEN if truth else "#b03030"
-        ax.scatter(x, vals, s=55, color=col, alpha=0.85, zorder=3)
-        ax.hlines(np.mean(vals), cx - 0.16, cx + 0.16, color=INK, lw=2,
-                  zorder=4)
-    # the gap is the result: draw it explicitly per model
-    for model, x0 in (("qwen", 0.0), ("goss", 1.55)):
-        m_real = np.mean([d[model] for _, d in pairs if d["truth"]])
-        m_abs = np.mean([d[model] for _, d in pairs if not d["truth"]])
-        xb = x0 + 0.275
-        ax.annotate("", xy=(xb, m_real), xytext=(xb, m_abs),
-                    arrowprops=dict(arrowstyle="<->", color=INK, lw=1.1))
-        ax.text(xb + 0.05, (m_real + m_abs) / 2,
-                f"gap\n{m_real - m_abs:+.2f}", fontsize=9.5, va="center")
-    ax.set_xticks([0.275, 1.825])
-    ax.set_xticklabels(["Qwen3-235B thinking", "GPT-OSS 120B"], fontsize=11)
-    for cx, lab, col in ((0.0, "real", GREEN), (0.55, "absent", "#b03030"),
-                         (1.55, "real", GREEN), (2.10, "absent", "#b03030")):
-        ax.text(cx, 1.03, lab, ha="center", fontsize=9, color=col)
+    models = (("qwen", BLUE, "Qwen3-235B thinking", -0.13),
+              ("goss", ORANGE, "GPT-OSS 120B", +0.13))
+    for model, col, label, off in models:
+        means = []
+        for gx, truth in ((0, 1), (1, 0)):
+            vals = [d[model] for _, d in pairs
+                    if d["truth"] == truth and d.get(model) is not None]
+            x = gx + off + rng.uniform(-0.04, 0.04, len(vals))
+            ax.scatter(x, vals, s=52, color=col, alpha=0.6, zorder=3,
+                       marker="o" if model == "qwen" else "s")
+            m = float(np.mean(vals))
+            se = float(np.std(vals, ddof=1) / np.sqrt(len(vals)))
+            means.append((gx + off, m))
+            ax.hlines(m, gx + off - 0.1, gx + off + 0.1, color=col, lw=2.6,
+                      zorder=4)
+            ax.errorbar(gx + off, m, yerr=se, color=col, lw=1.4, capsize=4,
+                        zorder=4)
+        (x0, m0), (x1, m1) = means
+        ax.plot([x0, x1], [m0, m1], color=col, lw=1.6, alpha=0.8, zorder=2,
+                label=label)
+        ax.text(0.5 + off * 2.6, (m0 + m1) / 2 + 0.03,
+                f"gap {m0 - m1:+.2f}", fontsize=9.5, color=col,
+                ha="center")
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels(["influence is real", "influence is absent"],
+                       fontsize=11)
     ax.set_ylabel("stated P(influence is present)")
-    ax.set_xlim(-0.35, 2.75)
-    ax.set_ylim(0, 1.1)
+    ax.set_xlim(-0.45, 1.45)
+    ax.set_ylim(0, 1.05)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+    ax.legend(loc="upper right", fontsize=9.5, frameon=False)
     ax.spines[["top", "right"]].set_visible(False)
-    ax.text(0.99, 0.02,
-            "10 questions per model (5 real, 5 absent influences), each asked "
-            "one at a time on a single\npre-change snapshot (seed 300, "
-            "checkpoint 55); black bars = group means.",
-            transform=ax.transAxes, ha="right", fontsize=8, color=MUTED)
-    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.1, top=0.92)
+    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.1, top=0.95)
     p = OUT / "formation_discrimination.png"
     fig.savefig(p, dpi=200)
     plt.close(fig)
@@ -165,10 +161,7 @@ def fig_tracking():
                 hl[ij] = ("#8d8d96", "-", 1.6)
             else:
                 hl[ij] = ("#8d8d96", ":", 1.4)
-        word = ("appears at t*" if ct == "edge_add" else "disappears at t*")
-        draw_world(axg, dyn, hl,
-                   note=f"blue = the edge that {word}\n"
-                        "gray = controls (solid real, dotted absent)")
+        draw_world(axg, dyn, hl)
         rs = rows(OUT / f"gpt-oss_track_{ct}_{seed}.jsonl")
         by_pair = {}
         for r in rs:

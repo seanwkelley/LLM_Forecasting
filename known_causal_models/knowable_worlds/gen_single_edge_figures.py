@@ -35,6 +35,43 @@ def rows(path):
             if json.loads(l).get("p") is not None]
 
 
+def draw_world(ax, dyn, highlights, note=None):
+    """Small circular graph of the world: regime-1 edges faint; highlighted
+    pairs colored. highlights: {(i,j): (color, linestyle, lw)}."""
+    n = dyn.n
+    pos = {k: (np.cos(2 * np.pi * k / n - np.pi / 2),
+               np.sin(2 * np.pi * k / n - np.pi / 2)) for k in range(n)}
+    ax.set_xlim(-1.45, 1.45)
+    ax.set_ylim(-1.55, 1.45)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    def edge(i, j, color, ls, lw, zorder):
+        x0, y0 = pos[i]
+        x1, y1 = pos[j]
+        ax.annotate("", xy=(x1 * 0.82, y1 * 0.82),
+                    xytext=(x0 * 0.82, y0 * 0.82),
+                    arrowprops=dict(arrowstyle="-|>", color=color, ls=ls,
+                                    lw=lw, shrinkA=0, shrinkB=0,
+                                    connectionstyle="arc3,rad=0.12"),
+                    zorder=zorder)
+
+    present = set(map(tuple, np.argwhere(dyn.B1 != 0)))
+    for i, j in present:
+        if i != j and (i, j) not in highlights:
+            edge(i, j, "#e3e3e8", "-", 0.9, 1)
+    for (i, j), (color, ls, lw) in highlights.items():
+        edge(i, j, color, ls, lw, 3)
+    for k in range(n):
+        x, y = pos[k]
+        ax.add_patch(plt.Circle((x, y), 0.17, fc="white", ec=INK, lw=0.9,
+                                zorder=4))
+        ax.text(x, y, f"X{k+1}", ha="center", va="center", fontsize=7.5,
+                zorder=5)
+    if note:
+        ax.text(0, -1.52, note, ha="center", fontsize=7.5, color=MUTED)
+
+
 def fig_formation():
     qwen = rows(OUT / "qwen_qwen3-235b-a22b-thinking-2507_edge_add_300_ck55.jsonl")
     goss = rows(OUT / "gpt-oss_edge_add_300_ck55.jsonl")
@@ -45,7 +82,21 @@ def fig_formation():
         by_pair.setdefault(r["pair"], {"truth": r["truth"]})["goss"] = r["p"]
     pairs = sorted(by_pair.items(), key=lambda kv: (-kv[1]["truth"], kv[0]))
 
-    fig, ax = plt.subplots(figsize=(8.6, 3.6), dpi=200)
+    from knowable_worlds.dyn_engine import DynSCM
+    dyn = DynSCM(n_nodes=8, edge_prob=0.2, seed=300, change_type="edge_add")
+
+    fig = plt.figure(figsize=(11.4, 3.9), dpi=200)
+    gs = fig.add_gridspec(1, 2, width_ratios=[1, 2.9], wspace=0.05)
+    axg = fig.add_subplot(gs[0])
+    hl = {}
+    for name, d in pairs:
+        i, j = (int(x[1:]) - 1 for x in name.split("->"))
+        hl[(i, j)] = ((GREEN, "-", 1.8) if d["truth"]
+                      else ("#b03030", ":", 1.4))
+    draw_world(axg, dyn, hl,
+               note="the 10 pairs asked: green = real influence,\n"
+                    "red dotted = absent (faint gray = other real edges)")
+    ax = fig.add_subplot(gs[1])
     xs = np.arange(len(pairs))
     for x, (name, d) in zip(xs, pairs):
         ax.plot([x, x], [d.get("goss", np.nan), d.get("qwen", np.nan)],
@@ -80,7 +131,7 @@ def fig_formation():
             "(seed 300, checkpoint 55);\ndashed lines = per-group means. "
             "Discrimination: Qwen +0.45, GPT-OSS +0.09.",
             transform=ax.transAxes, ha="right", fontsize=8, color=MUTED)
-    fig.tight_layout()
+    fig.subplots_adjust(left=0.01, right=0.99, bottom=0.14, top=0.92)
     p = OUT / "formation_discrimination.png"
     fig.savefig(p, dpi=200)
     plt.close(fig)
@@ -88,11 +139,35 @@ def fig_formation():
 
 
 def fig_tracking():
+    from knowable_worlds.dyn_engine import DynSCM
+    from knowable_worlds.run_single_edge import (select_tracking_pairs,
+                                                 pair_idx)
+
     scens = [("edge_add", 301), ("edge_add", 302),
              ("edge_remove", 301), ("edge_remove", 302)]
-    fig, axes = plt.subplots(2, 2, figsize=(9.4, 5.6), dpi=200,
-                             sharex=True, sharey=True)
-    for ax, (ct, seed) in zip(axes.flat, scens):
+    fig = plt.figure(figsize=(12.8, 6.4), dpi=200)
+    gs = fig.add_gridspec(2, 4, width_ratios=[1, 2.15, 1, 2.15],
+                          hspace=0.5, wspace=0.3)
+    axes_t = []
+    for k, (ct, seed) in enumerate(scens):
+        r, c = divmod(k, 2)
+        axg = fig.add_subplot(gs[r, 2 * c])
+        ax = fig.add_subplot(gs[r, 2 * c + 1])
+        axes_t.append(ax)
+        dyn = DynSCM(n_nodes=8, edge_prob=0.2, seed=seed, change_type=ct)
+        hl = {}
+        for q in select_tracking_pairs(dyn):
+            ij = pair_idx(q["pair"])
+            if q["role"] == "changed":
+                hl[ij] = (BLUE, "--" if ct == "edge_add" else "-", 2.4)
+            elif q["role"] == "ctrl_true":
+                hl[ij] = ("#8d8d96", "-", 1.6)
+            else:
+                hl[ij] = ("#8d8d96", ":", 1.4)
+        word = ("appears at t*" if ct == "edge_add" else "disappears at t*")
+        draw_world(axg, dyn, hl,
+                   note=f"blue = the edge that {word}\n"
+                        "gray = controls (solid real, dotted absent)")
         rs = rows(OUT / f"gpt-oss_track_{ct}_{seed}.jsonl")
         by_pair = {}
         for r in rs:
@@ -116,13 +191,13 @@ def fig_tracking():
         word = "added" if ct == "edge_add" else "removed"
         ax.set_title(f"edge {word} · world {seed}   "
                      f"(changed edge: {np.mean(pre):.2f} → "
-                     f"{np.mean(post):.2f})", fontsize=10)
+                     f"{np.mean(post):.2f})", fontsize=9.5)
         ax.set_ylim(0, 1)
         ax.spines[["top", "right"]].set_visible(False)
-    axes[0, 0].text(60.8, 0.05, "t* = 60", fontsize=8.5, color=INK)
-    for ax in axes[1]:
+    axes_t[0].text(60.8, 0.05, "t* = 60", fontsize=8.5, color=INK)
+    for ax in axes_t[2:]:
         ax.set_xlabel("checkpoint (period)")
-    for ax in axes[:, 0]:
+    for ax in (axes_t[0], axes_t[2]):
         ax.set_ylabel("stated P(present)")
     handles = [plt.Line2D([], [], color=BLUE, lw=2.2, marker="o", ms=4.5,
                           label="changed edge"),
@@ -134,7 +209,7 @@ def fig_tracking():
                frameon=False)
     fig.suptitle("GPT-OSS, one pair per question: does the belief about the "
                  "changed edge move across the change?", fontsize=11.5)
-    fig.tight_layout(rect=[0, 0.05, 1, 1])
+    fig.subplots_adjust(top=0.9, bottom=0.14, left=0.055, right=0.985)
     p = OUT / "tracking_trajectories.png"
     fig.savefig(p, dpi=200)
     plt.close(fig)

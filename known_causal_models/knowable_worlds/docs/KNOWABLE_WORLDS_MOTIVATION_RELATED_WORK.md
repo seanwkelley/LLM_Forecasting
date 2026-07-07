@@ -330,6 +330,51 @@ structured-output faithfulness paper.
 
 ---
 
+## Part IV-b — Scoop-check results (run 2026-07-07)
+
+Live web-search sweep of the Part IV checklist (search-engine approximation;
+no citation-graph API access — the one methodological caveat). Verdicts:
+
+1. CLadder forward-cites: **CLEAR.** Post-CLadder work went to lexical
+   ablations (Caliper 2606.04915), post-training (CauGym 2602.06337), and
+   symbolic verification (DoVerifier 2601.21210 — explicitly avoids numeric
+   probability substitution by design). Nobody added calibration scoring.
+2. Turpin forward-cites: **CLEAR.** The faithfulness literature is
+   mediation-style (intervene on the stated reasoning, watch the answer:
+   Project Ariadne 2601.02314, Breaking the Chain 2603.16475, Why Models
+   Know But Don't Say 2603.26410) — none scores a forecast against one
+   exact truth AND a stated structure against a second, over time. State
+   this contrast explicitly; it is the likely reviewer objection.
+3. CiK / ForecastBench / ForecastBench-Sim: **CLEAR.** Dr-CiK (2605.27904)
+   is not a context ladder; ForecastBench-Sim still names exact-p* scoring
+   as future work and nobody has executed it.
+4. Phrase searches: **all confirmed empty**, with one vocabulary near-miss:
+   PROPHET (2504.01509) — "Causal Intervened Likelihood" is a question-
+   FILTERING metric on real Polymarket resolutions, not a scored output
+   against exact truth. Must-cite and differentiate explicitly.
+5. Proceedings check: **INCOMPLETE** — searched, not enumerated. Before
+   submission, manually check: (a) FoRLM @ NeurIPS 2025 accepted list,
+   (b) van der Schaar Lab's ~7 ICLR 2026 papers, (c) OpenReview for
+   ICML 2025/26 "causal"+"calibration"+"forecast".
+6. 2604.16988 (ICL under regime change) follow-ups: **CLEAR**, but the
+   paper is ~3 months old — re-run this one check via a citation graph
+   within a week of submission.
+
+Risk after sweep: claims (a)-(c) LOW; (d) dissociation and (e) prompt-echo
+LOW-MODERATE (two adjacent literatures could combine; BeliefShift 2603.23848
+tracks verbal-opinion consistency over time — the closest 2026 precedent for
+(e), closer than Elazar 2021, though it has no causal graphs or exact truth).
+
+New must-cites from this sweep: PROPHET 2504.01509 (differentiate),
+DoVerifier 2601.21210 (metric-choice contrast), Caliper 2606.04915
+(supports numeric/anonymized design), ERM/Rung Collapse 2602.11675
+(theoretical motivation for the obs-vs-interventional gap), Project Ariadne
+2601.02314 + Breaking the Chain 2603.16475 (mediation-vs-dual-scoring
+contrast), BeliefShift 2603.23848 (belief-consistency precedent), CauScien
+position paper 2510.16530 (field-needs-this motivation).
+
+---
+
 ## Consolidated must-cite list
 
 Calibration / exact-truth: 2606.18686 (ForecastBench-Sim), 2512.02719

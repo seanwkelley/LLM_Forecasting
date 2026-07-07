@@ -5,25 +5,19 @@ credits and can go first.
 
 ## 1. Literature (pre-submission — no credits, do first)
 
-From the motivation/related-work sweep (`KNOWABLE_WORLDS_MOTIVATION_RELATED_WORK.md`,
-Part IV). The narrowest genuine scoop surface is a CLadder follow-up.
+Sweep RUN 2026-07-07 — full verdicts and new must-cites recorded in
+`KNOWABLE_WORLDS_MOTIVATION_RELATED_WORK.md` Part IV-b. Summary: CLadder /
+Turpin / CiK / ForecastBench-Sim forward-cites CLEAR; phrase searches all
+empty (one vocabulary near-miss: PROPHET 2504.01509 — cite and
+differentiate); claims (a)-(c) LOW risk, (d)/(e) LOW-MODERATE.
 
-- [ ] Forward-citation search on **CLadder (2312.04350)**, filtered 2024–2026 —
-      flag any follow-up that adds *calibration* scoring (would threaten the
-      static-arm and value-of-knowledge claims at once). Highest priority.
-- [ ] Forward-citation search on **Turpin (2305.04388)** for structured-output
-      faithfulness extensions through 2026 (the dissociation claim's competitor
-      surface).
-- [ ] Forward-citation search on **CiK (2410.18959)** and **ForecastBench
-      (2409.19839)** for any context-ladder / identity-isolation study on the
-      same sampling frame.
-- [ ] Phrase searches, expected empty — confirm: "interventional LLM
-      calibration", "do-operator probability forecast", "see-vs-do language
-      model", "identification gap LLM", "causal graph stability LLM",
-      "series identity time series LLM forecast".
-- [ ] Hand-check NeurIPS'25 / ICML'25 / ICLR'26 proceedings + recent workshops
-      for "causal" + "calibration" + "probability" and for numeric-time-series
-      causal-structure elicitation (post-dates reliable indexing).
+Still open (manual, before submission):
+- [ ] Enumerate FoRLM @ NeurIPS 2025 accepted papers; van der Schaar Lab's
+      ~7 ICLR 2026 papers; OpenReview ICML 2025/26
+      "causal"+"calibration"+"forecast" (search-engine sweep was not
+      exhaustive here).
+- [ ] Re-run the 2604.16988 forward-citation check via a real citation graph
+      within a week of submission (paper too recent for search indexing).
 - [ ] **Verify every arXiv ID from 2025-09 onward** (number, title, venue) —
       several were surfaced from prior sessions and are unconfirmed.
 
@@ -61,8 +55,14 @@ first. Ordered cheapest + sharpest first.
       study design: static sections removed, reduced-edge-set structure
       channel, k-dose and confounder extensions foregrounded with
       interactives).
-- [ ] `analyze_confounder.R` — mixed model for the see/do divergence and the
-      do_A / do_C contrasts (Python descriptives exist).
+- [x] `analyze_confounder.R` — DONE 2026-07-07: three two-condition mixed
+      models (trap-vs-truth on set-X1; model vs required see/do divergence;
+      set-X1 vs set-X3 error), scenario random intercepts; validated on
+      synthetic causal/confounded agents (verdicts separate cleanly).
+- [x] `analyze_tracking.py` — DONE 2026-07-07: per-scenario DiD on the
+      change-appropriate field, weight_double certification (late-window
+      rolling-|t| gap, bar 1.5), per-model pooling, track_master.csv for R;
+      validated on synthetic tracker/flat agents (all four signatures).
 
 ## Session state (2026-07-05)
 

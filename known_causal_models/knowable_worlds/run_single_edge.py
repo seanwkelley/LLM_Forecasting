@@ -347,8 +347,9 @@ def run_tracking(client, args, dyn, X, out_path):
         # detectability certification: the statistician's own confidence gap
         pre_t = [r["t_roll20"] for r in rows if r["role"] == "changed"
                  and r["checkpoint"] <= dyn.t_change and "t_roll20" in r]
+        # ck >= 70: the rolling window is majority post-change (62/66 mostly pre)
         post_t = [r["t_roll20"] for r in rows if r["role"] == "changed"
-                  and r["checkpoint"] > dyn.t_change and "t_roll20" in r]
+                  and r["checkpoint"] >= 70 and "t_roll20" in r]
         if pre_t and post_t:
             gap = np.mean(post_t) - np.mean(pre_t)
             print(f"  certification: rolling-20 |t| on changed edge "

@@ -33,6 +33,7 @@ A lag-1 linear-Gaussian dynamic SCM whose structure changes mid-series.
 - `run_dynamic.py` — runner (forecast + structure items, info-level and carry-belief knobs)
 - `run_single_edge.py` — the structure question: `--mode tracking` asks two probabilities (present + positive-if-present) about the changed edge and matched control edges at every checkpoint, all four change types (§16.2 add.3); `--mode formation` is the one-snapshot diagnostic, retiring after the queued Qwen run
 - `analyze_dynamic.py` / `analyze_dynamic.R` — analysis + inference
+- `analyze_tracking.py` — changed-edge tracking analysis: per-scenario difference-in-differences, weight-double admission check, `track_master.csv` for R
 - `analyze_v2.py` — committed descriptives for the v2 runs (§16 addenda)
 - `gen_dynamic_figures.py` — recovery-curve figure (3 panels)
 - `gen_network_evolution.py` — how the stated network evolves across checkpoints

@@ -31,10 +31,12 @@ first. Ordered cheapest + sharpest first.
       `python -m knowable_worlds.run_confounder --model gpt-oss --seeds 300 301 302 --out-dir knowable_worlds/outputs/confounder_gptoss`
       (~144 calls, ~$0.50) → `python -m knowable_worlds.analyze_confounder --run confounder_gptoss`.
       The existing observational pilot is its matched no-confounding baseline.
-- [ ] **Qwen single-edge formation completion** (8 pairs, ~$0.50):
-      `python -m knowable_worlds.run_single_edge --model qwen/qwen3-235b-a22b-thinking-2507 --max-tokens 49152 --resume`
-      (registered rule: discriminates → compute-allocation story; fails →
-      formation dead for both model classes).
+- [x] **Qwen single-edge formation completion** — DONE 2026-07-07:
+      discrimination +0.45 (true 0.77 vs non-edge 0.32; GPT-OSS +0.09).
+      Registered verdict: the whole-graph floor is COMPUTE ALLOCATION, not
+      detection inability (design doc 16.2 decision-rule outcome). Opens the
+      registered follow-on decision: complete Qwen's whole-graph pass
+      (81 items, ~$15-25) to sharpen the floor-vs-allocation contrast.
 - [ ] **Changed-edge tracking, GPT-OSS** — now THE structure question of the
       main battery (design doc §16.2 add.3, 2026-07-06): `run_single_edge
       --mode tracking`, two probabilities per pair (present +

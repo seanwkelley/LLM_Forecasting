@@ -1152,6 +1152,28 @@ of the next-credits queue (cheapest, sharpest); then P1 + I1, then the
 Qwen-thinking structure pass (81 items, ~$15–25 at observed burn — decide
 after single-edge verdict whether it is worth it), then the rest of T1.
 
+## 16.2 DECISION-RULE OUTCOME (Qwen single-edge completed 2026-07-07)
+
+Qwen3-235B-thinking, all 10 formation pairs (8 new + 2 from 2026-07-05):
+mean p on true edges 0.77 vs 0.32 on non-edges — **discrimination +0.45**
+(GPT-OSS on the identical pairs: +0.09, chance). Four of five true edges at
+0.85-0.95; errors were one true-edge miss (0.25) and one false alarm (0.85).
+
+Per the registered rule, the whole-graph structure floor is a
+**compute-allocation story**: a reasoning model with its entire budget on
+one pair CAN extract a lagged pairwise association from the rendered
+series; its whole-graph answers sit at the same floor as GPT-OSS
+(F1 0.19 vs 0.15) because the capability does not survive being spread
+across 56 hypotheses. For the non-reasoning class, formation is dead even
+at maximal focus. Consequences: (1) the "revision dead" claim narrows to
+"revision does not survive hypothesis load; at single-pair focus reasoning
+models form and GPT-OSS partially tracks (add.4)"; (2) the registered
+follow-on decision — completing Qwen's whole-graph structure pass (81
+items, ~$15-25) — is now live, since the floor-vs-allocation contrast is
+the story it would sharpen. Caveat: this run predates the json_repairs
+counter; any 4o-mini involvement would have been extraction-only (verified
+deterministic {} on empty input, which cannot pass validation).
+
 ## 16.2 addendum — single-edge TRACKING mode (user idea, 2026-07-05)
 
 Formation mode (above) probes ONE pre-change checkpoint with the most-

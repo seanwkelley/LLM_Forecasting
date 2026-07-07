@@ -2,7 +2,7 @@
 
 LLM-based causal discovery and forecasting using simulation engines with known ground-truth causal structures. This code supports a planned paper on whether LLMs can actively discover causal structure through interventional queries.
 
-See `docs/` for the historical research log (`EXPERIMENT_NOTES.md`), the original simulation/PID writeups (`MARKET_EXPERIMENT.md`, `RESULTS_FORECASTING_AND_PID.md`), and the current causal discovery design (`CAUSAL_DISCOVERY_DESIGN.md`).
+See `docs/` for the current causal discovery design (`CAUSAL_DISCOVERY_DESIGN.md`, motivation/methods, related work, and the testbed/sandbox design recommendations). Material from the original simulation/PID project — the research log, the original writeups, and the retired code — lives in `docs/archive/` and `archive/`.
 
 ## Directory Structure
 
@@ -54,15 +54,8 @@ Conflict domain simulation engine. LLM agents role-play as state actors making d
 ### `market/`
 Market domain simulation engine. LLM agents act as traders submitting orders to a clearing-price mechanism.
 
-### `forecast_multi/`
-Multi-agent forecasting framework. Tests whether multiple LLM agents (with different communication structures) can forecast simulation outcomes better than single agents.
-
-**Note:** `llm_client.py` imports from `forecast_bench.llm_client` (the belief sensitivity paper's code).
-
-### `simulation/`
-R simulation code that powers the market and conflict engines.
-
-**Note:** R files contain hardcoded `source("src/...")` paths from the original repo layout. To run, create a symlink from repo root: `mklink /D src known_causal_models\simulation`
+### `archive/`
+Code and docs from the original simulation/forecasting project (2026 Q1), predating the causal discovery paper: `forecast_multi/` (multi-agent forecasting framework) and `simulation/` (the original R engines, superseded by the Python `market/` and `conflict/` engines). Nothing here is imported by current code — see `archive/README.md`.
 
 ## Causal Discovery Lab (explorer.html)
 

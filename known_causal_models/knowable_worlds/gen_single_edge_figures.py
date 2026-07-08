@@ -172,10 +172,11 @@ def fig_qwen_tracking():
         "Qwen3-235B thinking":
             "qwen_qwen3-235b-a22b-thinking-2507_track_edge_remove_302.jsonl",
         "GPT-OSS 120B": "gpt-oss_track_edge_remove_302.jsonl",
+        "Llama 3.1 8B": "llama_track_edge_remove_302.jsonl",
     }
     fig, ax = plt.subplots(figsize=(5.6, 3.5), dpi=200)
-    for (label, fname), col, mk in zip(files.items(), (BLUE, ORANGE),
-                                       ("o", "s")):
+    for (label, fname), col, mk in zip(files.items(), (BLUE, ORANGE, GREEN),
+                                       ("o", "s", "^")):
         rs = [r for r in rows(OUT / fname) if r["role"] == "changed"]
         rs.sort(key=lambda r: r["checkpoint"])
         ax.plot([r["checkpoint"] for r in rs], [r["p"] for r in rs],

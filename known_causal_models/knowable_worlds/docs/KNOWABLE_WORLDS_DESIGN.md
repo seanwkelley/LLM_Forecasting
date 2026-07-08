@@ -1373,6 +1373,13 @@ provisional; remaining three certified scenarios are the obvious extension
 (~$20 at thinking budgets). Zero json_repairs across 21 reasoning-heavy
 calls — the 16.2-add.4 parser fix fully absorbs reasoning-wrapped output.
 
+Llama-3.1-8B on the identical scenario completes the ladder downward: ~0.1-0.25
+on EVERYTHING (including 0.10 on always-present real controls), sawtooth
+churn between calls, DiD +0.03 (null). Three tiers on one scenario:
+no beliefs (8B) -> weak directional beliefs (GPT-OSS 120B) -> strong correct
+beliefs, barely revised (Qwen-235B thinking). Figure:
+outputs/single_edge/qwen_perseverance.png (gen_single_edge_figures.py).
+
 ## 16.3 HIDDEN-CONFOUNDER DYNAMIC WORLD (the causal core; built 2026-07-05)
 
 Motivation (user challenge "is this strong enough on causality?"): the

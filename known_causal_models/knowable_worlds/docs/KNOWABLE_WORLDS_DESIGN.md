@@ -1357,6 +1357,22 @@ reply." All four scenarios re-run under the v2 prompt so the tracking
 dataset is prompt-uniform; other runners' prompts left unchanged
 (comparability with completed data; retries absorb empties there).
 
+## 16.2 addendum 5 — Qwen tracking, first scenario (2026-07-07)
+
+Qwen3-235B-thinking, tracking mode, edge_remove seed 302 (GPT-OSS's cleanest
+scenario). Changed-edge trajectory: P(present) 0.95/0.85/0.95 pre-change ->
+0.85 at ck62 and PINNED at 0.85 through ck80 (20 periods of contradicting
+data) -> 0.65 at ck95. Right-signed DiD -0.16, but dominated by perseverance;
+ctrl_true beliefs simultaneously DRIFTED UP +0.20. Reading: the reasoning
+model FORMS confident correct edge beliefs (unlike GPT-OSS) and then barely
+revises them — the same slow-release profile as the forecast channel's D2
+(release ~2x slower than the statistician). The dissociation therefore does
+not reduce to "no beliefs to revise": revision lags evidence even when the
+belief demonstrably exists, at maximal single-pair focus. n=1 scenario,
+provisional; remaining three certified scenarios are the obvious extension
+(~$20 at thinking budgets). Zero json_repairs across 21 reasoning-heavy
+calls — the 16.2-add.4 parser fix fully absorbs reasoning-wrapped output.
+
 ## 16.3 HIDDEN-CONFOUNDER DYNAMIC WORLD (the causal core; built 2026-07-05)
 
 Motivation (user challenge "is this strong enough on causality?"): the

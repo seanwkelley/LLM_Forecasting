@@ -1380,6 +1380,15 @@ no beliefs (8B) -> weak directional beliefs (GPT-OSS 120B) -> strong correct
 beliefs, barely revised (Qwen-235B thinking). Figure:
 outputs/single_edge/qwen_perseverance.png (gen_single_edge_figures.py).
 
+Llama-8B FULL FORECAST battery (192 calls, outputs/dynamic_llama,
+2026-07-08): corr(p, p*) = -0.05 overall (post-change -0.16); answers
+cluster ~0.62 regardless of item. Its apparent post-change advantage over
+the stale reference is an artifact (uninformative mid-range noise vs a
+confidently wrong reference). Reading: at the bottom tier BOTH channels are
+absent together — the forecast/structure dissociation is a MID-TIER
+phenomenon, visible only once forecasting works at all (GPT-OSS). Makes the
+Qwen forecast battery the highest-value missing cell.
+
 ## 16.3 HIDDEN-CONFOUNDER DYNAMIC WORLD (the causal core; built 2026-07-05)
 
 Motivation (user challenge "is this strong enough on causality?"): the

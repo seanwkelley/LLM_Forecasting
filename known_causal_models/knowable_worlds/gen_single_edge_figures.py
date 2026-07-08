@@ -145,7 +145,7 @@ def fig_tracking():
         ax.set_title("edge added" if ct == "edge_add" else "edge removed",
                      fontsize=11)
         ax.set_ylim(0, 1)
-        ax.set_xlabel("checkpoint (period)")
+        ax.set_xlabel("checkpoint")
         ax.spines[["top", "right"]].set_visible(False)
     axes_t[0].text(60.8, 0.05, "t* = 60", fontsize=8.5, color=INK)
     axes_t[0].set_ylabel("stated P(present)")

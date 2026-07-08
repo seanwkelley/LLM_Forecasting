@@ -237,13 +237,13 @@ statistician's own confidence (rolling-20 |t|, recorded with every answer) clear
 <b>full-graph version</b> (every candidate pair in one call) survives only as the belief object the
 carryover experiments hand back for revision, where drift must be measured across many edges that should
 stay put; and a <b>one-snapshot diagnostic</b> (one maximally detectable pair, the whole answer budget on
-it) settles whether failures come from juggling many pairs — GPT-OSS already answered no (chance even on
-one pair); the reasoning-model run completes next. A stakes variant is registered alongside: +1 per correct
+it) settles whether failures come from juggling many pairs — GPT-OSS answered no (chance even on one
+pair), the reasoning model answered yes (+0.45): the floor is a limit of allocation, not of detection. A stakes variant is registered alongside: +1 per correct
 asserted edge, −1 per false one, abstention allowed.</div>
 </div>
 
 <div class="card" style="border:2.5px solid var(--green);">
-<b style="font-size:14px;">First data from the specific-edge questions (2026-07-05, partial — credits)</b>
+<b style="font-size:14px;">First data from the specific-edge questions (updated 2026-07-08)</b>
 <table style="margin-top:8px;font-size:12px;">
 <tr><th style="width:200px;">run</th><th>result</th><th style="width:220px;">reading</th></tr>
 <tr><td>full-graph probabilities, GPT-OSS<br>(complete)</td>
@@ -255,11 +255,24 @@ get the same probabilities as non-edges (discrimination ≈ 0)</td>
 p = 0.75 (a classical analyst gets all 10 right)</td>
 <td>the floor is <b>not</b> task management: one maximally detectable influence, whole budget devoted to it,
 still undetected</td></tr>
-<tr><td>single-edge queries, Qwen3-235B-thinking<br>(2/10 before credits)</td>
-<td>strongest true edge p = 0.95 (hit); next true edge p = 0.25 (miss)</td>
-<td>too few to score — <b>first item in the queue (§7)</b>. Registered rule: discriminates here while its
-whole-graph answers stay at floor → compute-allocation story; fails here too → formation is dead for both
-model classes</td></tr>
+<tr><td>single-edge queries, Qwen3-235B-thinking<br>(complete, 10 pairs)</td>
+<td><b>discrimination +0.45</b> (true edges 0.77, non-edges 0.32); four of five true edges at 0.85–0.95</td>
+<td>the registered rule resolves: the whole-graph floor is <b>compute allocation</b> — the capability exists
+and dies when spread across 56 candidates. For the non-reasoning class, formation fails even at maximal
+focus</td></tr>
+<tr><td>changed-edge tracking, GPT-OSS<br>(4 certified scenarios × 2 runs)</td>
+<td>edge removals: the changed edge's P(present) falls, correctly signed, in 4 of 4 scenario-runs
+(−0.07 to −0.27 vs controls); edge additions mixed (2 of 4); movements small next to the statistician's
+~0 → 1</td>
+<td>weak but directionally correct <b>belief movement at single-pair focus</b> — more than the whole-graph
+answers ever showed</td></tr>
+<tr><td>tracking, Qwen3-235B-thinking + Llama-8B<br>(edge removed, world 302)</td>
+<td>Qwen forms the belief (0.85–0.95, correct sign), then holds ~0.85 through 20 periods of contradicting
+data, releasing to 0.65 only at the last checkpoint. Llama rates everything 0.1–0.25, sawtooth churn.
+Llama's full forecast battery: corr(p, p*) = −0.05 — uninformative</td>
+<td>a three-tier ladder on one scenario: <b>no beliefs → weak directional beliefs → strong beliefs, barely
+revised</b>. The forecast–structure dissociation is a mid-tier phenomenon: it appears only once forecasting
+works at all</td></tr>
 </table>
 </div>
 
@@ -612,9 +625,10 @@ the floor and the churn surviving ~16k tokens of chain-of-thought at ~100× the 
 <div class="card" style="font-size:13px;">
 <table>
 <tr><th style="width:30px;">#</th><th>run</th><th>decides</th></tr>
-<tr><td>1</td><td><b>Qwen single-edge completion</b> (8 pairs, ~$0.50)</td>
-<td>registered rule: discriminates → the floor is compute allocation; fails → formation is dead for both
-model classes at maximal focus</td></tr>
+<tr><td>1</td><td><b>remaining tracking scenarios</b> — sign flips and weight doublings for GPT-OSS
+(~$0.40); Qwen's other three certified scenarios (~$20); more seeds</td>
+<td>whether the small right-signed belief movement and the perseverance profile hold beyond n = 2 worlds
+per change type</td></tr>
 <tr><td>2</td><td><b>hidden-confounder pilot</b> (§4; ~144 calls)</td>
 <td>does forecast accuracy collapse exactly where causal structure is required — the decisive causal test</td></tr>
 <tr><td>3</td><td><b>self-carryover</b> (hand back the model's own first estimate)</td>

@@ -46,6 +46,7 @@ A confounded dynamic world: observational and interventional answers diverge.
 - `confounder_prompts.py` — neutral prompts (the confounder is never named)
 - `run_confounder.py` — runner
 - `analyze_confounder.py` — causal-reads analysis
+- `analyze_confounder.R` — inference layer (see/do divergence, set-X1 vs set-X3 contrasts)
 
 ## Explorers
 
@@ -55,11 +56,12 @@ A confounded dynamic world: observational and interventional answers diverge.
 ## Figures
 
 - `gen_design_diagram.py` — study-design figure → `knowable_worlds_design.{png,pdf}`
+- `gen_single_edge_figures.py` — formation discrimination, pooled tracking trajectories, three-model perseverance → `outputs/single_edge/*.png`
 - `gen_slides.py` — academic motivation/methods deck → `slides/knowable_worlds_motivation_methods.pptx` (14 slides, 16:9; its two figures are generated from the real study worlds, seed 300)
 
 ## Outputs (`outputs/`)
 
-One directory per run: `pilot_gptoss`, `noise_gptoss`, `scaleup_gptoss` (static arm); `dynamic_gptoss*`, `dynamic_qwen_thinking` (dynamic arm variants); `single_edge`.
+One directory per run: `pilot_gptoss`, `noise_gptoss`, `scaleup_gptoss` (static arm); `dynamic_gptoss*`, `dynamic_qwen_thinking`, `dynamic_llama` (dynamic arm variants); `single_edge` (formation + `*_track_*` tracking files, per model).
 
 ## Running
 

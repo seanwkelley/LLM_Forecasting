@@ -37,14 +37,17 @@ first. Ordered cheapest + sharpest first.
       detection inability (design doc 16.2 decision-rule outcome). Opens the
       registered follow-on decision: complete Qwen's whole-graph pass
       (81 items, ~$15-25) to sharpen the floor-vs-allocation contrast.
-- [ ] **Changed-edge tracking, GPT-OSS** — now THE structure question of the
-      main battery (design doc §16.2 add.3, 2026-07-06): `run_single_edge
-      --mode tracking`, two probabilities per pair (present +
-      positive-if-present), all four change types. Start with edge_add /
-      edge_remove × seeds 301/302 (certified detectable), then sign_flip and
-      weight_double (admit weight_double only if the printed rolling-20 |t|
-      certification gap is clearly positive; seed 300 passes: 0.8 → 2.5).
-      Then the k∈{1,3,6} multi-edge dose.
+- [x] **Changed-edge tracking, first wave — DONE 2026-07-07/08** (16.2
+      add.4/5): GPT-OSS edge_add/edge_remove × 301/302 (× 2 runs; removals
+      right-signed 4/4, additions 2/4, small); Qwen edge_remove 302
+      (perseverance: holds 0.85 for 20 post-change periods); Llama-8B
+      edge_remove 302 (no beliefs) + full forecast battery (corr(p,p*)
+      = -0.05, uninformative). Figures via gen_single_edge_figures.py.
+- [ ] **Tracking, second wave**: GPT-OSS sign_flip + weight_double (~$0.40;
+      admit weight_double only if the printed rolling-20 |t| certification
+      gap is clearly positive — seed 300 passes: 0.8 → 2.5); Qwen's other
+      three certified scenarios (~$20); more seeds per change type. Then the
+      k∈{1,3,6} multi-edge dose.
 - [ ] **P1 self-carryover + I1 stakes** (design doc §16.1): `run_dynamic
       --carry-belief self` and `--stakes` reruns.
 - [ ] **Static scale-up** resume from 771/4,800 (`run_calibration ... --resume`).

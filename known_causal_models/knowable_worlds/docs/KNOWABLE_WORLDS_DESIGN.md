@@ -1504,6 +1504,39 @@ walkthrough regenerated from the FIXED world (now seed 300 ck55: a=6.13
 set->0.50 vs seen->0.90, certified gap 0.40; natural corr +0.42 vs starred
 -0.03).
 
+## 16.5 PARKED — code execution as an affordance rung (discussed 2026-07-08,
+## not prioritized)
+
+Idea (user): let the model write and run analysis code — extended cognition.
+Does a tool unlock latent causal understanding in models that cannot do the
+estimation in-context?
+
+Why it discriminates rather than trivializes (the memorization worry): the
+worlds are built so the MOST-RETRIEVABLE analysis is the wrong one — pooled
+correlation lands on the confounder world's certified trap; fit-on-all-data
+fails on the changed edge. Boilerplate recall supplies the recipes; the
+measured object is recipe SELECTION (window vs pool; filter labeled
+intervention rows vs pool) and belief updating after the tool's output.
+Anonymized X1..Xn variables block name-based retrieval (cf. Caliper
+2606.04915).
+
+Three graded probes, cheapest first:
+  1. Script adjudication (no execution): hand two finished scripts (pooled
+     vs intervention-filtered) — which is right for this question, and why?
+     Transplant of the discovery paper's adjudication design; also a
+     wrong-script objection probe mirroring the static arm's L1w rung.
+  2. Write-only: model writes the analysis; WE run it; score the choice
+     (windowed? filtered?) separately from the arithmetic.
+  3. Full sandbox loop (machinery sketched in the discovery paper's
+     CAUSAL_SANDBOX_DESIGN.md).
+Sharp prediction from add.5: tool-assisted perseverance — the model's own
+correct script reports the edge is gone and its stated P(present) stays
+~0.85. Either outcome localizes the revision failure.
+
+Framing caution if ever run: this changes the measurand from "can the
+model's own inference track a changing world" to "can it direct an analysis
+of one" — report as an extension, not blended into the main design.
+
 ## 17. MAINTENANCE RULE (user, 2026-07-04)
 
 Any design change registered in this document MUST be propagated to the

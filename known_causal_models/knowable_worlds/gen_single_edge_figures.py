@@ -165,6 +165,37 @@ def fig_tracking():
     return p
 
 
+def fig_qwen_tracking():
+    """Both models on the same scenario (edge removed, world 302): the
+    changed edge's stated P(present) across checkpoints."""
+    files = {
+        "Qwen3-235B thinking":
+            "qwen_qwen3-235b-a22b-thinking-2507_track_edge_remove_302.jsonl",
+        "GPT-OSS 120B": "gpt-oss_track_edge_remove_302.jsonl",
+    }
+    fig, ax = plt.subplots(figsize=(5.6, 3.5), dpi=200)
+    for (label, fname), col, mk in zip(files.items(), (BLUE, ORANGE),
+                                       ("o", "s")):
+        rs = [r for r in rows(OUT / fname) if r["role"] == "changed"]
+        rs.sort(key=lambda r: r["checkpoint"])
+        ax.plot([r["checkpoint"] for r in rs], [r["p"] for r in rs],
+                color=col, lw=2, marker=mk, ms=5, label=label)
+    ax.axvline(60, color=INK, ls="--", lw=1)
+    ax.text(60.8, 0.06, "edge removed\nat t* = 60", fontsize=8.5, color=INK)
+    ax.set_xlabel("checkpoint")
+    ax.set_ylabel("stated P(present), removed edge")
+    ax.set_ylim(0, 1)
+    ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
+    ax.legend(loc="lower left", fontsize=9, frameon=False)
+    ax.spines[["top", "right"]].set_visible(False)
+    fig.tight_layout()
+    p = OUT / "qwen_perseverance.png"
+    fig.savefig(p, dpi=200)
+    plt.close(fig)
+    return p
+
+
 if __name__ == "__main__":
     print("wrote", fig_formation())
     print("wrote", fig_tracking())
+    print("wrote", fig_qwen_tracking())
